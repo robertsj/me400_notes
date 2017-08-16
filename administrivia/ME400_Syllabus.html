@@ -1,0 +1,1005 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ME 400 – Course Syllabus and Policies &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 1 - Getting Started" href="../lectures/ME400_Lecture_1.html" />
+    <link rel="prev" title="Python for Engineers" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="ME-400-–-Course-Syllabus-and-Policies">
+<h1>ME 400 – Course Syllabus and Policies<a class="headerlink" href="#ME-400-–-Course-Syllabus-and-Policies" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Welcome to ME 400!&quot;</span><span class="p">,</span> \
+  <span class="s2">&quot;It&#39;s important that you understand the course and its policies.&quot;</span><span class="p">,</span> \
+  <span class="s2">&quot;So take some time and read this document carefully!&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">messages</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Welcome to ME 400!
+It&#39;s important that you understand the course and its policies.
+So take some time and read this document carefully!
+</pre></div></div>
+</div>
+<div class="section" id="Contact-Information">
+<h2>Contact Information<a class="headerlink" href="#Contact-Information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>Lecture</strong> MW 1:30–2:20pm, DUE 1073</li>
+<li><strong>Instructor</strong>: Jeremy Roberts</li>
+<li><em>Phone</em>: 785-532-7182</li>
+<li><em>Email</em>: <a class="reference external" href="mailto:jaroberts&#37;&#52;&#48;ksu&#46;edu">jaroberts<span>&#64;</span>ksu<span>&#46;</span>edu</a></li>
+<li><em>Office</em>: Ward 137D</li>
+<li><em>Office Hours</em>: M/W, 2:30-4:00pm (or by appointment; refer to my
+<a class="reference external" href="https://calendar.google.com/calendar/embed?src=j.alyn.roberts%40gmail.com&amp;ctz=America/Chicago">calendar</a>
+before suggesting a time)</li>
+<li><strong>Laboratories</strong></li>
+<li><em>Lab 1</em>: F 7:30-9:20am, DUR 3056</li>
+<li><em>Lab 2</em>: F 9:30–11:20am, DUR 3056</li>
+<li><em>Lab 3</em>: F 2:30–4:20pm, DUR 3056</li>
+<li><strong>Graduate Teaching Assistants</strong></li>
+<li>Will Asher<ul>
+<li><em>Email</em>: <a class="reference external" href="mailto:asherw&#37;&#52;&#48;ksu&#46;edu">asherw<span>&#64;</span>ksu<span>&#46;</span>edu</a></li>
+<li><em>Office</em>: TBD</li>
+<li><em>Office Hours</em>: TBD</li>
+</ul>
+</li>
+<li>John Boyington<ul>
+<li><em>Email</em>: <a class="reference external" href="mailto:mjcb&#37;&#52;&#48;ksu&#46;edu">mjcb<span>&#64;</span>ksu<span>&#46;</span>edu</a></li>
+<li><em>Office</em>: Ward 133A</li>
+<li><em>Office Hours</em>: TBD</li>
+</ul>
+</li>
+<li><strong>Undergraduate Teaching Assistants</strong></li>
+<li>Assistant 1<ul>
+<li><em>Email</em>: TBD</li>
+</ul>
+</li>
+<li>Assistant 2<ul>
+<li><em>Email</em>: TBD</li>
+</ul>
+</li>
+<li>Assistant 3<ul>
+<li><em>Email</em>: TBD</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="Course-Description-and-Objectives">
+<h2>Course Description and Objectives<a class="headerlink" href="#Course-Description-and-Objectives" title="Permalink to this headline">¶</a></h2>
+<p><em>From the catalog</em>: The development and application of computer
+techniques to the problems of design and analysis in mechanical
+engineering, including computer programming (abstraction and problem
+solving; algorithms; control structures; input/output; functions; arrays
+and array processing).</p>
+<p><em>My informal description</em>: ME 400 is all about teaching you, the
+student, how to use programming to solve problems. We’ll use the Python
+programming language, which is as easy a language to learn as any I’ve
+encountered. The Python language offers much more with all of the add-on
+packages available, all for free. What you will come out of the class
+with, at the least, is (1) a basic ability to understand, implement, and
+debug computer programs and (2) knowledge of tools (symbolic and
+numerical) within the Python ecosystem that can be used to solve
+engineering problems.</p>
+<p><em>Specific objectives</em> (with corresponding ABET outcomes) include:</p>
+<ol class="arabic simple">
+<li>A good understanding of the basics of computer programming [a, e, k]</li>
+<li>Proficiency in the Python programming language [a, k]</li>
+<li>Ability to program from scratch [k]</li>
+<li>Ability to use flow charts and other problem-solving skills [c, e]</li>
+<li>Ability to use basic numerical methods [a, b]</li>
+<li>Ability to use skills learned in ME 400 in later classes and career
+[e, k]</li>
+</ol>
+</div>
+<div class="section" id="Textbook">
+<h2>Textbook<a class="headerlink" href="#Textbook" title="Permalink to this headline">¶</a></h2>
+<p>Although there are a plethora of good books on the Python language,
+there is a sufficient wealth of information online to learn the language
+without books. Most of the content I’ll present lives in my <a class="reference external" href="http://robertsj.github.io/python_for_engineers/index.html">online
+course
+notes</a>.
+Reading assignments will be based on this material in addition to
+supplementary material.</p>
+<p>The notes are organized by lecture. Moreover, these notes are written
+using Jupyter notebooks, a format we’ll learn to use about half-way
+through the course. However, the notebooks are easy to load and run, and
+students are encouraged to explore them interactively early in the
+course.</p>
+<p>Some of the resources from which I might pull supplementary materials
+include:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://python-textbok.readthedocs.io/en/latest/index.html">Object-Oriented Programming in
+Python</a></li>
+<li>Downey, Allen, Jeffrey Elkner, and Chris Meyers. <em>How to Think Like a
+Computer Scientist: Learning with Python</em>. Green Tea Press, 2002.
+ISBN: 9780971677500.
+(This book is available for <a class="reference external" href="http://www.greenteapress.com/thinkpython/thinkCSpy.pdf">free as a
+PDF</a>, or
+you may purchase a paper copy.)</li>
+<li>Shapiro, Bruce. <em>Scientific Computation: Python Hacking for Math
+Junkies</em>. Sherwood Forest Books, 2015. ISBN: 9780692366936.</li>
+<li>Stewert, John. <em>Python for Scientists</em>. Cambridge University Press.
+ISBN: 9781107686427.</li>
+<li><a class="reference external" href="http://www.python.org">www.python.org</a></li>
+<li><a class="reference external" href="http://www.scipy.org">www.scipy.org</a></li>
+<li><a class="reference external" href="http://www.sympy.org">www.scipy.org</a></li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Prerequisite or concurrent: MATH 551. Eventually, this course will
+replace MATH 551 with MATH 240/340 as a pre/co-requisite. Ordinary
+differential equations are introduced/reviewed as necessary in the last
+segment of the course, and supplementary sessions will be offered to
+help you brush up on the math skills assumed in this course.</p>
+<p>In addition, this course sits in the middle of the MNE undergraduate
+curriculum. Consequently, I can count on you having had and to be able
+to apply knowledge learned in previous courses. These previous courses
+include but are not limited to basic physics and calculus classes. If
+something we do in this class requires that previously learned material,
+I’ll let you know, but <em>it is your responsibility</em> to review it as
+necessary.</p>
+<p><em>Important</em>: If you are one of our guests from industrial engineering or
+another program that does not require MATH 240, let me know by email
+within the first week of the course.</p>
+</div>
+<div class="section" id="Related-Courses">
+<h2>Related Courses<a class="headerlink" href="#Related-Courses" title="Permalink to this headline">¶</a></h2>
+<p>For those seeking knowledge of the C language, consider CIS 209, C
+Programming for Engineers. Those who like the material they learn in ME
+400 may wish to consider ME 701, Development of Computer Applications in
+Mechanical Engineering, which is a course focused on the elements of
+scientific computing.</p>
+</div>
+<div class="section" id="Amount-of-Study-Required">
+<h2>Amount of Study Required<a class="headerlink" href="#Amount-of-Study-Required" title="Permalink to this headline">¶</a></h2>
+<p>For the <em>average</em> student (with respect to reading and analytical
+abilities) to earn an <em>average</em> grade will require approximately <strong>6 to
+9 hours per week</strong> of <em>study</em> outside of class. Here, to study implies
+reading, preparation for lecture, solving homework sets, visiting with
+the instructor and GTAs, and anything else that contributes actively to
+the learning process.</p>
+</div>
+<div class="section" id="Lectures">
+<h2>Lectures<a class="headerlink" href="#Lectures" title="Permalink to this headline">¶</a></h2>
+<p>Lectures are an important part of the curriculum and, therefore, are
+required. Your job is to <strong>come to lecture prepared</strong> to learn and to
+engage in any in-class activities. Pre-lecture activities will be
+assigned for each lecture and must be completed one hour before the
+lecture. Some lectures may include in-class, formative activities.
+Although not formally assessed, these activities will often give an
+indication of attendance.</p>
+<p>The lectures in ME 400 will often be best thought of as hands-on,
+informal tutorials. If you have a laptop, you are encouraged to bring it
+to class to do in-class examples. If you do not have a laptop, I may
+have a couple old ones available for in-class use. Use of laptops should
+be limited to in-class examples and not for surfing and other activities
+unrelated to the lecture. The use of other electronic devices is
+distracting, so turn your phones to vibrate and put them away.</p>
+</div>
+<div class="section" id="Netiquette-and-Discussion-Expectations">
+<h2>Netiquette and Discussion Expectations<a class="headerlink" href="#Netiquette-and-Discussion-Expectations" title="Permalink to this headline">¶</a></h2>
+<p><em>Netiquette</em> is a set of rules for behaving properly online. Here are
+some points to consider when interacting with your peers while in this
+course:</p>
+<ul class="simple">
+<li>Profanity is unprofessional and, therefore, unacceptable in this
+course.</li>
+<li>Avoid using ALL CAPITALS, as it seems to suggest virtual “shouting.”</li>
+<li>Although not all online interactions are formal, you should do your
+best to use proper spelling and grammar. Use of “textspeak” is
+strictly prohibited b/c it is unprofessional imho.</li>
+<li>Respect others’ opinions and avoid “flaming” (publicly attacking or
+insulting) your peers. We’re here to learn together, and being nice
+helps us do that.</li>
+</ul>
+<p>Part of good netiquette consists of using appropriate language (and
+structure) in emails (should they be necessary). Here’s an example of a
+suitable (but still informal, say “business casual”) email:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Hi</span> <span class="n">Prof</span><span class="o">.</span> <span class="n">Roberts</span><span class="p">,</span>
+
+<span class="n">Here</span> <span class="ow">is</span> <span class="n">my</span> <span class="n">important</span> <span class="n">message</span><span class="o">.</span>
+
+<span class="n">Thanks</span><span class="p">,</span>
+
+<span class="n">Jane</span> <span class="n">Appleseed</span>
+</pre></div>
+</div>
+<p>In follow-up emails, the greeting (Hi…) and signature (Thanks…) are
+less important and may be omitted. Some folks might prefer a bit more
+formality, while some would accept less formality. When interacting with
+me, the “business casual” approach is just fine.</p>
+<p>See also the University policy on classroom conduct below.</p>
+</div>
+<div class="section" id="Laboratories-and-Homework">
+<h2>Laboratories and Homework<a class="headerlink" href="#Laboratories-and-Homework" title="Permalink to this headline">¶</a></h2>
+<p>Attendance in laboratory sessions is mandatory. Laboratories are
+interactive experiences and will be comprised of a quick review and
+exercises that must be completed within the laboratory session. Any
+remaining time may be used to continue on at-home exercises, which will
+involve more in-depth problems.</p>
+<p>Students <em>will work in pairs</em> as part of their laboratories. In some
+laboratories, formal <em>pair programming</em> will be required as a learning
+activity, with specific instructions to be given as needed.</p>
+<p>However, students should complete homeworks as individual efforts. Let
+me be more specific. It is allowed to work informally on assignments,
+but the final product (usually, “code”) you submit must be your own. Do
+not look at someone else’s code, and do not share your own code. A good
+“litmus test” is to ask yourself, “Can I explain everything I’ve
+submitted to the instructor?” You’ll be tested based on <em>your</em> knowledge
+of programming, so do yourself a favor and complete the homework on your
+own. (Please also see the discussion below on the Honor Code and
+plagiarism.)</p>
+<p>For homework questions, students should <em>visit office hours</em> or <em>use the
+discussion board</em>. If emailed, the course personnel will direct students
+to the discussion board unless the question is a private matter. The
+discussion board is preferred so that (1) a given question need only be
+asked (and answered) once, and (2) a record of such questions can be
+kept for posterity.</p>
+</div>
+<div class="section" id="Assessment">
+<h2>Assessment<a class="headerlink" href="#Assessment" title="Permalink to this headline">¶</a></h2>
+<p>Grading for the course is based on the following breakdown: -
+Pre-Lecture Activities (10%) - Laboratory Exercises (10%) - Homework
+Exercises (20%) - Examinations (60%)</p>
+<p>As a starting point, the standard 90/80/70/60 rule will be applied for
+A/B/C/D. These will never be shifted higher, though they may be adjusted
+lower if deemed appropriate.</p>
+<div class="section" id="Pre-Lecture-Activities">
+<h3>Pre-Lecture Activities<a class="headerlink" href="#Pre-Lecture-Activities" title="Permalink to this headline">¶</a></h3>
+<p>Students must complete a short, pre-lecture activity prior to each
+lecture (in this case, due 60 minutes before the start of lecture, which
+gives me a bit of time to look over responses and understand any common
+problems). These activities will most often take the form of an online
+(Canvas-based) quiz with questions that cover the reading assigned for
+the lecture in question. These activities may also include more
+open-ended responses from students. In cases where there is a “right”
+answer, students will be given more than one chance to answer the
+question correctly. The lowest two scores will be dropped from the
+calculuted score.</p>
+</div>
+<div class="section" id="Laboratory-Exercises">
+<h3>Laboratory Exercises<a class="headerlink" href="#Laboratory-Exercises" title="Permalink to this headline">¶</a></h3>
+<div class="line-block">
+<div class="line">The purpose of the laboratories is to review and to put in practice
+the concepts and tools discussed in lecture. Part of this experience
+will be laboratory exercises that must be completed in the alotted
+laboratory time. There are a total of 12 planned laboratories.</div>
+<div class="line">Students may drop their lowest two scores (which can include absences
+of any kind). No makeups will be allowed as laboratory exercise
+solutions will be posted soon after the laboratory session.</div>
+</div>
+</div>
+<div class="section" id="Homework">
+<h3>Homework<a class="headerlink" href="#Homework" title="Permalink to this headline">¶</a></h3>
+<p>Each homework extends the topics covered in the laboratory sessions.
+Hence, there are 12 planned homework assignments. Students may drop
+their lowest two homework scores.</p>
+<p>All homework is due at 11:59pm on the due date via electronic submission
+(unless otherwise specified in class). Unless otherwise announced, this
+due date will be the Wednesday before the following laboratory (or, in
+some cases, an exam).</p>
+<p>No late homework is accepted unless a class-wide extension is given.</p>
+<p>Homework solutions will not be posted, but students may visit office
+hours to see the solution.</p>
+<p><strong>Important</strong>: all homework should run without a run-time error. If
+running a submission leads immediately to an error, grading it becomes
+very difficult. In most cases, a homework testing file will be provided
+with instructions on its use. Students should use this tool (following
+the given guidelines) to ensure their programs execute without error or
+risk automatic point deductions.</p>
+</div>
+<div class="section" id="Examinations">
+<h3>Examinations<a class="headerlink" href="#Examinations" title="Permalink to this headline">¶</a></h3>
+<p><em>Important</em>: any student with a documented disability who requests more
+time on examinations <em>must inform me two weeks prior to the examination</em>
+or risk forfeiting the accomodation. Make-up examinations will be
+offered for serious personal (e.g., medical) or</p>
+<div class="section" id="Mid-Term-Examinations">
+<h4>Mid-Term Examinations<a class="headerlink" href="#Mid-Term-Examinations" title="Permalink to this headline">¶</a></h4>
+<p>The first two examinations are in-laboratory examinations and will
+consist of a written (pen and paper) and coded (Python program, etc.)
+component. The written component is to be completed <em>without notes or
+any other resources</em>. For the coded component, students may use
+resources to be approved prior to the exam. The first exam covers
+roughly the first third of the course. The second exam emphasizes
+material from the middle third of the course but should be considered
+cumulative.</p>
+<p>With multiple laboratory sessions, a number of students will complete an
+examination after their classmates. Although all students should expect
+unique exams, please note that any communication regarding the exam
+before all exams are submitted is prohibited, and <em>any violations of
+this policy will result in an XF in the course</em>.</p>
+</div>
+<div class="section" id="Final-Examination">
+<h4>Final Examination<a class="headerlink" href="#Final-Examination" title="Permalink to this headline">¶</a></h4>
+<p>The final examination consists of only a written component and will be
+completed in the normal lecture room. The final exam emphasizes the last
+third of the course but should be considered cumulative.</p>
+</div>
+</div>
+<div class="section" id="Contesting-Grades,-etc.">
+<h3>Contesting Grades, etc.<a class="headerlink" href="#Contesting-Grades,-etc." title="Permalink to this headline">¶</a></h3>
+<p>If you wish to request a regrade on any assessed task, you must email
+the instructor and GTAs in one email and (1) describe what the task was,
+(2) what you think was marked incorrectly, and (3) why you think your
+approach was correct. This written request must be made within one week
+of learning your score.</p>
+</div>
+<div class="section" id="Extra-Credit-and-End-of-Semester-Charity">
+<h3>Extra Credit and End-of-Semester Charity<a class="headerlink" href="#Extra-Credit-and-End-of-Semester-Charity" title="Permalink to this headline">¶</a></h3>
+<p>There is no extra credit available in ME 400. The best way to earn
+better scores is to ask for help early and often. The end of the
+semester (e.g., the last week) is <em>not</em> the time to start getting this
+help or to ask for favorable rounding. I repeat: ask for help early and
+often.</p>
+</div>
+</div>
+<div class="section" id="Course-Schedule">
+<h2>Course Schedule<a class="headerlink" href="#Course-Schedule" title="Permalink to this headline">¶</a></h2>
+<p>Python container types.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="25%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Lec
+tur
+e</th>
+<th class="head">Date</th>
+<th class="head">Topics</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Monday, August 21</td>
+<td>Administrivia. Overview of Python. Spyder and
+Jupyter. Basic types.</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Wednesday, August
+23</td>
+<td>Basic operators and common, built-in functions.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, August 25</td>
+<td>LAB 1</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>Monday, August 28</td>
+<td>Basic data processing with NumPy and Matplotlib.</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>Wednesday, August
+30</td>
+<td>More on NumPy arrays. Slicing operations. np.linalg</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, September
+1</td>
+<td>LAB 2</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Monday, September
+4</td>
+<td>HOLIDAY</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>Wednesday,
+September 6</td>
+<td>Algorithms, flowcharts, and pseudocode.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, September
+8</td>
+<td>LAB 3 - Exercises in explaining steps</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>Monday, September
+11</td>
+<td>Conditional statements and the structure of Python
+programs</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>Wednesday,
+September 13</td>
+<td>More on conditionals. The graphical debugger.</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, September
+15</td>
+<td>LAB 4</td>
+</tr>
+<tr class="row-even"><td>8</td>
+<td>Monday, September
+18</td>
+<td>For and while loops.</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>Wednesday,
+September 20</td>
+<td>More on for and while loops.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, September
+22</td>
+<td>LAB 5</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>Monday, September
+25</td>
+<td>Python container types: lists, tuples, and
+dictionaries.</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>Wednesday,
+September 27</td>
+<td>Processing text data.</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, September
+29</td>
+<td>EXAM 1 (Lectures 1 - 9, Labs 1 - 5)</td>
+</tr>
+<tr class="row-even"><td>12</td>
+<td>Monday, October 2</td>
+<td>Basics of functions.</td>
+</tr>
+<tr class="row-odd"><td>13</td>
+<td>Wednesday,
+October 4</td>
+<td>More on functions.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, October 6</td>
+<td>LAB 6</td>
+</tr>
+<tr class="row-odd"><td>14</td>
+<td>Monday, October 9</td>
+<td>Searching; linear, binary, and a first meaning of
+order. Built-in magic.</td>
+</tr>
+<tr class="row-even"><td>15</td>
+<td>Wednesday,
+October 11</td>
+<td>Sorting; bubble and merge. Built-in magic.</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, October
+13</td>
+<td>LAB 7</td>
+</tr>
+<tr class="row-even"><td>16</td>
+<td>Monday, October
+16</td>
+<td>Modules and packages.</td>
+</tr>
+<tr class="row-odd"><td>17</td>
+<td>Wednesday,
+October 18</td>
+<td>Unit testing and defensive programming.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, October
+20</td>
+<td>LAB 8</td>
+</tr>
+<tr class="row-odd"><td>18</td>
+<td>Monday, October
+23</td>
+<td>SymPy: symbols, expressions, and equations.</td>
+</tr>
+<tr class="row-even"><td>19</td>
+<td>Wednesday,
+October 25</td>
+<td>Differentiation and Integration with SymPy.
+Lambdify.</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, October
+27</td>
+<td>LAB 9</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>Monday, October
+30</td>
+<td>Taylor series, a second meaning of order, and the
+root of numerical methods</td>
+</tr>
+<tr class="row-odd"><td>21</td>
+<td>Wednesday,
+November 1</td>
+<td>Numerical differentiation. Connection to sympy.</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, November
+3</td>
+<td>LAB 10</td>
+</tr>
+<tr class="row-odd"><td>22</td>
+<td>Monday, November
+6</td>
+<td>Numerical integration</td>
+</tr>
+<tr class="row-even"><td>23</td>
+<td>Wednesday,
+November 8</td>
+<td>Optimization and root finding.</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, November
+10</td>
+<td>EXAM 2 (Lecture 10-21, Labs 6-10)</td>
+</tr>
+<tr class="row-even"><td>24</td>
+<td>Monday, November
+13</td>
+<td>Curve Fitting I - Least-Squares Fits</td>
+</tr>
+<tr class="row-odd"><td>25</td>
+<td>Wednesday,
+November 15</td>
+<td>Curve Fitting II - Interpolation</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, November
+17</td>
+<td>LAB 11</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Monday, November
+20</td>
+<td>HOLIDAY</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Wednesday,
+November 22</td>
+<td>HOLIDAY</td>
+</tr>
+<tr class="row-odd"><td>26</td>
+<td>Monday, November
+27</td>
+<td>Symbolic solution of ODEs (with a dash of review)</td>
+</tr>
+<tr class="row-even"><td>27</td>
+<td>Wednesday,
+November 29</td>
+<td>First-order IVPs and their numerical solution.
+Euler’s methods.</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, December
+1</td>
+<td>LAB 12</td>
+</tr>
+<tr class="row-even"><td>28</td>
+<td>Monday, December
+4</td>
+<td>Numerical solution of systems of IVPs</td>
+</tr>
+<tr class="row-odd"><td>29</td>
+<td>Wednesday,
+December 6</td>
+<td>Numerical solution of BVPs</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, December
+8</td>
+<td>LAB 13 - Review Session (Optional)</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Thursday,
+December 14</td>
+<td>FINAL EXAM - 11:50 am – 1:40 pm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Academic-Honesty">
+<h2>Academic Honesty<a class="headerlink" href="#Academic-Honesty" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="The-University's-Statement">
+<h3>The University’s Statement<a class="headerlink" href="#The-University's-Statement" title="Permalink to this headline">¶</a></h3>
+<p>Kansas State University has an Honor System based on personal integrity,
+which is presumed to be sufficient assurance that, in academic matters,
+one’s work is performed honestly and without unauthorized assistance.
+Undergraduate and graduate students, by registration, ac- knowledge the
+jurisdiction of the Honor System. The policies and procedures of the
+Honor System apply to all full and part-time students enrolled in
+undergraduate and graduate courses on-campus, off-campus, and via
+distance learning. The honor system website can be reached via the
+following URL: www.ksu.edu/honor . A component vital to the Honor System
+is the inclusion of the Honor Pledge which applies to all assignments,
+examinations, or other course work undertaken by students. The Honor
+Pledge is implied, whether or not it is stated: “On my honor, as a
+student, I have neither given nor received unauthorized aid on this
+academic work.” A grade of XF can result from a breach of academic
+honesty. The F indicates failure in the course; the X indicates the
+reason is an Honor Pledge violation.</p>
+</div>
+<div class="section" id="My-Statement">
+<h3>My Statement<a class="headerlink" href="#My-Statement" title="Permalink to this headline">¶</a></h3>
+<p>Students in ME 400 are expected to uphold the Honor Pledge. <strong>Students
+who are identified to have collaborated on or otherwise received
+unauthorized assistance on examinations will automatically earn an XF in
+the course</strong>. Infractions related to other graded tasks will be judged
+on a case by case basis.</p>
+</div>
+<div class="section" id="On-Plagiarism">
+<h3>On Plagiarism<a class="headerlink" href="#On-Plagiarism" title="Permalink to this headline">¶</a></h3>
+<p>Programming can be hard, and often, students may find that “copying and
+pasting” from the internet is the path of least resistance: <em>but this
+can easily lead to plagiarism</em>.</p>
+<p>In the simplest terms, plagiarism is the act of using the work of
+someone else as part of your own without saying so. Probably the most
+common form of plagiarism involves the uncredited borrowing of text (or
+ideas) in written works (like those reports in Writing 101). However,
+plagiarism is not just using another’s text verbatim in your report: it
+includes using someone else’s solution for a problem, whether it comes
+from another student or a solution manual. This is a particular case of
+which many engineering students are not aware but may be guilty.</p>
+<p>To avoid plagiarizing, the ideas you present in your problem solutions
+and laboratory reports must be your own. When you adapt the ideas of
+another, you need to reference those ideas correctly. If you fail to do
+so, you are committing academic dishonesty, for which the potential
+penalties are described in the statement below.</p>
+<p>For some basic tips on how to avoid plagiarism in writing, see
+<a class="reference external" href="http://en.writecheck.com/ways-to-avoid-plagiarism">http://en.writecheck.com/ways-to-avoid-plagiarism</a>.</p>
+</div>
+</div>
+<div class="section" id="Students-with-Disabilities">
+<h2>Students with Disabilities<a class="headerlink" href="#Students-with-Disabilities" title="Permalink to this headline">¶</a></h2>
+<p>Students with disabilities who need classroom accommodations, access to
+technology, or information about emergency building/campus evacuation
+processes should contact the Student Access Center and/or their
+instructor. Services are available to students with a wide range of
+disabilities including, but not limited to, physical disabilities,
+medical conditions, learning disabilities, attention deficit disorder,
+depression, and anxiety. If you are a student enrolled in campus/online
+courses through the Manhattan or Olathe campuses, contact the Student
+Access Center at <a class="reference external" href="mailto:accesscenter&#37;&#52;&#48;k-state&#46;edu">accesscenter<span>&#64;</span>k-state<span>&#46;</span>edu</a> , 785-532-6441; for Salina
+campus, contact the Academic and Career Advising Center at
+<a class="reference external" href="mailto:acac&#37;&#52;&#48;k-state&#46;edu">acac<span>&#64;</span>k-state<span>&#46;</span>edu</a>, 785-826-2649.</p>
+</div>
+<div class="section" id="Expectations-for-Classroom-Conduct">
+<h2>Expectations for Classroom Conduct<a class="headerlink" href="#Expectations-for-Classroom-Conduct" title="Permalink to this headline">¶</a></h2>
+<p>All student activities in the University, including this course, are
+governed by the Student Judicial Conduct Code as outlined in the Student
+Governing Association By Laws, Article VI, Section 3, number 2. Students
+who engage in behavior that disrupts the learning environment may be
+asked to leave the class.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;!gnidaer rof sknahT&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Thanks for reading!
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ME 400 – Course Syllabus and Policies</a><ul>
+<li><a class="reference internal" href="#Contact-Information">Contact Information</a></li>
+<li><a class="reference internal" href="#Course-Description-and-Objectives">Course Description and Objectives</a></li>
+<li><a class="reference internal" href="#Textbook">Textbook</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Related-Courses">Related Courses</a></li>
+<li><a class="reference internal" href="#Amount-of-Study-Required">Amount of Study Required</a></li>
+<li><a class="reference internal" href="#Lectures">Lectures</a></li>
+<li><a class="reference internal" href="#Netiquette-and-Discussion-Expectations">Netiquette and Discussion Expectations</a></li>
+<li><a class="reference internal" href="#Laboratories-and-Homework">Laboratories and Homework</a></li>
+<li><a class="reference internal" href="#Assessment">Assessment</a><ul>
+<li><a class="reference internal" href="#Pre-Lecture-Activities">Pre-Lecture Activities</a></li>
+<li><a class="reference internal" href="#Laboratory-Exercises">Laboratory Exercises</a></li>
+<li><a class="reference internal" href="#Homework">Homework</a></li>
+<li><a class="reference internal" href="#Examinations">Examinations</a><ul>
+<li><a class="reference internal" href="#Mid-Term-Examinations">Mid-Term Examinations</a></li>
+<li><a class="reference internal" href="#Final-Examination">Final Examination</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Contesting-Grades,-etc.">Contesting Grades, etc.</a></li>
+<li><a class="reference internal" href="#Extra-Credit-and-End-of-Semester-Charity">Extra Credit and End-of-Semester Charity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Course-Schedule">Course Schedule</a></li>
+<li><a class="reference internal" href="#Academic-Honesty">Academic Honesty</a><ul>
+<li><a class="reference internal" href="#The-University's-Statement">The University’s Statement</a></li>
+<li><a class="reference internal" href="#My-Statement">My Statement</a></li>
+<li><a class="reference internal" href="#On-Plagiarism">On Plagiarism</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Students-with-Disabilities">Students with Disabilities</a></li>
+<li><a class="reference internal" href="#Expectations-for-Classroom-Conduct">Expectations for Classroom Conduct</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Python for Engineers</a></li>
+      <li>Next: <a href="../lectures/ME400_Lecture_1.html" title="next chapter">Lecture 1 - Getting Started</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/administrivia/ME400_Syllabus.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/administrivia/ME400_Syllabus.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

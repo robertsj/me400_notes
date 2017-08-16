@@ -1,0 +1,572 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 1 - Getting Started &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 2 - Basic Operators and Built-In Functions" href="ME400_Lecture_2.html" />
+    <link rel="prev" title="ME 400 – Course Syllabus and Policies" href="../administrivia/ME400_Syllabus.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-1---Getting-Started">
+<h1>Lecture 1 - Getting Started<a class="headerlink" href="#Lecture-1---Getting-Started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>First, and I can’t stress this enough, you need to read the
+<a class="reference internal" href="../administrivia/ME400_Syllabus.html"><span class="doc">Syllabus</span></a>!</p>
+<p>In this lesson, we’ll walk through the installation of, access to, and
+use of Python.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li><em>access Python on departmental machines</em> (or your own machine)</li>
+<li><em>define variables using basic Python types</em></li>
+<li><em>explain what a variable is</em></li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>interpreted programming language</li>
+<li>compiled programming language</li>
+<li>integrated development environment</li>
+<li>Spyder</li>
+<li>Jupyter notebook</li>
+<li>variable</li>
+<li><code class="docutils literal"><span class="pre">int</span></code></li>
+<li><code class="docutils literal"><span class="pre">float</span></code></li>
+<li><code class="docutils literal"><span class="pre">str</span></code></li>
+<li><code class="docutils literal"><span class="pre">bool</span></code></li>
+<li>assignment</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Overview-of-Python">
+<h2>Overview of Python<a class="headerlink" href="#Overview-of-Python" title="Permalink to this headline">¶</a></h2>
+<p>Python is a scripting language, which means it is
+<a class="reference external" href="https://en.wikipedia.org/wiki/Interpreted_language">interpreted</a> and
+not <a class="reference external" href="https://en.wikipedia.org/wiki/Compiled_language">compiled</a>.
+Interpreted languages are converted from human-readable text files to
+binary (i.e., the 1’s and 0’s a computer understands) on-the-fly. That
+makes the cycle of changing a program, running it, correcting the
+program for errors, and re-running it much, much faster than with
+compiled languages. A compiled language, on the other hand, is converted
+to binary once-and-for all by an explicit compilation step. That step
+makes rapid changes a bit more painstaking to implement. Learning to
+program is so much easier without this step, and many of the problems we
+need to solve don’t really require the added computational performance
+that compiled languages provide.</p>
+<p>Several versions of Python are in current use, but the most popular
+versions are 2.7 and 3.6. Despite the numbering, both versions are
+current (but <a class="reference external" href="https://pythonclock.org/">not forever</a>. In this class,
+we will work exclusively with Python 3.6.</p>
+</div>
+<div class="section" id="Python-Distributions">
+<h2>Python Distributions<a class="headerlink" href="#Python-Distributions" title="Permalink to this headline">¶</a></h2>
+<p>In addition to various versions of Python, there are many distributions
+of Python. By distribution, I mean a collection of the Python
+interpreter (which is what executes the code you write), editors, and/or
+packages for performing specific tasks. Here, we’ll be using
+<a class="reference external" href="https://conda.io/docs/">Conda</a>, which provides a very easy way to
+manage Python and its packages on Windows, Mac OS/X, and Linux machines.
+Currently, a full version of Conda is installed on the departmental
+machines and represent everything you need for this course.</p>
+<p>For folks who want to install Python on their own machines, the Conda
+folks have provided an <a class="reference external" href="https://conda.io/docs/install/full.html">installation guide for all operating
+systems</a>. It is not at all
+required (but is probably super handy) for you to have Python on your
+own machine.</p>
+</div>
+<div class="section" id="Accessing-Python">
+<h2>Accessing Python<a class="headerlink" href="#Accessing-Python" title="Permalink to this headline">¶</a></h2>
+<p>For folks working on MNE machines, the following is a quick overview of
+getting access. You will need to make time to visit one of the labs (or
+to install Python on your own machine) prior to the second lecture.</p>
+<div class="section" id="Finding-CMD">
+<h3>Finding CMD<a class="headerlink" href="#Finding-CMD" title="Permalink to this headline">¶</a></h3>
+<p>Press <code class="docutils literal"><span class="pre">windows+r</span></code> (the Windows key and the <code class="docutils literal"><span class="pre">r</span></code> key at the same time)
+to open <code class="docutils literal"><span class="pre">Run</span></code>.</p>
+<div class="figure" id="id1">
+<img alt="Finding CMD" src="../_images/access_python_1.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+</div>
+<div class="section" id="Interactive-Python-via-IDLE">
+<h3>Interactive Python via IDLE<a class="headerlink" href="#Interactive-Python-via-IDLE" title="Permalink to this headline">¶</a></h3>
+<p>In the CMD window, type “python” and press enter to open Python.</p>
+<div class="figure" id="id2">
+<img alt="Finding CMD" src="../_images/access_python_2.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+<p>You should see some information about the Python build (which, in this
+case, uses the version Python 3.5.2). You will also see the traditional
+marker <code class="docutils literal"><span class="pre">&gt;&gt;&gt;</span></code> followed by a (possibly blinking) cursor. It’s here that
+you can enter single lines of Python code. Type the following and press
+enter:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What happens?</p>
+<p>This particular interface to Python is called the <a class="reference external" href="https://docs.python.org/3/library/idle.html">Integrated
+Development and Learning Environment
+(IDLE)</a>. An alternative
+(that we’ll also see in Spyder below) is IPython, which can be used by
+typing “ipython” in place of “python” in your original CMD window.</p>
+</div>
+<div class="section" id="Spyder">
+<h3>Spyder<a class="headerlink" href="#Spyder" title="Permalink to this headline">¶</a></h3>
+<p>The primary way that I would recommend using Python for anything but the
+smallest tasks is by using Spyder, an <a class="reference external" href="https://en.wikipedia.org/wiki/Integrated_development_environment">integrated development
+environment</a>.
+Unlike IDLE, which is based entirely in the terminal window, Spyder
+provides a complete environment that incorporates a text editor (for
+writing complete Python programs), a variable explorer (we’ll see that
+that means later), and a Python terminal (either IDLE or IPython), among
+other features.</p>
+<p>To access Spyder, type “Spyder” into the CMD window and press enter.</p>
+<div class="figure" id="id3">
+<img alt="Finding CMD" src="../_images/access_python_4.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+<p>You should see something like the following:</p>
+<div class="figure" id="id4">
+<img alt="Finding CMD" src="../_images/access_python_5.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+<p>To the left is the text editor. To the upper right is a tabbed pane that
+defaults to a Help menu. Notice one of the other tabs is “Variable
+explorer.” Finally, the lower left pane contains the IPython console.</p>
+</div>
+<div class="section" id="Jupyter-Notebook">
+<h3>Jupyter Notebook<a class="headerlink" href="#Jupyter-Notebook" title="Permalink to this headline">¶</a></h3>
+<p>Another way to interact with Python is through use of <a class="reference external" href="http://jupyter.org/">Jupyter
+notebooks</a>. Jupyter allows one to produce
+documents within a web browser that contain text, images, links, and, of
+course, Python code. In fact, these online materials were all produced
+using the notebook format and converted to the form you are now seeing!</p>
+<p>To fire up Jupyter, just type “jupyter notebook” in the CMD window and
+press enter.</p>
+<div class="figure" id="id5">
+<img alt="Finding CMD" src="../_images/access_python_6.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+<p>You should see something like the following:</p>
+<div class="figure" id="id6">
+<img alt="Finding CMD" src="../_images/access_python_7.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+<p>You should recognize the listed items: they are the various folders in
+your home directory. Now, let’s make a new notebook. First navigate to
+whichever directory you want to contain the file (here, that’s the
+Documents folder). Then click the “New” icon in the upper right and
+select “Python [default]”, as shown below:</p>
+<div class="figure" id="id7">
+<img alt="Finding CMD" src="../_images/access_python_8.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+<p>What you get should look like the following:</p>
+<div class="figure" id="id8">
+<img alt="Finding CMD" src="../_images/access_python_9.png" />
+<p class="caption"><span class="caption-text">Finding CMD</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="Basic-Types">
+<h2>Basic Types<a class="headerlink" href="#Basic-Types" title="Permalink to this headline">¶</a></h2>
+<p>For the rest pf this lesson, we’ll take a look at the various data types
+one can use in the Python language. These types range from the simple
+<code class="docutils literal"><span class="pre">int</span></code> and <code class="docutils literal"><span class="pre">float</span></code> numerical types, to the flexible container types
+<code class="docutils literal"><span class="pre">list</span></code>, <code class="docutils literal"><span class="pre">tuple</span></code>, and <code class="docutils literal"><span class="pre">dict</span></code>. Certainly, we’ll encounter other
+types as we go on (and we can even define our own types with classes),
+but an understanding of these basic types is essential for getting the
+most out of Python.</p>
+<p>Python, like every other language I’ve used, uses
+<a class="reference external" href="https://en.wikipedia.org/wiki/Variable_%28computer_science%29">variables</a>,
+which consist of a <em>name</em> to which a <em>value</em> can be <em>assigned</em>. For
+example, consider the following lines of Python code:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">z</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The names <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>, and <code class="docutils literal"><span class="pre">z</span></code> are each assigned values that look
+pretty similar (they all appear equivalent to unity). However, the
+<em>type</em> of each of these values is different. For instance, <code class="docutils literal"><span class="pre">x</span></code> in this
+case is an <code class="docutils literal"><span class="pre">int</span></code>, i.e., and integer value.</p>
+<p>Because the value assigned to <code class="docutils literal"><span class="pre">y</span></code> explicitly includes a decimal point,
+its Python type is <code class="docutils literal"><span class="pre">float</span></code>, i.e., a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">floating-point</a>
+value. We’ll skip the details, but the floating-point system used by
+Python (and many other languages) approximates the real number system
+(including 1.0, 1.1, 3.14159…, etc.) with a <em>finite</em> set of numbers
+defined between predefined minimum and maximum values.</p>
+<p>The addition of quotes in the <em>first</em> value assigned to <code class="docutils literal"><span class="pre">z</span></code> makes it a
+<code class="docutils literal"><span class="pre">str</span></code>, i.e., a string value. Note, strings can be defined using either
+single quotes <code class="docutils literal"><span class="pre">'</span></code> or double quotes <code class="docutils literal"><span class="pre">&quot;</span></code>, but the pair must match. In
+other words, <code class="docutils literal"><span class="pre">'1.0'</span></code> and <code class="docutils literal"><span class="pre">&quot;1.0&quot;</span></code> are fine (and equivalent), but
+<code class="docutils literal"><span class="pre">'1.0&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;1.0'</span></code> are invalid.</p>
+<p>The <em>second</em> value assigned to <code class="docutils literal"><span class="pre">z</span></code> used the built-in function
+<code class="docutils literal"><span class="pre">float()</span></code>, which converts whatever is passed to it (here, <code class="docutils literal"><span class="pre">z</span></code>) into
+a <code class="docutils literal"><span class="pre">float</span></code>. In this particular case, the final value of <code class="docutils literal"><span class="pre">z</span></code> is equal
+to <code class="docutils literal"><span class="pre">y</span></code>.</p>
+<p>As a final example, consider the following:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">b</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</div>
+<p>Here, <code class="docutils literal"><span class="pre">b</span></code> is a <code class="docutils literal"><span class="pre">bool</span></code>.
+<a class="reference external" href="https://en.wikipedia.org/wiki/Boolean_data_type">Boolean</a> variables
+have one of two values: <code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<blockquote>
+<div><strong>Warning</strong>: The value of a <code class="docutils literal"><span class="pre">bool</span></code> is either <code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code>
+and the <em>capitalization</em> is <em>required</em></div></blockquote>
+<p>All five examples above use the <a class="reference external" href="http://python-textbok.readthedocs.io/en/latest/Variables_and_Scope.html#the-assignment-operator">assignment
+operator</a>,
+i.e., a single <code class="docutils literal"><span class="pre">=</span></code> (equal sign). This “operation” takes a name (e.g.,
+<code class="docutils literal"><span class="pre">x</span></code>) and gives it a value (e.g., <code class="docutils literal"><span class="pre">1</span></code>). We’ll see a much more
+complete picture of the basic operations in Python next time.</p>
+<p>These examples also highlight a key feature of Python: variables are
+strong- and dynamically-typed. A strong-typed language means that values
+have a fixed type until that type is changed explicitly. A
+dynamically-typed language means that variables can be assigned values
+of different types without restriction. Contrarily, static-typed
+languages require that variables be assigned a single, fixed type that
+is used throughout the variable’s
+<a class="reference external" href="http://python-textbok.readthedocs.io/en/latest/Variables_and_Scope.html#variable-scope-and-lifetime">scope</a>.
+Don’t worry: we’ll explore in more detail what scope means later on in
+the course.</p>
+</div>
+<div class="section" id="Additional-Reading">
+<h2>Additional Reading<a class="headerlink" href="#Additional-Reading" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the various links provided above, skim the
+<a class="reference external" href="http://python-textbok.readthedocs.io/en/latest/Introduction.html">Introduction</a>
+from <em>`Object-Oriented Programming in
+Python &lt;http://python-textbok.readthedocs.io/en/latest/index.html&gt;`__</em>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 1 - Getting Started</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Overview-of-Python">Overview of Python</a></li>
+<li><a class="reference internal" href="#Python-Distributions">Python Distributions</a></li>
+<li><a class="reference internal" href="#Accessing-Python">Accessing Python</a><ul>
+<li><a class="reference internal" href="#Finding-CMD">Finding CMD</a></li>
+<li><a class="reference internal" href="#Interactive-Python-via-IDLE">Interactive Python via IDLE</a></li>
+<li><a class="reference internal" href="#Spyder">Spyder</a></li>
+<li><a class="reference internal" href="#Jupyter-Notebook">Jupyter Notebook</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Basic-Types">Basic Types</a></li>
+<li><a class="reference internal" href="#Additional-Reading">Additional Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../administrivia/ME400_Syllabus.html" title="previous chapter">ME 400 – Course Syllabus and Policies</a></li>
+      <li>Next: <a href="ME400_Lecture_2.html" title="next chapter">Lecture 2 - Basic Operators and Built-In Functions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_1.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_1.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

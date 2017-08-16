@@ -1,0 +1,1653 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 3 - Basic Data Processing with NumPy and Matplotlib &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 4 - More on NumPy Arrays: Slicing and np.linalg" href="ME400_Lecture_4.html" />
+    <link rel="prev" title="Lecture 2 - Basic Operators and Built-In Functions" href="ME400_Lecture_2.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-3---Basic-Data-Processing-with-NumPy-and-Matplotlib">
+<h1>Lecture 3 - Basic Data Processing with NumPy and Matplotlib<a class="headerlink" href="#Lecture-3---Basic-Data-Processing-with-NumPy-and-Matplotlib" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lesson, we’ll explore some core features of NumPy and Matplotlib
+and extend our Python based “calculator” to include processing of
+<em>arrays</em> of data. <a class="reference external" href="http://www.numpy.org/">NumPy</a> is the basic
+numerical package for Python. A lot of its utility comes from its
+numerical, multidimensional array type, <code class="docutils literal"><span class="pre">ndarray</span></code>. Use of these arrays
+in a <em>vectorized</em> way often leads to significantly faster (and much more
+compact) code. Moreover, the array-valued results of numerical
+computations are easily visualized using Matplotlib, which was
+originally developed to provide MATLAB-like graphics in the Python
+environment.</p>
+<p>I think it’s so important that students can create, process, and display
+data that I highlight it early in the course and revisit it throughtout.
+NumPy and Matplotlib together provide about the easiest way to work with
+data.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li><em>define and manipulate one-dimensional NumPy arrays</em></li>
+<li><em>produce plots of data following best practices</em></li>
+<li><em>load data from text files</em></li>
+<li><em>save data to text files</em></li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">numpy</span></code></li>
+<li><code class="docutils literal"><span class="pre">ndarray</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.array</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.ones</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.zeros</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.linspace</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.sin</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.mean</span></code> (or <code class="docutils literal"><span class="pre">v.mean</span></code> where <code class="docutils literal"><span class="pre">v</span></code> is of type <code class="docutils literal"><span class="pre">ndarray</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">max</span></code> (or <code class="docutils literal"><span class="pre">np.max</span></code> or <code class="docutils literal"><span class="pre">v.max</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">sum</span></code> (or <code class="docutils literal"><span class="pre">np.sum</span></code> or <code class="docutils literal"><span class="pre">v.sum</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">matplotlib.pyplot</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.loadtxt</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.savetxt</span></code></li>
+<li><code class="docutils literal"><span class="pre">v.T</span></code>, where <code class="docutils literal"><span class="pre">v</span></code> is a two-dimensional <code class="docutils literal"><span class="pre">ndarray</span></code></li>
+<li><code class="docutils literal"><span class="pre">str</span></code> formats</li>
+</ul>
+</div>
+</div>
+<div class="section" id="NumPy-and-One-Dimensional-Arrays">
+<h2>NumPy and One-Dimensional Arrays<a class="headerlink" href="#NumPy-and-One-Dimensional-Arrays" title="Permalink to this headline">¶</a></h2>
+<p>NumPy is not part of Python, but it is a well-supported package. It
+comes by default in the Anaconda distribution, so you should already
+have it. Like all packages, we can import NumPy via</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+</pre></div>
+</div>
+</div>
+<p>However, it is far more common to use</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<p>The difference between these approaches is in how we use the <code class="docutils literal"><span class="pre">numpy</span></code>
+module. Built in to <code class="docutils literal"><span class="pre">numpy</span></code> are a number of same functions we saw in
+<code class="docutils literal"><span class="pre">math</span></code>, e.g., <code class="docutils literal"><span class="pre">sin</span></code>. Hence, we could use <code class="docutils literal"><span class="pre">numpy.sin(1.0)</span></code>, but if
+we import <code class="docutils literal"><span class="pre">numpy</span></code> as <code class="docutils literal"><span class="pre">np</span></code>, we would use <code class="docutils literal"><span class="pre">np.sin(1.0)</span></code>. I recommend
+the latter because (1) it is shorter and (2) most online documentation
+uses the <code class="docutils literal"><span class="pre">np</span></code> abbreviation.</p>
+<blockquote>
+<div><strong>Note</strong>: Use <code class="docutils literal"><span class="pre">import</span> <span class="pre">numpy</span> <span class="pre">as</span> <span class="pre">np</span></code> instead of <code class="docutils literal"><span class="pre">import</span> <span class="pre">numpy</span></code>.</div></blockquote>
+<div class="section" id="A-Motivating-Example">
+<h3>A Motivating Example<a class="headerlink" href="#A-Motivating-Example" title="Permalink to this headline">¶</a></h3>
+<p>Here’s a common task easily solved using NumPy: evaluate a mathematical
+function <code class="docutils literal"><span class="pre">f(x)</span></code> at discrete points. Why discrete data? Perhaps because
+that’s all the input data we have, e.g., from measurements, or perhaps
+we’re trying to plot that function. In any case, this is where NumPy
+excels. Consider the specific case for which we want to evaluate
+<span class="math">\(f(x) = \sin(x)\)</span> for <span class="math">\(x \in [0, 1]\)</span>, where <code class="docutils literal"><span class="pre">x</span></code> is to
+limited to 10 evenly-spaced points.</p>
+<p>Here’s what we need to do. First, always make sure NumPy is imported; in
+this notebook, we did that above, but here it is again for completeness.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we create an array <code class="docutils literal"><span class="pre">x</span></code> with 10, evenly-spaced points from 0 to 1
+using the function <code class="docutils literal"><span class="pre">np.linspace</span></code> as follows:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">x</span> <span class="c1"># remember, a variable all by itself as input prints its value as output</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.        ,  0.11111111,  0.22222222,  0.33333333,  0.44444444,
+        0.55555556,  0.66666667,  0.77777778,  0.88888889,  1.        ])
+</pre></div>
+</div>
+</div>
+<p>Finally, we evaluate the function <code class="docutils literal"><span class="pre">np.sin</span></code> at these points.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.        ,  0.11088263,  0.22039774,  0.3271947 ,  0.42995636,
+        0.52741539,  0.6183698 ,  0.70169788,  0.77637192,  0.84147098])
+</pre></div>
+</div>
+</div>
+<div class="line-block">
+<div class="line">Note that :code:<code class="docutils literal"><span class="pre">np.sin(x)</span></code> is used and not <code class="docutils literal"><span class="pre">math.sin(x)</span></code>.</div>
+<div class="line">That’s because :code:<code class="docutils literal"><span class="pre">x</span></code> in this case is a <code class="docutils literal"><span class="pre">ndarray</span></code>, to which the
+base Python :code:<code class="docutils literal"><span class="pre">math</span></code> functions do not apply.</div>
+</div>
+<p>The function <code class="docutils literal"><span class="pre">np.linspace(a,</span> <span class="pre">b,</span> <span class="pre">n)</span></code> gives <code class="docutils literal"><span class="pre">n</span></code> evenly-spaced points
+starting with <code class="docutils literal"><span class="pre">a</span></code> and ending with <code class="docutils literal"><span class="pre">b</span></code>. Writing the equivalent C++ or
+Fortran to define such an <code class="docutils literal"><span class="pre">x</span></code> is a royal pain; that’s why Python +
+NumPy (or MATLAB/Octave) is so nice for this type of problem.</p>
+</div>
+<div class="section" id="Creating-and-Manipulating-1-D-Arrays">
+<h3>Creating and Manipulating 1-D Arrays<a class="headerlink" href="#Creating-and-Manipulating-1-D-Arrays" title="Permalink to this headline">¶</a></h3>
+<p>We already saw one way to create a one-dimensional array, i.e.,
+<code class="docutils literal"><span class="pre">np.linspace</span></code>. There are many other ways to create these arrays.
+Suppose we have a list of numbers, e.g., 1.5, 2.7, and 3.1, and we’d
+like to make an array filled with these numbers. That’s easy:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.7</span><span class="p">,</span> <span class="mf">3.1</span><span class="p">])</span>
+<span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 1.5,  2.7,  3.1])
+</pre></div>
+</div>
+</div>
+<p>(It turns out that <code class="docutils literal"><span class="pre">[1.5,</span> <span class="pre">2.7,</span> <span class="pre">3.1]</span></code> is actually a Python <code class="docutils literal"><span class="pre">list</span></code>,
+but we’ll cover those later on when we need them; for now, we’ll stick
+with NumPy arrays exclusively.)</p>
+<p>The common ways to make 1-D arrays are listed in the table below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="42%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">function</th>
+<th class="head">example use</th>
+<th class="head">what it creates creates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">np.array(seq</span>
+<span class="pre">uence)</span></code></td>
+<td><code class="docutils literal"><span class="pre">np.array([1.5,</span> <span class="pre">2.7,</span> <span class="pre">3.1])</span></code></td>
+<td><a href="#id1"><span class="problematic" id="id2">``</span></a>array([ 1.5,  2.7,  3.1])
+``</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">np.linspace(</span>
+<span class="pre">start,</span> <span class="pre">stop,</span> <span class="pre">n</span>
+<span class="pre">um)</span></code></td>
+<td><code class="docutils literal"><span class="pre">np.linspace(0,</span> <span class="pre">1,</span> <span class="pre">3)</span></code></td>
+<td><a href="#id3"><span class="problematic" id="id4">``</span></a>array([ 0. ,  0.5,  1. ])
+``</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">np.ones(shap</span>
+<span class="pre">e)</span></code></td>
+<td><code class="docutils literal"><span class="pre">np.ones(3)</span></code></td>
+<td><code class="docutils literal"><span class="pre">array([</span> <span class="pre">1.,</span>&#160; <span class="pre">1.,</span>&#160; <span class="pre">1.])</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">np.zeros(sha</span>
+<span class="pre">pe)</span></code></td>
+<td><code class="docutils literal"><span class="pre">np.zeros(3)</span></code></td>
+<td><code class="docutils literal"><span class="pre">array([</span> <span class="pre">0.,</span>&#160; <span class="pre">0.,</span>&#160; <span class="pre">0.])</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">np.arange(st</span>
+<span class="pre">art,</span> <span class="pre">end,</span> <span class="pre">step</span>
+<span class="pre">)</span></code></td>
+<td><code class="docutils literal"><span class="pre">np.arange(1,</span> <span class="pre">7,</span> <span class="pre">2)</span></code></td>
+<td><code class="docutils literal"><span class="pre">array([1,</span> <span class="pre">3,</span> <span class="pre">5])</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The table does not tell the whole story of these functions; use
+<code class="docutils literal"><span class="pre">help()</span></code> or the <code class="docutils literal"><span class="pre">?</span></code> mark for further details.</p>
+<p>A useful aspect of NumPy arrays is that the basic arithmetic operations
+of Python (think <code class="docutils literal"><span class="pre">+</span></code> and <code class="docutils literal"><span class="pre">*</span></code>) apply to such arrays via <em>vectorized</em>
+operations. For example, two arrays <em>of equal length</em> can easily be
+multiplied:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 2,  6, 12])
+</pre></div>
+</div>
+</div>
+<p>Individual arrays can also be operated on by arithmetic operaters. For
+instance, we could double each element of <code class="docutils literal"><span class="pre">a</span></code> by doing</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span>
+<span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([2, 4, 6])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Inspecting-Arrays-and-Their-Elements">
+<h3>Inspecting Arrays and Their Elements<a class="headerlink" href="#Inspecting-Arrays-and-Their-Elements" title="Permalink to this headline">¶</a></h3>
+<p>What if we need to get the value of an array element? For example,
+suppose, as done above, we doubled the array <code class="docutils literal"><span class="pre">a</span></code>, called it <code class="docutils literal"><span class="pre">d</span></code>, and
+wanted the first value of <code class="docutils literal"><span class="pre">d</span></code>. We need to use array <code class="docutils literal"><span class="pre">indexing</span></code> via
+the operator <code class="docutils literal"><span class="pre">[]</span></code>. Here’s how we get that first value of <code class="docutils literal"><span class="pre">d</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>2
+</pre></div>
+</div>
+</div>
+<p>Yes–the first element is accessed using a zero. Python, like C, C++,
+and many other languages, is based on <em>`zero
+indexing &lt;https://en.wikipedia.org/wiki/Zero-based_numbering&gt;`__</em>, in
+which the numbering of sequences starts with zero. Get used to it!</p>
+<blockquote>
+<div><strong>Warning</strong>: Numbering starts with zero in Python</div></blockquote>
+<p>By using indexing, we can <em>change</em> the value of <code class="docutils literal"><span class="pre">d[0]</span></code>, too, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([99,  4,  6])
+</pre></div>
+</div>
+</div>
+<p>The number of elements in an array can be found in two ways. First, we
+can use the built-in <code class="docutils literal"><span class="pre">len</span></code> function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>3
+</pre></div>
+</div>
+</div>
+<p>We can also use the <code class="docutils literal"><span class="pre">size</span></code> <em>attribute</em>, associated with any array,
+that can be accessed through the <code class="docutils literal"><span class="pre">.</span></code> operator:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>3
+</pre></div>
+</div>
+</div>
+<p>If we want to access the last element of <code class="docutils literal"><span class="pre">d</span></code>, we can use that length
+directly via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>6
+</pre></div>
+</div>
+</div>
+<p>but a much cleaner way to do so is via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>6
+</pre></div>
+</div>
+</div>
+<p>In fact, by using a negative number, the elements are accessed in
+reverse starting from the last element. In other words, <code class="docutils literal"><span class="pre">d[-1]</span></code> is the
+same as <code class="docutils literal"><span class="pre">d[len(d)-1]</span></code>, <code class="docutils literal"><span class="pre">d[-2]</span></code> is the same as <code class="docutils literal"><span class="pre">d[len(d)-2]</span></code>, and
+so on.</p>
+<blockquote>
+<div><strong>Note</strong>: Access the <span class="math">\(i\)</span>th to last element of <code class="docutils literal"><span class="pre">array</span></code> via
+<code class="docutils literal"><span class="pre">array[-(1+i)]</span></code>.</div></blockquote>
+<p>What else do arrays have to help us? Try using <code class="docutils literal"><span class="pre">dir</span></code>!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">dir</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;T&#39;,
+ &#39;__abs__&#39;,
+ &#39;__add__&#39;,
+ &#39;__and__&#39;,
+ &#39;__array__&#39;,
+ &#39;__array_finalize__&#39;,
+ &#39;__array_interface__&#39;,
+ &#39;__array_prepare__&#39;,
+ &#39;__array_priority__&#39;,
+ &#39;__array_struct__&#39;,
+ &#39;__array_wrap__&#39;,
+ &#39;__bool__&#39;,
+ &#39;__class__&#39;,
+ &#39;__contains__&#39;,
+ &#39;__copy__&#39;,
+ &#39;__deepcopy__&#39;,
+ &#39;__delattr__&#39;,
+ &#39;__delitem__&#39;,
+ &#39;__dir__&#39;,
+ &#39;__divmod__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__eq__&#39;,
+ &#39;__float__&#39;,
+ &#39;__floordiv__&#39;,
+ &#39;__format__&#39;,
+ &#39;__ge__&#39;,
+ &#39;__getattribute__&#39;,
+ &#39;__getitem__&#39;,
+ &#39;__gt__&#39;,
+ &#39;__hash__&#39;,
+ &#39;__iadd__&#39;,
+ &#39;__iand__&#39;,
+ &#39;__ifloordiv__&#39;,
+ &#39;__ilshift__&#39;,
+ &#39;__imatmul__&#39;,
+ &#39;__imod__&#39;,
+ &#39;__imul__&#39;,
+ &#39;__index__&#39;,
+ &#39;__init__&#39;,
+ &#39;__init_subclass__&#39;,
+ &#39;__int__&#39;,
+ &#39;__invert__&#39;,
+ &#39;__ior__&#39;,
+ &#39;__ipow__&#39;,
+ &#39;__irshift__&#39;,
+ &#39;__isub__&#39;,
+ &#39;__iter__&#39;,
+ &#39;__itruediv__&#39;,
+ &#39;__ixor__&#39;,
+ &#39;__le__&#39;,
+ &#39;__len__&#39;,
+ &#39;__lshift__&#39;,
+ &#39;__lt__&#39;,
+ &#39;__matmul__&#39;,
+ &#39;__mod__&#39;,
+ &#39;__mul__&#39;,
+ &#39;__ne__&#39;,
+ &#39;__neg__&#39;,
+ &#39;__new__&#39;,
+ &#39;__or__&#39;,
+ &#39;__pos__&#39;,
+ &#39;__pow__&#39;,
+ &#39;__radd__&#39;,
+ &#39;__rand__&#39;,
+ &#39;__rdivmod__&#39;,
+ &#39;__reduce__&#39;,
+ &#39;__reduce_ex__&#39;,
+ &#39;__repr__&#39;,
+ &#39;__rfloordiv__&#39;,
+ &#39;__rlshift__&#39;,
+ &#39;__rmatmul__&#39;,
+ &#39;__rmod__&#39;,
+ &#39;__rmul__&#39;,
+ &#39;__ror__&#39;,
+ &#39;__rpow__&#39;,
+ &#39;__rrshift__&#39;,
+ &#39;__rshift__&#39;,
+ &#39;__rsub__&#39;,
+ &#39;__rtruediv__&#39;,
+ &#39;__rxor__&#39;,
+ &#39;__setattr__&#39;,
+ &#39;__setitem__&#39;,
+ &#39;__setstate__&#39;,
+ &#39;__sizeof__&#39;,
+ &#39;__str__&#39;,
+ &#39;__sub__&#39;,
+ &#39;__subclasshook__&#39;,
+ &#39;__truediv__&#39;,
+ &#39;__xor__&#39;,
+ &#39;all&#39;,
+ &#39;any&#39;,
+ &#39;argmax&#39;,
+ &#39;argmin&#39;,
+ &#39;argpartition&#39;,
+ &#39;argsort&#39;,
+ &#39;astype&#39;,
+ &#39;base&#39;,
+ &#39;byteswap&#39;,
+ &#39;choose&#39;,
+ &#39;clip&#39;,
+ &#39;compress&#39;,
+ &#39;conj&#39;,
+ &#39;conjugate&#39;,
+ &#39;copy&#39;,
+ &#39;ctypes&#39;,
+ &#39;cumprod&#39;,
+ &#39;cumsum&#39;,
+ &#39;data&#39;,
+ &#39;diagonal&#39;,
+ &#39;dot&#39;,
+ &#39;dtype&#39;,
+ &#39;dump&#39;,
+ &#39;dumps&#39;,
+ &#39;fill&#39;,
+ &#39;flags&#39;,
+ &#39;flat&#39;,
+ &#39;flatten&#39;,
+ &#39;getfield&#39;,
+ &#39;imag&#39;,
+ &#39;item&#39;,
+ &#39;itemset&#39;,
+ &#39;itemsize&#39;,
+ &#39;max&#39;,
+ &#39;mean&#39;,
+ &#39;min&#39;,
+ &#39;nbytes&#39;,
+ &#39;ndim&#39;,
+ &#39;newbyteorder&#39;,
+ &#39;nonzero&#39;,
+ &#39;partition&#39;,
+ &#39;prod&#39;,
+ &#39;ptp&#39;,
+ &#39;put&#39;,
+ &#39;ravel&#39;,
+ &#39;real&#39;,
+ &#39;repeat&#39;,
+ &#39;reshape&#39;,
+ &#39;resize&#39;,
+ &#39;round&#39;,
+ &#39;searchsorted&#39;,
+ &#39;setfield&#39;,
+ &#39;setflags&#39;,
+ &#39;shape&#39;,
+ &#39;size&#39;,
+ &#39;sort&#39;,
+ &#39;squeeze&#39;,
+ &#39;std&#39;,
+ &#39;strides&#39;,
+ &#39;sum&#39;,
+ &#39;swapaxes&#39;,
+ &#39;take&#39;,
+ &#39;tobytes&#39;,
+ &#39;tofile&#39;,
+ &#39;tolist&#39;,
+ &#39;tostring&#39;,
+ &#39;trace&#39;,
+ &#39;transpose&#39;,
+ &#39;var&#39;,
+ &#39;view&#39;]
+</pre></div>
+</div>
+</div>
+<p>Several names worth pointing out are <code class="docutils literal"><span class="pre">dot</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, <code class="docutils literal"><span class="pre">mean</span></code>,
+<code class="docutils literal"><span class="pre">shape</span></code>, and <code class="docutils literal"><span class="pre">sum</span></code>. The <code class="docutils literal"><span class="pre">max</span></code>, <code class="docutils literal"><span class="pre">mean</span></code>, and <code class="docutils literal"><span class="pre">sum</span></code> functions
+have pretty intuitive names (and purposes):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>99
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="c1"># here, (99+4+6)/3</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>36.333333333333336
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[18]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>109
+</pre></div>
+</div>
+</div>
+<p>It turns out that Python has <code class="docutils literal"><span class="pre">max</span></code> and <code class="docutils literal"><span class="pre">sum</span></code> as built-in functions.
+Hence, we could instead do</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>99
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">sum</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[20]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>109
+</pre></div>
+</div>
+</div>
+<p>but not <code class="docutils literal"><span class="pre">mean(d)</span></code> because <code class="docutils literal"><span class="pre">mean</span></code> is not a built-in function.
+However, <code class="docutils literal"><span class="pre">mean</span></code> <em>is</em> a NumPy function, so we could do</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[21]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>36.333333333333336
+</pre></div>
+</div>
+</div>
+<p>There is no real difference between <code class="docutils literal"><span class="pre">d.mean()</span></code> and <code class="docutils literal"><span class="pre">np.mean(d)</span></code>. My
+own personal preference is the latter because it looks closer to the
+programming I first learned eons ago.</p>
+<p>The <code class="docutils literal"><span class="pre">shape</span></code> attribute is somewhat special; here it is for <code class="docutils literal"><span class="pre">d</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(3,)
+</pre></div>
+</div>
+</div>
+<p>Here, the shape indicates a purely one-dimensional array. We’ll see
+below that <code class="docutils literal"><span class="pre">shape</span></code> is a bit more interesting for two-dimensional
+arrays.</p>
+<p>Finally, the <code class="docutils literal"><span class="pre">dot</span></code> function implements the <a class="reference external" href="https://en.wikipedia.org/wiki/Dot_product">dot
+product</a>, sometimes called
+the <em>scalar</em> product, for two arrays. In mathematics, we typically refer
+to one-dimensional arrays of numbers as <em>vectors</em>. For two vectors <code class="docutils literal"><span class="pre">c</span></code>
+and <code class="docutils literal"><span class="pre">d</span></code> of length <span class="math">\(n\)</span>, the dot product is defined as</p>
+<div class="math">
+\[\mathbf{c} \cdot \mathbf{d} = c_0 d_0 + c_1 d_1 + \ldots c_{n-1} d_{n-1} = \sum_{i=0}^{n-1} c_i d_i \, ,\]</div>
+<p>where <span class="math">\(c_i\)</span> is the <span class="math">\(i\)</span>th element of <span class="math">\(\mathbf{c}\)</span>. In
+NumPy, that operation is done via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">c</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>294
+</pre></div>
+</div>
+</div>
+<p>or</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[24]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>294
+</pre></div>
+</div>
+</div>
+<p>Of course, knowing how the dot product is defined, we could also use
+basic element-wise arithmetic coupled with the built-in <code class="docutils literal"><span class="pre">sum</span></code>
+function, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">sum</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>294
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Diving-into-pyplot">
+<h2>Diving into <code class="docutils literal"><span class="pre">pyplot</span></code><a class="headerlink" href="#Diving-into-pyplot" title="Permalink to this headline">¶</a></h2>
+<p>Recall our motivating example: defined <code class="docutils literal"><span class="pre">x</span></code> at evenly spaced points,
+and evaluate <code class="docutils literal"><span class="pre">np.sin</span></code> at those points. We printed the points and the
+function at those points, but it’s often useful to <em>show</em> it via a
+graph. <a class="reference external" href="https://matplotlib.org">Matplotlib</a> gives us the tools to do
+just that. The most common way to import Matplotlib (and, specifically,
+its <code class="docutils literal"><span class="pre">pyplot</span></code> “submodule”) is via</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+
+
+
+<span class="o">**</span><span class="n">Note</span><span class="o">**</span><span class="p">:</span> <span class="n">Just</span> <span class="n">like</span> <span class="n">NumPy</span> <span class="ow">is</span> <span class="n">often</span> <span class="n">shorted</span> <span class="n">to</span> <span class="sb">``</span><span class="n">np</span><span class="sb">``</span><span class="p">,</span>
+<span class="sb">``</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="sb">``</span> <span class="ow">is</span> <span class="n">often</span> <span class="n">used</span> <span class="k">as</span> <span class="sb">``</span><span class="n">plt</span><span class="sb">``</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<p>The most basic plot is very easy to make using <code class="docutils literal"><span class="pre">plt.plot</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># x and y were defined above</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x2b1165ff2208&gt;]
+</pre></div>
+</div>
+</div>
+<p>To show the plot, we need to use <code class="docutils literal"><span class="pre">plt.show</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_3_63_0.png" src="../_images/lectures_ME400_Lecture_3_63_0.png" />
+</div>
+</div>
+<div class="section" id="Multiple-Curves-and-Best-Practices">
+<h3>Multiple Curves and Best Practices<a class="headerlink" href="#Multiple-Curves-and-Best-Practices" title="Permalink to this headline">¶</a></h3>
+<p>What about multiple curves? Let’s define a second curved equal to
+<code class="docutils literal"><span class="pre">np.cos</span></code> evaluated at <code class="docutils literal"><span class="pre">x</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>To plot both <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">z</span></code> is also easy, and here, I’ve added a couple
+extra features that define the basic ingredients needed for a good plot:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="s1">&#39;r--x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;sin(x)&#39;</span><span class="p">,</span> <span class="s1">&#39;cos(x)&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_3_67_0.png" src="../_images/lectures_ME400_Lecture_3_67_0.png" />
+</div>
+</div>
+<p>Let’s breakdown the new components. First, consider <code class="docutils literal"><span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">'k-o'</span></code>.
+That means <code class="docutils literal"><span class="pre">y</span></code> is to be plotted against <code class="docutils literal"><span class="pre">x</span></code>, and the line to be used
+is black (the <code class="docutils literal"><span class="pre">k</span></code>), a solid line (the <code class="docutils literal"><span class="pre">-</span></code>), and has circle markers
+(the <code class="docutils literal"><span class="pre">o</span></code>). The second curve is defined by <code class="docutils literal"><span class="pre">x,</span> <span class="pre">z,</span> <span class="pre">'r--x'</span></code>. Here, that
+plots <code class="docutils literal"><span class="pre">z</span></code> against <code class="docutils literal"><span class="pre">x</span></code> with a red (the <code class="docutils literal"><span class="pre">r</span></code>), dashed (the <code class="docutils literal"><span class="pre">--</span></code>)
+line with x’s as markers (the <code class="docutils literal"><span class="pre">x</span></code>). A <em>legend</em> is provided indicating
+which line is which. The format of the legend always has a sequence of
+<code class="docutils literal"><span class="pre">str</span></code> labels for each line enclosed in <code class="docutils literal"><span class="pre">[]</span></code>’s (again, that’s a
+<code class="docutils literal"><span class="pre">list</span></code> in Python, but just follow the syntax for now. By setting
+<code class="docutils literal"><span class="pre">loc=0</span></code>, we’re putting the legend in the best possible place to avoid
+overlapping with the curves displayed. As a baseline rule, any plot
+produced should contain an <code class="docutils literal"><span class="pre">xlabel</span></code> and either a <code class="docutils literal"><span class="pre">ylabel</span></code> (if a
+single curve) or a <code class="docutils literal"><span class="pre">legend</span></code> (if multiple curves).</p>
+<blockquote>
+<div><strong>Note</strong>: All plots should include appropriate axis labels and
+legends.</div></blockquote>
+<p>Some of the available colors, line styles, and markers available in
+<code class="docutils literal"><span class="pre">plt.plot</span></code> are summarized in the tables below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">symbol</th>
+<th class="head">color</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">k</span></code></td>
+<td>black</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">b</span></code></td>
+<td>blue</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">r</span></code></td>
+<td>red</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">g</span></code></td>
+<td>green</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td>cyan</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">m</span></code></td>
+<td>magenta</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">symbol</th>
+<th class="head">style</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">-</span></code></td>
+<td>solid</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">--</span></code></td>
+<td>dash-dash</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">-.</span></code></td>
+<td>dash-dot</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">:</span></code></td>
+<td>dot-dot</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">symbol</th>
+<th class="head">marker</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td>circle</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">x</span></code></td>
+<td>x</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">^</span></code></td>
+<td>triangle pointed up</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&gt;</span></code></td>
+<td>triangle pointed right</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td>square</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td>hexagon</td>
+</tr>
+</tbody>
+</table>
+<p>In some applications, it can be very important to use a combination of
+colors, line styles, and markers that produce good looking and easily
+read graphics when viewed in color and in black and white formats.</p>
+<blockquote>
+<div><strong>Note</strong>: Choose good colors, line styles, and markers to ensure
+excellent contrast in all media.</div></blockquote>
+</div>
+</div>
+<div class="section" id="Data-Input-and-Output-via-NumPy">
+<h2>Data Input and Output via NumPy<a class="headerlink" href="#Data-Input-and-Output-via-NumPy" title="Permalink to this headline">¶</a></h2>
+<p>For many problems, the data we need to process lives in a file outside
+our Python code. There are a variety of ways to load data, but NumPy
+provides an easy way to load data that is in a relatively simple format.
+Consider a text file that has the following data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span>   <span class="n">vel</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="p">)</span>  <span class="n">acc</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="mf">0.00000000</span> <span class="mf">1.00000000</span> <span class="mf">0.00000000</span>
+<span class="mf">0.22222222</span> <span class="mf">1.24884887</span> <span class="mf">0.01097394</span>
+<span class="mf">0.44444444</span> <span class="mf">1.55962350</span> <span class="mf">0.08779150</span>
+<span class="mf">0.66666667</span> <span class="mf">1.94773404</span> <span class="mf">0.29629630</span>
+<span class="mf">0.88888889</span> <span class="mf">2.43242545</span> <span class="mf">0.70233196</span>
+<span class="mf">1.11111111</span> <span class="mf">3.03773178</span> <span class="mf">1.37174211</span>
+<span class="mf">1.33333333</span> <span class="mf">3.79366789</span> <span class="mf">2.37037037</span>
+<span class="mf">1.55555556</span> <span class="mf">4.73771786</span> <span class="mf">3.76406036</span>
+<span class="mf">1.77777778</span> <span class="mf">5.91669359</span> <span class="mf">5.61865569</span>
+<span class="mf">2.00000000</span> <span class="mf">7.38905610</span> <span class="mf">8.00000000</span>
+</pre></div>
+</div>
+<p>The structure is simple: three columns separated by white space. The
+first row contains information about what the data represent. Here, the
+columns correspond to times at which the velocity and acceleration of
+some object are given.</p>
+<div class="section" id="Loading-Text-Files">
+<h3>Loading Text Files<a class="headerlink" href="#Loading-Text-Files" title="Permalink to this headline">¶</a></h3>
+<p>Go ahead and save this text in a file. Mine is called <code class="docutils literal"><span class="pre">data.txt</span></code>. To
+load this file, we’ll use <code class="docutils literal"><span class="pre">np.loadtxt</span></code>. The basic use of this function
+is just <code class="docutils literal"><span class="pre">np.loadtxt(filename)</span></code>, where <code class="docutils literal"><span class="pre">filename</span></code> is a <code class="docutils literal"><span class="pre">str</span></code> that
+contains the name of the file. Here, we need just a bit more. In
+particular, we need tell NumPy to skip the very first row since it
+contains regular text and not the numbers of interest. Here’s one way to
+read in that text:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[31]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.        ,  1.        ,  0.        ],
+       [ 0.22222222,  1.24884887,  0.01097394],
+       [ 0.44444444,  1.5596235 ,  0.0877915 ],
+       [ 0.66666667,  1.94773404,  0.2962963 ],
+       [ 0.88888889,  2.43242545,  0.70233196],
+       [ 1.11111111,  3.03773178,  1.37174211],
+       [ 1.33333333,  3.79366789,  2.37037037],
+       [ 1.55555556,  4.73771786,  3.76406036],
+       [ 1.77777778,  5.91669359,  5.61865569],
+       [ 2.        ,  7.3890561 ,  8.        ]])
+</pre></div>
+</div>
+</div>
+<p>We have the data stored in the variable <code class="docutils literal"><span class="pre">data</span></code>. The type looks like an
+<code class="docutils literal"><span class="pre">ndarray</span></code>, but the structure is more like a matrix, i.e., a
+two-dimensional array—and it is! We can try out the <code class="docutils literal"><span class="pre">shape</span></code>
+attribute again:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[32]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(10, 3)
+</pre></div>
+</div>
+</div>
+<p>That makes sense: we had 10 times at which the velocity and acceleration
+were provided. 10 rows, and 3 columns. We’ll see next time how to access
+entire rows and columns of multidimensional arrays, but there is a
+better way to load in this data directly into three meaningful variables
+<code class="docutils literal"><span class="pre">t</span></code>, <code class="docutils literal"><span class="pre">v</span></code>, and <code class="docutils literal"><span class="pre">a</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[33]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,
+        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])
+</pre></div>
+</div>
+</div>
+<p>Now, we’ve got the times, velocities, and accelerations as three,
+separate, one-dimensional arrays. With NumPy, loading this sort of data
+is easy and recommended.</p>
+<blockquote>
+<div><strong>Note</strong>: If data is numerical and stored in a simple, collimated
+format, use <code class="docutils literal"><span class="pre">np.loadtxt</span></code></div></blockquote>
+<p>Like many functions in NumPy and other modules, <code class="docutils literal"><span class="pre">np.loadtxt</span></code> accepts
+quite a large number of optional arguments. You need to use <code class="docutils literal"><span class="pre">help</span></code> or
+the online documentation to learn more (and, of course, you’ll get to
+explore these in the exercises.)</p>
+</div>
+<div class="section" id="Saving-Text-Files">
+<h3>Saving Text Files<a class="headerlink" href="#Saving-Text-Files" title="Permalink to this headline">¶</a></h3>
+<p>Saving data is just as easy as loading. The function of interest is
+<code class="docutils literal"><span class="pre">np.savetxt</span></code>, and it requires some data and a file name. One way we
+could save our <code class="docutils literal"><span class="pre">t</span></code>, <code class="docutils literal"><span class="pre">v</span></code>, and <code class="docutils literal"><span class="pre">a</span></code> arrays is via</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;output_1.txt&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Go and check <code class="docutils literal"><span class="pre">output_1.txt</span></code>. The data is there, for sure, but it’s not
+quite the same format that we started with. Instead, <code class="docutils literal"><span class="pre">t</span></code>, <code class="docutils literal"><span class="pre">v</span></code>, and
+<code class="docutils literal"><span class="pre">a</span></code> were written out in their own row. That’s fine, but often, we want
+to spit out the data in pretty much the same way we’d like it to be read
+into our programs.</p>
+<p>One issue is that NumPy treats <code class="docutils literal"><span class="pre">[t,</span> <span class="pre">v,</span> <span class="pre">a]</span></code> like an array with a shape
+of <code class="docutils literal"><span class="pre">(3,</span> <span class="pre">10)</span></code>, which is exactly how it’s saved to file. Such
+two-dimensional arrays are basically <em>matrices</em>, and if we want the 3
+and 10 reverse, we need the <em>transpose</em>. Here, we can first produce a
+2-D array explicitly from <code class="docutils literal"><span class="pre">[t,</span> <span class="pre">v,</span> <span class="pre">a]</span></code> by using the <code class="docutils literal"><span class="pre">np.array</span></code>
+function, i.e.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">])</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[35]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,
+         1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ],
+       [ 1.        ,  1.24884887,  1.5596235 ,  1.94773404,  2.43242545,
+         3.03773178,  3.79366789,  4.73771786,  5.91669359,  7.3890561 ],
+       [ 0.        ,  0.01097394,  0.0877915 ,  0.2962963 ,  0.70233196,
+         1.37174211,  2.37037037,  3.76406036,  5.61865569,  8.        ]])
+</pre></div>
+</div>
+</div>
+<p>Then, we need its transpose, i.e.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">data</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[36]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.        ,  1.        ,  0.        ],
+       [ 0.22222222,  1.24884887,  0.01097394],
+       [ 0.44444444,  1.5596235 ,  0.0877915 ],
+       [ 0.66666667,  1.94773404,  0.2962963 ],
+       [ 0.88888889,  2.43242545,  0.70233196],
+       [ 1.11111111,  3.03773178,  1.37174211],
+       [ 1.33333333,  3.79366789,  2.37037037],
+       [ 1.55555556,  4.73771786,  3.76406036],
+       [ 1.77777778,  5.91669359,  5.61865569],
+       [ 2.        ,  7.3890561 ,  8.        ]])
+</pre></div>
+</div>
+</div>
+<p>That appears to be what we want in our output (if we want it to look
+like our original input). The only missing ingredient is the first row
+that indicates what each column contains. Such information can be
+included by using the <code class="docutils literal"><span class="pre">header</span></code> argument. By default, <code class="docutils literal"><span class="pre">#</span></code> is appended
+to the beginning, since <code class="docutils literal"><span class="pre">np.loadtxt</span></code> actually ignores lines that start
+with <code class="docutils literal"><span class="pre">#</span></code> (or some other user-specified comment symbol). Here, we can
+avoid the comment symbol in our output by using setting the <code class="docutils literal"><span class="pre">comment</span></code>
+argument to zero.</p>
+<p>Here it all is together:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;output_2.txt&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;time (s)   vel (m/s)  acc (m/s**2)&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="An-Aside:-String-Formatting">
+<h3>An Aside: String Formatting<a class="headerlink" href="#An-Aside:-String-Formatting" title="Permalink to this headline">¶</a></h3>
+<p>The output is pretty darn close, but the numbers are longer (and they
+were the first try, too). Behind the scenes, <code class="docutils literal"><span class="pre">float</span></code> values are stored
+with about 15 digits of useful information. When we read in the values
+from <code class="docutils literal"><span class="pre">data.txt</span></code>, they were defined only with 8 digits after the
+decimal point. You can see that <code class="docutils literal"><span class="pre">output_2.txt</span></code> has pretty much the
+same values, but there are some strange digits out beyond that eight
+digit. We can limit the output to only 8 digits by using a string
+format. Consider the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="mf">0.1234</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="mf">0.1234</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.16f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="mf">0.1234</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.3e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="mf">0.1234</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.1
+0.1234
+0.1234000000000000
+1.234e-01
+</pre></div></div>
+</div>
+<p>Here, the basic syntact is a <code class="docutils literal"><span class="pre">str</span></code> format, which contains a <code class="docutils literal"><span class="pre">%</span></code>
+followed by, e.g., <code class="docutils literal"><span class="pre">.4f</span></code>. That means to format the number in normal
+decimal notation (and not, e.g., scientific) with 4 digits after the
+decimal point. The last example used an <code class="docutils literal"><span class="pre">e</span></code>, which indicates
+scientific notation (with, here, three digits after the decimal point
+and before the <code class="docutils literal"><span class="pre">e</span></code>). String formatting can be very powerful (and
+complex). We’ll turn again to the topic again later on, but this gives
+you a taste!</p>
+</div>
+<div class="section" id="Saving-Text-Files:-Revisited">
+<h3>Saving Text Files: Revisited<a class="headerlink" href="#Saving-Text-Files:-Revisited" title="Permalink to this headline">¶</a></h3>
+<p>Back to our example. Armed with a bit of formatting, here’s the final
+solution for getting output identical to our original input:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;output_3.txt&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s1">&#39;time (s)   vel (m/s)  acc (m/s**2)&#39;</span><span class="p">,</span>  <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.8f</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Inspection of <code class="docutils literal"><span class="pre">output_3.txt</span></code> confirms it’s exactly like our original
+<code class="docutils literal"><span class="pre">data.txt</span></code>.</p>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>Make sure to explore in depth the <code class="docutils literal"><span class="pre">help</span></code> output of all the functions
+explored in this lesson. Many times, not all function arguments need to
+be used, but it’s very helpful to know that they exist and what they can
+help you to do.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 3 - Basic Data Processing with NumPy and Matplotlib</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#NumPy-and-One-Dimensional-Arrays">NumPy and One-Dimensional Arrays</a><ul>
+<li><a class="reference internal" href="#A-Motivating-Example">A Motivating Example</a></li>
+<li><a class="reference internal" href="#Creating-and-Manipulating-1-D-Arrays">Creating and Manipulating 1-D Arrays</a></li>
+<li><a class="reference internal" href="#Inspecting-Arrays-and-Their-Elements">Inspecting Arrays and Their Elements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Diving-into-pyplot">Diving into <code class="docutils literal"><span class="pre">pyplot</span></code></a><ul>
+<li><a class="reference internal" href="#Multiple-Curves-and-Best-Practices">Multiple Curves and Best Practices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Data-Input-and-Output-via-NumPy">Data Input and Output via NumPy</a><ul>
+<li><a class="reference internal" href="#Loading-Text-Files">Loading Text Files</a></li>
+<li><a class="reference internal" href="#Saving-Text-Files">Saving Text Files</a></li>
+<li><a class="reference internal" href="#An-Aside:-String-Formatting">An Aside: String Formatting</a></li>
+<li><a class="reference internal" href="#Saving-Text-Files:-Revisited">Saving Text Files: Revisited</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_2.html" title="previous chapter">Lecture 2 - Basic Operators and Built-In Functions</a></li>
+      <li>Next: <a href="ME400_Lecture_4.html" title="next chapter">Lecture 4 - More on NumPy Arrays: Slicing and <code class="docutils literal"><span class="pre">np.linalg</span></code></a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_3.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_3.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
