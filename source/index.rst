@@ -41,17 +41,11 @@ are useful to you.
 Contents:
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    Syllabus <administrivia/ME400_Syllabus>
    Lecture 1 <lectures/ME400_Lecture_1>
    Lecture 2 <lectures/ME400_Lecture_2>
    Lecture 3 <lectures/ME400_Lecture_3>
    Lecture 4 <lectures/ME400_Lecture_4>
-
-* :ref:`genindex`
-* :ref:`search`
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+  
