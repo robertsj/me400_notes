@@ -112,14 +112,14 @@
     "\n",
     "To access Spyder, type \"Spyder\" into the CMD window and press enter.\n",
     "\n",
-    "![Finding CMD](access_python_4.png)\n",
+    "![Opening Spyder](access_python_4.png)\n",
     "\n",
     "\n",
     "You should see something like the following:\n",
     "\n",
-    "![Finding CMD](access_python_5.png)\n",
+    "![Spyder interface](access_python_5.png)\n",
     "\n",
-    "To the left is the text editor.  To the upper right is a tabbed pane that defaults to a Help menu.  Notice one of the other tabs is \"Variable explorer.\"  Finally, the lower left pane contains the IPython console.\n",
+    "To the left is the text editor.  To the upper right is a tabbed pane that defaults to a Help menu.  Notice one of the other tabs is \"Variable explorer.\"  Finally, the lower right pane contains the IPython console.\n",
     "\n",
     "### Jupyter Notebook\n",
     "\n",
@@ -127,19 +127,19 @@
     "\n",
     "To fire up Jupyter, just type \"jupyter notebook\" in the CMD window and press enter.  \n",
     "\n",
-    "![Finding CMD](access_python_6.png)\n",
+    "![Starting Jupyter](access_python_6.png)\n",
     "\n",
     "You should see something like the following:\n",
     "\n",
-    "![Finding CMD](access_python_7.png)\n",
+    "![Jupyter interface](access_python_7.png)\n",
     "\n",
     "You should recognize the listed items: they are the various folders in your home directory.  Now, let's make a new notebook.  First navigate to whichever directory you want to contain the file (here, that's the Documents folder).  Then click the \"New\" icon in the upper right and select \"Python [default]\", as shown below:\n",
     "\n",
-    "![Finding CMD](access_python_8.png)\n",
+    "![Creating a Notebook](access_python_8.png)\n",
     "\n",
     "What you get should look like the following:\n",
     "\n",
-    "![Finding CMD](access_python_9.png)\n",
+    "![Notebook interface](access_python_9.png)\n",
     "\n"
    ]
   },
@@ -149,7 +149,7 @@
    "source": [
     "## Basic Types\n",
     "\n",
-    "For the rest pf this lesson, we'll take a look at the various data types one can use in \n",
+    "For the rest of this lesson, we'll take a look at the various data types one can use in \n",
     "the Python language.  These types range from the simple `int` and\n",
     "`float` numerical types, to the flexible container types\n",
     "`list`, `tuple`, and `dict`.  Certainly, we'll encounter\n",
@@ -262,19 +262,10 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Additional Reading\n",
+    "## Further Reading\n",
     "\n",
     "In addition to the various links provided above, skim the [Introduction](http://python-textbok.readthedocs.io/en/latest/Introduction.html) from *[Object-Oriented Programming in Python](http://python-textbok.readthedocs.io/en/latest/index.html)*."
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {
@@ -293,7 +284,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.0"
+   "version": "3.6.1"
   }
  },
  "nbformat": 4,

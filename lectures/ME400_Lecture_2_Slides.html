@@ -1,0 +1,647 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 2 - Basic Operators and Built-In Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-2---Basic-Operators-and-Built-In-Functions">
+<h1>Lecture 2 - Basic Operators and Built-In Functions<a class="headerlink" href="#Lecture-2---Basic-Operators-and-Built-In-Functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lesson, we’ll continue our study of basic types from <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture
+1</span></a>, incorporating operators (arithmetic and
+otherwise) along with some very useful built-in functions. By the end,
+we’ll construct our very first (ableit, simple)
+<a class="reference external" href="https://en.wikipedia.org/wiki/Computer_program">program</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">IPython.core.interactiveshell</span> <span class="kn">import</span> <span class="n">InteractiveShell</span>
+<span class="n">InteractiveShell</span><span class="o">.</span><span class="n">ast_node_interactivity</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li><em>add, subtract, multiply, and divide</em> two quantities</li>
+<li><em>use the ``help()`` function to understand how to use another
+function</em></li>
+<li><em>use ``dir()`` and the ``variable explorer`` to see defined variables
+and their values</em></li>
+<li><em>explain the difference between statement and expression</em></li>
+<li><em>write a short, well-commented program</em></li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>statement</li>
+<li>expression</li>
+<li>variable explorer</li>
+<li>keywords</li>
+<li><code class="docutils literal"><span class="pre">import</span></code></li>
+<li><code class="docutils literal"><span class="pre">math</span></code> module</li>
+<li><code class="docutils literal"><span class="pre">dir()</span></code></li>
+<li><code class="docutils literal"><span class="pre">help()</span></code></li>
+<li><code class="docutils literal"><span class="pre">print()</span></code></li>
+<li><code class="docutils literal"><span class="pre">type()</span></code></li>
+<li><code class="docutils literal"><span class="pre">+</span></code>, <code class="docutils literal"><span class="pre">-</span></code>, <code class="docutils literal"><span class="pre">*</span></code>, <code class="docutils literal"><span class="pre">/</span></code>, <code class="docutils literal"><span class="pre">**</span></code>, <code class="docutils literal"><span class="pre">//</span></code>, <code class="docutils literal"><span class="pre">^</span></code></li>
+<li>flowchart</li>
+<li>comments and the <code class="docutils literal"><span class="pre">#</span></code> symbol</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Python-Operators">
+<h2>Python Operators<a class="headerlink" href="#Python-Operators" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture 1</span></a>, we saw several examples of the
+form <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code>, where the variable <code class="docutils literal"><span class="pre">a</span></code> is <em>assigned</em> the value <code class="docutils literal"><span class="pre">1</span></code>.
+Here, <code class="docutils literal"><span class="pre">=</span></code> is the <em>assignment</em> operator. The entire line of code
+<code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code> is a <em>statement</em>.</p>
+<p><strong>A statement represents an instruction that is executed by the Python
+interpreter.</strong></p>
+<div class="section" id="Arithmetic-Operators">
+<h3>Arithmetic Operators<a class="headerlink" href="#Arithmetic-Operators" title="Permalink to this headline">¶</a></h3>
+<p>Consider variables <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code> of the <code class="docutils literal"><span class="pre">int</span></code> type.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="10%" />
+<col width="83%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">symbol</th>
+<th class="head">example use</th>
+<th class="head">definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">+</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span></code></td>
+<td>add <code class="docutils literal"><span class="pre">b</span></code> to <code class="docutils literal"><span class="pre">a</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">-</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">-</span> <span class="pre">b</span></code></td>
+<td>subtract <code class="docutils literal"><span class="pre">b</span></code> from <code class="docutils literal"><span class="pre">a</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">*</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span></code></td>
+<td>multiply <code class="docutils literal"><span class="pre">a</span></code> by <code class="docutils literal"><span class="pre">b</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">/</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">/</span> <span class="pre">b</span></code></td>
+<td>divide <code class="docutils literal"><span class="pre">a</span></code> by <code class="docutils literal"><span class="pre">b</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">//</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">//</span> <span class="pre">b</span></code></td>
+<td>divide <code class="docutils literal"><span class="pre">a</span></code> by <code class="docutils literal"><span class="pre">b</span></code> <em>using integer arithmetic</em></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">%</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">%</span> <span class="pre">b</span></code></td>
+<td>remainder of <code class="docutils literal"><span class="pre">a</span> <span class="pre">/</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">**</span></code></td>
+<td><code class="docutils literal"><span class="pre">a**b</span></code></td>
+<td>raise <code class="docutils literal"><span class="pre">a</span></code> to the power of <code class="docutils literal"><span class="pre">b</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">^</span></code></td>
+<td><code class="docutils literal"><span class="pre">a^b</span></code></td>
+<td><a class="reference external" href="https://docs.python.org/3/reference/expressions.html?highlight=xor#binary-bitwise-operations">bitwise exclusive or</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples…</strong></p>
+</div>
+<div class="section" id="Assignment-Operators">
+<h3>Assignment Operators<a class="headerlink" href="#Assignment-Operators" title="Permalink to this headline">¶</a></h3>
+<p>Corresponding to each arithmetic operator is a combined arithmetic and
+assignment operator.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="21%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">symbol</th>
+<th class="head">example use</th>
+<th class="head">definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">b</span></code></td>
+<td>assign the value of <code class="docutils literal"><span class="pre">a</span></code> to the variable <code class="docutils literal"><span class="pre">a</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">+=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">+=</span> <span class="pre">b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">-=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">-=</span> <span class="pre">b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">-</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">*=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">*=</span> <span class="pre">b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">/=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">/=</span> <span class="pre">b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">/</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">//=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">//=</span> <span class="pre">b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">//</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">%=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">%=</span> <span class="pre">b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">%</span> <span class="pre">b</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">**=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a**b</span></code></td>
+<td>equivalent to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">a**b</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples…</strong></p>
+</div>
+<div class="section" id="Relational-Operators">
+<h3>Relational Operators<a class="headerlink" href="#Relational-Operators" title="Permalink to this headline">¶</a></h3>
+<p>Comparisons can be made between two variables <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="19%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">symbol</th>
+<th class="head">example use</th>
+<th class="head">definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">==</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">==</span> <span class="pre">b</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span></code> equal to <code class="docutils literal"><span class="pre">b</span></code> yields ‘True’</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">!=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">!=</span> <span class="pre">b</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span></code> not equal to <code class="docutils literal"><span class="pre">b</span></code> yields ‘True’</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">&gt;</span> <span class="pre">b</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span></code> greater than <code class="docutils literal"><span class="pre">b</span></code> yields ‘True’</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&gt;=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">&gt;=</span> <span class="pre">b</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span></code> greater than or equal to <code class="docutils literal"><span class="pre">b</span></code> yields ‘True’</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">b</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span></code> less than <code class="docutils literal"><span class="pre">b</span></code> yields ‘True’</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;=</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span> <span class="pre">&lt;=</span> <span class="pre">b</span></code></td>
+<td><code class="docutils literal"><span class="pre">a</span></code> less than or equal to <code class="docutils literal"><span class="pre">b</span></code> yields ‘True’</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="Exploring-Built-In-Functions">
+<h2>Exploring Built-In Functions<a class="headerlink" href="#Exploring-Built-In-Functions" title="Permalink to this headline">¶</a></h2>
+<p><strong>Goal</strong>: be able to use Python as a powerful, interactive calculator.</p>
+<p>We need next is some of the typical mathematical <em>functions</em>.</p>
+<p>You’ve actually already seen your first function: <code class="docutils literal"><span class="pre">print</span></code>. A function
+has a name (e.g., <code class="docutils literal"><span class="pre">print</span></code>) and accepts zero, one, or more <em>arguments</em>
+enclosed in parentheses. For example, we can <em>call</em> the <code class="docutils literal"><span class="pre">print</span></code>
+function in several different ways:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello, world&quot;</span><span class="p">)</span> <span class="c1"># one argument, a str</span>
+<span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># three, int arguments</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;What&#39;s my age again?&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span> <span class="c1"># mixed arguments (and, I&#39;m lying)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Hello, world
+1 2 3
+What&#39;s my age again? 18
+</pre></div><p><strong>Notice</strong>: Any call to a function must include parentheses.</p>
+</div>
+</div>
+<div class="section" id="help()">
+<h3><code class="docutils literal"><span class="pre">help()</span></code><a class="headerlink" href="#help()" title="Permalink to this headline">¶</a></h3>
+<p>The function <code class="docutils literal"><span class="pre">help</span></code> provides interactive help for Python or for a
+specific function, e.g., <code class="docutils literal"><span class="pre">help(print)</span></code>.</p>
+</div>
+<div class="section" id="dir()">
+<h3><code class="docutils literal"><span class="pre">dir()</span></code><a class="headerlink" href="#dir()" title="Permalink to this headline">¶</a></h3>
+<p>When called as <code class="docutils literal"><span class="pre">dir()</span></code>, it provides a list of names in the current
+local scope.</p>
+<p>When called with an argument (e.g., <code class="docutils literal"><span class="pre">dir('hello')</span></code>), it gives a list
+of the argument’s attributes.</p>
+</div>
+<div class="section" id="math">
+<h3><code class="docutils literal"><span class="pre">math</span></code><a class="headerlink" href="#math" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+</pre></div>
+</div>
+</div>
+<p>What does <code class="docutils literal"><span class="pre">math</span></code> provide?</p>
+<ul class="simple">
+<li>functions, e.g., <code class="docutils literal"><span class="pre">sin</span></code>, <code class="docutils literal"><span class="pre">exp</span></code>, and <code class="docutils literal"><span class="pre">atan2</span></code></li>
+<li>constants, e.g., <code class="docutils literal"><span class="pre">pi</span></code> and <code class="docutils literal"><span class="pre">e</span></code></li>
+</ul>
+<p><strong>Examples…</strong></p>
+</div>
+</div>
+<div class="section" id="A-first-program">
+<h2>A first program<a class="headerlink" href="#A-first-program" title="Permalink to this headline">¶</a></h2>
+<p>A computer <em>program</em> is a sequence of instruction statements to perform
+a task.</p>
+<p>A good programmer <em>designs</em> a program</p>
+<div class="section" id="Flowcharts">
+<h3>Flowcharts<a class="headerlink" href="#Flowcharts" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>flowchart</strong> is a visual design tool for designing and understanding
+computer programs.</p>
+<div class="figure" id="id1">
+<img alt="Flowchart for Computing Volume of a Sphere" src="../_images/volume_flowchart.png" />
+<p class="caption"><span class="caption-text">Flowchart for Computing Volume of a Sphere</span></p>
+</div>
+<p>A flowchart for computing the volume of a sphere,
+<span class="math">\(V = 4\pi r^3/3\)</span>.</p>
+<p>This simple flowchart highlights a few of the key features we’ll use
+later on in flowcharts:</p>
+<ul class="simple">
+<li><em>arrows</em> represent the flow of the program from one block to the next</li>
+<li><em>ovals</em> represent the beginning and ending of a program</li>
+<li><em>parallelograms</em> represent input from a user or output to a user</li>
+<li><em>rectangles</em> represent an action taken by the program (which might
+correspond to several, executed instructions)</li>
+</ul>
+</div>
+<div class="section" id="input()">
+<h3><code class="docutils literal"><span class="pre">input()</span></code><a class="headerlink" href="#input()" title="Permalink to this headline">¶</a></h3>
+<p>Basic syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Please enter something: &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The argument to <code class="docutils literal"><span class="pre">input</span></code> is a <code class="docutils literal"><span class="pre">str</span></code>.</p>
+<p>The return value of <code class="docutils literal"><span class="pre">input</span></code> is a <code class="docutils literal"><span class="pre">str</span></code>, too.</p>
+<p><strong>Examples…</strong></p>
+</div>
+<div class="section" id="Putting-it-all-together">
+<h3>Putting it all together<a class="headerlink" href="#Putting-it-all-together" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># A short program that computes the volume of a</span>
+<span class="c1"># sphere given a radius entered by the user.</span>
+
+<span class="c1"># Have the user enter the radius and store it as a float</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Please enter a radius: &#39;</span><span class="p">))</span>
+
+<span class="c1"># Import the math module so that we have Pi</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1"># Compute the volume of the sphere</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">radius</span><span class="o">**</span><span class="mi">3</span>
+
+<span class="c1"># Print the volume</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The volume is &quot;</span><span class="p">,</span> <span class="n">volume</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Please enter a radius: 1
+The volume is  4.1887902047863905
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to</p>
+<ul class="simple">
+<li><em>add, subtract, multiply, and divide</em> two quantities</li>
+<li><em>use the ``help()`` function to understand how to use another
+function</em></li>
+<li><em>use ``dir()`` and the ``variable explorer`` to see defined variables
+and their values</em></li>
+<li><em>explain the difference between statement and expression</em></li>
+<li><em>write a short, well-commented program</em></li>
+</ul>
+<p>Make sure to show up on time to your lab session on Friday. You may wish
+to print the laboratory problem statement.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 2 - Basic Operators and Built-In Functions</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Python-Operators">Python Operators</a><ul>
+<li><a class="reference internal" href="#Arithmetic-Operators">Arithmetic Operators</a></li>
+<li><a class="reference internal" href="#Assignment-Operators">Assignment Operators</a></li>
+<li><a class="reference internal" href="#Relational-Operators">Relational Operators</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Exploring-Built-In-Functions">Exploring Built-In Functions</a><ul>
+<li><a class="reference internal" href="#help()"><code class="docutils literal"><span class="pre">help()</span></code></a></li>
+<li><a class="reference internal" href="#dir()"><code class="docutils literal"><span class="pre">dir()</span></code></a></li>
+<li><a class="reference internal" href="#math"><code class="docutils literal"><span class="pre">math</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#A-first-program">A first program</a><ul>
+<li><a class="reference internal" href="#Flowcharts">Flowcharts</a></li>
+<li><a class="reference internal" href="#input()"><code class="docutils literal"><span class="pre">input()</span></code></a></li>
+<li><a class="reference internal" href="#Putting-it-all-together">Putting it all together</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_2_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_2_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

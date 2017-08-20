@@ -59,11 +59,11 @@
     "    - *Office*: Ward 133A\n",
     "    - *Office Hours*: TBD\n",
     "- **Undergraduate Teaching Assistants**\n",
-    "  - Assistant 1\n",
+    "  - Cole Hoing\n",
     "    - *Email*: TBD\n",
-    "  - Assistant 2\n",
+    "  - Keith Huddleston\n",
     "    - *Email*: TBD\n",
-    "  - Assistant 3\n",
+    "  - Sam Oxandale\n",
     "    - *Email*: TBD    "
    ]
   },
@@ -93,7 +93,7 @@
    "source": [
     "## Textbook\n",
     "\n",
-    "Although there are a plethora of good books on the Python language, there is a sufficient wealth of information online to learn the language without books. Most of the content I’ll present lives in my [online course notes](http://robertsj.github.io/python_for_engineers/index.html). Reading assignments will be based on this material in addition to supplementary material.\n",
+    "Although there are a plethora of good books on the Python language, there is a sufficient wealth of information online to learn the language without books. Most of the content I’ll present lives in my [online course notes](http://robertsj.github.io/me400_notes/index.html). Reading assignments will be based on this material in addition to supplementary material.\n",
     "\n",
     "The notes are organized by lecture.  Moreover, these notes are written using Jupyter notebooks, a format we'll learn to use about half-way through the course.  However, the notebooks are easy to load and run, and students are encouraged to explore them interactively early in the course.\n",
     "\n",
@@ -263,8 +263,6 @@
    "source": [
     "## Course Schedule\n",
     "\n",
-    "Python container types. \n",
-    "\n",
     "| Lecture   |  Date            | Topics                                                                      | \n",
     "|----|-------------------------|-----------------------------------------------------------------------------| \n",
     "| 1  | Monday, August 21       | Administrivia. Overview of Python. Spyder and Jupyter. Basic types.         | \n",
@@ -384,15 +382,6 @@
     "message = \"!gnidaer rof sknahT\"\n",
     "print(message[::-1])"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {
