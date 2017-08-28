@@ -56,6 +56,19 @@
     }
    },
    "source": [
+    "**From the catalog**: The development and application of computer techniques to the problems of design and analysis in mechanical engineering, including computer programming (abstraction and problem solving; algorithms; control structures; input/output; functions; arrays and array processing).\n",
+    "\n",
+    "**My informal description**: ME 400 is all about teaching you, the student, how to use programming to solve problems. We’ll use the Python programming language, which is as easy a language to learn as any I’ve encountered. The Python language offers much more with all of the add-on packages available, all for free. What you will come out of the class with, at the least, is (1) a basic ability to understand, implement, and debug computer programs and (2) knowledge of tools (symbolic and numerical) within the Python ecosystem that can be used to solve engineering problems."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
     "## Textbook\n",
     "\n",
     "**No book required**\n",
@@ -102,7 +115,7 @@
     "\n",
     "Your job is to **come to lecture prepared** to learn and to engage in any in-class activities.  \n",
     "\n",
-    "Every lecture has a **pre-lecture activity** (almost always a Canvas quiz) due one hour before lecture.\n",
+    "Every lecture has a **pre-lecture activity** (almost always a Canvas quiz) due one hour before lecture.  Unless otherwise noted, quizzes allow up to two attempts.\n",
     "\n",
     "**No phones**, but laptops okay if used for examples."
    ]
@@ -137,10 +150,8 @@
     "|----|-------------------------|-----------------------------------------------------------------------------| \n",
     "| 1  | Monday, August 21       | Administrivia. Overview of Python. Spyder and Jupyter. Basic types.         | \n",
     "| 2  | Wednesday, August 23    | Basic operators and common, built-in functions.                             | \n",
-    "|    | Friday, August 25       | LAB 1                                                                       | \n",
     "| 3  | Monday, August 28       | Basic data processing with NumPy and Matplotlib.                            | \n",
     "| 4  | Wednesday, August 30    | More on NumPy arrays.  Slicing operations.  np.linalg                       | \n",
-    "|    | Friday, September 1     | LAB 2                                                                       | \n",
     "\n",
     "Thereafter:\n",
     "- lectures 5-11 on elementary programming concepts (e.g., algorithms, `if` statements, `for` loops, and container types)\n",
@@ -367,7 +378,6 @@
    "cell_type": "code",
    "execution_count": 5,
    "metadata": {
-    "collapsed": false,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -414,7 +424,6 @@
    "cell_type": "code",
    "execution_count": 6,
    "metadata": {
-    "collapsed": false,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -519,7 +528,6 @@
    "cell_type": "code",
    "execution_count": 8,
    "metadata": {
-    "collapsed": false,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -556,7 +564,6 @@
    "cell_type": "code",
    "execution_count": 9,
    "metadata": {
-    "collapsed": false,
     "slideshow": {
      "slide_type": "subslide"
     }
@@ -682,7 +689,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.0"
+   "version": "3.6.1"
   }
  },
  "nbformat": 4,
