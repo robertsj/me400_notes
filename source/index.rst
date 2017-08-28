@@ -48,4 +48,5 @@ Contents:
    Lecture 2 <lectures/ME400_Lecture_2>
    Lecture 3 <lectures/ME400_Lecture_3>
    Lecture 4 <lectures/ME400_Lecture_4>
-  
+   Lecture 5 <lectures/ME400_Lecture_5>
+   Lecture 6 <lectures/ME400_Lecture_6>  
