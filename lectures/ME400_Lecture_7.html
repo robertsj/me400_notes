@@ -1,0 +1,893 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 7 - More on Conditionals &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 8 - Loops in Python" href="ME400_Lecture_8.html" />
+    <link rel="prev" title="Lecture 6 - Conditional Statements and the Structure of Python Code" href="ME400_Lecture_6.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-7---More-on-Conditionals">
+<h1>Lecture 7 - More on Conditionals<a class="headerlink" href="#Lecture-7---More-on-Conditionals" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture 5</span></a>, the basics of programming
+logic were introduced, including the idea of <em>selection</em>. In <a class="reference internal" href="ME400_Lecture_6.html"><span class="doc">Lecture
+6</span></a>, those concepts were put into practice in
+Python using the <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">elif</span></code>, and <code class="docutils literal"><span class="pre">else</span></code> structure. In this
+lesson, we dive into more complicated use cases, focusing on <em>nested</em>
+conditionals and the more complex code resulting from such conditionals.
+Along the way, we’ll apply the <em>graphical debugger</em> in Spyder to help
+understand the flow of execution (and to catch bugs!).</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Read and write nested <code class="docutils literal"><span class="pre">if</span></code> statements</li>
+<li>Explain the difference between syntactical and logical errors</li>
+<li>Use the graphical debugger in Spyder to trace and debug a program</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>nested conditional</li>
+<li>bug</li>
+<li>debugger</li>
+<li>breakpoint</li>
+<li>syntactical error</li>
+<li>logical error</li>
+<li>trace code</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Motivating-Nested-Conditionals---Life-Insurance">
+<h2>Motivating Nested Conditionals - Life Insurance<a class="headerlink" href="#Motivating-Nested-Conditionals---Life-Insurance" title="Permalink to this headline">¶</a></h2>
+<p>Life insurance is one of those things that should be on your radar
+within the next ten years. Although such insurance comes in various
+forms, a popular modality is <em>term life insurance</em>, for which you pay a
+fixed monthly (or annual) premium over the period (term) of coverage.
+Common terms are 10, 20, and 30 years. The cost of a policy depends on
+several factors. The premium is larger for plans with a larger payout
+and for plans with longer terms. Of course, one expects to pay more in
+total for a longer period, but the increased premium of longer terms
+accounts for the increased risk of your demise with age—macabre,
+surely, but understandable. Two other important factors are one’s
+present age and, in most states, one’s sex. Older individuals purchasing
+a plan are viewed as higher risks than younger individuals, all else
+equal. Likewise, females are lower risks than males, all else equal,
+because they tend to live longer (expected lifetimes of 82 and 77 years,
+respectively, says
+<a class="reference external" href="http://www.who.int/gho/publications/world_health_statistics/2016/en/">WHO</a>).</p>
+<p>The table below shows some representative annual premiums for males and
+females of different ages for a $100,000 plan. Assume that the age
+indicates the upper limit for the values listed in a given row; in other
+words, a 29-year old male seeking a 10-year plan will pay $84/year,
+whereas a 34-year old female would pay $125/year for a 20-year plan.
+Notice, neither males nor females are able to acquire a 30-year term
+policy if they are already 60 years in age.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="12%" />
+<col width="36%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Term</th>
+<th class="head">Age</th>
+<th class="head">Premium ($, male)</th>
+<th class="head">Premium ($, female)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>10</td>
+<td>30</td>
+<td>84</td>
+<td>81</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>40</td>
+<td>99</td>
+<td>94</td>
+</tr>
+<tr class="row-even"><td>10</td>
+<td>50</td>
+<td>168</td>
+<td>151</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>60</td>
+<td>330</td>
+<td>277</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>30</td>
+<td>111</td>
+<td>101</td>
+</tr>
+<tr class="row-odd"><td>20</td>
+<td>40</td>
+<td>131</td>
+<td>125</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>50</td>
+<td>270</td>
+<td>225</td>
+</tr>
+<tr class="row-odd"><td>20</td>
+<td>60</td>
+<td>639</td>
+<td>466</td>
+</tr>
+<tr class="row-even"><td>30</td>
+<td>30</td>
+<td>148</td>
+<td>124</td>
+</tr>
+<tr class="row-odd"><td>30</td>
+<td>40</td>
+<td>205</td>
+<td>169</td>
+</tr>
+<tr class="row-even"><td>30</td>
+<td>50</td>
+<td>405</td>
+<td>317</td>
+</tr>
+<tr class="row-odd"><td>30</td>
+<td>60</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>With this data, we can now motivate nested conditionals with the simple
+question: define an algorithm for computing one’s premium based on this
+data. Surely, it’s easy for us all to look at the table and do some
+mental math, but just as was emphasized in <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture
+5</span></a>, instructions must be very specific if a
+computer is to be expected to complete a task.</p>
+<p>For this problem, there are three implicit levels of selection: the
+premium depends on <em>term</em>, <em>age</em>, and <em>sex</em>. Selecting between the
+options in any category is easy with the <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">elif</span></code>, and <code class="docutils literal"><span class="pre">else</span></code>
+construct, but how do we select between options in two categories?
+Three?</p>
+<p>The answer is by using a nested conditional. For simplicity, let’s limit
+our attention to 10-year plans. To compute our premium therefore
+requires our age and sex. Here’s a start to our solution:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input age: &#39;</span><span class="p">))</span>
+<span class="n">sex</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input sex: &#39;</span><span class="p">)</span>
+<span class="n">premium</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">if</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Hmm, maybe call an agent?&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Annual premium is&#39;</span><span class="p">,</span> <span class="n">premium</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice, for ages 60 or higher, a message is printed because no data
+exists for that age range.</p>
+<p>Now, for each age range, <code class="docutils literal"><span class="pre">pass</span></code> was used as a “place holder.” It’s
+useful in practice to sketch out some features of a program before
+filling out all the details. Here, the age selection is implemented, but
+nothing is done yet about sex (although I’ve helpfully left some
+comments to myself as a reminder). If the age provided to the program
+were 35, then we know that there are two possible values for the
+premium: 125 for females and 131 for males. That’s a simple
+<code class="docutils literal"><span class="pre">if</span></code>/<code class="docutils literal"><span class="pre">else</span></code> decision whose form in Python is</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># if 30 &lt;= age &lt; 40</span>
+<span class="k">if</span> <span class="n">sex</span> <span class="o">==</span> <span class="s1">&#39;female&#39;</span><span class="p">:</span>
+    <span class="n">premium</span> <span class="o">=</span> <span class="mi">125</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">premium</span> <span class="o">=</span> <span class="mi">131</span>
+</pre></div>
+</div>
+<p>The question is, how do we put that conditional statement into our
+original program? We do so by (1) placing it under the appropriate
+<code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">elif</span></code>, or <code class="docutils literal"><span class="pre">else</span></code> statement and (2) indenting it a proper
+number of spaces as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input age: &#39;</span><span class="p">))</span>
+<span class="n">sex</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;input sex: &#39;</span><span class="p">)</span>
+<span class="n">premium</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">if</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">:</span>
+    <span class="c1"># Note, this has been inserted below the appropriate</span>
+    <span class="c1"># elif clause (corresponding to 30 &lt;= age &lt; 40) and</span>
+    <span class="c1"># indented four spaces to the right.</span>
+    <span class="k">if</span> <span class="n">sex</span> <span class="o">==</span> <span class="s1">&#39;female&#39;</span><span class="p">:</span>
+        <span class="n">premium</span> <span class="o">=</span> <span class="mi">125</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">premium</span> <span class="o">=</span> <span class="mi">131</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># next handle male or female</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Hmm, maybe call an agent?&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Annual premium is&#39;</span><span class="p">,</span> <span class="n">premium</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use this as a starting point to tackle the following:</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Finish this program with additional nested <code class="docutils literal"><span class="pre">if</span></code>
+statements.</p>
+<p><strong>Exercise</strong>: Develop a flowchart for the completed program.</p>
+</div></blockquote>
+<p>It is absolutely essential that you understand the indentation used
+above. The basic structure (with some illustrative comments) is as
+follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># this is the outermost if, so it needs no indentation</span>
+<span class="k">if</span> <span class="n">condition_outer</span><span class="p">:</span>
+<span class="c1">#234 the nested if is inside the outer if, so indent by 4 spaces</span>
+    <span class="k">if</span> <span class="n">condition_inner</span><span class="p">:</span>
+<span class="c1">#2345678 this is inside the inner if, so indent another 4 spaces (8 in total)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;condition_inner is True&#39;</span><span class="p">)</span>
+<span class="c1">#234 this else is part of the inner if and must be indented the same amount (4 spaces)</span>
+    <span class="k">else</span><span class="p">:</span>
+<span class="c1">#2345678 this print is inside the inner else, so indent another 4 spaces (8 in total)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;condition_inner is False&#39;</span><span class="p">)</span>
+<span class="c1">#234 this print is inside the outer if but outside the inner if so indent by 4 spaces</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;condition_outer is True&#39;</span><span class="p">)</span>
+<span class="c1"># this else is part of the outer if, so it doesn&#39;t need to be indented</span>
+<span class="k">else</span><span class="p">:</span>
+<span class="c1">#234 this pass is inside the outer else, so indent just 4</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;condition_outer is False&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Indentation defines the structure of Python code.</p>
+<blockquote>
+<div><strong>Warning</strong>: Always, always, always make sure to use correct
+indentation.</div></blockquote>
+</div>
+<div class="section" id="But-Do-We-Need-Them?">
+<h2>But Do We Need Them?<a class="headerlink" href="#But-Do-We-Need-Them?" title="Permalink to this headline">¶</a></h2>
+<p>Nested <code class="docutils literal"><span class="pre">if</span></code> statements are useful because they map pretty nicely onto
+our own logic for applications like the insurance example above. That
+said, all nested <code class="docutils literal"><span class="pre">if</span></code> statements can be converted to the
+<code class="docutils literal"><span class="pre">if</span></code>/<code class="docutils literal"><span class="pre">elif</span></code>/<code class="docutils literal"><span class="pre">else</span></code> structure (albeit with difficulty in some
+cases) by using the logical operators <code class="docutils literal"><span class="pre">and</span></code>, <code class="docutils literal"><span class="pre">or</span></code>, and <code class="docutils literal"><span class="pre">not</span></code>.</p>
+<p>For example, consider the following nested conditional:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and odd&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and even&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123  is greater than 10 and odd
+</pre></div></div>
+</div>
+<p>This is equivalent to</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and odd&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and even&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123  is greater than 10 and odd
+</pre></div></div>
+</div>
+<p>Part of learning programming (and the logic behind it all) is to
+identify the right approach for the job. Here, both examples are about
+equal in effort and performance. For other applications, it might be
+much more work to reduce a multi-level, nested conditional statement to
+one with fewer levels of nesting.</p>
+</div>
+<div class="section" id="Debugging">
+<h2>Debugging<a class="headerlink" href="#Debugging" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>“Everyone knows that debugging is twice as hard as writing the code
+in the first place. Therefore, if you write the code as cleverly as
+possible, you are, by definition, not smart enough to debug it.”</p>
+<p>-<a class="reference external" href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian W.
+Kernighan</a>, from
+<em>The Elements of Programming Style</em>, 2nd ed.</p>
+</div></blockquote>
+<div class="section" id="Bugs">
+<h3>Bugs<a class="headerlink" href="#Bugs" title="Permalink to this headline">¶</a></h3>
+<p>In days of old, when computers were large and quite mechanical, <em>bugs</em>
+of the living kind were an actual threat that could down a system.
+Today, the term lives on as the moniker for errors in one’s code.
+Programming errors can be categorized as <em>syntactical</em> and <em>logical</em>.
+Syntactical errors result from misuse of a programming language. For
+instance, the following code results in a Python error:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">if</span> <span class="bp">True</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;we forgot our colon!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-1065f57b9b53&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    if True</span>
+           ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
+</div>
+<p>Python is interpreted, so it can alert users to errors right away. Here,
+it’s reminding us that an <code class="docutils literal"><span class="pre">if</span></code> statement needs its colon (it doesn’t
+tell us what we’re missing, but it does point to where it thinks we
+should look). Were we to have a syntactical error in a compiled language
+(e.g., C++), it would never compile in the first place.</p>
+<p>Logical errors, on the other hand, can arise in code that is
+syntactically correct. Consider the following issue:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c1"># make an array of three numbers</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="c1"># define be to be 3 times the third element</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-4-2eba6176732d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> a <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># define be to be 3 times the third element</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>b <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">IndexError</span>: index 3 is out of bounds for axis 0 with size 3
+</pre></div></div>
+</div>
+<p>Whoops! Remember that Python is based on <a class="reference external" href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero
+indexing</a>, so the
+third element should really be <code class="docutils literal"><span class="pre">a[2]</span></code> and not <code class="docutils literal"><span class="pre">a[3]</span></code>. However,
+because <code class="docutils literal"><span class="pre">a[3]</span></code> is perfectly valid Python code, the error is one of
+logic: we were careless with our index values. Such logical errors can
+be really, really tough to figure out because they don’t always lead to
+things like <code class="docutils literal"><span class="pre">IndexError</span></code>.</p>
+</div>
+<div class="section" id="The-Graphical-Debugger">
+<h3>The Graphical Debugger<a class="headerlink" href="#The-Graphical-Debugger" title="Permalink to this headline">¶</a></h3>
+<p>Spyder has a built-in capability for <strong>debugging</strong> and, along the way,
+<strong>tracing</strong> programs graphically. Debugging a program is the art of
+removing bugs. Tracing a program is the process of walking through its
+execution line by line, keeping track of all variables along the way. Of
+course, we already saw that Spyder provides the <em>Variable explorer</em>,
+which shows the names and values of variables defined after we run a
+program or execute statements in the console. However, by using the
+debugger, we can watch, step by step, how those variables change.</p>
+<p>Consider the following problem. Given integers <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>, define a
+new variable <code class="docutils literal"><span class="pre">c</span></code> equal to the sum of the rounded values of <code class="docutils literal"><span class="pre">a</span></code> and
+<code class="docutils literal"><span class="pre">b</span></code>. Here, rounding is to the nearest 10, and we round up if the ones
+digit is 5 or greater and down otherwise. For instance, given <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">16</span></code>
+and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">21</span></code>, we should have <code class="docutils literal"><span class="pre">c</span> <span class="pre">==</span> <span class="pre">40</span></code>.</p>
+<p>In a mad dash before class, I wrote the following solution:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">21</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">+=</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">-</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="k">if</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">+=</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">-=</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>But it fails for <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">16</span></code> and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">21</span></code>!</p>
+<blockquote>
+<div><strong>Exercise</strong>: Run this program and determine the final values of
+<code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>. If they are not correct, what should they be?</div></blockquote>
+<p>Before we try to identify any of the issues (and there are several),
+let’s use Spyder and its graphical debugger to trace the program. First,
+let’s open Spyder and load (or write) the program:</p>
+<div class="figure" id="id1">
+<img alt="Step 1 - Load the Program" src="../_images/debug_step_1.png" />
+<p class="caption"><span class="caption-text">Step 1 - Load the Program</span></p>
+</div>
+<p>Now, notice that six (blue) icons at the top are highlighted. One can
+hover over each of these for a brief description of what it does. From
+left to right, these five icons allow one to</p>
+<ol class="arabic simple">
+<li>Debug a file</li>
+<li>Run current line</li>
+<li>Step into function or method of current line</li>
+<li>Run until current method or function returns</li>
+<li>Continue execution until next breakpoint</li>
+<li>Stop debugging</li>
+</ol>
+<p>Each of these icons should also have a keyboard shortcut defined for
+your machine; these shortcuts may prove useful to you.</p>
+<p>To begin the debugging process, click on the first of the icons (i.e.,
+the one one that looks like a play and pause symbol joined together).
+Here’s the output:</p>
+<div class="figure" id="id2">
+<img alt="Step 2 - Begin to debug" src="../_images/debug_step_2.png" />
+<p class="caption"><span class="caption-text">Step 2 - Begin to debug</span></p>
+</div>
+<p>All the action happened in the console to the lower right. The command
+executed is <code class="docutils literal"><span class="pre">debugfile</span></code>, and the output is</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">robertsj</span><span class="o">/</span><span class="n">sum_rounded</span><span class="o">.</span><span class="n">py</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">16</span>
+      <span class="mi">2</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">21</span>
+      <span class="mi">3</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">21</span>
+      <span class="mi">4</span> <span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+      <span class="mi">5</span>     <span class="n">a</span> <span class="o">+=</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+
+
+<span class="n">ipdb</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>This output is informative. The program has been loaded, and the
+debugger is sitting at the very first line of code (marked here with an
+arrow). Further more, the next several lines of code are also provided.
+Finally, the console now says <code class="docutils literal"><span class="pre">ipdb&gt;</span></code> rather than the default
+<code class="docutils literal"><span class="pre">In</span> <span class="pre">[2]</span></code> we might expect after having already executed <code class="docutils literal"><span class="pre">In</span> <span class="pre">[1]</span></code>.
+Here, <code class="docutils literal"><span class="pre">ipdb</span></code> stands for the IPython debugger. One can debug right from
+within the console using <code class="docutils literal"><span class="pre">ipdb</span></code> directly, but we’ll focus on its use
+through the graphical interface provided by Spyder.</p>
+<p>Next, let’s click on the second blue icon (with an arrow connecting two
+dots):</p>
+<div class="figure" id="id3">
+<img alt="Step 3 - Run the first line" src="../_images/debug_step_3.png" />
+<p class="caption"><span class="caption-text">Step 3 - Run the first line</span></p>
+</div>
+<p>By clicking the second icon, we’ve run the line that was last
+highlighted (here, line 1), and now line 2 is highlighted. Moreover,
+since <code class="docutils literal"><span class="pre">a</span></code> is assigned on line 1, its name and value (<code class="docutils literal"><span class="pre">16</span></code>) show up
+in the variable explorer. Finally, the same 5 lines of code are printed
+in the console, with an arrow now pointing to line 2. Note, however,
+that line 2 has not yet been executed.</p>
+<p>One could continue like this, one line at a time, to trace a program
+from start to finish (assuming no errors emerge along the way). However,
+sometimes we know where in our program to focus our search for problems.
+For <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">16</span></code> and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">21</span></code>, we know (from the exercise above) that
+<code class="docutils literal"><span class="pre">a</span></code> is wrong. By setting a <strong>breakpoint</strong> at line 5 and at line 7, we
+can jump immediately to whichever statement is modifying <code class="docutils literal"><span class="pre">a</span></code>. To set a
+breakpoint in Spyder, one must double click on (or to the left of) the
+line number of interest. Here, a breakpoint is set for line 5:</p>
+<div class="figure" id="id4">
+<img alt="Step 4 - Enable a Breakpoint" src="../_images/debug_step_4.png" />
+<p class="caption"><span class="caption-text">Step 4 - Enable a Breakpoint</span></p>
+</div>
+<p>If we then click the fifth blue icon (two triangles, i.e., “fast
+forward), we get the following:</p>
+<div class="figure" id="id5">
+<img alt="Step 5 - Jump to the Breakpoint" src="../_images/debug_step_5.png" />
+<p class="caption"><span class="caption-text">Step 5 - Jump to the Breakpoint</span></p>
+</div>
+<p>Note that we’ve jumped from line 2 to line 5 in one click (which means
+that, as expected, <code class="docutils literal"><span class="pre">a</span> <span class="pre">%</span> <span class="pre">10</span> <span class="pre">&gt;</span> <span class="pre">5</span></code> is <code class="docutils literal"><span class="pre">True</span></code>). Were this a more complex
+program, the jump could be much larger (and lead to much quicker tracing
+and debugging).</p>
+<p>Now, if we run the current line (line 5), we get:</p>
+<div class="figure" id="id6">
+<img alt="Step 6 - Run the Offending Line" src="../_images/debug_step_6.png" />
+<p class="caption"><span class="caption-text">Step 6 - Run the Offending Line</span></p>
+</div>
+<p>With line 5 executed, the value of <code class="docutils literal"><span class="pre">a</span></code> is now <code class="docutils literal"><span class="pre">22</span></code>. That’s not
+right! Lines 5, 7, 9, and 11 are supposed to round <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code> to
+their nearest 10. But we’ve found the location of one bug, and now we
+can analyze it in more depth. Let’s break down the logic step by step.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">a</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">&gt;</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>True
+</pre></div>
+</div>
+</div>
+<p>Okay, so as we observed, we satisfy the condition of the <code class="docutils literal"><span class="pre">if</span></code> on line
+4 and move on to line 5.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>6
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">+</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>22
+</pre></div>
+</div>
+</div>
+<p>Wait. If <code class="docutils literal"><span class="pre">a</span></code> is 16, then <code class="docutils literal"><span class="pre">a</span> <span class="pre">%</span> <span class="pre">10</span></code> is 6. Adding 6 gives us 22 and not
+the 20 we expect. While <code class="docutils literal"><span class="pre">a</span> <span class="pre">%</span> <span class="pre">10</span></code> picks out the 6 we need to know to
+round up, we should add a 4, not a 6, to do that rounding. That 4 comes
+from <code class="docutils literal"><span class="pre">10</span> <span class="pre">-</span> <span class="pre">a</span> <span class="pre">%</span> <span class="pre">10</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>20
+</pre></div>
+</div>
+</div>
+<p>Now, looking at the rest of the program, there are several, similar
+errors.</p>
+<blockquote>
+<div><strong>Exercise:</strong> Find and fix the remaining bugs in the example
+program.</div></blockquote>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>For those wishing to learn more about debugging in Python without the
+graphical interface, checkout out the <code class="docutils literal"><span class="pre">pdb</span></code>
+<a class="reference external" href="https://docs.python.org/3/library/pdb.html">documentation</a>
+documentation.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 7 - More on Conditionals</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Motivating-Nested-Conditionals---Life-Insurance">Motivating Nested Conditionals - Life Insurance</a></li>
+<li><a class="reference internal" href="#But-Do-We-Need-Them?">But Do We Need Them?</a></li>
+<li><a class="reference internal" href="#Debugging">Debugging</a><ul>
+<li><a class="reference internal" href="#Bugs">Bugs</a></li>
+<li><a class="reference internal" href="#The-Graphical-Debugger">The Graphical Debugger</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_6.html" title="previous chapter">Lecture 6 - Conditional Statements and the Structure of Python Code</a></li>
+      <li>Next: <a href="ME400_Lecture_8.html" title="next chapter">Lecture 8 - Loops in Python</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_7.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_7.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

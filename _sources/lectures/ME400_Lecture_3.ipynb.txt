@@ -260,14 +260,10 @@
     }
    },
    "source": [
-    "Note that :code:`np.sin(x)` is used and not `math.sin(x)`.  \n",
-    "That's because :code:`x` in this case is a `ndarray`, to which the\n",
-    "base Python :code:`math` functions do not apply.  \n",
+    "Note that `np.sin(x)` is used and not `math.sin(x)`. That's because `x` in this case is a `ndarray`, to which the\n",
+    "base Python `math` functions do not apply.  \n",
     "\n",
-    "The function `np.linspace(a, b, n)` gives `n` evenly-spaced points starting \n",
-    "with `a` and ending with `b`.  Writing the equivalent C++ or\n",
-    "Fortran to define such an `x` is a royal pain; that's why Python + \n",
-    "NumPy (or MATLAB/Octave) is so nice for this type of problem."
+    "The function `np.linspace(a, b, n)` gives `n` evenly-spaced points starting with `a` and ending with `b`.  Writing the equivalent C++ or Fortran to define such an `x` is a royal pain; that's why Python+NumPy (or MATLAB/Octave) is so nice for this type of problem."
    ]
   },
   {
@@ -472,7 +468,7 @@
     }
    },
    "source": [
-    "Yes--the first element is accessed using a zero.  Python, like C, C++, and many other languages, is based on *[zero indexing](https://en.wikipedia.org/wiki/Zero-based_numbering)*, in which the numbering of sequences starts with zero.  Get used to it!\n",
+    "Yes--the first element is accessed using a zero.  Python, like C, C++, and many other languages, is based on [zero indexing](https://en.wikipedia.org/wiki/Zero-based_numbering), in which the numbering of sequences starts with zero.  Get used to it!\n",
     "\n",
     "> **Warning**: Numbering starts with zero in Python\n",
     "\n",

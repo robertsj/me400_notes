@@ -368,15 +368,13 @@ using the function <code class="docutils literal"><span class="pre">np.linspace<
 </pre></div>
 </div>
 </div>
-<div class="line-block">
-<div class="line">Note that :code:<code class="docutils literal"><span class="pre">np.sin(x)</span></code> is used and not <code class="docutils literal"><span class="pre">math.sin(x)</span></code>.</div>
-<div class="line">That’s because :code:<code class="docutils literal"><span class="pre">x</span></code> in this case is a <code class="docutils literal"><span class="pre">ndarray</span></code>, to which the
-base Python :code:<code class="docutils literal"><span class="pre">math</span></code> functions do not apply.</div>
-</div>
+<p>Note that <code class="docutils literal"><span class="pre">np.sin(x)</span></code> is used and not <code class="docutils literal"><span class="pre">math.sin(x)</span></code>. That’s because
+<code class="docutils literal"><span class="pre">x</span></code> in this case is a <code class="docutils literal"><span class="pre">ndarray</span></code>, to which the base Python <code class="docutils literal"><span class="pre">math</span></code>
+functions do not apply.</p>
 <p>The function <code class="docutils literal"><span class="pre">np.linspace(a,</span> <span class="pre">b,</span> <span class="pre">n)</span></code> gives <code class="docutils literal"><span class="pre">n</span></code> evenly-spaced points
 starting with <code class="docutils literal"><span class="pre">a</span></code> and ending with <code class="docutils literal"><span class="pre">b</span></code>. Writing the equivalent C++ or
-Fortran to define such an <code class="docutils literal"><span class="pre">x</span></code> is a royal pain; that’s why Python +
-NumPy (or MATLAB/Octave) is so nice for this type of problem.</p>
+Fortran to define such an <code class="docutils literal"><span class="pre">x</span></code> is a royal pain; that’s why Python+NumPy
+(or MATLAB/Octave) is so nice for this type of problem.</p>
 </div>
 <div class="section" id="Creating-and-Manipulating-1-D-Arrays">
 <h3>Creating and Manipulating 1-D Arrays<a class="headerlink" href="#Creating-and-Manipulating-1-D-Arrays" title="Permalink to this headline">¶</a></h3>
@@ -533,8 +531,8 @@ the operator <code class="docutils literal"><span class="pre">[]</span></code>. 
 </div>
 </div>
 <p>Yes–the first element is accessed using a zero. Python, like C, C++,
-and many other languages, is based on <em>`zero
-indexing &lt;https://en.wikipedia.org/wiki/Zero-based_numbering&gt;`__</em>, in
+and many other languages, is based on <a class="reference external" href="https://en.wikipedia.org/wiki/Zero-based_numbering">zero
+indexing</a>, in
 which the numbering of sequences starts with zero. Get used to it!</p>
 <blockquote>
 <div><strong>Warning</strong>: Numbering starts with zero in Python</div></blockquote>
