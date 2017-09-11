@@ -153,7 +153,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Armed with conditional statements for selection, we can tackle the final grade.  Given the final percentage, we check whether that value is greater than 90.  If so, the grade assigned is an A.  If not, we can further check whether that percentage is greater than or equal to 80 and less than 90.  If so, a B.  If not, we check against 70 and then 60 for a C and D, respectively.  If we the percentage has earned a D by the time we've checked, our poor student has earned, of course, an F.  \n",
+    "Armed with conditional statements for selection, we can tackle the final grade.  Given the final percentage, we check whether that value is greater than 90.  If so, the grade assigned is an A.  If not, we can further check whether that percentage is greater than or equal to 80 and less than 90.  If so, a B.  If not, we check against 70 and then 60 for a C and D, respectively.  If the percentage has not earned a D by the time we've checked, our poor student's grade, of course, is an F.  \n",
     "\n",
     "This procedure, much like those described previously, can be described compactly in pseudocode:\n",
     "\n",

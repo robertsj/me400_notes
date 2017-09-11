@@ -1,0 +1,587 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 7 - More on Conditionals &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-7---More-on-Conditionals">
+<h1>Lecture 7 - More on Conditionals<a class="headerlink" href="#Lecture-7---More-on-Conditionals" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture 5</span></a>, the basics of programming
+logic were introduced, including the idea of <em>selection</em>. In <a class="reference internal" href="ME400_Lecture_6.html"><span class="doc">Lecture
+6</span></a>, those concepts were put into practice in
+Python using the <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">elif</span></code>, and <code class="docutils literal"><span class="pre">else</span></code> structure. In this
+lesson, we dive into more complicated use cases, focusing on <em>nested</em>
+conditionals and the more complex code resulting from such conditionals.
+Along the way, we’ll apply the <em>graphical debugger</em> in Spyder to help
+understand the flow of execution (and to catch bugs!).</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Read and write nested <code class="docutils literal"><span class="pre">if</span></code> statements</li>
+<li>Explain the difference between syntactical and logical errors</li>
+<li>Use the graphical debugger in Spyder to trace and debug a program</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>nested conditional</li>
+<li>bug</li>
+<li>debugger</li>
+<li>breakpoint</li>
+<li>syntactical error</li>
+<li>logical error</li>
+<li>trace code</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Nested-Conditionals">
+<h2>Nested Conditionals<a class="headerlink" href="#Nested-Conditionals" title="Permalink to this headline">¶</a></h2>
+<p>We’ve already seen several <code class="docutils literal"><span class="pre">if</span></code> statements in Python:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is less than 3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is less than 3&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is greater than or equal to 3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+a is greater than or equal to 3
+</pre></div></div>
+</div>
+<p>However, for statements like</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+    <span class="n">do</span> <span class="n">something</span>
+</pre></div>
+</div>
+<p>nothing requires that <code class="docutils literal"><span class="pre">do</span> <span class="pre">something</span></code> be limited to a <strong>sequence</strong> of
+simple statements.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is greater than 3&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is also even&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+a is greater than 3
+a is also even
+</pre></div></div>
+</div>
+<p><strong>Remember that indentation matters!</strong></p>
+<p>This is correct:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="c1">#234</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is greater than 3&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+<span class="c1">#2345678</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is also even&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is valid Python, but does something different:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="c1">#234</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is greater than 3&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+<span class="c1">#234</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is also even&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is <strong>not</strong> valid Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is greater than 3&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s1">&#39;a is also even&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Possible fixes: - align the second <code class="docutils literal"><span class="pre">if</span></code> with the first <code class="docutils literal"><span class="pre">print</span></code> -
+align the second <code class="docutils literal"><span class="pre">if</span></code> with the first <code class="docutils literal"><span class="pre">if</span></code> but different answers.
+<strong>Be careful!</strong></p>
+<p><strong>Examples</strong></p>
+</div>
+<div class="section" id="But-Do-We-Need-Them?">
+<h2>But Do We Need Them?<a class="headerlink" href="#But-Do-We-Need-Them?" title="Permalink to this headline">¶</a></h2>
+<p>Short answer: <strong>no</strong>, but they are sometimes easier than the
+alternative.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and odd&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and even&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123  is greater than 10 and odd
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and odd&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s2">&quot; is greater than 10 and even&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+123  is greater than 10 and odd
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Debugging">
+<h2>Debugging<a class="headerlink" href="#Debugging" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>“Everyone knows that debugging is twice as hard as writing the code
+in the first place. Therefore, if you write the code as cleverly as
+possible, you are, by definition, not smart enough to debug it.”</p>
+<p>-<a class="reference external" href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian W.
+Kernighan</a>, from
+<em>The Elements of Programming Style</em>, 2nd ed.</p>
+</div></blockquote>
+<p>Errors are either <strong>syntactical</strong> or <strong>logical</strong>.</p>
+<p>Syntactical errors arise when the rules of Python (or another language)
+are broken.</p>
+<p>Logical errors arise when the rules of logic are broken.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">if</span> <span class="bp">True</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;we forgot our colon!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-13-1065f57b9b53&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    if True</span>
+           ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c1"># make an array of three numbers</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="c1"># define be to be 3 times the third element</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-14-2eba6176732d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> a <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># define be to be 3 times the third element</span>
+<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>b <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">IndexError</span>: index 3 is out of bounds for axis 0 with size 3
+</pre></div></div>
+</div>
+<div class="section" id="Old-School-Debugging">
+<h3>Old-School Debugging<a class="headerlink" href="#Old-School-Debugging" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Compile (or run) program, see syntax errors, and fix.</li>
+<li>Compile and run program, notice silly output</li>
+<li>Put <code class="docutils literal"><span class="pre">print</span></code> statements everywhere to see what variable has what
+value and when</li>
+<li>Comment and uncomment parts of code over and over to find offending
+lines</li>
+<li>Cry, rinse, and repeat.</li>
+</ol>
+</div>
+<div class="section" id="Pro-Tips">
+<h3>Pro Tips<a class="headerlink" href="#Pro-Tips" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Don’t make errors in the first place:<ul>
+<li><strong>Design</strong> your code with flowcharts and pseudocode as applicable</li>
+<li><strong>Use defensive programming and unit test</strong> (up ahead in Lecture
+17)</li>
+</ul>
+</li>
+<li>Know what your code does before you actually run it by <strong>tracing</strong> it
+by hand</li>
+<li>Know what your code does by tracing it via the Spyder graphical
+<strong>debugger</strong> (or similar tool)</li>
+</ol>
+</div>
+<div class="section" id="The-Graphical-Debugger-by-Example">
+<h3>The Graphical Debugger by Example<a class="headerlink" href="#The-Graphical-Debugger-by-Example" title="Permalink to this headline">¶</a></h3>
+<p>Consider the following problem. Given integers <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>, define a
+new variable <code class="docutils literal"><span class="pre">c</span></code> equal to the sum of the rounded values of <code class="docutils literal"><span class="pre">a</span></code> and
+<code class="docutils literal"><span class="pre">b</span></code>. Here, rounding is to the nearest 10, and we round up if the ones
+digit is 5 or greater and down otherwise. For instance, given <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">16</span></code>
+and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">21</span></code>, we should have <code class="docutils literal"><span class="pre">c</span> <span class="pre">==</span> <span class="pre">40</span></code>.</p>
+<p>In a mad dash before class, I wrote the following solution:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">21</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">+=</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">-</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="k">if</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">+=</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">b</span> <span class="o">-=</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>But it fails for <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">16</span></code> and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">21</span></code>!</p>
+</div>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to: - Read and write nested <code class="docutils literal"><span class="pre">if</span></code> statements -
+Explain the difference between syntactical and logical errors - Use the
+graphical debugger in Spyder to trace and debug a program</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 7 - More on Conditionals</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Nested-Conditionals">Nested Conditionals</a></li>
+<li><a class="reference internal" href="#But-Do-We-Need-Them?">But Do We Need Them?</a></li>
+<li><a class="reference internal" href="#Debugging">Debugging</a><ul>
+<li><a class="reference internal" href="#Old-School-Debugging">Old-School Debugging</a></li>
+<li><a class="reference internal" href="#Pro-Tips">Pro Tips</a></li>
+<li><a class="reference internal" href="#The-Graphical-Debugger-by-Example">The Graphical Debugger by Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_7_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_7_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

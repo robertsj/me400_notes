@@ -1,0 +1,502 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 7 - More on Conditionals\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 5](ME400_Lecture_5.ipynb), the basics of programming logic were introduced, including the idea of *selection*. In [Lecture 6](ME400_Lecture_6.ipynb), those concepts were put into practice in Python using the `if`, `elif`, and `else` structure.  In this lesson, we dive into more complicated use cases, focusing on *nested* conditionals and the more complex code resulting from such conditionals.  Along the way, we'll apply the *graphical debugger* in Spyder to help understand the flow of execution (and to catch bugs!).  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Read and write nested `if` statements\n",
+    "- Explain the difference between syntactical and logical errors\n",
+    "- Use the graphical debugger in Spyder to trace and debug a program\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- nested conditional\n",
+    "- bug\n",
+    "- debugger\n",
+    "- breakpoint\n",
+    "- syntactical error\n",
+    "- logical error\n",
+    "- trace code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Nested Conditionals\n",
+    "\n",
+    "We've already seen several `if` statements in Python:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a = 7\n",
+    "if a < 3:\n",
+    "    print('a is less than 3')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "a is greater than or equal to 3\n"
+     ]
+    }
+   ],
+   "source": [
+    "a = 7\n",
+    "if a < 3:\n",
+    "    print('a is less than 3')\n",
+    "else:\n",
+    "    print('a is greater than or equal to 3')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "However, for statements like\n",
+    "```python\n",
+    "if condition:\n",
+    "    do something\n",
+    "```\n",
+    "nothing requires that `do something` be limited to a **sequence** of simple statements."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "a is greater than 3\n",
+      "a is also even\n"
+     ]
+    }
+   ],
+   "source": [
+    "a = 12\n",
+    "if a > 3:\n",
+    "    print('a is greater than 3')\n",
+    "    if not a % 2:\n",
+    "        print('a is also even')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Remember that indentation matters!**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "This is correct:\n",
+    "```python\n",
+    "a = 12\n",
+    "if a > 3:\n",
+    "#234\n",
+    "    print('a is greater than 3')\n",
+    "    if not a % 2:\n",
+    "#2345678\n",
+    "        print('a is also even')\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "This is valid Python, but does something different:\n",
+    "```python\n",
+    "a = 12\n",
+    "if a > 3:\n",
+    "#234\n",
+    "    print('a is greater than 3')\n",
+    "if not a % 2:\n",
+    "#234 \n",
+    "    print('a is also even')\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "This is **not** valid Python:\n",
+    "```python\n",
+    "a = 12\n",
+    "if a > 3:\n",
+    "    print('a is greater than 3')\n",
+    "  if not a % 2: \n",
+    "      print('a is also even')\n",
+    "```\n",
+    "Possible fixes: \n",
+    " - align the second `if` with the first `print`\n",
+    " - align the second `if` with the first `if`\n",
+    "but different answers.  **Be careful!**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Examples**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## But Do We Need Them?\n",
+    "\n",
+    "Short answer: **no**, but they are sometimes easier than the alternative."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "123  is greater than 10 and odd\n"
+     ]
+    }
+   ],
+   "source": [
+    "n = 123\n",
+    "if n > 10:\n",
+    "    if n % 2:\n",
+    "        print(n, \" is greater than 10 and odd\")\n",
+    "    else:\n",
+    "        print(n, \" is greater than 10 and even\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "123  is greater than 10 and odd\n"
+     ]
+    }
+   ],
+   "source": [
+    "n = 123\n",
+    "if n > 10 and n % 2:\n",
+    "    print(n, \" is greater than 10 and odd\")\n",
+    "elif n > 10 and not n % 2:\n",
+    "    print(n, \" is greater than 10 and even\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Debugging\n",
+    "\n",
+    "> \"Everyone knows that debugging is twice as hard as writing the code in the first place. \n",
+    "> Therefore, if you write the code as cleverly as possible, you are, by \n",
+    "> definition, not smart enough to debug it.\"  \n",
+    "> \n",
+    ">  -[Brian W. Kernighan](https://en.wikipedia.org/wiki/Brian_Kernighan), \n",
+    ">   from *The Elements of Programming Style*, 2nd ed."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Errors are either **syntactical** or **logical**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Syntactical errors arise when the rules of Python (or another language) are broken."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Logical errors arise when the rules of logic are broken."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "invalid syntax (<ipython-input-13-1065f57b9b53>, line 1)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-13-1065f57b9b53>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    if True\u001b[0m\n\u001b[0m           ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+     ]
+    }
+   ],
+   "source": [
+    "if True\n",
+    "    print(\"we forgot our colon!\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "IndexError",
+     "evalue": "index 3 is out of bounds for axis 0 with size 3",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mIndexError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-14-2eba6176732d>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0ma\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0marray\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# define be to be 3 times the third element\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m \u001b[0mb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mIndexError\u001b[0m: index 3 is out of bounds for axis 0 with size 3"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "# make an array of three numbers\n",
+    "a = np.array([1, 2, 3])\n",
+    "# define be to be 3 times the third element\n",
+    "b = 3*a[3]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Old-School Debugging\n",
+    "\n",
+    "1. Compile (or run) program, see syntax errors, and fix.\n",
+    "2. Compile and run program, notice silly output \n",
+    "3. Put `print` statements everywhere to see what variable has what value and when\n",
+    "4. Comment and uncomment parts of code over and over to find offending lines\n",
+    "5. Cry, rinse, and repeat."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Pro Tips\n",
+    "\n",
+    " 1. Don't make errors in the first place:\n",
+    "    - **Design** your code with flowcharts and pseudocode as applicable\n",
+    "    - **Use defensive programming and unit test** (up ahead in Lecture 17)\n",
+    " 2. Know what your code does before you actually run it by **tracing** it by hand \n",
+    " 3. Know what your code does by tracing it via the Spyder graphical **debugger** (or similar tool)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### The Graphical Debugger by Example\n",
+    "\n",
+    "Consider the following problem.  Given integers `a` and `b`, define a new variable `c` equal to the sum of the rounded values of `a` and `b`.  Here, rounding is to the nearest 10, and we round up if the ones digit is 5 or greater and down otherwise.  For instance, given `a = 16` and `b = 21`, we should have `c == 40`.  \n",
+    "\n",
+    "In a mad dash before class, I wrote the following solution:\n",
+    "```python\n",
+    "a = 16\n",
+    "b = 21\n",
+    "if a % 10 > 5:\n",
+    "    a += a % 10 \n",
+    "else:\n",
+    "    a - a % 10\n",
+    "if b % 10 > 5:\n",
+    "    b += b % 10\n",
+    "else:\n",
+    "    b -= b % 10\n",
+    "c = a + b\n",
+    "```\n",
+    "But it fails for `a = 16` and `b = 21`!  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to:\n",
+    "- Read and write nested `if` statements\n",
+    "- Explain the difference between syntactical and logical errors\n",
+    "- Use the graphical debugger in Spyder to trace and debug a program\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

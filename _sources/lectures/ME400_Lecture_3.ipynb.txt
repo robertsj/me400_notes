@@ -1192,6 +1192,8 @@
     }
    },
    "source": [
+    "In other words, `plt` is used as an abbreviation to the longer `matplotlib.pyplot`.\n",
+    "\n",
     "> **Note**: Just like NumPy is often shorted to `np`, `matplotlib.pyplot` is often used as `plt`.  "
    ]
   },

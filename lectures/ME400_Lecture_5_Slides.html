@@ -1,0 +1,324 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 5 - Algorithms, flowcharts, and pseudocode. &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="Lecture-5---Algorithms,-flowcharts,-and-pseudocode.">
+<h1>Lecture 5 - Algorithms, flowcharts, and pseudocode.<a class="headerlink" href="#Lecture-5---Algorithms,-flowcharts,-and-pseudocode." title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lesson, we’ll dive right into the basic logic needed to plan
+one’s program, significantly extending the process identified in <a class="reference internal" href="ME400_Lecture_2.html"><span class="doc">Lesson
+2</span></a>. We’ll examine <em>algorithms</em> for several
+applications and illustrate solutions using <strong>flowcharts</strong> and
+<strong>pseudocode</strong>. Along the way, we’ll see for the first time the three
+principal structures in programming logic: <strong>sequence</strong>, <strong>selection</strong>,
+and <strong>iteration</strong>. Throughout, specialized syntax (Python or otherwise)
+is avoided (with the exception of the handy slicing syntax introduced in
+<a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lesson 3</span></a>), but variables and simple
+operators are used.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li><em>define what an algorithm is</em></li>
+<li><em>decompose problems into a sequence of simple steps</em></li>
+<li><em>illustrate those steps graphically using flowcharts</em></li>
+<li><em>describe those steps in words using pseudocode</em></li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>algorithm</li>
+<li>sequence</li>
+<li>selection</li>
+<li>iteration</li>
+<li>counter variable</li>
+<li>index variable</li>
+<li>condition</li>
+<li>conditional statement</li>
+<li>loop</li>
+</ul>
+<p>Quick discussion of Homework 1</p>
+</div>
+</div>
+<div class="section" id="Algorithm">
+<h2>Algorithm<a class="headerlink" href="#Algorithm" title="Permalink to this headline">¶</a></h2>
+<p>An <em>algorithm</em> is procedure by which a problem is solved following a
+certain set of rules.</p>
+<p>Do you have any favorites?</p>
+<p>We’ll define algorithms using just <em>pseudocode</em> and <em>flowcharts</em>.</p>
+</div>
+<div class="section" id="Sequence-by-Example:-Computing-Grades">
+<h2>Sequence by Example: Computing Grades<a class="headerlink" href="#Sequence-by-Example:-Computing-Grades" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>homework - 20%</li>
+<li>laboratories - 10%</li>
+<li>quizzes - 10%</li>
+<li>examinations - 60%</li>
+</ol>
+<p>Look familiar?</p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&#39;&#39;&#39;Algorithm for computing homework percentage&#39;&#39;&#39;</span>
+<span class="c"># Get the inputs needed to compute the homework percentage</span>
+<span class="n">Input</span> <span class="n">hw_1_score</span><span class="p">,</span> <span class="n">hw_2_score</span><span class="p">,</span> <span class="n">hw_3_score</span><span class="p">,</span> <span class="n">hw_4_score</span><span class="p">,</span>
+      <span class="n">hw_5_score</span><span class="p">,</span> <span class="n">number_hw</span><span class="p">,</span> <span class="n">points_per_hw</span>
+<span class="c"># Initialize the total homework score</span>
+<span class="n">Set</span> <span class="n">total_score</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="c"># Increment the total homework score by each of the homework scores</span>
+<span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_1_score</span>
+<span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_2_score</span>
+<span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_3_score</span>
+<span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_4_score</span>
+<span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_5_score</span>
+<span class="c"># Determine the total number of points possible</span>
+<span class="n">Set</span> <span class="n">total_possible</span> <span class="n">to</span> <span class="n">points_per_hw</span> <span class="n">multiplied</span> <span class="n">by</span> <span class="n">number_hw</span>
+<span class="c"># Compute the homework percentage</span>
+<span class="n">Set</span> <span class="n">hw_percent</span> <span class="n">to</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">total_score</span> <span class="o">/</span> <span class="n">by</span> <span class="n">total_possible</span>
+<span class="c"># Provide the homework percentage</span>
+<span class="n">Output</span> <span class="n">hw_percent</span>
+</pre></div>
+</div>
+<div class="figure" id="id3">
+<img alt="Flowchart for Computing Homework Percentage" src="../_images/homework_sequence.png" />
+<p class="caption"><span class="caption-text">Flowchart for Computing Homework Percentage</span></p>
+<div class="legend">
+<blockquote>
+<div><strong>Exercise</strong>: For each line of the pseudocode above, write the value
+of <code class="docutils literal"><span class="pre">total_score</span></code>, <code class="docutils literal"><span class="pre">total_possible</span></code>, and <code class="docutils literal"><span class="pre">hw_percent</span></code>. If a
+variable does not have a value at a particular line, then say it is
+<em>undefined</em>.</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="Selection">
+<h2>Selection<a class="headerlink" href="#Selection" title="Permalink to this headline">¶</a></h2>
+<p>Suppose we computed <code class="docutils literal"><span class="pre">hw_percent</span></code>, <code class="docutils literal"><span class="pre">lab_percent</span></code>, <code class="docutils literal"><span class="pre">quiz_percent</span></code>,
+and <code class="docutils literal"><span class="pre">exam_percent</span></code>. Given the weight of each category, one could,
+using <strong>sequence</strong> compute a <code class="docutils literal"><span class="pre">final_percent</span></code>. But how to assign the
+letter grade?</p>
+<p>Simplest selection:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>If some condition is true, then
+    do something.
+</pre></div>
+</div>
+<p>Graphically:</p>
+<div class="figure" id="id4">
+<img alt="Flowchart fragment for a simple conditional statement" src="../_images/simple_if.png" />
+<p class="caption"><span class="caption-text">Flowchart fragment for a simple conditional statement</span></p>
+</div>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&#39;&#39;&#39;Algorithm to compute the final grade&#39;&#39;&#39;</span>
+<span class="c"># Get the final percentage</span>
+<span class="n">Input</span> <span class="n">final_percent</span>
+<span class="c"># Check if the grade is an A</span>
+<span class="n">If</span> <span class="n">final_percent</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">90</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">final_grade</span> <span class="n">to</span> <span class="n">A</span> <span class="c"># Indentation helps tie the statement to the condition</span>
+<span class="c"># Check if the grade is a B</span>
+<span class="n">If</span> <span class="n">final_percent</span> <span class="o">&lt;</span> <span class="mi">90</span> <span class="nb">and</span> <span class="n">final_percent</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">80</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">final_grade</span> <span class="n">to</span> <span class="n">B</span>
+<span class="c"># Check if the grade is a C</span>
+<span class="n">If</span> <span class="n">final_percent</span> <span class="o">&lt;</span> <span class="mi">80</span> <span class="nb">and</span> <span class="n">final_percent</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">70</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">final_grade</span> <span class="n">to</span> <span class="n">C</span>
+<span class="c"># Check if the grade is a B</span>
+<span class="n">If</span> <span class="n">final_percent</span> <span class="o">&lt;</span> <span class="mi">70</span> <span class="nb">and</span> <span class="n">final_percent</span> <span class="o">&gt;</span><span class="p">=</span> <span class="mi">60</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">final_grade</span> <span class="n">to</span> <span class="n">D</span>
+<span class="c"># Check if an F</span>
+<span class="n">If</span> <span class="n">final_percent</span> <span class="o">&lt;</span> <span class="mi">60</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">final_grade</span> <span class="n">to</span> <span class="n">F</span>
+<span class="c"># Provide the final grade</span>
+<span class="n">Output</span> <span class="n">final_grade</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Iteration">
+<h2>Iteration<a class="headerlink" href="#Iteration" title="Permalink to this headline">¶</a></h2>
+<p>Think back to the scores (i.e., 10, 7, 9, 10, and 10). <a href="#id1"><span class="problematic" id="id2">**</span></a>What if the
+lowest score is dropped? **</p>
+<div class="section" id="The-Basic-Idea">
+<h3>The Basic Idea<a class="headerlink" href="#The-Basic-Idea" title="Permalink to this headline">¶</a></h3>
+<p>Assume homework grades are stored in an array <code class="docutils literal"><span class="pre">hw_scores</span></code> (i.e.,
+<code class="docutils literal"><span class="pre">hw_scores[0]</span></code> replaces <code class="docutils literal"><span class="pre">hw_1_score</span></code>). From this array, we need to
+pick out which element represents the score to be dropped.</p>
+<p>We need language to describe the process of <em>iterating</em> through the
+array elements, i.e., <strong>iteration</strong>. In English, we might say something
+like “for each score in the array, do something”. (That’s actually
+pretty Pythonic. More general language uses <em>while</em>.)</p>
+<p>In pseudocode:</p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">While</span> <span class="n">the</span> <span class="n">condition</span> <span class="n">is</span> <span class="n">satisfied</span>
+  <span class="n">Do</span> <span class="n">something</span>
+</pre></div>
+</div>
+<p>Graphically:</p>
+<div class="figure" id="id5">
+<img alt="Flowchart fragment for a simple loop" src="../_images/simple_loop.png" />
+<p class="caption"><span class="caption-text">Flowchart fragment for a simple loop</span></p>
+</div>
+<p><strong>Example</strong> Print the elements of an array.</p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&#39;&#39;&#39;Algorithm to print out the elements of an array&#39;&#39;&#39;</span>
+<span class="n">Input</span> <span class="n">a</span> <span class="nb">and</span> <span class="n">n</span> <span class="c"># where n is the length of array a</span>
+<span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
+    <span class="n">Print</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Set</span> <span class="n">i</span> <span class="p">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Back to the lowest homework:</p>
+<div class="figure" id="id6">
+<img alt="Flowchart for finding the lowest grade" src="../_images/loop_find_min.png" />
+<p class="caption"><span class="caption-text">Flowchart for finding the lowest grade</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="Practice-Problems">
+<h2>Practice Problems<a class="headerlink" href="#Practice-Problems" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Prepare a pot of coffee.</li>
+<li>Prepare a cup of coffee for your friend. (Cream or sugar?)</li>
+<li>String a guitar.</li>
+<li>Choose your outfit (making sure to account for the day of the week
+and the weather).</li>
+<li>Determine the largest number in an array.</li>
+<li>Determine the second largest number in an array.</li>
+<li>Determine whether an integer is even.</li>
+<li>Determine whether an integer is
+<a class="reference external" href="https://en.wikipedia.org/wiki/Prime_number">prime</a>.</li>
+<li>Determine whether a given year is a <a class="reference external" href="https://en.wikipedia.org/wiki/Leap_year">leap
+year</a>.</li>
+<li>Determine the next <a class="reference external" href="https://en.wikipedia.org/wiki/Leap_year">leap
+year</a> after a given year.</li>
+<li>Divide one number by another number using <a class="reference external" href="https://en.wikipedia.org/wiki/Long_division">long
+division</a></li>
+<li>Determine the sum of an array of numbers.</li>
+<li>Determine the sum of the elements of an array of numbers that are
+divisible by 3 and 5.</li>
+<li>Given any two integers <code class="docutils literal"><span class="pre">n</span></code> and <code class="docutils literal"><span class="pre">d</span></code>, determine whether the
+quotient <code class="docutils literal"><span class="pre">n/d</span></code> leads to a finite decimal number (e.g.,
+<span class="math">\(5/4 = 1.25\)</span>) or an infinite decimal number (e.g.,
+<span class="math">\(1/3 = 0.3333\ldots = 0.\bar{3}\)</span>).</li>
+<li>Extend the homework grade algorithm to drop the two lowest scores.</li>
+<li>Determine a final grade in ME 400 following the course grading
+policies (including drops).</li>
+</ul>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to</p>
+<ul class="simple">
+<li><em>define what an algorithm is</em></li>
+<li><em>decompose problems into a sequence of simple steps</em></li>
+<li><em>illustrate those steps graphically using flowcharts</em></li>
+<li><em>describe those steps in words using pseudocode</em></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 5 - Algorithms, flowcharts, and pseudocode.</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Algorithm">Algorithm</a></li>
+<li><a class="reference internal" href="#Sequence-by-Example:-Computing-Grades">Sequence by Example: Computing Grades</a></li>
+<li><a class="reference internal" href="#Selection">Selection</a></li>
+<li><a class="reference internal" href="#Iteration">Iteration</a><ul>
+<li><a class="reference internal" href="#The-Basic-Idea">The Basic Idea</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Practice-Problems">Practice Problems</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_5_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_5_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
