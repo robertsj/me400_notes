@@ -1000,24 +1000,23 @@ to file element by element. Each line of the text file should look
 similar to <code class="docutils literal"><span class="pre">1</span> <span class="pre">5</span> <span class="pre">0.569113</span></code>, where the values 1 and 5 correspond to
 the row and column the element.</p>
 <blockquote>
-<div><p><em>Solution</em>. First, recognize the desired format: an integer, a
+<div><em>Solution</em>. First, recognize the desired format: an integer, a
 space, an integer, a space, and a float with 6 decimal places.
 Using the format function, such a string is produce via
 <code class="docutils literal"><span class="pre">&quot;{}</span> <span class="pre">{}</span> <span class="pre">{:.6f}&quot;.format(i1,</span> <span class="pre">i2,</span> <span class="pre">f1)</span></code>) where <code class="docutils literal"><span class="pre">i1</span></code> and <code class="docutils literal"><span class="pre">i2</span></code>
 have <code class="docutils literal"><span class="pre">int</span></code> values and <code class="docutils literal"><span class="pre">f1</span></code> has a <code class="docutils literal"><span class="pre">float</span></code> value. Second,
 that format can be used inside a nested loop structure that
 iterates through all rows and columns and writes <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>,
-and <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]</span></code> to file.</p>
+and <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]</span></code> to file.</div></blockquote>
+</div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data_from_A.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;{} {} {:.6f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;{} {} {:.6f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
 <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-</div></blockquote>
-</div></blockquote>
 </div>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>

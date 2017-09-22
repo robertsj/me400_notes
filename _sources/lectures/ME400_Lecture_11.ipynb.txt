@@ -862,14 +862,14 @@
     "> **Exercise**: Given `A = np.random.rand(5, 5)`, write its values to file element by element.  Each line of the text file should look similar to `1 5 0.569113`, where the values 1 and 5 correspond to the row and column the element.\n",
     "\n",
     ">> *Solution*.  First, recognize the desired format: an integer, a space, an integer, a space, and a float with 6 decimal places.  Using the format function, such a string is produce via `\"{} {} {:.6f}\".format(i1, i2, f1)`) where `i1` and `i2` have `int` values and `f1` has a `float` value.  Second, that format can be used inside a nested loop structure that iterates through all rows and columns and writes `i`, `j`, and `A[i, j]` to file.\n",
-    ">   ```python\n",
+    "```python\n",
     "    A = np.random.rand(5, 5)\n",
     "    f = open('data_from_A.txt', 'w')\n",
-    "    for i in range(5):\n",
-    "       for j in range(5):\n",
-    "          f.write(\"{} {} {:.6f}\".format(i, j, A[i, j]))\n",
+    "    for i in range(5): \n",
+    "        for j in range(5):\n",
+    "            f.write(\"{} {} {:.6f}\".format(i, j, A[i, j]))\n",
     "    f.close()\n",
-    "    ```"
+    "```"
    ]
   },
   {
