@@ -1,0 +1,462 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 8 - Loops in Python &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-8---Loops-in-Python">
+<h1>Lecture 8 - Loops in Python<a class="headerlink" href="#Lecture-8---Loops-in-Python" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture 5</span></a>, the basics of programming
+logic were introduced, including the idea of <em>iteration</em>. The emphasis
+here and in <a class="reference internal" href="ME400_Lecture_9.html"><span class="doc">Lecture 9</span></a> is on the logic of
+<em>iteration</em> and its implementation via <code class="docutils literal"><span class="pre">while</span></code> and <code class="docutils literal"><span class="pre">for</span></code> loops in
+Python. To proceed, one must be comfortable with the theoretical
+coverage of iteration presented in <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture
+5</span></a>.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Use a <code class="docutils literal"><span class="pre">while</span></code> loop to solve simple problems using iteration</li>
+<li>Turn pseudocode and flowcharts into Python code</li>
+<li>Use the graphical debugger in Spyder to trace and debug a program
+with iteration</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">while</span></code></li>
+<li><code class="docutils literal"><span class="pre">break</span></code></li>
+<li>summation problem (as a common loop example)</li>
+<li>numerical convergence (as another common loop example)</li>
+<li>convergence criterion</li>
+</ul>
+</div>
+</div>
+<div class="section" id="A-Motivating-Problem">
+<h2>A Motivating Problem<a class="headerlink" href="#A-Motivating-Problem" title="Permalink to this headline">¶</a></h2>
+<p><strong>Define an algorithm to print out the elements of an array</strong>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Algorithm to print out the elements of an array&#39;&#39;&#39;</span>
+<span class="n">Input</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">n</span> <span class="c1"># where n is the length of array a</span>
+<span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
+    <span class="n">Print</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>We can do that in Python using a nearly identical syntax:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">])</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>    <span class="c1"># always remember the :</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># indented 4 spaces</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c1"># also indented 4 spaces</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+1
+2
+3
+5
+8
+13
+</pre></div></div>
+</div>
+<p>Here’s another problem: <strong>add the integers from 1 through n</strong>.</p>
+<div class="figure" id="id1">
+<img alt="Flowchart for adding integers" src="../_images/add_integer_range.png" />
+<p class="caption"><span class="caption-text">Flowchart for adding integers</span></p>
+</div>
+<p><strong>Question</strong>: Why not use <code class="docutils literal"><span class="pre">sum</span></code> in place of <code class="docutils literal"><span class="pre">s</span></code>?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A program to add the integers from 1 through 10&quot;&quot;&quot;</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># or we could use input</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">i</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+55
+</pre></div></div>
+</div>
+<p><strong>Iteration is challenging</strong>: a little code yields many operations.</p>
+<p><strong>Common features</strong>: - <em>termination criterion</em> - <em>counter variable</em> -
+<em>aggregate variable</em> modified at each iteration (like the sum <code class="docutils literal"><span class="pre">s</span></code>)</p>
+<p><strong>Exercise</strong>: Write a short program using a <code class="docutils literal"><span class="pre">while</span></code> loop to compute
+the product of the integers from 1 through n. What is that product
+called?</p>
+</div>
+<div class="section" id="The-break-Clause">
+<h2>The <code class="docutils literal"><span class="pre">break</span></code> Clause<a class="headerlink" href="#The-break-Clause" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">break</span></code> clause allows any loop (<code class="docutils literal"><span class="pre">while</span></code> or, next time <code class="docutils literal"><span class="pre">for</span></code>)
+to be terminated any time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">condition_1</span><span class="p">:</span>   <span class="c1"># keep going while condition_1 is True</span>
+    <span class="n">do_something</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">condition_2</span><span class="p">:</span>  <span class="c1"># quit the loop if condition_2 is True</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p>Simplest example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;this line will now be displayed just once!&quot;</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+this line will now be displayed just once!
+</pre></div></div>
+</div>
+<p><strong>Exercise</strong>: Write a program that asks for a positive integer, displays
+whether it is odd or even, and then repeats, terminating only if the
+user provides a nonpositive response.</p>
+</div>
+<div class="section" id="Numerical-Convergence">
+<h2>Numerical Convergence<a class="headerlink" href="#Numerical-Convergence" title="Permalink to this headline">¶</a></h2>
+<p>The integer summation problem posed above is one of the canonical
+examples to use iteration, and it serves as a template for many other
+tasks. An equally important example is that of <strong>numerical
+convergence</strong>.</p>
+<p>The <strong>Taylor series</strong> expansion of <span class="math">\(\frac{1}{1-x}\)</span> about
+<span class="math">\(x=0\)</span> is given by</p>
+<div class="math">
+\[y(x) = \frac{1}{1-x} = 1 + x + x^2 + \sum^{\infty}_{i=3} x^i \, .\]</div>
+<p>It converges if <span class="math">\(|x| &lt; 1\)</span>. In fact, here, the result is just a
+<strong>geometric series</strong>.</p>
+<p><strong>Goal</strong>: Approximate <span class="math">\(y(x)\)</span> using a <strong>truncated</strong> expansion
+<span class="math">\(\sum^{n}_{i=0} x^i\)</span>.</p>
+<p>But, <strong>how good is good enough?</strong> and <strong>what does good mean in this
+case?</strong></p>
+<p>Need to define the <strong>convergence criterion</strong>.</p>
+<p><strong>Exercise</strong>: Write a program to determine <span class="math">\(n\)</span> such that
+<span class="math">\(\Big |(1-x)^{-1} - \sum^{n}_{i=0} x^i \Big| &lt; 10^{-4}\)</span>, and trace
+the program graphically.</p>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to:</p>
+<ul class="simple">
+<li>Use a <code class="docutils literal"><span class="pre">while</span></code> loop to solve simple problems using iteration</li>
+<li>Turn pseudocode and flowcharts into Python code</li>
+<li>Use the graphical debugger in Spyder to trace and debug a program
+with iteration</li>
+</ul>
+<p>Quick reminder about plagiarism: <em>…the ideas you present in your
+problem solutions and laboratory reports must be your own. When you
+adapt the ideas of another, you need to reference those ideas correctly.
+If you fail to do so, you are committing academic dishonesty…</em></p>
+<p>Possible examples: - <em>Divide and conquer</em>, in which problems are split
+among a group of students. - <em>Copy, paste, and capitalize</em>, in which one
+student’s solution is copied by another and modified just enough to make
+seem new and original (btw: I have mad data-mining skills.) - <em>Google
+said</em>, in which solutions are copied and pasted from StackOverflow and
+other sites.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 8 - Loops in Python</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#A-Motivating-Problem">A Motivating Problem</a></li>
+<li><a class="reference internal" href="#The-break-Clause">The <code class="docutils literal"><span class="pre">break</span></code> Clause</a></li>
+<li><a class="reference internal" href="#Numerical-Convergence">Numerical Convergence</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_8_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_8_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

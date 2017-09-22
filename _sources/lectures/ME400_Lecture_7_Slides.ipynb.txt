@@ -68,6 +68,7 @@
    "cell_type": "code",
    "execution_count": 6,
    "metadata": {
+    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -395,6 +396,90 @@
     "a = np.array([1, 2, 3])\n",
     "# define be to be 3 times the third element\n",
     "b = 3*a[3]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Does this have a bug?  What kind(s)?\n",
+    "\n",
+    "```\n",
+    "class = \"ME 400\"\n",
+    "instructor = \"Roberts\"\n",
+    "print(instructor, \" teaches \", class)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "invalid syntax (<ipython-input-1-cfa9639ac6fc>, line 1)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-1-cfa9639ac6fc>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    class = \"ME 400\"\u001b[0m\n\u001b[0m          ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+     ]
+    }
+   ],
+   "source": [
+    "class = \"ME 400\"\n",
+    "instructor = \"Roberts\"\n",
+    "print(instructor, \" teaches \", class)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Does this have a bug(s)?  What kind?\n",
+    "\n",
+    "```\n",
+    "food_price = 48.70 # cost of some entrees\n",
+    "booze_price = 15.76 # cost of some refreshments\n",
+    "total_price = food_price + booze_price # total price before tax\n",
+    "kansas = total_price * 0.06 # uncle sam (brownback) portion\n",
+    "riley = total_price * 0.01 # county's cut\n",
+    "manhattan = total_price * 0.01 # city's cut\n",
+    "excise = booze_price * 0.1 # kansas gets more?\n",
+    "print('total bill is ', food_price + booze_price + kansas + manhattan + excise)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Does this have a bug(s)?  What kind?\n",
+    "\n",
+    "\n",
+    "```\n",
+    "import numpy as np\n",
+    "a = np.range(5) # make some numbers\n",
+    "b = a           # copy a\n",
+    "a = a**2        # change a\n",
+    "s = sum(b)      # compute the sum of b\n",
+    "print('I'm smart and know that s is 10!')\n",
+    "```"
    ]
   },
   {

@@ -455,6 +455,56 @@ are broken.</p>
 <span class="ansi-red-fg">IndexError</span>: index 3 is out of bounds for axis 0 with size 3
 </pre></div></div>
 </div>
+<p>Does this have a bug? What kind(s)?</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>class = &quot;ME 400&quot;
+instructor = &quot;Roberts&quot;
+print(instructor, &quot; teaches &quot;, class)
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="err">= &quot;</span><span class="nc">ME</span> <span class="mi">400</span><span class="s2">&quot;</span>
+<span class="n">instructor</span> <span class="o">=</span> <span class="s2">&quot;Roberts&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="n">instructor</span><span class="p">,</span> <span class="s2">&quot; teaches &quot;</span><span class="p">,</span> <span class="n">class</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-1-cfa9639ac6fc&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    class = &#34;ME 400&#34;</span>
+          ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
+</div>
+<p>Does this have a bug(s)? What kind?</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">food_price</span> <span class="o">=</span> <span class="mf">48.70</span> <span class="c1"># cost of some entrees</span>
+<span class="n">booze_price</span> <span class="o">=</span> <span class="mf">15.76</span> <span class="c1"># cost of some refreshments</span>
+<span class="n">total_price</span> <span class="o">=</span> <span class="n">food_price</span> <span class="o">+</span> <span class="n">booze_price</span> <span class="c1"># total price before tax</span>
+<span class="n">kansas</span> <span class="o">=</span> <span class="n">total_price</span> <span class="o">*</span> <span class="mf">0.06</span> <span class="c1"># uncle sam (brownback) portion</span>
+<span class="n">riley</span> <span class="o">=</span> <span class="n">total_price</span> <span class="o">*</span> <span class="mf">0.01</span> <span class="c1"># county&#39;s cut</span>
+<span class="n">manhattan</span> <span class="o">=</span> <span class="n">total_price</span> <span class="o">*</span> <span class="mf">0.01</span> <span class="c1"># city&#39;s cut</span>
+<span class="n">excise</span> <span class="o">=</span> <span class="n">booze_price</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="c1"># kansas gets more?</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;total bill is &#39;</span><span class="p">,</span> <span class="n">food_price</span> <span class="o">+</span> <span class="n">booze_price</span> <span class="o">+</span> <span class="n">kansas</span> <span class="o">+</span> <span class="n">manhattan</span> <span class="o">+</span> <span class="n">excise</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Does this have a bug(s)? What kind?</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>import numpy as np
+a = np.range(5) # make some numbers
+b = a           # copy a
+a = a**2        # change a
+s = sum(b)      # compute the sum of b
+print(&#39;I&#39;m smart and know that s is 10!&#39;)
+</pre></div>
+</div>
 <div class="section" id="Old-School-Debugging">
 <h3>Old-School Debugging<a class="headerlink" href="#Old-School-Debugging" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">

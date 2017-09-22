@@ -1,0 +1,1120 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 10 - Pythonic Containers\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "All the way back in [Lecture 1](ME400_Lecture_1.ipynb), the simplest of variable types were presented (namely, `int`, `float`, and `bool`) along with the more complex but indespensable `str` type.  In [Lecture 3](ME400_Lecture_3.ipynb), NumPy was introduced, with its `ndarray` type serving as the workhorse for a variety of applications, particularly those with a numerical flavor.  In this lecture, the built-in Python types `list`, `tuple`, and `dict` are presented, with motivating applications for each.\n",
+    " \n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define and use `list` and `tuple` variables.\n",
+    "- Define and use `dict` variables.\n",
+    "- Explain the difference between *mutable* and *immutable* types.\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- `list`\n",
+    "- `tuple`\n",
+    "- `dict`\n",
+    "- mutable\n",
+    "- immutable\n",
+    "- container type\n",
+    "- sequential type \n",
+    "- associative type\n",
+    "- `list.append()`\n",
+    "- `list.count()`\n",
+    "- `list.copy()`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from IPython.core.interactiveshell import InteractiveShell \n",
+    "InteractiveShell.ast_node_interactivity = \"all\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## What is a *sequential* type?\n",
+    "\n",
+    "Beyond the simplest types, Python (and other languages) offers a number of built-in types that represent a collection of values.  Generically, these are called [container types](https://en.wikipedia.org/wiki/Container_(abstract_data_type) because they are [data structures](https://en.wikipedia.org/wiki/List_of_data_structures) that contain one or more values. Container types differ in the way by which their values are stored and accessed.\n",
+    "\n",
+    "Probably the simple container type to understand is the **sequential type**, the elements of which are arranged one after another (i.e., a sequence) and can be accessed individually by knowing only their location within the sequence.  Sound familiar?  *It should*: NumPy's `ndarray` is a sequential type.  Remember, given an array (e.g., `a = np.array([1, 2, 3])`, we can access any element by its location with the `[]` operator (e.g., the first element `a[0]`).  Similarly, the `str` type is a sequential type the elements of which are limited to individual characters.\n",
+    "\n",
+    "> **Making Connections**: Python's `str` and NumPy's `ndarray` are sequential types.\n",
+    "\n",
+    "Often, a sequential type is the right choice when the relationship between values to be stored is best represented by their position in the sequence.  A word, like \"pandemonium,\" loses its meaning if the individual characters are not accessible in order, and an array like `np.linspace(0, 10)` is useless unless it can be used to represent values of $x$ from 0 to 10 in order. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The `list` Type\n",
+    "\n",
+    "Lots of computation, numerical or otherwise, needs sequential data, and Python has more answers.  The most versatile of Python's sequential types is `list`.  A `list` variable can be defined using comma-separate values within square brackets `[]`.  For example, a list with the values 1, 2, and 3 is defined via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3]"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = [1, 2, 3]\n",
+    "a"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That syntax may look familiar: we used it to help produce NumPy arrays like"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 2, 3])"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "b = np.array([1, 2, 3])\n",
+    "b"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "With `a` defined, we could just as well do"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 2, 3])"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c = np.array(a)\n",
+    "c"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "However, `list` is more versatile for general programming because its elements can be *arbitrary*.  In other words, they are not limited to numerical values.  For example, consider this `list` of very different values:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 3.14, 'hello', array([1, 2, 3])]"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d = [1, 3.14, 'hello', np.array([1, 2, 3])]\n",
+    "d"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Like all sequential types in Python, individual elements of a `list` are accessed using `[]`, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'hello'"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d[2]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Elements of `list` variables can also be extracted using the same *slicing* technique introduced in [Lecture 4](ME400_Lecture_4.ipynb).  Recall, slicing an array (or, now, any sequence) take the form `a[start:stop:stride]`.  Thus, we can get elements `0` and `2` of `d`  via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 'hello']"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d[0:len(d):2]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In addition to indexing and slicing, the `list` type provides a number of useful functions that can be listed using `dir`. \n",
+    "\n",
+    "> **Exercise**: Use `dir` to list the attributes (functions, etc.) of a `list` variable.\n",
+    "\n",
+    "Remember (as in [Lecture 2](ME400_Lecture_2)) that `dir` can lead to a lots of names with double underscores, which usually represent items that are not of much interest.  Note, though, that `dir` produces a list, and the elements of that lists can be accessed one by one using `for` loop.  The interesting items can be printed by skipping those whose name starts with double underscore (`'__'`):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "append\n",
+      "clear\n",
+      "copy\n",
+      "count\n",
+      "extend\n",
+      "index\n",
+      "insert\n",
+      "pop\n",
+      "remove\n",
+      "reverse\n",
+      "sort\n"
+     ]
+    }
+   ],
+   "source": [
+    "items = dir(list) # a list of str names\n",
+    "for i in range(len(items)): \n",
+    "    if not items[i][0:2] == '__':\n",
+    "        print(items[i])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Some of these names may suggest obvious functionality, while some may be less intuitive.\n",
+    "\n",
+    "> **Exercise**: Use `help` to define what each of these functions does.\n",
+    "\n",
+    "Of particular interest is the functions `append`.  Consider the empty list, defined as"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[]"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "e = []\n",
+    "e"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Just like the empty string `''`, the empty `list` is equivalent to `False`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bool(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "and has zero length:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "len(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can add an element, say the integer 123, to `e` using append:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[123]"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "e.append(123)\n",
+    "e"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Another element, this time a `float`, could be added, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[123, 0.111]"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "e.append(0.111)\n",
+    "e"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `append` functions places the new element after all of the other elements.  Often, lists are constructed iteratively, and `append` is the natural choice.  However, one can also use `insert` to place new elements anywhere in the `list`.  Alternatively, the last element of a list can be *removed* using `pop`, while arbitrary elements can be removed via `delete`.\n",
+    "\n",
+    "> **Quick Exercise**: Let `x = [1, 2, 3, 4, 5]`.  Now, add a new element 6 to `x` after 5.  Then delete 3 and 4 from `x`, leaving just `[1, 2, 5, 6]`.\n",
+    "\n",
+    "\n",
+    "Before moving on, it is worth noting that `list` variables, like `str` variables, may be manipulated using `+` and `*` operators, though the results may not be what one expects.  For instance, it may be reasonable to assume that `3 * [1, 2, 3]` leads to a new `list` with elements equal to `[3, 6, 9]`, but that is not the case:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3, 1, 2, 3, 1, 2, 3]"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "3 * [1, 2, 3]\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Apparently, the contents of the initial list are simply repeated three times in sequence.  In fact, this behavior is similar to that observed for multiplication of an `int` by a `str`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'.........'"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "3 * '...'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Similarly, the addition of two lists leads to"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3, 4, 5]"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "[1, 2] + [3, 4, 5]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In other words, addition and multiplication can be used to join the contents of lists rather easily.  However, arithmetic operations cannot be used with lists in the same way possible for NumPy arrays.  \n",
+    "\n",
+    "> **Exercise**:  What is the result of `z = 10*[0]`?\n",
+    "\n",
+    "> **Exercise**:  Check whether `list(np.array([1, 2, 3])*2)` and `[1, 2, 3]*2` are equivalent.  Can you say so without evaluating those expressions?\n",
+    "\n",
+    "> **Exercise**:  Given `f = [1, 2, 3, 4]`, what does `f[::-1]` produce?  What are the implied `start` and `stop` values?\n",
+    "\n",
+    "> **Exercise**: Consider the list of lists `M = [[1, 2], [3, 4]]`.  How would one access the element `[3, 4]`?\n",
+    "\n",
+    ">> *Solution*: Recognize that `[1, 2]` is the first element of `M` and can, therefore, be accessed as `M[0]`.  If that looks confusing, suppose that you first set `row1 = [1, 2]` and `row2 = [3, 4]`.  Then `M = [row1, row2]`.  We get `row1` from `M[0]`.\n",
+    "\n",
+    "> **Exercise**: Consider the list of lists `M = [[1, 2], [3, 4]]`.  How would one access the element `4`?\n",
+    "\n",
+    ">> *Solution*: Recognize that `4` is the second element in `[3, 4]` and that `[3, 4]` is the second element of `M`.  We get `[3, 4]` via `M[1]`.  To get `4`, we then can use `M[1][1]`.  We *cannot* use `M[1, 1]`, which is a special indexing allowed by 2-D NumPy arrays.\n",
+    "\n",
+    "> **Exercise**: Consider the list of lists `M = [[1, 2], [3, 4]]`.  Is it possible to obtain the element `[2, 4]` by slicing?\n",
+    "\n",
+    "> **Exercise**: Given `f = [1, 2, 3, 4]`, how can slicing be used to produce the list `[4, 3, 2, 1]`?\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Mutability\n",
+    "\n",
+    "A container type is **mutable** if the values of individual elements can be changed.  The `list` type is mutable, as is NumPy's `ndarray`, because we can access an element and change the value of an element.  For example, given the list"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "g = [1, 2, 3, 4]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "that first value `1` can be changed to `99` via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "g[0] = 99"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Of course, we are able to do exactly the same sort of operation to `ndarray` variable elements.  However, we are *not* able to change the elements of variables whose type is **immutable**.  One such type is `str`.  Given"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "s = 'hello'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "we *cannot* get `jello` via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "'str' object does not support item assignment",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-20-a225757de94d>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0ms\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'j'\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m: 'str' object does not support item assignment"
+     ]
+    }
+   ],
+   "source": [
+    "s[0] = 'j'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The fact that `list` and other types are mutable can lead to some behavior that may be surprising a new programmer.  For example, consider the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "list1 =  [1, 2]\n",
+      "list2 =  [1, 2]\n",
+      "list1 =  [99, 2]\n"
+     ]
+    }
+   ],
+   "source": [
+    "list1 = [1, 2]\n",
+    "list2 = list1            # a copy of list1, right?\n",
+    "print('list1 = ', list1)\n",
+    "print('list2 = ', list2) # so far, so good\n",
+    "list2[0] = 99            # change list2\n",
+    "print('list1 = ', list1) # why is list1 changed?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here, we might have expected `list1` to remain as `[1, 2]` while `list2` became `[99, 2]`.  However, the assignment `h = i` does *not* assign a *copy* of the values already assigned to `list1`.  Rather, `list2` is assigned to the *same* values.  When those values change (by modifying either `list1` or `list2`), they do so for both names (`list1` and `list2`).  \n",
+    "\n",
+    "> **Warning**: Given a `list` variables `a`, the operation `b = a` does *not* make a copy of `a`'s elements.  Rather, `b` and `a` are two names for the same data.  Changing one necessarily changes the other.\n",
+    "\n",
+    "Actually, this behavior is no so uncommon in programming, although it's not always the default.  Basically, when a variable is created (in any language), a certain amount of memory is required to store the values.  We access those values by using the name of the variable.  What Python does by default is to assign multiple names to the same memory when we make assignments like `list2 = list1` above.  For those who have (or will have) exposure to C or C++, the same behavior can be observed when assigning *pointer* variables to one another.\n",
+    "\n",
+    "One way to avoid this issue is to create an explicit copy.  Built into `list` is the `copy` function, which can be used like"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[99, 2]"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[101, 2]"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "list2 = list1.copy()\n",
+    "list2[0] = 101 # changes list2, but not list1\n",
+    "list1\n",
+    "list2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The `tuple` Type\n",
+    "\n",
+    "Python has another, built-in immutable type called `tuple` that, like `list`, allows one to store a sequence of elements with arbitrary types.  The clearest way to define a `tuple` is via comma-separated values enclosed in *parentheses*, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(1, 2, 3)"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A = (1, 2, 3)\n",
+    "A"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The parentheses make it very clear what is being defined, but they are not necessary.  For example, one could define another `tuple` via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(1, 3.14, 'hello', array([1, 2, 3]))"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "D = 1, 3.14, 'hello', np.array([1, 2, 3])\n",
+    "D"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Elements of `tuple` variables are accessed following the same indexing and slicing rules for lists.  However, their elements cannot be reassigned because the `tuple` type is immutable (so that, e.g., `D[0] = 99` will fail).\n",
+    "\n",
+    "So what does a `tuple` variable have to offer?  Again, `dir` may be used:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "count\n",
+      "index\n"
+     ]
+    }
+   ],
+   "source": [
+    "items = dir(tuple) # a list of str names\n",
+    "for i in range(len(items)): \n",
+    "    if not items[i][0:2] == '__':\n",
+    "        print(items[i])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That's not very many functions, and a comparison to `list` suggests that `tuple` is missing anything that would replace, remove, or add to its elements.  \n",
+    "\n",
+    "> **Exercise**: See what the functions `tuple.count` and `tuple.index` are used to do."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The `dict` Type\n",
+    "\n",
+    "The `list` and `tuple` types are the built-in solutions for storing sequences of arbitrary elements.  Remember, a sequential type is the right choice when the relationship between the data stored is positional (like word characters, etc.).  There are circumstances, though, in which data is not really (or only) related by order.  \n",
+    "\n",
+    "Consider a perhaps obvious example: [Webster's dictionary](https://www.merriam-webster.com).  Although the entries are often stored in sequence (alphabetically, not numerically), the data itself is more complex than a single value.  Rather, each entry in the dictionary consists of two things: a `key`, in this the word to be defined, and the `value`, in this case, the definition of the word.  Under the hood, the `key:value` pairs need not be stored in sequence (alphabetically or otherwise), but we should be able to get the `value` given any `key`.\n",
+    "\n",
+    "Python's `dict` (short for dictionary, of course) provides us with such a data structure.  A Python `dict` variable can have keys of any type paired with values of any type.  One way to define a `dict` variable is by starting with the empty dictionary:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{}"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "stuff = {}\n",
+    "stuff"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can add a new element by indexing using the key and assigning that element to a value, or"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'some key': 'some value'}"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "stuff['some key'] = 'some value'\n",
+    "stuff # not empty anymore"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can access the element for any key defined using the same syntax:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'some value'"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "stuff['some key']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If we try to get a value for a key not in the dictionary, a `KeyError` (similar to `IndexError`) is encountered:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "KeyError",
+     "evalue": "'some other key'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-29-bc5178045979>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mstuff\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'some other key'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;31m# not a key in our dictionary\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m: 'some other key'"
+     ]
+    }
+   ],
+   "source": [
+    "stuff['some other key'] # not a key in our dictionary"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "An easy way to check whether a dictionary has a key is to use the `in` operator.  The basic syntax is `element in container`, and the result is `True` or `False`.  The only requirement is that `container` is iterable, meaning that each of its elements can be inspected.  This is true for sequential types like `list` and `ndarray`.  It is also true for `dict` (and we'll see how momentarily).  So, to check whether `'some key'` and `'some other key'` are in our dictionary, we can use"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'some key' in stuff\n",
+    "'some other key' in stuff"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hence, one can always check that a key exists before accessing a value.\n",
+    "\n",
+    "Dictionaries can also be defined all at once.  For example, we can map the first few letters of the alphabet to their position via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'a': 0, 'b': 1, 'c': 2}"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "alphanum = {'a': 0, 'b': 1, 'c': 2}\n",
+    "alphanum"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise:** Do `from string import ascii_lowercase as s`, which creates a string `s` with the entire alphabet.  Then, create your own `alphanum` dictionary with all 26 letters."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So what does `dict` have?  Let's see:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "clear\n",
+      "copy\n",
+      "fromkeys\n",
+      "get\n",
+      "items\n",
+      "keys\n",
+      "pop\n",
+      "popitem\n",
+      "setdefault\n",
+      "update\n",
+      "values\n"
+     ]
+    }
+   ],
+   "source": [
+    "items = dir(dict) # a list of str names\n",
+    "for i in range(len(items)): \n",
+    "    if not items[i][0:2] == '__':\n",
+    "        print(items[i])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Some of these look similar to those found in `list`, and some are new: go look them up via `help`.  Two useful ones are `keys` and `values`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dict_keys(['a', 'b', 'c'])"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "['a', 'b', 'c']"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "alphanum.keys()\n",
+    "list(alphanum.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dict_values([0, 1, 2])"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[0, 1, 2]"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "alphanum.values()\n",
+    "list(alphanum.values())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "An application requiring just the keys might be one in which student names (and not their student numbers, or grades, or other sensitive items) are required.  The values might be needed if just grades were required, perhaps to do a statistical analysis.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "None at this time."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
