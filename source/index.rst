@@ -20,3 +20,5 @@
    Lecture 7 <lectures/ME400_Lecture_7>  
    Lecture 8 <lectures/ME400_Lecture_8>  
    Lecture 9 <lectures/ME400_Lecture_9>  
+   Lecture 10 <lectures/ME400_Lecture_10>  
+   Lecture 11 <lectures/ME400_Lecture_11>  
