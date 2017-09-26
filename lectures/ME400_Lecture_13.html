@@ -1,0 +1,1206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 13 - More on Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 14 - Searching" href="ME400_Lecture_14.html" />
+    <link rel="prev" title="Lecture 12 - Basics of Functions" href="ME400_Lecture_12.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-13---More-on-Functions">
+<h1>Lecture 13 - More on Functions<a class="headerlink" href="#Lecture-13---More-on-Functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_12.html"><span class="doc">Lecture 12</span></a>, the basics of defining
+functions were presented. In this lecture, more advanced features of
+function definitions are presented, including the use of the special
+<code class="docutils literal"><span class="pre">*arg</span></code> and <code class="docutils literal"><span class="pre">**kwarg</span></code> structures. In addition, anonymous <code class="docutils literal"><span class="pre">lambda</span></code>
+functions are presented for quick, in-line applications. Finally, some
+interesting (and possibly suprising) applications of functions are
+considered, which include use of functions as arguments to other
+functions and the use of functions that call themselves (i.e.,
+<em>recursion</em>).</p>
+<p>Note that much of the content of this lecture is focused primarily on
+features of functions specific to Python that provide a lot of
+flexibility. For many students, these features are likely not needed for
+routine programming, but an awareness of these features is useful when
+understanding the code of others.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Define a function using <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>.</li>
+<li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function.</li>
+<li>Define a recursive function.</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">*args</span></code></li>
+<li><code class="docutils literal"><span class="pre">**kwargs</span></code></li>
+<li>anonymous function</li>
+<li><code class="docutils literal"><span class="pre">lambda</span></code></li>
+<li><code class="docutils literal"><span class="pre">filter</span></code></li>
+<li>recursion</li>
+<li>recursive function</li>
+<li>recursive sequence</li>
+</ul>
+</div>
+</div>
+<div class="section" id="*args-and-**kwargs">
+<h2><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code><a class="headerlink" href="#*args-and-**kwargs" title="Permalink to this headline">¶</a></h2>
+<p>What on earth are <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>? Before moving along, let’s
+look at a function introduced back in <a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lecture
+3</span></a>: <code class="docutils literal"><span class="pre">plt.plot</span></code>. If you forgot how to use it,
+just use <code class="docutils literal"><span class="pre">help</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">help</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output is a bit long, but here are the first several lines:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>Help on function plot in module matplotlib.pyplot:
+
+plot(*args, **kwargs)
+    Plot lines and/or markers to the
+    :class:`~matplotlib.axes.Axes`.  *args* is a variable length
+    argument, allowing for multiple *x*, *y* pairs with an
+    optional format string.  For example, each of the following is
+    legal::
+
+        plot(x, y)        # plot x and y using default line style and color
+        plot(x, y, &#39;bo&#39;)  # plot x and y using blue circle markers
+        plot(y)           # plot y using x as index array 0..N-1
+        plot(y, &#39;r+&#39;)     # ditto, but with red plusses
+
+    If *x* and/or *y* is 2-dimensional, then the corresponding columns
+    will be plotted.
+</pre></div>
+</div>
+<p>Wait, consider the line <code class="docutils literal"><span class="pre">plot(*args,</span> <span class="pre">**kwargs)</span></code>. Those arguments do
+not look like <code class="docutils literal"><span class="pre">(x,</span> <span class="pre">y)</span></code> or <code class="docutils literal"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">x,</span> <span class="pre">z)</span></code> or
+<code class="docutils literal"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">'k-',</span> <span class="pre">x,</span> <span class="pre">z,</span> <span class="pre">'r--')</span></code>, similar to what we’ve previously used.
+Indeed, <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> represent two different ways to pass
+arguments.</p>
+<p>In <a class="reference internal" href="ME400_Lecture_12.html"><span class="doc">Lecture 12</span></a>, functions were defined with
+a pretty specific structure, e.g.,</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some_function</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span> <span class="o">=</span> <span class="n">default2</span><span class="p">,</span> <span class="n">arg3</span> <span class="o">=</span> <span class="n">default3</span><span class="p">):</span>
+    <span class="c1"># do stuff and maybe return a value</span>
+    <span class="c1"># (but don&#39;t have only comments like these!)</span>
+</pre></div>
+</div>
+<p>Such a function has arguments explicitly listed, and sometimes, they are
+given default values.</p>
+<p>For a function like <code class="docutils literal"><span class="pre">plt.plot</span></code>, something else is happening, and the
+arguments that we pass (like <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code>) are somehow being passed
+in <code class="docutils literal"><span class="pre">*args*</span></code> or <code class="docutils literal"><span class="pre">**kwargs</span></code>. Perhaps, before explaining the details,
+it is worth considering an example. First, define the following three
+functions:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">goo</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">hoo</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now, let’s call <code class="docutils literal"><span class="pre">foo</span></code> with the three arguments 1, 2, and 3:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1, 2, 3)
+</pre></div></div>
+</div>
+<p>That output looks like like a <code class="docutils literal"><span class="pre">tuple</span></code> containing the values provided
+as individual arguments. Moreover, the order of the values in the
+<code class="docutils literal"><span class="pre">tuple</span></code> is the same as the order in which they were passed.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">foo</span></code> with a second <code class="docutils literal"><span class="pre">print</span></code> statement to
+verify that the type of <code class="docutils literal"><span class="pre">args</span></code> is, in fact, a <code class="docutils literal"><span class="pre">tuple</span></code>.</div></blockquote>
+<p>Out of curiosity, what if we pass just one value to <code class="docutils literal"><span class="pre">foo</span></code>? Or two?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1,)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1, 2)
+</pre></div></div>
+</div>
+<p>The observation is the same: a <code class="docutils literal"><span class="pre">tuple</span></code> whose values are the arguments
+given.</p>
+<p>Now, let’s try the same with <code class="docutils literal"><span class="pre">goo</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">goo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-9f6a052e5b7f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>goo<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: goo() takes 0 positional arguments but 3 were given
+</pre></div></div>
+</div>
+<p>Interesting. The error indicates that <code class="docutils literal"><span class="pre">**kwargs</span></code> is different from
+<code class="docutils literal"><span class="pre">*args</span></code>. What does the error mean, though?</p>
+<p>When we pass an argument to a function without naming it, the argument
+is called a <strong>positional argument</strong>. In other words, Python assigns the
+value to the appropriate name based on the position of the value
+relative to the other arguments. For example, Python knows that when one
+calls <code class="docutils literal"><span class="pre">hoo(1,</span> <span class="pre">2,</span> <span class="pre">3)</span></code> the value <code class="docutils literal"><span class="pre">1</span></code> should be assigned to <code class="docutils literal"><span class="pre">a</span></code>
+because <code class="docutils literal"><span class="pre">1</span></code> is the first values passed, and <code class="docutils literal"><span class="pre">a</span></code> is the first
+argument named in the <code class="docutils literal"><span class="pre">def</span></code> statement.</p>
+<p>If an argument is not <strong>positional</strong>, then it is a <strong>keyword argument</strong>.
+As seen in <a class="reference internal" href="ME400_Lecture_12.html"><span class="doc">Lecture 12</span></a>, keyword arguments
+are named arguments. The error suggests that <code class="docutils literal"><span class="pre">goo</span></code> requires <em>only</em>
+keyword arguments, so let’s try the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">goo</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}
+</pre></div></div>
+</div>
+<p>That worked, and the output suggests that <code class="docutils literal"><span class="pre">kwargs</span></code> is a <code class="docutils literal"><span class="pre">dict</span></code> whose
+keys and values are the names and values of the arguments given as
+input.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">goo</span></code> with a second <code class="docutils literal"><span class="pre">print</span></code> statement to
+verify that the type of <code class="docutils literal"><span class="pre">kwargs</span></code> is, in fact, a <code class="docutils literal"><span class="pre">dict</span></code>.</div></blockquote>
+<p>Take a moment to consider what <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> let one do. A
+function whose argument is <code class="docutils literal"><span class="pre">*args</span></code> can be passed <em>any number of
+positional arguments</em>. Maybe these arguments look like
+<code class="docutils literal"><span class="pre">(x,</span> <span class="pre">x**2,</span> <span class="pre">'r--',</span> <span class="pre">x,</span> <span class="pre">x**3,</span> <span class="pre">x,</span> <span class="pre">x**4,</span> <span class="pre">'bx')</span></code>, like those used for
+<code class="docutils literal"><span class="pre">plt.plot</span></code>.</p>
+<p>Likewise, a function whose argument is <code class="docutils literal"><span class="pre">**kwargs</span></code> can be passed <em>any
+number of keywork (i.e., named) arguments</em>. Maybe these arguments look
+like <code class="docutils literal"><span class="pre">(lw=2,</span> <span class="pre">color='black',</span> <span class="pre">label</span> <span class="pre">=</span> <span class="pre">'line</span> <span class="pre">1')</span></code>, which are common
+options used for <code class="docutils literal"><span class="pre">plt.plot</span></code>.</p>
+<p>To make these examples concrete, consider the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c1">#       &lt;positional args&gt; &lt;keyword args&gt;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>  <span class="s1">&#39;-*&#39;</span><span class="p">,</span>   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$x^2$&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;--h&#39;</span><span class="p">,</span>   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$x^3$&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span> <span class="c1"># automatically uses the labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_13_16_0.png" src="../_images/lectures_ME400_Lecture_13_16_0.png" />
+</div>
+</div>
+<p>In summary, <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> are extremely powerful
+constructs, and when used together, let one write functions that can
+handle an arbitrary number of arguments. You’ll probably encounter these
+constructs most often when inspecting functions defined in modules like
+<code class="docutils literal"><span class="pre">matplotlib.pyplot</span></code>, so knowing what they are and how to use them can
+be very useful when learning to use such functions.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Define a function <code class="docutils literal"><span class="pre">ideal_gas(**kwargs)</span></code> that
+implements the ideal gas law <span class="math">\(PV = nRT\)</span>. Specifically, a user
+should enters just three of the four physical quantities <span class="math">\(P\)</span>,
+<span class="math">\(V\)</span>, <span class="math">\(n\)</span>, and <span class="math">\(T\)</span>, and the fourth should be
+computed. Assume that <span class="math">\(R = 8.314\)</span> J/K mol. In addition to
+applying the <code class="docutils literal"><span class="pre">**kwargs</span></code> construct, this exercise flexes what you
+remember about <code class="docutils literal"><span class="pre">if</span></code> statements and the <code class="docutils literal"><span class="pre">dict</span></code> type.</p>
+<p><strong>Exercise</strong>: Define a function <code class="docutils literal"><span class="pre">are_they_bool(*args)</span></code> that
+returns a <code class="docutils literal"><span class="pre">list</span></code> whose length is equal to the number of arguments
+passed. The <code class="docutils literal"><span class="pre">i</span></code>th element of this <code class="docutils literal"><span class="pre">list</span></code> is <code class="docutils literal"><span class="pre">True</span></code> if the
+<code class="docutils literal"><span class="pre">i</span></code>th argument is (logically equal to) <code class="docutils literal"><span class="pre">True</span></code> and is otherwise
+<code class="docutils literal"><span class="pre">False</span></code>.</p>
+<blockquote>
+<div><em>Solution</em>:</div></blockquote>
+</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">are_they_bool</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># We need to return a list, so start of by</span>
+    <span class="c1"># initializing an empty list.</span>
+    <span class="n">rvalue</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Go through each of the arguments</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)):</span>
+        <span class="c1"># Is this the ith argument a bool?</span>
+        <span class="n">is_it_bool</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="c1"># Add it to the list we&#39;ll be returning.</span>
+        <span class="n">rvalue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_it_bool</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rvalue</span>
+<span class="c1"># Test it with</span>
+<span class="n">are_they_bool</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Anonymous-Functions">
+<h2>Anonymous Functions<a class="headerlink" href="#Anonymous-Functions" title="Permalink to this headline">¶</a></h2>
+<p>So far, functions have been defined by a <code class="docutils literal"><span class="pre">def</span></code> statement. However,
+that’s not the only way to define functions in Python, and for some
+applications, a shorter (if not simpler) approach is useful.</p>
+<div class="section" id="A-simple-lambda">
+<h3>A simple <code class="docutils literal"><span class="pre">lambda</span></code><a class="headerlink" href="#A-simple-lambda" title="Permalink to this headline">¶</a></h3>
+<p>To get the syntax down, consider first a function to square a number. We
+could define that using <code class="docutils literal"><span class="pre">def</span></code> as</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">square_it</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="n">square_it</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
+</pre></div>
+</div>
+</div>
+<p>The same functionality can be defined using</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">square_it_lambda</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">square_it_lambda</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
+</pre></div>
+</div>
+</div>
+<p>The syntax for anonymous functions starts with the keyword <code class="docutils literal"><span class="pre">lambda</span></code>,
+followed by one or more argument names, a colon <code class="docutils literal"><span class="pre">:</span></code>, and the
+expression to be returned. Why are such functions called anonymous
+functions? <em>Because they have no real name</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="n">square_it</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">square_it_lambda</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;function square_it at 0x7ff5c800f9d8&gt;
+&lt;function &lt;lambda&gt; at 0x7ff5c7feb840&gt;
+</pre></div></div>
+</div>
+<p>In practice, <code class="docutils literal"><span class="pre">lambda</span></code> functions are the only way to define a function
+as part of a single expression. For example, one can do the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
+</pre></div>
+</div>
+</div>
+<p>This is strange syntax, for sure, but once <code class="docutils literal"><span class="pre">(lambda</span> <span class="pre">x:</span> <span class="pre">x**2)</span></code> is
+recognized as a <em>callable</em> function, the syntax is a bit clearer. The
+important point, though, is that <code class="docutils literal"><span class="pre">lambda</span></code> functions can be part of
+expressions, and expression include function calls.</p>
+</div>
+<div class="section" id="When-lambda-is-more-natural">
+<h3>When <code class="docutils literal"><span class="pre">lambda</span></code> is more natural<a class="headerlink" href="#When-lambda-is-more-natural" title="Permalink to this headline">¶</a></h3>
+<p>A richer example, of course, helps motivate the utility of <code class="docutils literal"><span class="pre">lambda</span></code>.
+Consider the built-in <code class="docutils literal"><span class="pre">filter</span></code> function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">help</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on class filter in module builtins:
+
+class filter(object)
+ |  filter(function or None, iterable) --&gt; filter object
+ |
+ |  Return an iterator yielding those items of iterable for which function(item)
+ |  is true. If function is None, return the items that are true.
+ |
+ |  Methods defined here:
+ |
+ |  __getattribute__(self, name, /)
+ |      Return getattr(self, name).
+ |
+ |  __iter__(self, /)
+ |      Implement iter(self).
+ |
+ |  __new__(*args, **kwargs) from builtins.type
+ |      Create and return a new object.  See help(type) for accurate signature.
+ |
+ |  __next__(self, /)
+ |      Implement next(self).
+ |
+ |  __reduce__(...)
+ |      Return state information for pickling.
+
+</pre></div></div>
+</div>
+<p>If you wade through all that output, notice this line:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Return</span> <span class="n">an</span> <span class="n">iterator</span> <span class="n">yielding</span> <span class="n">those</span> <span class="n">items</span> <span class="n">of</span> <span class="n">iterable</span> <span class="k">for</span> <span class="n">which</span> <span class="n">function</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="ow">is</span> <span class="n">true</span><span class="o">.</span> <span class="n">If</span> <span class="n">function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="k">return</span> <span class="n">the</span> <span class="n">items</span> <span class="n">that</span> <span class="n">are</span> <span class="n">true</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Don’t worry about what an <em>iterator</em> is; like <code class="docutils literal"><span class="pre">range()</span></code> and
+<code class="docutils literal"><span class="pre">dict.keys()</span></code>, it can be converted into a <code class="docutils literal"><span class="pre">list</span></code>. The important
+point is that <code class="docutils literal"><span class="pre">filter</span></code> applies a filtering <code class="docutils literal"><span class="pre">function</span></code> to all the
+items of a sequence and returns only those elements that pass the
+filter. Such filtering has <em>lots</em> of applications, which is why the
+functionality is built into Python. The problem is that each application
+requires different filtering functions.</p>
+<p>Consider a class with lots of students and lots of assignments (and
+assignment categories). A common task (or it should be anyway) for an
+instructor is to check how performance in one category impacts
+performance in another category. For example, can a student do very well
+on homework but do very badly on the exam? Lots of conclusions can be
+made if only this question could be answered, and it can be answered
+using, of course, <code class="docutils literal"><span class="pre">filter</span></code>. For concreteness, consider the following
+category scores (and some notes) for several students:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;John von Neumann&#39;</span><span class="p">,</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span> <span class="mf">68.0</span><span class="p">,</span> <span class="s1">&#39;labs&#39;</span><span class="p">:</span> <span class="mf">94.3</span><span class="p">,</span> <span class="s1">&#39;quiz&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;exam&#39;</span><span class="p">:</span> <span class="mf">98.5</span><span class="p">,</span> <span class="s1">&#39;notes&#39;</span><span class="p">:</span> <span class="s1">&#39;Invented merge sort.&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alan Turing&#39;</span><span class="p">,</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span> <span class="mf">90.5</span><span class="p">,</span> <span class="s1">&#39;labs&#39;</span><span class="p">:</span> <span class="mf">33.3</span><span class="p">,</span> <span class="s1">&#39;quiz&#39;</span><span class="p">:</span> <span class="mf">91.0</span><span class="p">,</span> <span class="s1">&#39;exam&#39;</span><span class="p">:</span> <span class="mf">69.5</span><span class="p">,</span> <span class="s1">&#39;notes&#39;</span><span class="p">:</span> <span class="s1">&#39;Developed the &quot;Turing Test&quot; for AI.&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Ada Lovelace&#39;</span><span class="p">,</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span> <span class="mf">94.0</span><span class="p">,</span> <span class="s1">&#39;labs&#39;</span><span class="p">:</span> <span class="mf">88.0</span><span class="p">,</span> <span class="s1">&#39;quiz&#39;</span><span class="p">:</span> <span class="mf">94.0</span><span class="p">,</span> <span class="s1">&#39;exam&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;notes&#39;</span><span class="p">:</span> <span class="s1">&#39;First computer programmer.&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Donald Knuth&#39;</span><span class="p">,</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span> <span class="mf">72.0</span><span class="p">,</span> <span class="s1">&#39;labs&#39;</span><span class="p">:</span> <span class="mf">98.0</span><span class="p">,</span> <span class="s1">&#39;quiz&#39;</span><span class="p">:</span> <span class="mf">74.0</span><span class="p">,</span> <span class="s1">&#39;exam&#39;</span><span class="p">:</span> <span class="mf">79.0</span><span class="p">,</span> <span class="s1">&#39;notes&#39;</span><span class="p">:</span> <span class="s1">&#39;Invented TeX.&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Grace Hopper&#39;</span><span class="p">,</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span> <span class="mf">96.0</span><span class="p">,</span> <span class="s1">&#39;labs&#39;</span><span class="p">:</span> <span class="mf">56.0</span><span class="p">,</span> <span class="s1">&#39;quiz&#39;</span><span class="p">:</span> <span class="mf">82.0</span><span class="p">,</span> <span class="s1">&#39;exam&#39;</span><span class="p">:</span> <span class="mf">83.0</span><span class="p">,</span> <span class="s1">&#39;notes&#39;</span><span class="p">:</span> <span class="s1">&#39;Popularized machine-independent languages (of which Python is an example)&#39;</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>This sort of information is exactly the kind an instructor might have
+from Canvas (or other course-management systems). Now, the question, who
+does very well on the homeworks (say, over 90% or an “A”) but does <em>not</em>
+do well on exams? Each item in <code class="docutils literal"><span class="pre">records</span></code> is itself a <code class="docutils literal"><span class="pre">dict</span></code>, and we
+could write the following function to return such an item only if it
+meets the criteria:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">good_hw_bad_exam</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;hw&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">90.0</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;exam&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">70.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span> <span class="c1"># i.e., return None (equivalent to False)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">good_hw_bad_exam</span><span class="p">,</span> <span class="n">records</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[{&#39;exam&#39;: 69.5,
+  &#39;hw&#39;: 90.5,
+  &#39;labs&#39;: 33.3,
+  &#39;name&#39;: &#39;Alan Turing&#39;,
+  &#39;notes&#39;: &#39;Developed the &quot;Turing Test&quot; for AI.&#39;,
+  &#39;quiz&#39;: 91.0}]
+</pre></div>
+</div>
+</div>
+<p>Ah, our friend Alan Turing meets the criteria. He has done quite well on
+the homework (an “A”), but his exam score is less than satisfying. Also
+worth noting: <em>we passed a function name as an argument</em>.</p>
+<blockquote>
+<div><strong>Note</strong>: A function can be passed as an argument to other
+functions.</div></blockquote>
+<p>Alright, alright, but what about <strong>anonymous functions</strong>? Let’s filter
+that data for high exam scores and low homework scores (i.e., the lazy
+but smart student; yes, they exist). Although a new <code class="docutils literal"><span class="pre">def</span></code> statement
+could be written, a much faster approach is <code class="docutils literal"><span class="pre">lambda</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;exam&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;hw&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">,</span> <span class="n">records</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[{&#39;exam&#39;: 98.5,
+  &#39;hw&#39;: 68.0,
+  &#39;labs&#39;: 94.3,
+  &#39;name&#39;: &#39;John von Neumann&#39;,
+  &#39;notes&#39;: &#39;Invented merge sort.&#39;,
+  &#39;quiz&#39;: 100.0}]
+</pre></div>
+</div>
+</div>
+<p>Hence, the full <code class="docutils literal"><span class="pre">lambda</span></code> function accepts the argument <code class="docutils literal"><span class="pre">item</span></code> and
+returns <code class="docutils literal"><span class="pre">True</span></code> if it passes the filter. The reason <code class="docutils literal"><span class="pre">lambda</span></code> is
+useful here is because the filtering criteria can be changed on the fly.
+For example, one could check for several different patterns:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># shows up for labs, but not as much for exams</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;labs&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;exam&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">,</span> <span class="n">records</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[{&#39;exam&#39;: 79.0,
+  &#39;hw&#39;: 72.0,
+  &#39;labs&#39;: 98.0,
+  &#39;name&#39;: &#39;Donald Knuth&#39;,
+  &#39;notes&#39;: &#39;Invented TeX.&#39;,
+  &#39;quiz&#39;: 74.0}]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># wows on the quizzes, but not on exams</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;quiz&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;exam&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">,</span> <span class="n">records</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[18]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[{&#39;exam&#39;: 69.5,
+  &#39;hw&#39;: 90.5,
+  &#39;labs&#39;: 33.3,
+  &#39;name&#39;: &#39;Alan Turing&#39;,
+  &#39;notes&#39;: &#39;Developed the &quot;Turing Test&quot; for AI.&#39;,
+  &#39;quiz&#39;: 91.0}]
+</pre></div>
+</div>
+</div>
+<p>Hence, rather than defining new functions using <code class="docutils literal"><span class="pre">def</span></code>, one can simply
+define a <code class="docutils literal"><span class="pre">lambda</span></code> when needed as part of one expression.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Define a <code class="docutils literal"><span class="pre">lambda</span></code> function that doubles a values.</p>
+<p><strong>Exercise</strong>: Define a <code class="docutils literal"><span class="pre">lambda</span></code> function that adds two values.</p>
+<blockquote>
+<div><em>Solution</em>: <code class="docutils literal"><span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code></div></blockquote>
+<p><strong>Exercise</strong>: The function <code class="docutils literal"><span class="pre">map</span></code> is called as <code class="docutils literal"><span class="pre">map(func,</span> <span class="pre">seq)</span></code>,
+where <code class="docutils literal"><span class="pre">func</span></code> is a function to apply to each element of a sequence
+<code class="docutils literal"><span class="pre">seq</span></code>. By using <code class="docutils literal"><span class="pre">list(map(func,</span> <span class="pre">seq))</span></code>, one gets a list of the
+values <code class="docutils literal"><span class="pre">func(seq[i])</span></code>. Use <code class="docutils literal"><span class="pre">map</span></code> and a <code class="docutils literal"><span class="pre">lambda</span></code> function to
+produce a list of <code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code> indicating whether the
+elements of a list of integers is even or odd.</p>
+<blockquote>
+<div><em>Solution</em>: <code class="docutils literal"><span class="pre">list(map(lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">%</span> <span class="pre">2</span> <span class="pre">==</span> <span class="pre">0,</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]))</span></code>.</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="Recursive-Functions">
+<h2>Recursive Functions<a class="headerlink" href="#Recursive-Functions" title="Permalink to this headline">¶</a></h2>
+<p>The topic of <strong>recursion</strong> is included here almost entirely for the sake
+of completion. Before we dive into what recursion is, note that in much
+of scientific computing, recursion can be replaced by appropriate loops.</p>
+<blockquote>
+<div><strong>Note</strong>: Recursion can often be replaced by loops.</div></blockquote>
+<p>Now, <strong>recursion</strong> is a process in which output (say, a particular
+value) is computed at any particular step using the output from one or
+more previous steps using a fixed relationship. If this output is a
+single value, then the process yields an <span class="math">\(m\)</span>-term, <strong>recursive
+sequence</strong> of the form
+<span class="math">\(a_n = f(a_{n-1}, a_{n-2}, \ldots, a_{n-m}\)</span>. Here, <span class="math">\(f\)</span> is an
+arbitrary function of the past <span class="math">\(m\)</span> values in the sequence.</p>
+<p>The basic structure of a <strong>recursive function</strong> can be illustrated by
+the following function:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">a_basic_recursive_function</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function does something simple, but it</span>
+<span class="sd">       might not be immediately obvious.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">a_basic_recursive_function</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;For n={}, the function returns {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a_basic_recursive_function</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+For n=1, the function returns 1
+For n=2, the function returns 3
+For n=3, the function returns 6
+For n=4, the function returns 10
+For n=5, the function returns 15
+</pre></div></div>
+</div>
+<p>Do you see the pattern?</p>
+<blockquote>
+<div><strong>Exercise</strong>: Before moving on, try to determine what happens in
+this function by adding a <code class="docutils literal"><span class="pre">print</span></code> statement after the <code class="docutils literal"><span class="pre">else</span></code>
+clause to display the value of <code class="docutils literal"><span class="pre">n</span></code>.</div></blockquote>
+<p>What function gives 1 when given 1, 3 when given 2, and 6 when given 3?
+A function that adds the integers from 1 to <span class="math">\(n\)</span>, just like we’ve
+done before using loops. The sequence is simple:
+<span class="math">\(a_n = f(a_{n-1}) = a_{n-1} + n\)</span> with <span class="math">\(a_0 = 1\)</span>.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Implement the factorial function using recursion.</p>
+<p><strong>Exercise</strong>: Use recursion to produce the list
+<code class="docutils literal"><span class="pre">[a,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">...,</span> <span class="pre">b]</span></code> for positive integers <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>. You
+may assume that <code class="docutils literal"><span class="pre">b</span> <span class="pre">&gt;=</span> <span class="pre">a</span></code>.</p>
+<blockquote>
+<div><em>Solution</em>:</div></blockquote>
+</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">recursive_range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">recursive_range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+
+<span class="n">Remember</span><span class="p">,</span> <span class="sb">``</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="sb">``</span> <span class="n">leads</span> <span class="n">to</span> <span class="sb">``</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="sb">``</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>A recursive function must always have an effective termination criterion
+that prevents the function from being called again. Sometimes this is
+called a <em>base case</em> or a <em>guard</em>. For our summation example, that
+condition is <code class="docutils literal"><span class="pre">n</span> <span class="pre">==</span> <span class="pre">1</span></code>. When we add the integers from 1 through 5, the
+recursive function does so like this: <span class="math">\(5 + (4 + (3 + (2 + (1))))\)</span>,
+where the parentheses indicate a new call to the recursive function.
+Here, these calls terminate at <span class="math">\((1)\)</span>. If we forgot to terminate
+when <code class="docutils literal"><span class="pre">n</span> <span class="pre">==</span> <span class="pre">1</span></code>, the function would keep calling itself over and over.
+It turns out that Python limits the number of times this can happen:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">infinite_recursion</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">infinite_recursion</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">infinite_recursion</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">RecursionError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-21-cc3488f42ea2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">def</span> infinite_recursion<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-green-fg">return</span> n <span class="ansi-blue-fg">+</span> infinite_recursion<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>print<span class="ansi-blue-fg">(</span>infinite_recursion<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">5</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-21-cc3488f42ea2&gt;</span> in <span class="ansi-cyan-fg">infinite_recursion</span><span class="ansi-blue-fg">(n)</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">def</span> infinite_recursion<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> n <span class="ansi-blue-fg">+</span> infinite_recursion<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> print<span class="ansi-blue-fg">(</span>infinite_recursion<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">5</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+... last 1 frames repeated, from the frame below ...
+
+<span class="ansi-green-fg">&lt;ipython-input-21-cc3488f42ea2&gt;</span> in <span class="ansi-cyan-fg">infinite_recursion</span><span class="ansi-blue-fg">(n)</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">def</span> infinite_recursion<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> n <span class="ansi-blue-fg">+</span> infinite_recursion<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> print<span class="ansi-blue-fg">(</span>infinite_recursion<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">5</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">RecursionError</span>: maximum recursion depth exceeded
+</pre></div></div>
+</div>
+<p>It’s not obvious what this maximum depth (i.e., number of calls) is, but
+it’s probably pretty big.</p>
+<blockquote>
+<div><strong>Warning</strong>: Like loops, recursive functions need a termination
+criterion. For recursive sequences, thats usually when the recursion
+gets to the initial values of the sequence, e.g., <span class="math">\(a_0 = 1\)</span>
+for the sum of the integers from 1 to <span class="math">\(n\)</span>.</div></blockquote>
+<div class="section" id="A-Famous-Example">
+<h3>A Famous Example<a class="headerlink" href="#A-Famous-Example" title="Permalink to this headline">¶</a></h3>
+<p>Remember the Fibonacci sequence: <span class="math">\(1, 1, 2, 3, 5, 8, \ldots\)</span>. It
+starts with two 1’s, but all of the subsequent terms have a special
+pattern: they are the sum of the two previous terms. In other words, one
+can define the Fibbonaci sequence as <span class="math">\(a_{n} = a_{n-1} + a_{n-2}\)</span>
+given <span class="math">\(a_0 = a_1 = 1\)</span>. This is a two-term, recursive sequence. Of
+course, defining the <span class="math">\(n\)</span>th term is easy using a simple loop.
+Here, that approach is provided as a function:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">fibo_loop</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the nth term in Fibonacci&#39;s sequence using loops.&quot;&quot;&quot;</span>
+    <span class="c1"># initialize all three terms a_n, a_{n-1}, and a_{n-2}</span>
+    <span class="n">a_n</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">a_2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="c1"># initialize the coutner</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="c1"># apply the sequence</span>
+        <span class="n">a_n</span> <span class="o">=</span> <span class="n">a_1</span> <span class="o">+</span> <span class="n">a_2</span>
+        <span class="c1"># and then store the old values</span>
+        <span class="n">a_2</span> <span class="o">=</span> <span class="n">a_1</span>
+        <span class="n">a_1</span> <span class="o">=</span> <span class="n">a_n</span>
+        <span class="c1"># always increment the counter</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">a_n</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fibo_loop</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>8
+</pre></div>
+</div>
+</div>
+<p>The Fibonacci sequence is recursive. Each term <span class="math">\(a_n\)</span> depends on
+the two previous terms <span class="math">\(a_{n-1}\)</span> and <span class="math">\(a_{n-2}\)</span>. Hence, the
+process to compute <span class="math">\(a_n\)</span> looks just like the process to compute
+<span class="math">\(a_{n-1}\)</span>, all the way down to the first to values <span class="math">\(a_0\)</span> and
+<span class="math">\(a_1\)</span>. Consider the case of <span class="math">\(n = 5\)</span>, for which <span class="math">\(a_5\)</span>
+is 8. Let’s break it down:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+8 &amp;= 3 + 5 \\
+  &amp;= (1_1 + 2) + (2 + 3) \\
+  &amp;= (1_1 + (1_0 + 1_1)) + ((1_0 + 1_1) + (1_1 + 2))\\
+  &amp;= (1_1 + (1_0 + 1_1)) + ((1_0 + 1_1) + (1_1 + (1_0 + 1_1)))\\
+\end{split}\end{split}\]</div>
+<p>Here, the subscripts on the 1’s indicate whether they are <span class="math">\(a_0\)</span> or
+<span class="math">\(a_1\)</span>. The conclusion is that every single term in the sequence is
+just a sum of multiple 1’s. If we were to write this using functions,</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">8</span> <span class="o">=</span> <span class="n">fibo</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+  <span class="o">=</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+  <span class="o">=</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="p">((</span><span class="n">fibo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+  <span class="o">=</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span> <span class="o">+</span> <span class="p">((</span><span class="n">fibo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">fibo</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">fibo</span><span class="p">(</span><span class="mi">1</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p>What this means is that calling <code class="docutils literal"><span class="pre">fibo(3)</span></code> ought to return the sum of
+<code class="docutils literal"><span class="pre">fibo(1)</span></code> and <code class="docutils literal"><span class="pre">fibo(2)</span></code>, and that the call <code class="docutils literal"><span class="pre">fibo(2)</span></code> ought to
+return the sum of <code class="docutils literal"><span class="pre">fibo(0)</span></code> and <code class="docutils literal"><span class="pre">fibo(1)</span></code>. The only time calling
+<code class="docutils literal"><span class="pre">fibo(n)</span></code> doesn’t require calling <code class="docutils literal"><span class="pre">fibo(n-1)</span></code> and <code class="docutils literal"><span class="pre">fibo(n-2)</span></code> is
+when <code class="docutils literal"><span class="pre">n</span></code> is 0 or 1, i.e., when the value to be returned is 1.</p>
+<p>Here is this idea packaged into the <strong>recursive function</strong>
+<code class="docutils literal"><span class="pre">fibo_recursive</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># again, we need a termination criterion.</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fibo_recursive</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>8
+</pre></div>
+</div>
+</div>
+<p>Take a moment and process this function. Test it out (in Spyder or by
+hand) and verify that it works.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Implement <code class="docutils literal"><span class="pre">fibo_recursive</span></code> in Spyder. For
+<span class="math">\(n = 5\)</span>, use the graphical debugger to trace the output.</p>
+<p><strong>Exercise</strong>: Consider two integers <span class="math">\(a &gt; 0\)</span> and <span class="math">\(b &gt; 0\)</span>.
+Their <a class="reference external" href="https://en.wikipedia.org/wiki/Greatest_common_divisor">greatest common
+divisor</a>
+(call it <span class="math">\(gcd(a, b)\)</span>) is the largest integer that divides both
+of them. One way to compute <span class="math">\(gcd(a, b)\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Euclidean
+algorithm</a>.
+Using modular arithmetic, this algorithm can be summarized by the
+equations <span class="math">\(gcd(a, b) = gcd(b, a\,\text{mod}\, b)\)</span> and
+<span class="math">\(gcd(a, 0) = a\)</span>. Remember <span class="math">\(a\,\text{mod}\, b\)</span> is
+equivalent to the Python <code class="docutils literal"><span class="pre">a</span> <span class="pre">%</span> <span class="pre">b</span></code>. Use these equations to implement
+a recursive Python function <code class="docutils literal"><span class="pre">gcd(a,</span> <span class="pre">b)</span></code>. You can check your answer
+using <code class="docutils literal"><span class="pre">math.gcd</span></code>.</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>A pretty neat overview of recursion can be found
+<a class="reference external" href="https://medium.freecodecamp.org/how-recursion-works-explained-with-flowcharts-and-a-video-de61f40cb7f9">here</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 13 - More on Functions</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#*args-and-**kwargs"><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code></a></li>
+<li><a class="reference internal" href="#Anonymous-Functions">Anonymous Functions</a><ul>
+<li><a class="reference internal" href="#A-simple-lambda">A simple <code class="docutils literal"><span class="pre">lambda</span></code></a></li>
+<li><a class="reference internal" href="#When-lambda-is-more-natural">When <code class="docutils literal"><span class="pre">lambda</span></code> is more natural</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Recursive-Functions">Recursive Functions</a><ul>
+<li><a class="reference internal" href="#A-Famous-Example">A Famous Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_12.html" title="previous chapter">Lecture 12 - Basics of Functions</a></li>
+      <li>Next: <a href="ME400_Lecture_14.html" title="next chapter">Lecture 14 - Searching</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_13.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_13.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

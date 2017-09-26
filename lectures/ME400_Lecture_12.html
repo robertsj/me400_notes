@@ -1,0 +1,1005 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 12 - Basics of Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-12---Basics-of-Functions">
+<h1>Lecture 12 - Basics of Functions<a class="headerlink" href="#Lecture-12---Basics-of-Functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>With some simple programs under our belts, it is time to <em>modularize</em>
+our programs by using <em>functions</em>. In this lecture and <a class="reference internal" href="ME400_Lecture_13.html"><span class="doc">Lecture
+13</span></a>, you will learn how to define your own
+functions to meet a variety of needs.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Define a function that accepts (zero or more) input arguments and
+returns (zero or more) values.</li>
+<li>Explain the meaning of a named and default argument.</li>
+<li>Use <em>unpacking</em> to define multiple variable in a single statement.</li>
+<li>Include functions in flowcharts.</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>function</li>
+<li><code class="docutils literal"><span class="pre">def</span></code></li>
+<li>call</li>
+<li>argument</li>
+<li>return value</li>
+<li>unpacking</li>
+<li>named (or keyword) argument</li>
+<li>default value</li>
+</ul>
+</div>
+</div>
+<div class="section" id="What-is-a-Function?">
+<h2>What is a Function?<a class="headerlink" href="#What-is-a-Function?" title="Permalink to this headline">¶</a></h2>
+<p>For our purposes, a function is something that is executed (possibly
+with input) and provides some sort of output. Often, this output will be
+a value (or several values) explicitly returned by the function.
+However, functions can also be used to modify the very data given to
+them as input. Although you’ve been using functions all along (e.g.,
+those provided by the math module like <code class="docutils literal"><span class="pre">math.cos</span></code>), you’ll understand
+how to define and use your own functions by the end of this lesson.</p>
+<p>Let’s start by example. Consider the sum of an array <span class="math">\(x\)</span>, defined
+mathematically as <span class="math">\(s = \sum^n_{i=1} x_i\)</span> and computed in Python
+via</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+    <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>This short program is specific to the value of <code class="docutils literal"><span class="pre">x</span></code> defined. If it were
+to be applied for any value of <code class="docutils literal"><span class="pre">x</span></code>, it must first be turned into a
+function. Functions, like conditional statements and loops, are defined
+in Python using a special <em>keyword</em>. The basic structure is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+    <span class="c1"># do something to define rval1</span>
+    <span class="c1"># do something else to define rval2</span>
+    <span class="c1"># and so on...</span>
+    <span class="k">return</span> <span class="n">rval1</span><span class="p">,</span> <span class="n">rval2</span><span class="p">,</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Following the <code class="docutils literal"><span class="pre">def</span></code> keyword is the name of the function and a pair of
+parentheses. Inside these parentheses are the names of zero or more
+input <em>arguments</em>. Each argument name (e.g., <code class="docutils literal"><span class="pre">arg1</span></code>) can be used
+within the function like normal variables. After all computations are
+performed, the function can include a <code class="docutils literal"><span class="pre">return</span></code> statement with zero or
+more <em>return values</em> (e.g., <code class="docutils literal"><span class="pre">rval1</span></code>). As observed for <code class="docutils literal"><span class="pre">if</span></code>,
+<code class="docutils literal"><span class="pre">while</span></code>, and <code class="docutils literal"><span class="pre">for</span></code> statements, the block of code following the
+<code class="docutils literal"><span class="pre">def</span></code> line must be indented.</p>
+<p>Let’s adapt the structure shown above to the summation problem. The
+input required is the sequence of numbers <code class="docutils literal"><span class="pre">x</span></code>, and the output is the
+sum of <code class="docutils literal"><span class="pre">x</span></code>. Hence, we need one input <em>argument</em> and one <em>return
+value</em>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">compute_sum</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<p>Now, just like the other functions we’ve used (e.g.,``math.cos``), the
+function <code class="docutils literal"><span class="pre">compute_sum</span></code> can be <strong>called</strong> repeatedly with different
+arguments:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">compute_sum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>10
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">compute_sum</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>600
+</pre></div>
+</div>
+</div>
+<p>Even though the initial <code class="docutils literal"><span class="pre">x</span></code> was a list, the input to <code class="docutils literal"><span class="pre">compute_sum</span></code>
+need not be a list: it just has to support indexing via <code class="docutils literal"><span class="pre">[]</span></code> and have
+values that are numbers.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: See what happens when <code class="docutils literal"><span class="pre">(1,</span> <span class="pre">2,</span> <span class="pre">3)</span></code> and
+<code class="docutils literal"><span class="pre">np.linspace(0,</span> <span class="pre">10)</span></code> are given to <code class="docutils literal"><span class="pre">compute_sum</span></code>.</p>
+<p><strong>Exercise</strong>: Write a function named <code class="docutils literal"><span class="pre">factorial</span></code> that computes
+<span class="math">\(n!\)</span>.</p>
+<p><strong>Exercise</strong>: Write a function that determines whether a positive
+integer <code class="docutils literal"><span class="pre">n</span></code> is prime. A prime number is any number divisible only
+by one and itself. By definition, one is not considered prime. The
+function should return <code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p><strong>Exercise</strong>: Write a function with no arguments and no return
+values that prints out the day of the week. Hint: look up the module
+<code class="docutils literal"><span class="pre">datetime</span></code>.</p>
+</div></blockquote>
+<p>One potential pitfall when defining functions is to forget to return a
+value. Consider this alternative (and <em>wrong</em>) version of the summation
+function and how it can lead to unexpected <code class="docutils literal"><span class="pre">TypeError</span></code> errors:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">compute_sum_wrong</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># define a sum</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">compute_sum_wrong</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="c1"># and then double it</span>
+<span class="n">s</span> <span class="o">*=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-6-1781b50e1daf&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> s <span class="ansi-blue-fg">=</span> compute_sum_wrong<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-red-fg"># and then double it</span>
+<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg"> </span>s <span class="ansi-blue-fg">*=</span> <span class="ansi-cyan-fg">2</span>
+
+<span class="ansi-red-fg">TypeError</span>: unsupported operand type(s) for *=: &#39;NoneType&#39; and &#39;int&#39;
+</pre></div></div>
+</div>
+<p>The problem appears to be the statement <code class="docutils literal"><span class="pre">s</span> <span class="pre">*=</span> <span class="pre">2</span></code>, but <code class="docutils literal"><span class="pre">s</span></code> should be
+an <code class="docutils literal"><span class="pre">int</span></code> value, right? Nope:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>NoneType
+</pre></div>
+</div>
+</div>
+<p>Any function without explicit return values returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
+<blockquote>
+<div><strong>Warning</strong>: Be sure to check that functions return any values
+expected when called.</div></blockquote>
+</div>
+<div class="section" id="Functions-with-Multiple-Return-Values">
+<h2>Functions with Multiple Return Values<a class="headerlink" href="#Functions-with-Multiple-Return-Values" title="Permalink to this headline">¶</a></h2>
+<p>In some applications, programs can be simplified by using functions with
+multiple return values. For example, consider the problem of computing
+the mean and standard deviation of an array <span class="math">\(x\)</span> with <span class="math">\(n\)</span>
+elements. Recall, the mean of <span class="math">\(x\)</span> is
+<span class="math">\(\bar{x} = \frac{1}{n} \sum^n_{i=1} x_i\)</span>, while the variance is
+defined by <span class="math">\(\mu = \frac{1}{n}\sum^n_{i=1} (x_i -\bar{x})^2\)</span>.
+Surely, one could implement two separate functions (like <code class="docutils literal"><span class="pre">np.mean</span></code> and
+<code class="docutils literal"><span class="pre">np.var</span></code>), but they can be combined in one function:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">mean_and_var</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">mu</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">mu</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">var</span> <span class="o">+=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">var</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">var</span>
+</pre></div>
+</div>
+</div>
+<p>Now, calling this function with <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> leads to</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">vals</span> <span class="o">=</span> <span class="n">mean_and_var</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">vals</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(2.0, 0.6666666666666666)
+</pre></div>
+</div>
+</div>
+<p>The output (here, <code class="docutils literal"><span class="pre">vals</span></code>) is a <code class="docutils literal"><span class="pre">tuple</span></code>. Actually, this is expected:
+the statement <code class="docutils literal"><span class="pre">return</span> <span class="pre">mu,</span> <span class="pre">var</span></code> is equivalent to <code class="docutils literal"><span class="pre">return</span> <span class="pre">(mu,</span> <span class="pre">var)</span></code>.
+With <code class="docutils literal"><span class="pre">vals</span></code> defined, one could set <code class="docutils literal"><span class="pre">mu</span> <span class="pre">=</span> <span class="pre">vals[0]</span></code> and
+<code class="docutils literal"><span class="pre">var</span> <span class="pre">=</span> <span class="pre">vals[1]</span></code>, but it is simpler to use</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">mu</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">mean_and_var</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2.0 0.6666666666666666
+</pre></div></div>
+</div>
+<p>In fact, this shows a neat feature of Python: the elements of a
+<code class="docutils literal"><span class="pre">tuple</span></code> (or <code class="docutils literal"><span class="pre">list</span></code>) can be assigned to several names all at once
+using a process called <strong>unpacking</strong>. This feature of Python can yield
+very compact, multiple assignments and lets one swap two values with one
+statement. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># a and b from tuple</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># a and b from list</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>   <span class="c1"># c and d from b and a</span>
+<span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span>   <span class="c1"># swap c and d</span>
+<span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 2
+2 1
+1 2
+2 1
+</pre></div></div>
+</div>
+<p>Just as one must be careful to ensure the correct values are returned by
+a function, one must also be sure to capture that output correctly. If,
+for example, a function returns three values, then one cannot set two
+values equal to that function’s output, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">return_three</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">return_three</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-12-a4eb1b5d0866&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">def</span> return_three<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-green-fg">return</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span>
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>a<span class="ansi-blue-fg">,</span> b <span class="ansi-blue-fg">=</span> return_three<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">ValueError</span>: too many values to unpack (expected 2)
+</pre></div></div>
+</div>
+<p>Again, a <code class="docutils literal"><span class="pre">ValueError</span></code> pops up, now because we attempted to unpack
+three return values into two variables.</p>
+</div>
+<div class="section" id="Functions-with-Multiple-Arguments">
+<h2>Functions with Multiple Arguments<a class="headerlink" href="#Functions-with-Multiple-Arguments" title="Permalink to this headline">¶</a></h2>
+<p>Functions like <code class="docutils literal"><span class="pre">plt.plot</span></code> and <code class="docutils literal"><span class="pre">np.dot</span></code> naturally accept two (or
+more) input arguments to produce a particular output (be it a
+visualization or the dot product of two arrays). There is no limit to
+the number of arguments a Python function can accept. Furthermore, some
+arguments can be made <strong>optional</strong> by providing <strong>default values</strong>.</p>
+<p>Consider the following function <code class="docutils literal"><span class="pre">foo</span></code>, which accepts three input
+arguments <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>, and <code class="docutils literal"><span class="pre">z</span></code>, and prints them in a particular
+format:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;(x, y, z) = ({:.4f}, {:.4f}, {:.4f})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>As defined, one <em>must</em> pass three values to <code class="docutils literal"><span class="pre">foo</span></code> for <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>,
+and <code class="docutils literal"><span class="pre">z</span></code>, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(x, y, z) = (1.0000, 2.0000, 3.0000)
+</pre></div></div>
+</div>
+<p>However, suppose <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">z</span></code> represent values that do not often
+change. That is, perhaps there are good <strong>default values</strong> that can be
+assigned to <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">z</span></code> for most applications. Here, assume those
+values are <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">1.1</span></code> and <code class="docutils literal"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">2.2</span></code>. A new version of <code class="docutils literal"><span class="pre">foo</span></code> may
+then be defined with these default values:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">foo_with_defaults</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mf">2.2</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;(x, y, z) = ({:.4f}, {:.4f}, {:.4f})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>This new function can be called just like the original version, i.e.,
+with all three input arguments defined:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo_with_defaults</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(x, y, z) = (1.0000, 2.0000, 3.0000)
+</pre></div></div>
+</div>
+<p>However, with defaults defined for <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">z</span></code>,
+<code class="docutils literal"><span class="pre">foo_with_defaults</span></code> can also be called in the following ways:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo_with_defaults</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># let z be its default value</span>
+<span class="n">foo_with_defaults</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># let y and z be their default values</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(x, y, z) = (1.0000, 3.0000, 2.2000)
+(x, y, z) = (1.0000, 1.1000, 2.2000)
+</pre></div></div>
+</div>
+<p>The result of the first call shows that <code class="docutils literal"><span class="pre">y</span></code> is <code class="docutils literal"><span class="pre">3</span></code>. In other words,
+the arguments passed are assigned to the names in the order they appear
+in the function definition. Passing just one value (the second call)
+leads to default values for both <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">z</span></code>.</p>
+<p>Now, what if we wanted to pass a value for <code class="docutils literal"><span class="pre">z</span></code> but are fine with the
+default value for <code class="docutils literal"><span class="pre">y</span></code>? In Python, that’s easy, just <strong>name</strong> the
+argument <code class="docutils literal"><span class="pre">z</span></code> when calling <code class="docutils literal"><span class="pre">foo</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo_with_defaults</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># y is still defaulted to 1.1</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(x, y, z) = (1.0000, 1.1000, 3.0000)
+</pre></div></div>
+</div>
+<p>In fact, arguments can always be named explicitly:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo_with_defaults</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(x, y, z) = (1.0000, 2.0000, 3.0000)
+</pre></div></div>
+</div>
+<p>However, once an argument has been named, all subsequent arguments must
+also be named. For example, the following fails:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo_with_defaults</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-20-2c7ebed8818b&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    foo_with_defaults(1, y=2, 3)</span>
+                             ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> positional argument follows keyword argument
+
+</pre></div></div>
+</div>
+<p>This particular <code class="docutils literal"><span class="pre">SyntaxError</span></code> points out that arguments can be
+<strong>positional</strong> or <strong>keyword</strong> arguments. Any variable we name explicitly
+is a <strong>keyword</strong> argument. We’ll learn more about these terms in
+<a class="reference internal" href="ME400_Lecture_13.html"><span class="doc">Lecture 13</span></a>.</p>
+<p>With named arguments, one can pass arguments in any order. For example,
+consider the following three calls of <code class="docutils literal"><span class="pre">foo_with_defaults</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">foo_with_defaults</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">foo_with_defaults</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">foo_with_defaults</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(x, y, z) = (1.0000, 2.0000, 3.0000)
+(x, y, z) = (1.0000, 2.0000, 3.0000)
+(x, y, z) = (1.0000, 2.0000, 3.0000)
+</pre></div></div>
+</div>
+<p>Each call yields exactly the same output.</p>
+</div>
+<div class="section" id="Function-Documentation">
+<h2>Function Documentation<a class="headerlink" href="#Function-Documentation" title="Permalink to this headline">¶</a></h2>
+<p>From the very beginning, the use of internal documentation via <code class="docutils literal"><span class="pre">help</span></code>
+has been emphasized. The value of <code class="docutils literal"><span class="pre">help</span></code>, however, depends on
+developers to provide the information displayed. That responsibility now
+turns to you, the function writer.</p>
+<p>Suppose you’ve provided your friend the <code class="docutils literal"><span class="pre">compute_sum</span></code> function, and
+she did was not quite sure how to use it. If she read <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture
+1</span></a>, she might try</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">help</span><span class="p">(</span><span class="n">compute_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on function compute_sum in module __main__:
+
+compute_sum(x)
+
+</pre></div></div>
+</div>
+<p>Well, that output is not very helpful. What <code class="docutils literal"><span class="pre">compute_sum</span></code> is missing
+is a <a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">docstring</a>. A
+<strong>docstring</strong> is a string placed immediately below the first line of a
+function (i.e., after the <code class="docutils literal"><span class="pre">def</span> <span class="pre">function_name(arg1,</span> <span class="pre">...):</span></code> line.
+Ideally, this string says something about the function, including how to
+use it and what it does.</p>
+<p>For <code class="docutils literal"><span class="pre">compute_sum</span></code>, one possible docstring is
+<code class="docutils literal"><span class="pre">&quot;&quot;&quot;Returns</span> <span class="pre">the</span> <span class="pre">sum</span> <span class="pre">of</span> <span class="pre">an</span> <span class="pre">array</span> <span class="pre">x.&quot;&quot;&quot;</span></code>. Inserting this string below
+the <code class="docutils literal"><span class="pre">def</span></code> line of <code class="docutils literal"><span class="pre">compute_sum</span></code> leads to the following, documented
+function:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">compute_sum_with_docstring</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the sum of an array x.&quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">help</span><span class="p">(</span><span class="n">compute_sum_with_docstring</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on function compute_sum_with_docstring in module __main__:
+
+compute_sum_with_docstring(x)
+    Returns the sum of an array x.
+
+</pre></div></div>
+</div>
+<p>More complicated functions require more detailed documentation, and with
+the triple, double-quote strings, multi-line docstring values are
+possible. A version of <code class="docutils literal"><span class="pre">compute_sum</span></code> with more detailed documentation
+is the following:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">compute_sum_with_verbose_docstring</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the sum of an array x.</span>
+
+<span class="sd">    Inputs</span>
+<span class="sd">         x: sequential type with numerical elements</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">         s: the sum of the elements of x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">help</span><span class="p">(</span><span class="n">compute_sum_with_verbose_docstring</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on function compute_sum_with_verbose_docstring in module __main__:
+
+compute_sum_with_verbose_docstring(x)
+    Returns the sum of an array x.
+
+    Inputs
+         x: sequential type with numerical elements
+
+    Returns
+         s: the sum of the elements of x
+
+</pre></div></div>
+</div>
+<p>Now your friend has all she needs to use the function!</p>
+<blockquote>
+<div><strong>Note</strong>: Always provide a <strong>docstring</strong> for functions you define.</div></blockquote>
+</div>
+<div class="section" id="Functions-and-Flowcharts">
+<h2>Functions and Flowcharts<a class="headerlink" href="#Functions-and-Flowcharts" title="Permalink to this headline">¶</a></h2>
+<p>Fundamentally, functions do not add anything new to our basic logical
+structures. Functions can perform computations involving sequences,
+selection (<code class="docutils literal"><span class="pre">if</span></code>), and iteration (<code class="docutils literal"><span class="pre">while</span></code> or <code class="docutils literal"><span class="pre">for</span></code>), just like our
+programs have done up to this point. The difference in practice is that
+a function lets one define such operations once and use them repeatedly
+within a program without writing the same lines of code repeatedly.
+Ultimately, substituting a function name in place of a large chunk of
+code can improve readability and one’s ability to debug the program.</p>
+<p>Pseudocode is flexible, and function calls can be described pretty
+directly (e.g., <code class="docutils literal"><span class="pre">Set</span> <span class="pre">s</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">sum</span> <span class="pre">of</span> <span class="pre">array</span> <span class="pre">a</span></code>). To include functions
+in flowcharts requres a new shape. Before, a simple rectangle had been
+used to define processes (usually, single statements like
+<code class="docutils literal"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code>). Another rectangle, with double vertical bars, can be
+used to represent functions, as in the following figure:</p>
+<div class="figure" id="id1">
+<img alt="Program to compute sum that uses the ``compute_sum`` function." src="../_images/sum_function_program.png" />
+<p class="caption"><span class="caption-text">Program to compute sum that uses the <code class="docutils literal"><span class="pre">compute_sum</span></code> function.</span></p>
+</div>
+<p>Surely, this flowchart is simpler than it would be were the function not
+used. When developing flowcharts for programs that use functions, it is
+recommended that separate flow charts are provided for those functions
+that you wrote. For others, you may not know enough about the particular
+implementation to create the flowchart. For example, <code class="docutils literal"><span class="pre">np.sum</span></code> isn’t as
+easy as you would think!</p>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>None at this time.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 12 - Basics of Functions</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#What-is-a-Function?">What is a Function?</a></li>
+<li><a class="reference internal" href="#Functions-with-Multiple-Return-Values">Functions with Multiple Return Values</a></li>
+<li><a class="reference internal" href="#Functions-with-Multiple-Arguments">Functions with Multiple Arguments</a></li>
+<li><a class="reference internal" href="#Function-Documentation">Function Documentation</a></li>
+<li><a class="reference internal" href="#Functions-and-Flowcharts">Functions and Flowcharts</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_12.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_12.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
