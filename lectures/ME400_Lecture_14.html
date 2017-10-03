@@ -209,7 +209,7 @@ div.nboutput div.output_area.stderr {
 <h1>Lecture 14 - Searching<a class="headerlink" href="#Lecture-14---Searching" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture and <a class="reference internal" href="#"><span class="doc">Lecture 14</span></a>, we tackle
+<p>In this lecture and <a class="reference internal" href="ME400_Lecture_15.html"><span class="doc">Lecture 15</span></a>, we tackle
 two of the most important practical problems in computing: <em>searching</em>
 and <em>sorting</em>. We’ll start with <em>searching</em> in this lecture because it
 is the simpler problem, but efficient searching depends on sorted
@@ -220,9 +220,11 @@ different sizes.</p>
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Sort an array of numbers using a linear search.</li>
-<li>Sort an array of numbers using a binary search.</li>
-<li>Describe what is meant by order and use it to compare algorithms.</li>
+<li>Search an array of numbers using a linear search.</li>
+<li>Search an array of numbers using a binary search.</li>
+<li>Describe what is meant by order and use it to compare algorithms</li>
+<li>Perform simple, numerical experiments to confirm the order of an
+algorithm</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
@@ -510,7 +512,7 @@ we’ll time things. All together, these steps form the basis for a
 <span class="c1"># Also, an expected &quot;trend&quot; line is included.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">n_values</span><span class="p">,</span> <span class="n">t_values</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;times&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">n_values</span><span class="p">,</span> <span class="mf">1e-7</span><span class="o">*</span><span class="n">n_values</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">n_values</span><span class="p">,</span> <span class="mf">1e-7</span><span class="o">*</span><span class="n">n_values</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathcal{O}(n)$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -556,8 +558,8 @@ before (or after) the word of interest, you have just reduced the number
 of pages to search by about two.</p>
 <p>The process just described is the basic idea of <strong>binary search</strong>:
 always divide the search domain in half. One can consider binary search
-to be the simplest of <strong>divide and conquer</strong> techniques. <a class="reference external" href="ME400_Lecture_15.ipynb">Lecture
-15</a> will show how divide and conquer applies
+to be the simplest of <strong>divide and conquer</strong> techniques. <a class="reference internal" href="ME400_Lecture_15.html"><span class="doc">Lecture
+15</span></a> will show how divide and conquer applies
 to the problem of sorting.</p>
 <div class="section" id="The-basic-algorithm">
 <h3>The basic algorithm<a class="headerlink" href="#The-basic-algorithm" title="Permalink to this headline">¶</a></h3>
@@ -763,23 +765,13 @@ index(...) method of builtins.list instance
 </div>
 <p>The <code class="docutils literal"><span class="pre">index</span></code> function does not require that the elements of <code class="docutils literal"><span class="pre">a</span></code> be
 sorted:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>3
 </pre></div>
 </div>
 </div>

@@ -25,3 +25,4 @@
    Lecture 12 <lectures/ME400_Lecture_12>  
    Lecture 13 <lectures/ME400_Lecture_13>  
    Lecture 14 <lectures/ME400_Lecture_14>  
+   Lecture 15 <lectures/ME400_Lecture_15>  

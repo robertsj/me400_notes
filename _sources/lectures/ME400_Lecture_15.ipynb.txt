@@ -1,0 +1,797 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 15 - Sorting\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lecture and [Lecture 14](ME400_Lecture_14.ipynb), we tackle two of the most important practical problems in computing: *searching* and *sorting*.  In this lecture, we turn to *sorting*, the more challenging problem and one that was a focus of much research in the early years of computing for making searching easier.  We'll flex our knowledge of functions to help write clean and clear sorting programs.\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Sort an array of numbers using brute-force, $\\mathcal{O}(n^2)$ schemes like *selection sort*.\n",
+    "- Sort an array of numbers using divide-and-conquer, $\\mathcal{O}(n\\log n)$ schemes like *merge sort*.\n",
+    "- Apply built-in Python functions to sort sequences.\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- selection sort\n",
+    "- stable sorting algorithm\n",
+    "- merge sort\n",
+    "- merge "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Sorting is Hard Work\n",
+    "\n",
+    "Sorting a sequence of randomly arranged items is no easy task, often resulting in a lot of repetive motions and paper cuts (if the items are, e.g., student exams).  However, computers are great for such repetition, and they don't seem to suffer those paper cuts.  The question is: *how to sort*?  Sorting, it turns out, presents a rich opportunity for integrating much of the material covered so far.\n",
+    "\n",
+    "The simplest sorting algorithm is based on brute force and leverages the solution to a problem encountered as early as [Lecture 5](ME400_Lecture_5.ipynb): finding the minimum value of a sequence of numbers.  The basic idea is simple.  Given a sequence of $n$ numbers to sort in increasing order, we \n",
+    "\n",
+    "1. Find the smallest value (just as we have previously done).\n",
+    "2. Swap it with the first element in the sequence.\n",
+    "3. Repeat steps (1) and (2) this process for the last $n-1$ items in the sequence.\n",
+    "\n",
+    "This algorithm is known as [selection sort](https://en.wikipedia.org/wiki/Selection_sort).  In more detailed pseudocode, **selection sort** can be written as"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "```\n",
+    "'''The selection sort algorithm to sort an array'''\n",
+    "Input: a, n # sequence of numbers and its length\n",
+    "# Loop through each element a[i] \n",
+    "Set i = 0\n",
+    "While i < n do\n",
+    "   # Find the location k of the smallest element after a[i]\n",
+    "   Set j = i + 1\n",
+    "   Set k = i\n",
+    "   While j < n do\n",
+    "       If a[j] < a[k] then\n",
+    "           Set k = j\n",
+    "       Set j = j + 1\n",
+    "   # Switch the values of a[i] and a[k], putting them in order\n",
+    "   Swap a[i] and a[k]\n",
+    "   i = i + 1\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Take some time and digest this algorithm.  Then try the following exercises:\n",
+    "\n",
+    "> **Exercise**: Apply this algorithm to the sequence [5, 3, 7].  For each value of `i` and `j`, write out, using pen and paper, the values of `i`, `j`, `k`, `a[i]`, `a[j]`, `a[k]`, `a[j] < a[k]`, and `a` *before* the conditional statement.\n",
+    ">> *Solution*:  \n",
+    "```\n",
+    "i    j    k    a[i]    a[j]    a[k]   a[j] < a[k]    a\n",
+    "-------------------------------------------------------------\n",
+    "0    1    0     5       3       5        True       [5, 3, 7]\n",
+    "0    2    1     5       7       3        False      [5, 3, 7] \n",
+    "1    2    1     5       7       5        False      [3, 5, 7]\n",
+    "2    3    2     7      N/A      7        N/A        [3, 5, 7] \n",
+    "```\n",
+    "\n",
+    "> **Exercise**: Repeat the above exercise for the sequence [4, 1, 8, 2, 3].\n",
+    "\n",
+    "> **Exercise**: What happens to `a[i]` if `a[j]` is never less than `a[k]`?  \n",
+    "\n",
+    "> **Exercise**: Produce a flowchart for this algorithm.\n",
+    "\n",
+    "> **Exercise**: Apply this algorithm to the sequence [3, 1$_0$, 4, 1$_1$, 2].  Here, the subscript is used to count the number of times a 1 appears in the sequence.  Does the algorithm produce [1$_0$, 1$_1$, 2, 3, 4] or [1$_1$, 1$_0$, 2, 3, 4]?  A sorting algorithm is **stable** if it preserves the original order of equal values (i.e., 1$_0$ and then 1$_1$).\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's put this to practice using Python.  Because sorting is something to be done for any array, it makes sense to implement the algorithm as a function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def selection_sort(a):\n",
+    "    \"\"\"Applies the selection sort algorithm to sort the sequence a.\"\"\"\n",
+    "    i = 0\n",
+    "    while i < len(a):\n",
+    "        j = i + 1\n",
+    "        k = i\n",
+    "        while j < len(a):\n",
+    "            if a[j] < a[k]:\n",
+    "                k = j\n",
+    "            j += 1\n",
+    "        a[i], a[k] = a[k], a[i]\n",
+    "        i += 1\n",
+    "    return a"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[3, 5, 7]"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "selection_sort([5, 3, 7])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3, 4, 5]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "selection_sort([5, 4, 3, 2, 1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Download this notebook or copy the function above into your own Python file.  Then tackle the following:\n",
+    "\n",
+    "> **Exercise**:  Define `x = [5, 3, 7]` and execute `y = selection_sort(x)`.  Print both `a` and `b`.  Why are they the same?  In other words, why is `a` also sorted?\n",
+    ">> *Solution*: Remember, `y = x` does not produce a copy of `x`.  Rather, `x` and `y` are now just two names for the same data.  Similarly, when `x` is passed to `selection_sort`, it is given the new name `a` within the function, and any changes to `a` lead to changes in `x`.  Because `a` is returned and assigned to `y`, `y` and `x` are two names for the same (now sorted) `list`.\n",
+    "\n",
+    "> **Exercise**:  Define `x = (5, 3, 7)` and execute `y = selection_sort(x)`.  Why does it fail?\n",
+    "\n",
+    "> **Exercise**:  Modify `selection_sort` so that it sorts and returns a *copy* of `a`, making it suitable for sorting `tuple` variables.\n",
+    "\n",
+    "> **Exercise**:  Modify `selection_sort` so that it optionally sorts a sequence in decreasing order.  The function `def` statement should look like `def selection_sort(a, increasing=True):`.\n",
+    ">> *Solution*: A one-line change is to switch `a[j] < a[k]` with `a[j] < a[k] if increasing else a[k] < a[j]`.  Revisit [Lecture 6](ME400_Lecture_6.ipynb) for more tertiary `if` statements of the form `a if b else c`.  Verify this works!\n",
+    "\n",
+    "> **Exercise**: Modify `selection_sort` so that it uses `for` loops instead of `while` loops.  Check your result against the version provided above.\n",
+    "\n",
+    "> **Exercise**:  Could `while i < len(a)` be changed to `while i < len(a) - 1`?  Why or why not?\n",
+    ">> *Solution*.  Yes!  Doing so would skip the loop when `a` has a single element, for which sorting is not required anyway."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So what's the *order*  of this algorithm?  In other words, given a sequence of $n$ elements, how many comparisons must be made?  \n",
+    "\n",
+    "Let's break it down a bit.  The algorithm is comprised of two loops.  The first one must go through all the elements of `a`.  For each value of `i`, the second loop makes `n - i` comparisons.  In other words, we have something like \n",
+    "```\n",
+    "i     # comparisons\n",
+    "-------------------\n",
+    "0       n\n",
+    "1       n - 1\n",
+    "2       n - 2\n",
+    "...     ...\n",
+    "n - 3   3\n",
+    "n - 2   2\n",
+    "n - 1   1\n",
+    "```\n",
+    "\n",
+    "That total looks an awful lot like $1 + 2 + \\ldots + (n - 1) + n$, and that sum is $n(n+1)/2 = n^2/2 + n/2$.  Because $n \\ll n^2$ for large $n$, the algorithm is $\\mathcal{O}(n^2)$.  That's expensive, and for large sequences, we could wait a long, long time for the sort to finish. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify that selection sort is $\\mathcal{O}(n^2)$ by performing a little experiment.  As done in [Lecture 14](ME400_Lecture_14.ipynb) to assess the linear search, we can generate random sequences of different sizes using NumPy.  Then, we can sort them with selection sort and time how long it takes to do so for each size."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\ngg==\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x109c01da0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "\"\"\"Program to show time as a function of size for selection sort.\"\"\"\n",
+    "from time import time\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "# Set the seed to keep the output fixed\n",
+    "np.random.seed(1234)\n",
+    "\n",
+    "# Set the n values and initialize a list for times\n",
+    "n_values = np.arange(50, 1000, 50)\n",
+    "t_values = []\n",
+    "\n",
+    "for n in n_values:\n",
+    "    # Generate an array of random numbers\n",
+    "    a = np.random.rand(n)\n",
+    "    # Start the timer\n",
+    "    t_start = time()\n",
+    "    # Do the search\n",
+    "    selection_sort(a)\n",
+    "    # Determine the elapsed time (in seconds) and save it\n",
+    "    t_elapsed = time() - t_start\n",
+    "    t_values.append(t_elapsed)\n",
+    "    \n",
+    "# Plot the times vs values on a log log plot.\n",
+    "# Also, an expected \"trend\" line is included.\n",
+    "plt.figure(1)\n",
+    "plt.loglog(n_values, t_values, 'k-o', label='times') \n",
+    "plt.loglog(n_values, 1e-7*n_values**2, 'r--', label='$\\mathcal{O}(n^2)$')\n",
+    "plt.grid(True)\n",
+    "plt.xlabel('n')\n",
+    "plt.ylabel('time (s)')\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It appears that the order is confirmed, and that the impact on time is as expected.  Basically, each comparison (which requires accessing two elements of `a`) requires a certain amount of time.  If the number of comparisons is goes as $n^2$, and the time goes with the number of comparisons, then selection sort is **100 times more expensive for an array of size $10n$ than for an array of size $n$**.  That's huge, and better methods are surely needed for the massive data sets out in the real world that must be sorted (think Google searches and other everyday lists with thousands of entries)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> **Exercise**: The results from the numerical experiment suggest that an array of 100 elements takes about 0.002 s to sort using the selection sort algorithm.  About how many seconds would you expect the same algorithm to take for 1 million elements?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Better Sorting for Bigger Data\n",
+    "\n",
+    "We saw in [Lecture 14](ME400_Lecture_14.ipynb) that the task of searching a pre-sorted array could be done in as few as $\\mathcal{O}(n \\log n)$ operations.  The trick was to split identify which half of a sequence contained the element, and to keep splitting the domain in half at every iteration until the element in question was found.  It was even suggested that such a **binary search** is a form of divide and conquer: split the work into ever smaller chunks and solve the smaller problems more quickly.  \n",
+    "\n",
+    "The same principle is the foundation of many of the most successive algorithms ever, including [quicksort](https://en.wikipedia.org/wiki/Quicksort), probably the most widely search algorithms, and the [fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform), which drives much of signal processing across multiple domains.  Often, and as true for these algorithms, divide and conquer takes one from $\\mathcal{O}(n^2)$ to $\\mathcal{O}(n \\log n)$, a huge savings.\n",
+    "\n",
+    "For our purposes, it is sufficient to consider the simplest of the divide and conquer approaches to sorting: [merge sort](https://en.wikipedia.org/wiki/Merge_sort).  The algorithm combines two very simple ideas: (1) divide a sequence into smaller chunks that can be sorted directly and (2) merge two sorted (sub)sequences. \n",
+    "\n",
+    "### Merging Sorted Sequences\n",
+    "\n",
+    "The fundamental work done by mergesort is to merge two smaller, *sorted* sequences into one larger, *sorted* sequence.  For example, if one starts with `a = [1, 8]` and `b = [7, 5]`, the result of *merging* `a` and `b` should be `c = [1, 5, 7, 8]`.  \n",
+    "\n",
+    "How is this accomplished?  We know the total number of elements to be merged (here, that's 4).  Each element of the new, sorted sequence `c` can be defined by choosing the lowest of the remaining elements in `a` and `b`.  Because `a` and `b` are sorted, we can keep track of which elements have already been selected with two counters (one for `a` and one for `b`).  If the counter for `a` is equal to the length of `a` (i.e., all elements of `a` have been merged), then all of the remaining elements of `c` must come from `b`.  The same goes if the `b` counter equals the length of `b`.\n",
+    "\n",
+    "That's all a mouthful, for sure.  The idea can be shown more succinctly in pseudocode:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "```\n",
+    "'''Merge: an algorithm to merge two sorted sequences'''\n",
+    "Input: a, b \n",
+    "Set m to the length of a\n",
+    "Set n to the length of b\n",
+    "# Initialize the sorted sequence\n",
+    "Set c to be a sequence of length (m+n) \n",
+    "# Initialize the counter for a, b, and c\n",
+    "Set i = 0\n",
+    "Set j = 0\n",
+    "Set k = 0\n",
+    "While k < m + n do\n",
+    "    If i < m and j < n then\n",
+    "        # Both a and b still have elements to merge\n",
+    "        If a[i] <= b[j] then\n",
+    "            Set c[k] = a[i] \n",
+    "            Set i = i + 1\n",
+    "        Otherwise\n",
+    "            Set c[k] = b[k]\n",
+    "            Set j = j + 1\n",
+    "    Otherwise, if i == m then\n",
+    "        # Only b has elements left to merge\n",
+    "        Set c[k] = b[j]\n",
+    "        Set j = j + 1\n",
+    "    Otherwise,\n",
+    "        # Only a has elements left to merge\n",
+    "        Set c[k] = a[i]\n",
+    "        Set i = i + 1\n",
+    "    Set k = k + 1\n",
+    "Output: c\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Take some time and digest this algorithm.  Then try the following exercises:\n",
+    "\n",
+    "> **Exercise**: Apply this algorithm to  `a = [1, 3, 8]` and `b = [2, 5, 7]`.  For each value of `k`, list the final value of `i`, `j`, and `k`.\n",
+    "\n",
+    "> **Exercise**: Implement this algorithm as the Python function `merge(a, b)`.\n",
+    "\n",
+    "> **Exercise**: Is merge sort stable?  Try it on [3, 1$_0$, 4, 1$_1$, 2]."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Divide and Conquer\n",
+    "\n",
+    "Merging is half thee battle: we need to dive down and get the smaller arrays to sort.  A natural approach is to use recursion.  Here is a function that will divide a sequence and print out subsequences.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--------> [8, 7, 6, 5, 4, 3, 2, 1]\n",
+      "----> [8, 7, 6, 5]\n",
+      "--> [8, 7]\n",
+      "--> [6, 5]\n",
+      "----> [4, 3, 2, 1]\n",
+      "--> [4, 3]\n",
+      "--> [2, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def divide_and_print(a):\n",
+    "    print('-'*len(a)+'>', a)\n",
+    "    if len(a) <= 2:\n",
+    "        return\n",
+    "    else:\n",
+    "        divide_and_print(a[:len(a)//2])\n",
+    "        divide_and_print(a[len(a)//2:])\n",
+    "    return\n",
+    "divide_and_print([8,7,6,5,4,3,2,1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The output of this function clearly shows how the original sequence is divided at each level of recursion.  Like all recursive functions, there needs to be a termination criterion (or guard).  Here, if the sequence has two or fewer elements, the function returns without further dividing `a`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To apply the basic idea of `divide_and_print` to sorting, the sequence must be sorted at the bottom level (i.e., when `len(a) <= 2`) and merged at successive levels.  For example, the very first chunk of `a` is the subsequence `[8, 7]`.  That is easily sorted by simple comparison: since `8 > 7`, swap the elements to yield (and return) `[7, 8]`.  The next chunk is `[6, 5]`, which is also reversed to `[5, 6]`.  These sorted subsequences of two elements can then be merged.\n",
+    "\n",
+    "Here is the full algorithm in pseudocode, where `Call` indicates that an algorithm (think a function, here) is to be supplied some input and is to provide some output:\n",
+    "\n",
+    "```\n",
+    "'''Merge Sort: an algorithm to sort the sequence a'''\n",
+    "Input: a\n",
+    "Set n to the length of a\n",
+    "If n == 2 and a[0] > a[1] then\n",
+    "    Swap a[0] and a[1]\n",
+    "Otherwise, if n > 2 then\n",
+    "    Set a_L to be the first half of a \n",
+    "    Set a_R to be the second half of a\n",
+    "    Call Merge Sort to sort a_L and assign \n",
+    "      its output to a_L\n",
+    "    Call Merge Sort to sort a_R and assign\n",
+    "      its output to a_R\n",
+    "    Call Merge to combine a_L and a_R, and assign\n",
+    "      its output to a\n",
+    "# Note, nothing is done when n is 1\n",
+    "Output: a\n",
+    "```\n",
+    "\n",
+    "Although perhaps not obvious, the merge sort algorithm is $\\mathcal{O}(n\\log n)$.  Given $n$ elements in a sequence, the algorithm divides the array into smaller chunks $\\log_2 n - 1$ times.  For example, if one starts with 16 elements, those are then divided into subsequences with 8 elements, and then 4, and then 2.  That is $\\log_2 16 - 1 = 3$ levels.  At the last (deepest) level with subsequences of 1 or 2 elements, up to one comparison is made to decide whether to swap the elements or not.  For all other levels, the merge algorithm is applied.  To merge two sequences each of length $m$ requires at least $m$ comparisons (and up to $2m$ comparisons).  Because all $n$ elements of the original sequence are merged at every level (albeit as part of smaller subsequences), up to $2n$ comparisons are therefore required per level.  Hence, there are up to approximately $(\\log_2 n - 1)\\cdot 2n = \\mathcal{O}(n\\log n)$ comparisons.\n",
+    "\n",
+    "Spend some time and digest this alorithm.   Then tackle the following:\n",
+    "\n",
+    "\n",
+    "> **Exercise**: Apply this algorithm to `[6, 5, 4, 3, 2, 1]` and trace its progress by hand, writing down the value of `a` at the beginning of each call to Merge Sort.  Number these calls in the order in which they are made.  (In other words, predict what would happen if `a` were printed after `Input`.)\n",
+    "\n",
+    ">> *Solution*: \n",
+    "\n",
+    ">> `0      [6, 5, 4, 3, 2, 1]`  \n",
+    ">> `1      [6, 5, 4]`  \n",
+    ">> `2      [6]`      \n",
+    ">> `3      [5, 4]`             \n",
+    ">> `4      [3, 2, 1]`          \n",
+    ">> `5      [3]`          \n",
+    ">> `6      [2, 1]`  \n",
+    "\n",
+    "\n",
+    "> **Exercise**: Implement this algorithm as the Python function `merge_sort(a)`.  \n",
+    "\n",
+    "> **Exercise**: How many comparisons are made for `a = [6, 5, 4, 3, 2, 1]`?  Make sure to include the comparisons made when merging.  How does this compare to selection sort?\n",
+    "\n",
+    "> **Exercise**: Suppose you implement merge sort (correctly) in Python and use it to sort a list of 100 elements.  If the time required to sort 100 elements is about 0.001 s, how long would it take to sort a list with 1 million elements?\n",
+    "\n",
+    ">> *Solution*: $t \\approx \\frac{10^6 \\log 10^6}{100 \\log 100} \\times 0.001~\\text{s}= 30~\\text{s}$.\n",
+    "\n",
+    "> **Exercise**: Develop a modified merge sort algorithm that does not use recursion.  *Hint*: start simple and reproduce the behavior of `divide_and_print` using only loops."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "##  Built-in Sorting\n",
+    "\n",
+    "Sorting is so fundamental that algorithms are often implemented by default in high-level languages (like Python, MATLAB, and C++).  In Python, the built-in `sorted` function accepts as input a sequence `a` and returns the sorted results:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3]"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sorted([3, 2, 1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Help on built-in function sorted in module builtins:\n",
+      "\n",
+      "sorted(iterable, /, *, key=None, reverse=False)\n",
+      "    Return a new list containing all items from the iterable in ascending order.\n",
+      "    \n",
+      "    A custom key function can be supplied to customize the sort order, and the\n",
+      "    reverse flag can be set to request the result in descending order.\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "help(sorted)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As `help` indicates, two optional arguments `key` and `reverse` can be provided.  By default, `reverse` is `False`, and a sequence is sorted in increasing order.  By setting `reverse=True`, the opposite order can be achieve:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3]"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sorted([1, 2, 3])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[3, 2, 1]"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sorted([1, 2, 3], reverse=True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `key` argument is `None` by default.  Any other value passed must be a callable function that is given an item of the sequence and returns a value to be used when comparing that item to others. \n",
+    "\n",
+    "Consider, for example, the list `a = [1, 2, 3]`. The value of `a[0]` is 1, while `a[1]` is 2.  Hence, `a[0] < a[1]` is `1 < 2` is `True`.  The result of this comparison (`True`) can be modified by using the `key` function to change the value of each item compared.  For example, if both `a[0]` and `a[1]` are *negated* before their comparison, the result  is `-1 < -2`, i.e., `False`.  Such a change produces a sorted array in reverse order:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[3, 2, 1]"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sorted([1, 2, 3], key=lambda x: -x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `key` function can make sorting items with many components easier.  Those items could be the rows of a spread sheet whose components are the valiues in various columns.  Suppose such data were read from  `.csv` file to produce a list of each row of data, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "data = [(\"Julia\", \"Roberts\", 2, 5), (\"Harrison\", \"Ford\", 4, 1), (\"Meryl\", \"Streep\", 3, 6)]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Perhaps obviously, these are famous names coupled with arbitrary numbers.  We can print out these items by last name via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "('Harrison', 'Ford', 4, 1)\n",
+      "('Julia', 'Roberts', 2, 5)\n",
+      "('Meryl', 'Streep', 3, 6)\n"
+     ]
+    }
+   ],
+   "source": [
+    "for item in sorted(data, key=lambda x: x[1]):\n",
+    "    print(item)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `key` function returns `x[1]`, with is `Ford`, `Roberts`, or `Streep` for the given data.  Certainly, more complex data types (dictionaries, nested lists, etc.) may be similarly *keyed* and sorted."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> **Exercise** Take this data and sort the three items in order based on the number of `e`'s in the last name."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Python's built-in `list` type has its own `sort` function.  Like `sorted`, it accepts optional `key` and `reverse` arguments:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Help on method_descriptor:\n",
+      "\n",
+      "sort(...)\n",
+      "    L.sort(key=None, reverse=False) -> None -- stable sort *IN PLACE*\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "help(list.sort)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The major difference between `list.sort` and `sorted` is that `list.sort` sorts the elements *in place*.  In other words, `a.sort()` changes `a` directly, while `b = sorted(a)` produced a copy of `a`, sorts that copy, and then returns the sorted sequence, which is assigned to `b`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, `NumPy` provides its own `np.sort(a)` function to sort an array `a`.  It also accepts three optional arguments: `axis`, `kind`, and `order`.  By setting the axis (e.g., 0 for rows and 1 for columns in a 2-D array), the elements are sorted along that axis.  By default, the data is sorted along the last axis.  \n",
+    "\n",
+    "For example, consider the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 3,  2,  1],\n",
+       "       [ 2,  4,  6],\n",
+       "       [ 1,  5, 10]])"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A = np.array([[3, 2, 1],[2,4,6],[1, 5, 10]])\n",
+    "A"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 1,  2,  1],\n",
+       "       [ 2,  4,  6],\n",
+       "       [ 3,  5, 10]])"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.sort(A, axis=0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 1,  2,  3],\n",
+       "       [ 2,  4,  6],\n",
+       "       [ 1,  5, 10]])"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.sort(A, axis=1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For sorting NumPy arrays, the `np.sort` function is most likely the fastest option. \n",
+    "\n",
+    "> **Exercise**: Perform a numerical experiment like the one above for selection sort using `np.sort` with the optional argument `kind='mergesort'`.  Does its order appear to be $\\mathcal{O}(n\\log n)$?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "None at this time, but *sorting* is a rich topic for which many resources are available.  We've seen $\\mathcal{O}(n^2)$ and $\\mathcal{O}(n\\log n)$ sorting.  Nothing is better (for general data), but there exist other algorithms (insertion, bubble, heap, and other sorts).  There's even one out there that of order $\\mathcal{O}(n!)$.  Would you want to use it?"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
