@@ -22,3 +22,7 @@
    Lecture 9 <lectures/ME400_Lecture_9>  
    Lecture 10 <lectures/ME400_Lecture_10>  
    Lecture 11 <lectures/ME400_Lecture_11>  
+   Lecture 12 <lectures/ME400_Lecture_12>  
+   Lecture 13 <lectures/ME400_Lecture_13>  
+   Lecture 14 <lectures/ME400_Lecture_14>  
+   Lecture 15 <lectures/ME400_Lecture_15>  
