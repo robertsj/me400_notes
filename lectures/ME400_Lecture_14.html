@@ -27,6 +27,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 15 - Sorting" href="ME400_Lecture_15.html" />
     <link rel="prev" title="Lecture 13 - More on Functions" href="ME400_Lecture_13.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -253,7 +254,7 @@ in pseudocode as follows:</p>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="c1"># sequence, number elements, value of interest</span>
 <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">Not</span> <span class="n">found</span>
 <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
     <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span> <span class="n">then</span>
         <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
         <span class="n">Break</span>  <span class="c1"># stealing an idea from the Python we&#39;ve learned</span>
@@ -297,16 +298,16 @@ sort a sequence is with the <code class="docutils literal"><span class="pre">sor
 </div>
 </div>
 <p>Hence, we can modify somewhat the pseudocode to search sorted values and
-to find the element equal to (or nearest but smaller than) a value of
-interest.</p>
+to find the first element equal to (or the first element greater than) a
+value of interest.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of a sorted sequence&quot;&quot;&quot;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="c1"># sorted sequence, number elements, value of interest</span>
-<span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">Not</span> <span class="n">found</span>
+<span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
 <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
-    <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">v</span> <span class="n">then</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
+    <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">v</span> <span class="n">then</span>
+        <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
         <span class="n">Break</span>
-    <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
     <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="n">Output</span><span class="p">:</span> <span class="n">location</span>
 </pre></div>
@@ -320,14 +321,14 @@ interest.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Search a sorted sequence for value v. Return nearest</span>
-<span class="sd">       index to left if not found.</span>
+<span class="sd">       index to right (or last position) if not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">location</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
             <span class="k">break</span>
-        <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">location</span>
 </pre></div>
@@ -401,7 +402,7 @@ interest.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="c1"># expect 4 again</span>
+<span></span><span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span> <span class="c1"># expect 4 again</span>
 </pre></div>
 </div>
 </div>
@@ -411,7 +412,7 @@ interest.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>2
+<span></span>4
 </pre></div>
 </div>
 </div>
@@ -423,28 +424,28 @@ interest.</p>
 third argument <code class="docutils literal"><span class="pre">compare</span></code>, which should be a function that accepts
 two arguments. For a sequence <code class="docutils literal"><span class="pre">a</span></code> and value <code class="docutils literal"><span class="pre">v</span></code>,
 <code class="docutils literal"><span class="pre">compare(a[i],</span> <span class="pre">v)</span></code> should return <code class="docutils literal"><span class="pre">True</span></code> if <code class="docutils literal"><span class="pre">a[i]</span></code> is greater
-than <code class="docutils literal"><span class="pre">v</span></code> and <code class="docutils literal"><span class="pre">False</span></code> otherwise. Test your modified search
-function with <code class="docutils literal"><span class="pre">compare</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x[1]</span> <span class="pre">&gt;</span> <span class="pre">y[1]</span></code>,
+than or equal to <code class="docutils literal"><span class="pre">v</span></code> and <code class="docutils literal"><span class="pre">False</span></code> otherwise. Test your modified
+search function with <code class="docutils literal"><span class="pre">compare</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x[1]</span> <span class="pre">&gt;</span> <span class="pre">y[1]</span></code>,
 <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[(1,</span> <span class="pre">2),</span> <span class="pre">(4,</span> <span class="pre">3),</span> <span class="pre">(1,</span> <span class="pre">9),</span> <span class="pre">(4,</span> <span class="pre">11)]</span></code> and <code class="docutils literal"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">(1,</span> <span class="pre">9)</span></code>.</p>
 <blockquote>
 <div><em>Solution</em>:</div></blockquote>
 </div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Search a sorted sequence for value v. Return nearest</span>
 <span class="sd">       index to left if not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">location</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">compare</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">v</span><span class="p">):</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
             <span class="k">break</span>
-        <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">location</span>
 <span class="c1"># Now test it</span>
 <span class="n">a</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span>
 <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -573,7 +574,7 @@ algorithm is defined by the following pseudocode:</p>
 <span class="c"># Set the left and right search bounds</span>
 <span class="n">Set</span> <span class="n">L</span> <span class="p">=</span> <span class="mi">0</span>
 <span class="n">Set</span> <span class="n">R</span> <span class="p">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="n">While</span> <span class="n">L</span> <span class="o">&lt;</span> <span class="n">R</span>
+<span class="n">While</span> <span class="n">L</span> <span class="o">&lt;</span><span class="p">=</span> <span class="n">R</span>
     <span class="c"># Set the central point (use integer division!)</span>
     <span class="n">Set</span> <span class="n">C</span> <span class="p">=</span> <span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="n">If</span> <span class="n">v</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="n">then</span>
@@ -634,14 +635,14 @@ bolded entry indicates the element is found at that step):</p>
 </tr>
 <tr class="row-odd"><td>1</td>
 <td><code class="docutils literal"><span class="pre">[3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
-<td><strong>``[9, 11]``</strong></td>
+<td><strong>[9, 11]</strong></td>
 </tr>
 <tr class="row-even"><td>2</td>
 <td><code class="docutils literal"><span class="pre">[7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
 <td>&#160;</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td><strong>``[9, 11]``</strong></td>
+<td><strong>[9, 11]</strong></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -765,13 +766,23 @@ index(...) method of builtins.list instance
 </div>
 <p>The <code class="docutils literal"><span class="pre">index</span></code> function does not require that the elements of <code class="docutils literal"><span class="pre">a</span></code> be
 sorted:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>3
 </pre></div>
 </div>
 </div>
@@ -820,6 +831,7 @@ behavior change if <code class="docutils literal"><span class="pre">a</span></co
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="ME400_Lecture_13.html" title="previous chapter">Lecture 13 - More on Functions</a></li>
+      <li>Next: <a href="ME400_Lecture_15.html" title="next chapter">Lecture 15 - Sorting</a></li>
   </ul></li>
 </ul>
 </div>

@@ -1,0 +1,871 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 13 - More on Functions\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 12](ME400_Lecture_12.ipynb), the basics of defining functions were presented.  In this lecture, more advanced features of function definitions are presented, including the use of the special `*arg` and `**kwarg` structures.  In addition, anonymous `lambda` functions are presented for quick, in-line applications.  Finally, some interesting (and possibly suprising) applications of functions are considered, which include use of functions as arguments to other functions and the use of functions that call themselves (i.e., *recursion*). \n",
+    "\n",
+    "Note that much of the content of this lecture is focused primarily on features of functions specific to Python that provide a lot of flexibility.  For many students, these features are likely not needed for routine programming, but an awareness of these features is useful when understanding the code of others."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define a function using `*args` and `**kwargs`.\n",
+    "- Define a `lambda` function.\n",
+    "- Define a recursive function."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- `*args`\n",
+    "- `**kwargs`\n",
+    "- anonymous function\n",
+    "- `lambda`\n",
+    "- `filter`\n",
+    "- recursion\n",
+    "- recursive function\n",
+    "- recursive sequence"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## `*args` and `**kwargs`\n",
+    "\n",
+    "What on earth are `*args` and `**kwargs`?  Before moving along, let's look at a function introduced back in [Lecture 3](ME400_Lecture_3.ipynb): `plt.plot`. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "In [Lecture 12](ME400_Lecture_12.ipynb), functions were defined with a pretty specific structure:\n",
+    "\n",
+    "\n",
+    "```python\n",
+    "    def some_function(arg1, arg2 = default2, arg3 = default3):\n",
+    "        # do stuff and maybe return a value \n",
+    "        # (but don't have only comments like these!)\n",
+    "```\n",
+    "\n",
+    "\n",
+    "Such a function has arguments explicitly listed, and sometimes, they are given default values.  \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Can we learn `*args` and `**kwargs` by example?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def foo(*args) :\n",
+    "    print(args)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(1, 2, 3)\n"
+     ]
+    }
+   ],
+   "source": [
+    "foo(1, 2, 3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(1,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "foo(1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(1, 2, 3, 4, 5, 6, 7)\n"
+     ]
+    }
+   ],
+   "source": [
+    "foo(1, 2, 3, 4, 5, 6, 7)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def goo(**kwargs):\n",
+    "    print(kwargs)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "goo() takes 0 positional arguments but 3 were given",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-9-9f6a052e5b7f>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mgoo\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m: goo() takes 0 positional arguments but 3 were given"
+     ]
+    }
+   ],
+   "source": [
+    "goo(1, 2, 3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{'a': 1, 'b': 2}\n"
+     ]
+    }
+   ],
+   "source": [
+    "goo(a=1, b=2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Some Conclusions:\n",
+    "\n",
+    "1. `*args` packages all **positional unnamed) arguments** into a `tuple`\n",
+    "2. `**kwargs` packages all **keyword (named) arguments** into a `dict`\n",
+    "3. All positional arguments must come before keyword arguments\n",
+    "4. `*args` and `**kwargs` help make functions super flexible"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "And back to `plt.plot`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nZk/CogAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7f09c6a81c18>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "x = np.linspace(0, 10, 10)\n",
+    "plt.plot(x, x**2,  '-*', color='red', linewidth=2, label='$x^2$', markersize=10)\n",
+    "plt.plot(x, x**3, '--h', color='blue', linewidth=5, label='$x^3$', markersize=15)\n",
+    "plt.legend() \n",
+    "plt.xlabel('x')\n",
+    "plt.grid(True)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Define a function `are_they_bool(*args, **kwargs)` that returns a `list` whose length is equal to the number of positional arguments passed and a `dict` whose length is equal to the number of keyword arguments passed.  The `i`th element of this `list` is `True` if the `i`th argument is (logically equal to) `True` and is otherwise `False`.  The `dict` should have keys equal to the named arguments and similar `True`/`False` values."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Anonymous Functions"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Warning** This topic confuses the heck out of some students---pay attention and ask questions."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "So far, functions defined using `def`, but one can define functions with `lambda`, too."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "A simple example: squaring a number `x`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def square_it(x):\n",
+    "    return x*x\n",
+    "square_it(2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The `lambda` approach:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "square_it_lambda = lambda x: x**2\n",
+    "square_it_lambda(2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Whence \"anonymous?\"  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(<function __main__.square_it>, <function __main__.<lambda>>)"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "square_it, square_it_lambda"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "It **has no name** and can be **defined and used in place**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "(lambda x: x**2)(2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Strange syntax, **never essential**, but often the **clearest (cleanest?) way to solve a problem**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Motivating example**:  Understanding trends in grades.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "number of students = 120\n",
+      "\n",
+      "How's Student 23 doing?\n",
+      "Pre-Lecture Activities Final Score : 100.0\n",
+      "Homework Final Score : 100.0\n",
+      "Laboratories Final Score : 97.5\n",
+      "Examinations Final Score : 93.75\n",
+      "Final Score : 96.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "import json\n",
+    "grades = json.load(open('anon_grades.json', 'r'))\n",
+    "print('number of students = {}'.format(len(grades)))\n",
+    "print()\n",
+    "print(\"How's Student 23 doing?\")\n",
+    "for key in grades['Student 23']:\n",
+    "    if 'Final' in key:\n",
+    "        print(key, ':', grades['Student 23'][key])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Common question: which students did **better** on the **exam** than on **homework**?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['Student 4', 'Student 13', 'Student 19', 'Student 22', 'Student 24', 'Student 25', 'Student 33', 'Student 34', 'Student 45', 'Student 46', 'Student 47', 'Student 55', 'Student 61', 'Student 64', 'Student 70', 'Student 74', 'Student 77', 'Student 78', 'Student 79', 'Student 92', 'Student 95', 'Student 100', 'Student 110']\n",
+      "23\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Approach 1: A loop to build a list\n",
+    "names = []\n",
+    "for student in grades:\n",
+    "    if grades[student]['Examinations Final Score'] > grades[student]['Homework Final Score']:\n",
+    "        names.append(student)\n",
+    "print(names)\n",
+    "print(len(names))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['Student 4', 'Student 13', 'Student 19', 'Student 22', 'Student 24', 'Student 25', 'Student 33', 'Student 34', 'Student 45', 'Student 46', 'Student 47', 'Student 55', 'Student 61', 'Student 64', 'Student 70', 'Student 74', 'Student 77', 'Student 78', 'Student 79', 'Student 92', 'Student 95', 'Student 100', 'Student 110']\n",
+      "23\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Approach 2: the filter function\n",
+    "L = list(filter(lambda key: grades[key]['Examinations Final Score'] > grades[key]['Homework Final Score'], grades.keys()))\n",
+    "print(L)\n",
+    "print(len(names))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Look carefully**: `lambda` is defined usings `grades`!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Student 1    69.44   45.00    1.54\n",
+      "Student 3    68.56   32.50    2.11\n",
+      "Student 10  100.00   68.75    1.45\n",
+      "Student 39   96.30   65.00    1.48\n",
+      "Student 57  100.00   42.50    2.35\n",
+      "Student 67   96.30   57.50    1.67\n",
+      "Student 73   87.04   42.50    2.05\n",
+      "Student 80   54.63    0.00     nan\n",
+      "Student 90  100.00   65.00    1.54\n",
+      "Student 97  100.00   68.75    1.45\n"
+     ]
+    }
+   ],
+   "source": [
+    "L = list(filter(lambda key: grades[key]['Examinations Final Score'] < 0.7*grades[key]['Homework Final Score'], grades.keys()))\n",
+    "for name in L:\n",
+    "    hw = grades[name]['Homework Final Score']\n",
+    "    ex = grades[name]['Examinations Final Score']\n",
+    "    print(\"{:10}  {:6.2f}  {:6.2f}  {:6.2f}\".format(name, hw, ex, hw/ex if ex > 0 else np.nan))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Nice utility**: given a nasty function `blah(x, y, z)` for which we need only vary `x` (with `y = 1` and `z = 2`), use lambda via `lambda x: blah(x, 1, 2)`.\n",
+    "\n",
+    "Not obviously a benefit now: just wait to integration, SymPy, *et cetera*!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recursive Functions"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The topic of **recursion** is challenging, and recurssion can often (not always) be replaced by loops. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "A **recursive process** gives output (say, a particular value) at one step using as input the output from one or more previous steps **based on a fixed relationship**.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**: The Fibonacci sequence $a_{n} = a_{n-1} + a_{n-2}$ with $a_0 = a_1 = 1$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The basic recursive function in Python:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "n =  5\n",
+      "n =  4\n",
+      "n =  3\n",
+      "n =  2\n",
+      "recursion is ending!\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "15"
+      ]
+     },
+     "execution_count": 59,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def a_basic_recursive_function(n):\n",
+    "    \"\"\"This function does something simple, but it\n",
+    "       might not be immediately obvious.\"\"\"\n",
+    "    if n == 1:  # <--- ALWAYS NEED SOMETHING TO STOP RECURSION!!\n",
+    "        print('recursion is ending!')\n",
+    "        return 1\n",
+    "    else:\n",
+    "        print('n = ', n)\n",
+    "        return n + a_basic_recursive_function(n-1)\n",
+    "    \n",
+    "a_basic_recursive_function(5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Infinite recursion is bad:\n",
+    "\n",
+    "```python\n",
+    "def infinite_recursion(n):\n",
+    "    return n + infinite_recursion(n-1)\n",
+    "print(infinite_recursion(5))\n",
+    "```\n",
+    "\n",
+    "How would this stop?  From $n = 5$, to $n = -10$, to $n = -\\infty$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Fibonacci (in Python and using recursion)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "8"
+      ]
+     },
+     "execution_count": 61,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def fibo_recursive(n):\n",
+    "    if n < 2: # again, we need a termination criterion.\n",
+    "        return 1\n",
+    "    else:\n",
+    "        return fibo_recursive(n-2) + fibo_recursive(n-1)\n",
+    "    \n",
+    "fibo_recursive(5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Sum an array recursively."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should  now be able to\n",
+    "\n",
+    "- Define a function using `*args` and `**kwargs`.\n",
+    "- Define a `lambda` function.\n",
+    "- Define a recursive function.\n",
+    "\n",
+    "Grab exams in office hours (advising season, so may be a wait)!"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
