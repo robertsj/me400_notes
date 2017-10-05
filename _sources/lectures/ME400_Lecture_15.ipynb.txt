@@ -83,13 +83,15 @@
     "2    3    2     7      N/A      7        N/A        [3, 5, 7] \n",
     "```\n",
     "\n",
+    "Some more:\n",
+    "\n",
     "> **Exercise**: Repeat the above exercise for the sequence [4, 1, 8, 2, 3].\n",
     "\n",
     "> **Exercise**: What happens to `a[i]` if `a[j]` is never less than `a[k]`?  \n",
     "\n",
     "> **Exercise**: Produce a flowchart for this algorithm.\n",
     "\n",
-    "> **Exercise**: Apply this algorithm to the sequence [3, 1$_0$, 4, 1$_1$, 2].  Here, the subscript is used to count the number of times a 1 appears in the sequence.  Does the algorithm produce [1$_0$, 1$_1$, 2, 3, 4] or [1$_1$, 1$_0$, 2, 3, 4]?  A sorting algorithm is **stable** if it preserves the original order of equal values (i.e., 1$_0$ and then 1$_1$).\n"
+    "> **Exercise**: Apply this algorithm to the sequence [3, $1_0$, 4, $1_1$, 2].  Here, the subscript is used to count the number of times a 1 appears in the sequence.  Does the algorithm produce [$1_0$, $1_1$, 2, 3, 4] or [$1_1$, $1_0$, 2, 3, 4]?  A sorting algorithm is **stable** if it preserves the original order of equal values (i.e., $1_0$ and then $1_1$).\n"
    ]
   },
   {
@@ -169,6 +171,7 @@
     "Download this notebook or copy the function above into your own Python file.  Then tackle the following:\n",
     "\n",
     "> **Exercise**:  Define `x = [5, 3, 7]` and execute `y = selection_sort(x)`.  Print both `a` and `b`.  Why are they the same?  In other words, why is `a` also sorted?\n",
+    "\n",
     ">> *Solution*: Remember, `y = x` does not produce a copy of `x`.  Rather, `x` and `y` are now just two names for the same data.  Similarly, when `x` is passed to `selection_sort`, it is given the new name `a` within the function, and any changes to `a` lead to changes in `x`.  Because `a` is returned and assigned to `y`, `y` and `x` are two names for the same (now sorted) `list`.\n",
     "\n",
     "> **Exercise**:  Define `x = (5, 3, 7)` and execute `y = selection_sort(x)`.  Why does it fail?\n",
@@ -176,11 +179,13 @@
     "> **Exercise**:  Modify `selection_sort` so that it sorts and returns a *copy* of `a`, making it suitable for sorting `tuple` variables.\n",
     "\n",
     "> **Exercise**:  Modify `selection_sort` so that it optionally sorts a sequence in decreasing order.  The function `def` statement should look like `def selection_sort(a, increasing=True):`.\n",
+    "\n",
     ">> *Solution*: A one-line change is to switch `a[j] < a[k]` with `a[j] < a[k] if increasing else a[k] < a[j]`.  Revisit [Lecture 6](ME400_Lecture_6.ipynb) for more tertiary `if` statements of the form `a if b else c`.  Verify this works!\n",
     "\n",
     "> **Exercise**: Modify `selection_sort` so that it uses `for` loops instead of `while` loops.  Check your result against the version provided above.\n",
     "\n",
     "> **Exercise**:  Could `while i < len(a)` be changed to `while i < len(a) - 1`?  Why or why not?\n",
+    "\n",
     ">> *Solution*.  Yes!  Doing so would skip the loop when `a` has a single element, for which sorting is not required anyway."
    ]
   },

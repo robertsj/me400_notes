@@ -283,30 +283,29 @@ each value of <code class="docutils literal"><span class="pre">i</span></code> a
 values of <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, <code class="docutils literal"><span class="pre">k</span></code>, <code class="docutils literal"><span class="pre">a[i]</span></code>, <code class="docutils literal"><span class="pre">a[j]</span></code>, <code class="docutils literal"><span class="pre">a[k]</span></code>,
 <code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code>, and <code class="docutils literal"><span class="pre">a</span></code> <em>before</em> the conditional statement. &gt;
 <em>Solution</em>:</div></blockquote>
-<div class="highlight-default"><div class="highlight"><pre><span></span>i    j    k    a[i]    a[j]    a[k]   a[j] &lt; a[k]    a
--------------------------------------------------------------
-0    1    0     5       3       5        True       [5, 3, 7]
-0    2    1     5       7       3        False      [5, 3, 7]
-1    2    1     5       7       5        False      [3, 5, 7]
-2    3    2     7      N/A      7        N/A        [3, 5, 7]
-
-**Exercise**: Repeat the above exercise for the sequence [4, 1, 8,
-2, 3].
-
-**Exercise**: What happens to ``a[i]`` if ``a[j]`` is never less
-than ``a[k]``?
-
-**Exercise**: Produce a flowchart for this algorithm.
-
-**Exercise**: Apply this algorithm to the sequence [3,
-1\ :math:`_0`, 4, 1\ :math:`_1`, 2]. Here, the subscript is used to
-count the number of times a 1 appears in the sequence. Does the
-algorithm produce [1:math:`_0`, 1\ :math:`_1`, 2, 3, 4] or
-[1:math:`_1`, 1\ :math:`_0`, 2, 3, 4]? A sorting algorithm is
-**stable** if it preserves the original order of equal values (i.e.,
-1\ :math:`_0` and then 1\ :math:`_1`).
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">i</span>    <span class="n">j</span>    <span class="n">k</span>    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>    <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>    <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>   <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>    <span class="n">a</span>
+<span class="o">-------------------------------------------------------------</span>
+<span class="mi">0</span>    <span class="mi">1</span>    <span class="mi">0</span>     <span class="mi">5</span>       <span class="mi">3</span>       <span class="mi">5</span>        <span class="kc">True</span>       <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="mi">0</span>    <span class="mi">2</span>    <span class="mi">1</span>     <span class="mi">5</span>       <span class="mi">7</span>       <span class="mi">3</span>        <span class="kc">False</span>      <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="mi">1</span>    <span class="mi">2</span>    <span class="mi">1</span>     <span class="mi">5</span>       <span class="mi">7</span>       <span class="mi">5</span>        <span class="kc">False</span>      <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="mi">2</span>    <span class="mi">3</span>    <span class="mi">2</span>     <span class="mi">7</span>      <span class="n">N</span><span class="o">/</span><span class="n">A</span>      <span class="mi">7</span>        <span class="n">N</span><span class="o">/</span><span class="n">A</span>        <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 </pre></div>
 </div>
+<p>Some more:</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Repeat the above exercise for the sequence [4, 1, 8,
+2, 3].</p>
+<p><strong>Exercise</strong>: What happens to <code class="docutils literal"><span class="pre">a[i]</span></code> if <code class="docutils literal"><span class="pre">a[j]</span></code> is never less
+than <code class="docutils literal"><span class="pre">a[k]</span></code>?</p>
+<p><strong>Exercise</strong>: Produce a flowchart for this algorithm.</p>
+<p><strong>Exercise</strong>: Apply this algorithm to the sequence [3, <span class="math">\(1_0\)</span>,
+4, <span class="math">\(1_1\)</span>, 2]. Here, the subscript is used to count the number
+of times a 1 appears in the sequence. Does the algorithm produce
+[<span class="math">\(1_0\)</span>, <span class="math">\(1_1\)</span>, 2, 3, 4] or [<span class="math">\(1_1\)</span>, <span class="math">\(1_0\)</span>, 2,
+3, 4]? A sorting algorithm is <strong>stable</strong> if it preserves the
+original order of equal values (i.e., <span class="math">\(1_0\)</span> and then
+<span class="math">\(1_1\)</span>).</p>
+</div></blockquote>
 <p>Let’s put this to practice using Python. Because sorting is something to
 be done for any array, it makes sense to implement the algorithm as a
 function:</p>
@@ -377,13 +376,15 @@ file. Then tackle the following:</p>
 <blockquote>
 <div><p><strong>Exercise</strong>: Define <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">[5,</span> <span class="pre">3,</span> <span class="pre">7]</span></code> and execute
 <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">selection_sort(x)</span></code>. Print both <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>. Why are they
-the same? In other words, why is <code class="docutils literal"><span class="pre">a</span></code> also sorted? &gt; <em>Solution</em>:
-Remember, <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x</span></code> does not produce a copy of <code class="docutils literal"><span class="pre">x</span></code>. Rather, <code class="docutils literal"><span class="pre">x</span></code>
-and <code class="docutils literal"><span class="pre">y</span></code> are now just two names for the same data. Similarly, when
-<code class="docutils literal"><span class="pre">x</span></code> is passed to <code class="docutils literal"><span class="pre">selection_sort</span></code>, it is given the new name
-<code class="docutils literal"><span class="pre">a</span></code> within the function, and any changes to <code class="docutils literal"><span class="pre">a</span></code> lead to changes
-in <code class="docutils literal"><span class="pre">x</span></code>. Because <code class="docutils literal"><span class="pre">a</span></code> is returned and assigned to <code class="docutils literal"><span class="pre">y</span></code>, <code class="docutils literal"><span class="pre">y</span></code> and
-<code class="docutils literal"><span class="pre">x</span></code> are two names for the same (now sorted) <code class="docutils literal"><span class="pre">list</span></code>.</p>
+the same? In other words, why is <code class="docutils literal"><span class="pre">a</span></code> also sorted?</p>
+<blockquote>
+<div><em>Solution</em>: Remember, <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x</span></code> does not produce a copy of
+<code class="docutils literal"><span class="pre">x</span></code>. Rather, <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are now just two names for the
+same data. Similarly, when <code class="docutils literal"><span class="pre">x</span></code> is passed to
+<code class="docutils literal"><span class="pre">selection_sort</span></code>, it is given the new name <code class="docutils literal"><span class="pre">a</span></code> within the
+function, and any changes to <code class="docutils literal"><span class="pre">a</span></code> lead to changes in <code class="docutils literal"><span class="pre">x</span></code>.
+Because <code class="docutils literal"><span class="pre">a</span></code> is returned and assigned to <code class="docutils literal"><span class="pre">y</span></code>, <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">x</span></code>
+are two names for the same (now sorted) <code class="docutils literal"><span class="pre">list</span></code>.</div></blockquote>
 <p><strong>Exercise</strong>: Define <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">(5,</span> <span class="pre">3,</span> <span class="pre">7)</span></code> and execute
 <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">selection_sort(x)</span></code>. Why does it fail?</p>
 <p><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">selection_sort</span></code> so that it sorts and returns
@@ -391,18 +392,20 @@ a <em>copy</em> of <code class="docutils literal"><span class="pre">a</span></co
 variables.</p>
 <p><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">selection_sort</span></code> so that it optionally sorts
 a sequence in decreasing order. The function <code class="docutils literal"><span class="pre">def</span></code> statement
-should look like <code class="docutils literal"><span class="pre">def</span> <span class="pre">selection_sort(a,</span> <span class="pre">increasing=True):</span></code>. &gt;
-<em>Solution</em>: A one-line change is to switch <code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code> with
+should look like <code class="docutils literal"><span class="pre">def</span> <span class="pre">selection_sort(a,</span> <span class="pre">increasing=True):</span></code>.</p>
+<blockquote>
+<div><em>Solution</em>: A one-line change is to switch <code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code> with
 <code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span> <span class="pre">if</span> <span class="pre">increasing</span> <span class="pre">else</span> <span class="pre">a[k]</span> <span class="pre">&lt;</span> <span class="pre">a[j]</span></code>. Revisit <a class="reference internal" href="ME400_Lecture_6.html"><span class="doc">Lecture
-6</span></a> for more tertiary <code class="docutils literal"><span class="pre">if</span></code> statements of
-the form <code class="docutils literal"><span class="pre">a</span> <span class="pre">if</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">c</span></code>. Verify this works!</p>
+6</span></a> for more tertiary <code class="docutils literal"><span class="pre">if</span></code> statements
+of the form <code class="docutils literal"><span class="pre">a</span> <span class="pre">if</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">c</span></code>. Verify this works!</div></blockquote>
 <p><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">selection_sort</span></code> so that it uses <code class="docutils literal"><span class="pre">for</span></code>
 loops instead of <code class="docutils literal"><span class="pre">while</span></code> loops. Check your result against the
 version provided above.</p>
 <p><strong>Exercise</strong>: Could <code class="docutils literal"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span></code> be changed to
-<code class="docutils literal"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span> <span class="pre">-</span> <span class="pre">1</span></code>? Why or why not? &gt; <em>Solution</em>. Yes! Doing
-so would skip the loop when <code class="docutils literal"><span class="pre">a</span></code> has a single element, for which
-sorting is not required anyway.</p>
+<code class="docutils literal"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span> <span class="pre">-</span> <span class="pre">1</span></code>? Why or why not?</p>
+<blockquote>
+<div><em>Solution</em>. Yes! Doing so would skip the loop when <code class="docutils literal"><span class="pre">a</span></code> has a
+single element, for which sorting is not required anyway.</div></blockquote>
 </div></blockquote>
 <p>So what’s the <em>order</em> of this algorithm? In other words, given a
 sequence of <span class="math">\(n\)</span> elements, how many comparisons must be made?</p>
