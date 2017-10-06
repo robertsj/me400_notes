@@ -26,3 +26,6 @@
    Lecture 13 <lectures/ME400_Lecture_13>  
    Lecture 14 <lectures/ME400_Lecture_14>  
    Lecture 15 <lectures/ME400_Lecture_15>  
+   Lecture 16 <lectures/ME400_Lecture_16>  
+   Lecture 17 <lectures/ME400_Lecture_17>  
+   Lecture 18 <lectures/ME400_Lecture_18>  

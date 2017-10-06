@@ -1,0 +1,948 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 16 - Modules and Packages &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 17 - Unit Tests and Defensive Programming" href="ME400_Lecture_17.html" />
+    <link rel="prev" title="Lecture 15 - Sorting" href="ME400_Lecture_15.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-16---Modules-and-Packages">
+<h1>Lecture 16 - Modules and Packages<a class="headerlink" href="#Lecture-16---Modules-and-Packages" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>Python modules offer a unique way to organize your code, especially as
+it evolves into several functions. Moreover, any of the external
+packages you’ve already used, like NumPy and Matplotlib, are organized
+as modules within larger <em>packages</em>. By the end of this lesson, you’ll
+understand how to organize your create and use your own modules and
+packages.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Produce a module of functions</li>
+<li>Set appropriate paths in order to import modules you create</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">module</span></code></li>
+<li><code class="docutils literal"><span class="pre">import</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="Creating-Modules">
+<h2>Creating Modules<a class="headerlink" href="#Creating-Modules" title="Permalink to this headline">¶</a></h2>
+<p>From nearly the beginning, we’ve imported modules like NumPy and used
+the functions they provide. In fact, a <code class="docutils literal"><span class="pre">module</span></code> is an actual Python
+type:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">numpy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>module
+</pre></div>
+</div>
+</div>
+<p>Modules are easy to create: they can be as simple as a single Python
+script. Suppose we write a few functions for analyzing a vector
+<span class="math">\(\mathbf{e}\)</span> that represents errors (perhaps due to measurement
+uncertainty or numerical approximation). Some useful error metrics
+include</p>
+<ol class="arabic simple">
+<li><em>mean, absolute error</em>, <span class="math">\(\sum^n_i |e_i|/n\)</span></li>
+<li><em>root-mean-square error</em>, <span class="math">\(\sqrt{\sum^n_i e_i^2/n}\)</span></li>
+<li><em>maximum, absolute error</em>,
+<span class="math">\(\max(|e_i|) \, \forall i \in [1, n]\)</span></li>
+</ol>
+<p>If <span class="math">\(\mathbf{e}\)</span> is a <em>sequential</em> type, e.g., a <code class="docutils literal"><span class="pre">list</span></code>,
+<code class="docutils literal"><span class="pre">tuple</span></code>, or <code class="docutils literal"><span class="pre">np.ndarray</span></code>, then the following functions represent
+possible implementations of each metric:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mean, absolute error.&quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="p">:</span>
+        <span class="n">v</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">v</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rms_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Root-mean-square error.&quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="p">:</span>
+        <span class="n">v</span> <span class="o">+=</span> <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="n">v</span><span class="o">**</span><span class="mf">0.5</span>
+
+<span class="k">def</span> <span class="nf">max_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Maximum, absolute error.&quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+</div>
+<p>Although we can define these (and any other function) basically anywhere
+we want in a Python script, it can be helpful to collect these functions
+in a separate file, say <code class="docutils literal"><span class="pre">error_metrics.py</span></code>. Now, if you navigate in
+the command line to the directory that contains this file, you can list
+the directory contents and see something similar to the following:</p>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span>C:\Users\robertsj\Documents\PythonForEngineers&gt;dir
+ Volume in drive C has no label.
+ Volume Serial Number is CP-1
+
+ Directory of C:\Users\robertsj\Documents\PythonForEngineers
+
+12/02/1942  03:25 PM    &lt;DIR&gt;          .
+12/02/1942  03:25 PM    &lt;DIR&gt;          ..
+12/02/1942  03:25 PM               572 error_metrics.py
+               5 File(s)          3,141 bytes
+               3 Dir(s)   1,123,581,321 bytes free
+</pre></div>
+</div>
+<p>You can also navigate to this directory within Spyder (see the upper
+right-hand corner). As long as you are executing Python <em>from within the
+directory containing</em> the file, it should be possible to do the
+following (in Spyder, IPython, or IDLE):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">error_metrics</span>
+<span class="nb">dir</span><span class="p">(</span><span class="n">error_metrics</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;__builtins__&#39;,
+ &#39;__cached__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__spec__&#39;,
+ &#39;max_abs_error&#39;,
+ &#39;mean_abs_error&#39;,
+ &#39;pi&#39;,
+ &#39;rms_error&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">e</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">]</span>
+<span class="n">error_metrics</span><span class="o">.</span><span class="n">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.15000000000000002
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">error_metrics</span><span class="o">.</span><span class="n">rms_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.33911649915626346
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">error_metrics</span><span class="o">.</span><span class="n">max_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.25
+</pre></div>
+</div>
+</div>
+<p>In this example, the module is imported directly, and its name must
+therefore be used to access the functions it contains, e.g.,
+<code class="docutils literal"><span class="pre">error_metrics.mean_abs_error</span></code>. We can use an abbreviation using the
+same approach we’ve used NumPy:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">error_metrics</span> <span class="kn">as</span> <span class="nn">em</span>
+<span class="n">em</span><span class="o">.</span><span class="n">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.15000000000000002
+</pre></div>
+</div>
+</div>
+<p>Like other names in Python, we are free to reassign new names for
+modules.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">em2</span> <span class="o">=</span> <span class="n">em</span>
+<span class="n">em2</span><span class="o">.</span><span class="n">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.15000000000000002
+</pre></div>
+</div>
+</div>
+<p>If we are sure that the names of functions, variables, and other things
+defined in the module won’t clash with anything, we can simply import
+everything:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">error_metrics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.15000000000000002
+</pre></div>
+</div>
+</div>
+<p>When do things clash? Suppose we add the following line to our
+<code class="docutils literal"><span class="pre">error_metrics.py</span></code> file</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pi</span> <span class="o">=</span> <span class="mf">1.618033988749895</span>
+</pre></div>
+</div>
+<p>and then do</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">error_metrics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.618033988749895
+</pre></div></div>
+</div>
+<p>Well, that’s not right. Although we hope <span class="math">\(\pi\)</span> would never be so
+carelessly mis-defined (recognize the number we errantly used? ), this
+sort of conflict makes the “import it all!” approach a potential source
+of hard-to-diagnose bugs.</p>
+<blockquote>
+<div><strong>Warning</strong>: Avoid <code class="docutils literal"><span class="pre">from</span> <span class="pre">some_module</span> <span class="pre">import</span> <span class="pre">*</span></code> because it can lead
+to unintended consequences like redefining names.</div></blockquote>
+<p>If you want just a name (or several names) from a module, you use import
+statements like the following:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">error_metrics</span> <span class="kn">import</span> <span class="n">mean_abs_error</span><span class="p">,</span> <span class="n">rms_error</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Running-Modules-as-Scripts">
+<h2>Running Modules as Scripts<a class="headerlink" href="#Running-Modules-as-Scripts" title="Permalink to this headline">¶</a></h2>
+<p>Because any Python script can be imported as a module, you’ve already
+been running modules as scripts! However, any variables defined in the
+script (e.g., the errant <span class="math">\(pi\)</span> we added above) become accessible
+upon import, and that’s not always desired. Selective imports can help,
+but sometimes the extra code is for quick function testing. As an
+alternative, a special if-statement can be added to the bottom of
+scripts to separate the functions (and other things actually desired in
+the module) and some demonstration code. Here’s an example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span> <span class="p">:</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">rms_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">max_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Running this leads to</p>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span>C:\Users\robertsj\Documents\PythonForEngineers&gt;python error_metrics.py
+0.2
+0.374165738677
+0.3
+</pre></div>
+</div>
+<p>Similarly, we can selectively import functions (or attributes like
+<code class="docutils literal"><span class="pre">pi</span></code>) and assign them new names via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">error_metrics</span> <span class="kn">import</span> <span class="n">rms_error</span> <span class="k">as</span> <span class="n">re</span>
+<span class="kn">from</span> <span class="nn">error_metrics</span> <span class="kn">import</span> <span class="n">pi</span> <span class="k">as</span> <span class="n">not_the_real_pi</span>
+<span class="k">print</span><span class="p">(</span><span class="n">not_the_real_pi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1.618033988749895
+</pre></div></div>
+</div>
+<p>However, one cannot functions (or attributes) selectively using</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">error_metrics.rms_error</span> <span class="kn">as</span> <span class="nn">rms_error</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-12-f511b4e62f30&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">import</span> error_metrics<span class="ansi-blue-fg">.</span>rms_error <span class="ansi-green-fg">as</span> rms_error
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;error_metrics.rms_error&#39;; &#39;error_metrics&#39; is not a package
+</pre></div></div>
+</div>
+<p>It might appear to be valid (we did use
+<code class="docutils literal"><span class="pre">import</span> <span class="pre">matplotlib.pyplot</span> <span class="pre">as</span> <span class="pre">plt</span></code> afterall). However, the basic rule
+is that anything immediately after <code class="docutils literal"><span class="pre">import</span></code> must be a <code class="docutils literal"><span class="pre">module</span></code> (like
+<code class="docutils literal"><span class="pre">matplotlib</span></code>) or a “submodule” (like <code class="docutils literal"><span class="pre">matplotlib.pyplot</span></code>) and not a
+name defined in the module unless <code class="docutils literal"><span class="pre">import</span></code> follows <code class="docutils literal"><span class="pre">from</span></code>.</p>
+<blockquote>
+<div><strong>Note</strong>: Use <code class="docutils literal"><span class="pre">from</span> <span class="pre">some_module</span> <span class="pre">import</span> <span class="pre">some_function</span></code> and <strong>not</strong>
+<code class="docutils literal"><span class="pre">import</span> <span class="pre">some_module.some_function</span> <span class="pre">as</span> <span class="pre">some_function</span></code> to import
+<code class="docutils literal"><span class="pre">some_function</span></code> all by itself.</div></blockquote>
+<p>Because any Python script can be imported as a module, you’ve already
+been running modules as scripts! However, any variables defined in the
+script (e.g., the errant <code class="docutils literal"><span class="pre">pi</span></code> we added above) become accessible upon
+import, and that’s not always desired. Selective imports can help, but
+sometimes the extra code is for quick function testing. As an
+alternative, a special if-statement can be added to the bottom of
+scripts to separate the functions (and other things actually desired in
+the module) and some demonstration code. Here’s an example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span> <span class="p">:</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">mean_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">rms_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">max_abs_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Running this leads to</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span><span class="o">&gt;</span><span class="n">python</span> <span class="n">error_metrics</span><span class="o">.</span><span class="n">py</span>
+<span class="mf">0.2</span>
+<span class="mf">0.374165738677</span>
+<span class="mf">0.3</span>
+</pre></div>
+</div>
+<p>If the same four lines under the <code class="docutils literal"><span class="pre">if</span></code> were included in
+<code class="docutils literal"><span class="pre">error_metrics.py</span></code> <strong>without</strong> the <code class="docutils literal"><span class="pre">if</span></code>, then <code class="docutils literal"><span class="pre">e</span></code> would be defined
+(e.g., <code class="docutils literal"><span class="pre">error_metrics.e</span></code> would exist) and the print statements would
+be executed.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Go and put the lines of code above into
+<code class="docutils literal"><span class="pre">error_metrics.py</span></code> and see for yourself that they are printed when
+the file is executed (either via <code class="docutils literal"><span class="pre">python</span> <span class="pre">error_metrics.py</span></code> or in
+Spyder). Show also that <code class="docutils literal"><span class="pre">import</span> <span class="pre">error_metrics</span></code> does not lead to
+the print statements when the <code class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span></code> line is included.</div></blockquote>
+<p>Basically, the special variable <code class="docutils literal"><span class="pre">__name__</span></code> has the value
+<code class="docutils literal"><span class="pre">&quot;__main__&quot;</span></code> only if the script is executed and not if it is imported.
+Actually, any (built-in) name in Python that starts and ends with two
+underscores is usually special and not often needed. Use of <code class="docutils literal"><span class="pre">__name__</span></code>
+here is one of the exceptions to that rule of thumb.</p>
+</div>
+<div class="section" id="Using-Modules-on-the-Moon">
+<h2>Using Modules on the Moon<a class="headerlink" href="#Using-Modules-on-the-Moon" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="PYTHONPATH">
+<h3><code class="docutils literal"><span class="pre">PYTHONPATH</span></code><a class="headerlink" href="#PYTHONPATH" title="Permalink to this headline">¶</a></h3>
+<p>Now that you’ve done all that hard work to create a module, wouldn’t it
+be nice to be able to use it anywhere you use the Python interpreter or
+an IDE like Spyder? To do so requires that we tell Python where to find
+the module by modifying the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span><span class="o">&gt;</span><span class="n">cd</span> <span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">BackOnEarth</span>
+
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">BackOnEarth</span><span class="o">&gt;</span><span class="nb">set</span> <span class="n">PYTHONPATH</span><span class="o">=%</span><span class="n">PYTHONPATH</span><span class="o">%</span><span class="p">;</span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">OnTheMoon</span>
+
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">BackOnEarth</span><span class="o">&gt;</span><span class="nb">dir</span>
+ <span class="n">Volume</span> <span class="ow">in</span> <span class="n">drive</span> <span class="n">C</span> <span class="n">has</span> <span class="n">no</span> <span class="n">label</span><span class="o">.</span>
+ <span class="n">Volume</span> <span class="n">Serial</span> <span class="n">Number</span> <span class="ow">is</span> <span class="n">CP</span><span class="o">-</span><span class="mi">1</span>
+
+ <span class="n">Directory</span> <span class="n">of</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">BackOnEarth</span>
+
+<span class="mi">12</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">1942</span>  <span class="mi">03</span><span class="p">:</span><span class="mi">25</span> <span class="n">PM</span>    <span class="o">&lt;</span><span class="n">DIR</span><span class="o">&gt;</span>          <span class="o">.</span>
+<span class="mi">12</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">1942</span>  <span class="mi">03</span><span class="p">:</span><span class="mi">25</span> <span class="n">PM</span>    <span class="o">&lt;</span><span class="n">DIR</span><span class="o">&gt;</span>          <span class="o">..</span>
+               <span class="mi">0</span> <span class="n">File</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>              <span class="mi">0</span> <span class="nb">bytes</span>
+               <span class="mi">2</span> <span class="n">Dir</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>   <span class="mi">1</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">581</span><span class="p">,</span><span class="mi">321</span> <span class="nb">bytes</span> <span class="n">free</span>
+
+
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">BackOnEarth</span><span class="o">&gt;</span><span class="nb">dir</span> <span class="o">..</span>\<span class="n">OnTheMoon</span>
+ <span class="n">Volume</span> <span class="ow">in</span> <span class="n">drive</span> <span class="n">C</span> <span class="n">has</span> <span class="n">no</span> <span class="n">label</span><span class="o">.</span>
+ <span class="n">Volume</span> <span class="n">Serial</span> <span class="n">Number</span> <span class="ow">is</span> <span class="n">CP</span><span class="o">-</span><span class="mi">1</span>
+
+ <span class="n">Directory</span> <span class="n">of</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span>\<span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">OnTheMoon</span>
+
+<span class="mi">12</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">1942</span>  <span class="mi">03</span><span class="p">:</span><span class="mi">25</span> <span class="n">PM</span>    <span class="o">&lt;</span><span class="n">DIR</span><span class="o">&gt;</span>          <span class="o">.</span>
+<span class="mi">12</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">1942</span>  <span class="mi">03</span><span class="p">:</span><span class="mi">25</span> <span class="n">PM</span>    <span class="o">&lt;</span><span class="n">DIR</span><span class="o">&gt;</span>          <span class="o">..</span>
+<span class="mi">12</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">1942</span>  <span class="mi">03</span><span class="p">:</span><span class="mi">25</span> <span class="n">PM</span>               <span class="mi">572</span> <span class="n">error_metrics</span><span class="o">.</span><span class="n">py</span>
+               <span class="mi">1</span> <span class="n">File</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>            <span class="mi">572</span> <span class="nb">bytes</span>
+               <span class="mi">2</span> <span class="n">Dir</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>   <span class="mi">1</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">581</span><span class="p">,</span><span class="mi">321</span> <span class="nb">bytes</span> <span class="n">free</span>
+</pre></div>
+</div>
+<p>Once that’s done, we can use Python from the same directory while also
+using the module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">error_metrics</span> <span class="kn">as</span> <span class="nn">em</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">em</span><span class="o">.</span><span class="n">rms_error</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="go">0.37416573867739417</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> can also be changed permanently. In Windows, this can
+be done by accessing the <em>Start</em> &gt; <em>Control Panel</em> &gt; <em>System and
+Security</em> &gt; <em>System</em> menu. Then, click <em>Advanced System Settings</em>, which
+brings up a window with an <em>Environment Variables</em> button. By default,
+<code class="docutils literal"><span class="pre">PYTHONPATH</span></code> is not defined, so you’ll need to create it first.</p>
+<p>On OS X and Linux machines, <code class="docutils literal"><span class="pre">PYTHONPATH</span></code> can be set using <code class="docutils literal"><span class="pre">export</span></code>
+in the terminal (or permanently in the<code class="docutils literal"><span class="pre">.bashrc</span></code> file), e.g.,
+<code class="docutils literal"><span class="pre">export</span> <span class="pre">PYTHONPATH=$PYTHONPATH:/home/robertsj/Documents/PythonForEngineers\OnTheMoon</span></code>.</p>
+</div>
+<div class="section" id="sys.path">
+<h3><code class="docutils literal"><span class="pre">sys.path</span></code><a class="headerlink" href="#sys.path" title="Permalink to this headline">¶</a></h3>
+<p>An alternative way to set the path is by modifying <code class="docutils literal"><span class="pre">sys.path</span></code>.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Go to Python, <code class="docutils literal"><span class="pre">import</span> <span class="pre">sys</span></code>, and print <code class="docutils literal"><span class="pre">sys.path</span></code>.
+What type is <code class="docutils literal"><span class="pre">sys.path</span></code>?</div></blockquote>
+<p>If <code class="docutils literal"><span class="pre">sys.path</span></code> is appended to include the location of the module file
+<strong>before</strong> the module is imported, then that module will be available in
+other Python files or within the console.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;C:\Users</span><span class="se">\r</span><span class="s1">obertsj\Documents\PythonForEngineers\OnTheMoon&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">error_metrics</span>
+</pre></div>
+</div>
+<p>This approach is quick and easy. It’s major drawback is that it is very
+specific to the user and her machine.</p>
+</div>
+</div>
+<div class="section" id="Packages">
+<h2>Packages<a class="headerlink" href="#Packages" title="Permalink to this headline">¶</a></h2>
+<p>Modules are great ways to collect functions and other things in a single
+Python file. As programs grow even larger, it may be useful to have
+several files accessible by a single import statement. These collections
+of modules are known as <em>packages</em> (though “package” is not a Python
+type as is <code class="docutils literal"><span class="pre">module</span></code>).</p>
+<p>There are many ways to organize packages, but let’s illustrate with a
+simple example. Let’s make a new directory called <code class="docutils literal"><span class="pre">my_package</span></code> and
+place our previous module (i.e., <code class="docutils literal"><span class="pre">error_metrics.py</span></code>) in it. Now, in
+that same directory, create a new Python file with the special name
+<code class="docutils literal"><span class="pre">__init__.py</span></code>. For now, it can be an empty file. Its existence is
+enough to tell Python that <code class="docutils literal"><span class="pre">my_package</span></code> can be imported as long as the
+directory containing it is in the <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>. In other words, if
+<code class="docutils literal"><span class="pre">my_package</span></code> were put in <code class="docutils literal"><span class="pre">C:\Users\robertsj\Documents</span></code>, then
+<code class="docutils literal"><span class="pre">C:\Users\robertsj\Documents</span></code> would need to be added to the path
+(<em>not</em> <code class="docutils literal"><span class="pre">C:\Users\robertsj\Documents\my_package</span></code>).</p>
+<p>Once that’s done, the following is possible from anywhere:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">my_module</span>
+<span class="nb">dir</span><span class="p">(</span><span class="n">my_module</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;__builtins__&#39;,
+ &#39;__cached__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__path__&#39;,
+ &#39;__spec__&#39;]
+</pre></div>
+</div>
+</div>
+<p>Note, <code class="docutils literal"><span class="pre">error_metrics</span></code> (nor its functions) appear. Python does not by
+default import all modules within a package. One or more modules can be
+imported explicitly in the <code class="docutils literal"><span class="pre">__init__.py</span></code> file if desired. However, we
+<em>can</em> get the <code class="docutils literal"><span class="pre">error_metrics</span></code> module by importing it explicitly via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">my_module.error_metrics</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_module</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_module</span><span class="o">.</span><span class="n">error_metrics</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;module&#39;&gt;
+&lt;class &#39;module&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[21]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;__builtins__&#39;,
+ &#39;__cached__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__path__&#39;,
+ &#39;__spec__&#39;,
+ &#39;error_metrics&#39;]
+</pre></div>
+</div>
+</div>
+<p>Although <code class="docutils literal"><span class="pre">my_module</span></code> is nothing more than a directory on our
+filesystem, it appears as a <code class="docutils literal"><span class="pre">module</span></code> in Python, as does
+<code class="docutils literal"><span class="pre">my_module.error_metrics</span></code>. Usually, the modules accessed by the “dot”
+operation are called <em>submodules</em> but that is not an actual Python type.</p>
+<p>With <code class="docutils literal"><span class="pre">my_module.error_metrics</span></code> imported, the contents of <code class="docutils literal"><span class="pre">my_module</span></code>
+are now extended:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">dir</span><span class="p">(</span><span class="n">my_module</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;__builtins__&#39;,
+ &#39;__cached__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__path__&#39;,
+ &#39;__spec__&#39;,
+ &#39;error_metrics&#39;]
+</pre></div>
+</div>
+</div>
+<p>Hence, we can now execute, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">my_module</span><span class="o">.</span><span class="n">error_metrics</span><span class="o">.</span><span class="n">rms_error</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.37416573867739417
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>Python’s
+<a class="reference external" href="https://docs.python.org/3/tutorial/modules.html">documentation</a> is a
+good resource for those interested in more details on how to create and
+use modules and packages.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 16 - Modules and Packages</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Creating-Modules">Creating Modules</a></li>
+<li><a class="reference internal" href="#Running-Modules-as-Scripts">Running Modules as Scripts</a></li>
+<li><a class="reference internal" href="#Using-Modules-on-the-Moon">Using Modules on the Moon</a><ul>
+<li><a class="reference internal" href="#PYTHONPATH"><code class="docutils literal"><span class="pre">PYTHONPATH</span></code></a></li>
+<li><a class="reference internal" href="#sys.path"><code class="docutils literal"><span class="pre">sys.path</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Packages">Packages</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_15.html" title="previous chapter">Lecture 15 - Sorting</a></li>
+      <li>Next: <a href="ME400_Lecture_17.html" title="next chapter">Lecture 17 - Unit Tests and Defensive Programming</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_16.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_16.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
