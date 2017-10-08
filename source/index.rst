@@ -29,3 +29,4 @@
    Lecture 16 <lectures/ME400_Lecture_16>  
    Lecture 17 <lectures/ME400_Lecture_17>  
    Lecture 18 <lectures/ME400_Lecture_18>  
+   Lecture 19 <lectures/ME400_Lecture_19>  
