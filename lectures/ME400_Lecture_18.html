@@ -1025,6 +1025,115 @@ $$a^{2} c x^{3} + b^{2} d y^{3} + x^{2} \left(a^{2} d y + 2 a b c y\right) + x \
 <p>With <code class="docutils literal"><span class="pre">simplify</span></code>, <code class="docutils literal"><span class="pre">expand</span></code>, and <code class="docutils literal"><span class="pre">collect</span></code>, one has substantial
 flexibility in manipulating expressions into forms more easily
 understood or used.</p>
+<p>Finally, it is often the case that we want to visuallize our symbolic
+results graphically. How to plot something like <span class="math">\(\sin(x)\)</span>? Of
+course, NumPy has arrays and its own <code class="docutils literal"><span class="pre">np.sin(x)</span></code> functions, but that
+will not work if <code class="docutils literal"><span class="pre">x</span></code> is a symbol. Fortunately, SymPy has the function
+<code class="docutils literal"><span class="pre">lambdify</span></code>, which will turn any symbolic expression into a <code class="docutils literal"><span class="pre">lambda</span></code>
+function suitable for numerical evaluations (array-based or otherwise)
+and, hence, plotting.</p>
+<p>For example, convert the expression <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">x**2</span></code> into a function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">f_fun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">f_fun</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[36]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$4.0$$</div></div>
+</div>
+<p>Note something important: the original expression was named <code class="docutils literal"><span class="pre">f</span></code>. To
+keep names straight, I recommend naming any <em>lambdified</em> expression
+<code class="docutils literal"><span class="pre">f</span></code> in the form <code class="docutils literal"><span class="pre">f_fun</span></code> <code class="docutils literal"><span class="pre">f_lam</span></code> to indicate its use as a function.</p>
+<p>The result works by default for <code class="docutils literal"><span class="pre">ndarrays</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">f_fun</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[37]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([1, 4, 9])
+</pre></div>
+</div>
+</div>
+<p>Use of <code class="docutils literal"><span class="pre">lambdify</span></code> is highly recommended for producing plots of
+symbolic expressions. For example, the expressions <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">x**2</span></code> and
+<code class="docutils literal"><span class="pre">g</span> <span class="pre">=</span> <span class="pre">x**3</span></code> can be plotted as follows (pay close attention to the
+naming convention and the cool <code class="docutils literal"><span class="pre">latex</span></code> trick):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="c1"># x is a symbol, but we&#39;ll need actual value to</span>
+<span class="c1"># plot.  Here, x_plot indicates its purpose as the</span>
+<span class="c1"># values of x to be used for plotting.</span>
+<span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">f_plot</span> <span class="o">=</span> <span class="n">f_fun</span><span class="p">(</span><span class="n">x_plot</span><span class="p">)</span> <span class="c1"># x**2</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">g_fun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+<span class="n">g_plot</span> <span class="o">=</span> <span class="n">g_fun</span><span class="p">(</span><span class="n">x_plot</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">f_plot</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;${}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span>  <span class="n">g_plot</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;${}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">g</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_18_80_0.png" src="../_images/lectures_ME400_Lecture_18_80_0.png" />
+</div>
+</div>
+<p>For those curious, here’s what that <code class="docutils literal"><span class="pre">latex</span></code> function does:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[39]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;x^{2}&#39;
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
