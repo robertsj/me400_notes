@@ -1,0 +1,1151 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 19 - Symbolic Calculus with SymPy\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "Symbolic computing using SymPy was introduced in [Lecture 18](ME400_Lecture_18.ipynb).  The basics of symbols, symbolic expressions, and solving symbolic equations were introduced.  In this lesson, additional features of SymPy related to calculus will be demonstrated.\n",
+    " \n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Evaluate limits using SymPy\n",
+    "- Evaluate derivatives using SymPy\n",
+    "- Evaluate integrals using SymPy\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- `sympy.limit`\n",
+    "- `sympy.diff`\n",
+    "- `sympy.Derivative`\n",
+    "- `sympy.integrate`\n",
+    "- `sympy.Integral`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## In the Beginning There Were Limits\n",
+    "\n",
+    "An understanding of calculus usually starts with the concept of *limit*.  In fact, the classical definition for the derivative of a function $f(x)$ is \n",
+    "\n",
+    "$$\n",
+    "  \\lim_{h \\to 0} \\frac{f(x+h)-f(x)}{h} \\, .\n",
+    "$$\n",
+    "\n",
+    "SymPy can handle limits, so let's see if we use limits to  find the derivative of :math:`f(x) = ax^2 + bx + c`.  First, remember to do the necessary import and initialization, and  get  symbols ready:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import sympy as sp\n",
+    "sp.init_printing()\n",
+    "a, b, c, x, h = sp.symbols('a b c x h')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Then, define the function and use substitution to define it at the perturbed value $x+h$:\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "f = a*x**2 + b*x + c\n",
+    "f_plus = f.subs({x:x+h})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Evaluation of the limit is easy:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEMAAAAQBAMAAAC//t8ZAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIpm7MhCriUTv3c12\nVGZoascqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABK0lEQVQoFWNgVDJ2YMAFWC0XAKXCGNh/4FLB\nwMCdAJRLZWCYiankDlSI/wKQMYuBId8BQw1MSX8AUGp/AD4lVVDN6wMYhIpOBjDEHJM4fgAiBjNl\n2xldkADHdwaOiQz7GVgL+NZwbUBRwvo7IF4AKMKVwBD5gEGZgT2A/SsvSAAIoKbwfmXgLwBylRgY\n9AMY1jCwMnAbgOWrd+9euXv3NiCbaQNDPFAJjwIDw2QG1i9AEf4DQAIMoKZwKzD0X2BguMTAKPqd\ngfcDUMrfAaIAbhH/A5AFLAoMPKJ/GZg3XOQNOM/AEwBRBDWFv4F1HgODVHlRFsMehlcJBf0X7Bnk\noMZAlbA9YFYABt3//78Ywo475jSEnYnRe4CqhFVHDyqASUFNwZRAiAQimAwAh5RLp2SAnDUAAAAA\nSUVORK5CYII=\n",
+      "text/latex": [
+       "$$2 a x + b$$"
+      ],
+      "text/plain": [
+       "2⋅a⋅x + b"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "f_prime = sp.limit((f_plus-f)/h, h, 0)\n",
+    "f_prime"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The result $2ax+b$ is precisely what one should expect.  If we want the symbolic representation of the limit, we need only use `Limit` instead of `limit`, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\lim_{h \\to 0^+}\\left(\\frac{1}{h} \\left(- a x^{2} + a \\left(h + x\\right)^{2} - b x + b \\left(h + x\\right)\\right)\\right)$$"
+      ],
+      "text/plain": [
+       "     ⎛     2            2                  ⎞\n",
+       "     ⎜- a⋅x  + a⋅(h + x)  - b⋅x + b⋅(h + x)⎟\n",
+       " lim ⎜─────────────────────────────────────⎟\n",
+       "h─→0⁺⎝                  h                  ⎠"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.Limit((f_plus-f)/h, h, 0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "which can be then be evaluated via "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEMAAAAQBAMAAAC//t8ZAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIpm7MhCriUTv3c12\nVGZoascqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABK0lEQVQoFWNgVDJ2YMAFWC0XAKXCGNh/4FLB\nwMCdAJRLZWCYiankDlSI/wKQMYuBId8BQw1MSX8AUGp/AD4lVVDN6wMYhIpOBjDEHJM4fgAiBjNl\n2xldkADHdwaOiQz7GVgL+NZwbUBRwvo7IF4AKMKVwBD5gEGZgT2A/SsvSAAIoKbwfmXgLwBylRgY\n9AMY1jCwMnAbgOWrd+9euXv3NiCbaQNDPFAJjwIDw2QG1i9AEf4DQAIMoKZwKzD0X2BguMTAKPqd\ngfcDUMrfAaIAbhH/A5AFLAoMPKJ/GZg3XOQNOM/AEwBRBDWFv4F1HgODVHlRFsMehlcJBf0X7Bnk\noMZAlbA9YFYABt3//78Ywo475jSEnYnRe4CqhFVHDyqASUFNwZRAiAQimAwAh5RLp2SAnDUAAAAA\nSUVORK5CYII=\n",
+      "text/latex": [
+       "$$2 a x + b$$"
+      ],
+      "text/plain": [
+       "2⋅a⋅x + b"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.Limit((f_plus-f)/h, h, 0).doit()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note the \"+\" in the limit above: by default, SymPy evaluates the the right-hand limit, i.e., as $h$ approaches zero from  the right.  Alternative, we could evaluate the left-hand limit with"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\lim_{h \\to 0^-}\\left(\\frac{1}{h} \\left(- a x^{2} + a \\left(h + x\\right)^{2} - b x + b \\left(h + x\\right)\\right)\\right)$$"
+      ],
+      "text/plain": [
+       "     ⎛     2            2                  ⎞\n",
+       "     ⎜- a⋅x  + a⋅(h + x)  - b⋅x + b⋅(h + x)⎟\n",
+       " lim ⎜─────────────────────────────────────⎟\n",
+       "h─→0⁻⎝                  h                  ⎠"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.Limit((f_plus-f)/h, h, 0, '-')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When the right-hand and left-hand limits of $f(x)$ agree as $x$ approaches some value $x_0$, a two-sided limit is said to exist.  A simple examples illustrates that such a limit does not always exist:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAGQAAAAUBAMAAACJ7oWmAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIma7zZnddlTvRIkQ\nqzLsm4+cAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABXElEQVQoFZVTPUjDQBh9SbQRcpSAILhFcFNE\nBUEXrZs4hC5OUnRSB4c6ODlYF1d/ttahnZwj0tkgcRQRB3HL7pBBUeLk+/y3PYt5cI/j+967++7u\nO8DwkAGmS3FvBgOl1xyz2SwRYBazWZwyclJcBqh99IlcfdFf5lASbzSPTU4v64eAM3ErYS3UXeoB\np6Uys02Mk6exXVBzyAdaPYNWbD8iquCe80Gs8QZi9Dx0xcAAI1qMAHujPpU8+C5qgE3Z2SrJbNVH\nKwIfLMh5kqo8IPm0WM8MiFcLUc8IcSRSmCitegM450QLUU+98GY94FiOb4bAVv8BsKHVMzjMdU+q\nLmxXjt9kpAinmE8bZoCrgtbVLXeb1DDE7CL3AS5Kk6T0CMitay1q4aYCtVQNmPXfG+b79Xe0lo+H\nD5k0llvbUtbpCLYlxn4qFAOdweb//cXaHrPNLzsYHunfYMu8AkpARAwfGwjJAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\left ( \\infty, \\quad -\\infty\\right )$$"
+      ],
+      "text/plain": [
+       "(∞, -∞)"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.limit(1/x, x, 0, '+'), sp.limit(1/x, x, 0, '-')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Derivatives"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Thankfully, we don't need to use limits everytime we want to  differentiate a function with SymPy:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEMAAAAQBAMAAAC//t8ZAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIpm7MhCriUTv3c12\nVGZoascqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABK0lEQVQoFWNgVDJ2YMAFWC0XAKXCGNh/4FLB\nwMCdAJRLZWCYiankDlSI/wKQMYuBId8BQw1MSX8AUGp/AD4lVVDN6wMYhIpOBjDEHJM4fgAiBjNl\n2xldkADHdwaOiQz7GVgL+NZwbUBRwvo7IF4AKMKVwBD5gEGZgT2A/SsvSAAIoKbwfmXgLwBylRgY\n9AMY1jCwMnAbgOWrd+9euXv3NiCbaQNDPFAJjwIDw2QG1i9AEf4DQAIMoKZwKzD0X2BguMTAKPqd\ngfcDUMrfAaIAbhH/A5AFLAoMPKJ/GZg3XOQNOM/AEwBRBDWFv4F1HgODVHlRFsMehlcJBf0X7Bnk\noMZAlbA9YFYABt3//78Ywo475jSEnYnRe4CqhFVHDyqASUFNwZRAiAQimAwAh5RLp2SAnDUAAAAA\nSUVORK5CYII=\n",
+      "text/latex": [
+       "$$2 a x + b$$"
+      ],
+      "text/plain": [
+       "2⋅a⋅x + b"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.diff(f, x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Higher-order derivatives are also easily computed:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAOBAMAAADd6iHDAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIpm7MhCriUTv3c12\nVGZoascqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAgUlEQVQIHWNgVDJ2YICAMAb2H1BmKgPDTChz\nFgNDvgOEvT8AzgQKrA9gECo6GQBkcXxn4JjIsB+kiCuBIfIBgzKIqcTAoB/AsAbI4lFgYJjMwPoF\nyLzEwCj6nYH3AwMDiwIDj+hfBuYNFxmkyouyGPYwvEooYNj///8vhrDjjjkNAMjNHzXk+S3KAAAA\nAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$2 a$$"
+      ],
+      "text/plain": [
+       "2⋅a"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    " sp.diff(f, x, 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAOBAMAAADkjZCYAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAVElEQVQIHWNgEDIxZWBgSGeQmMDAsoCBOYGB\n+wAD+0cG/gMMvN8Z5BUYeP8xzDdgYP3MMF8BREJEgLLs3xm4NzCwfATpYkpgYGhnkApgYBB+d5QB\nAPogE3QldevOAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$0$$"
+      ],
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    " sp.diff(f, x, 3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If a function `g(x)` is not given an explicit form, SymPy leaves its derivatives in symbolic form:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAD4AAAArBAMAAADS9CZfAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrvvmVREEIndzSJ2\nZqtw62vAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABvklEQVQ4EX2TvUvDQBjGn9amSb9s/4MWdFL8\nmNyEjg4K3UQcFJwEoRlFiq0iqCDo4iIiVYqLS3AQHNQI1SoU7aog/gGtUIeSQUHvLr2mSZN7h/ee\nu9971/TufQAWvoG0KbxyPONFzPWsKua7YoySiEem7lsivqT5DQGXJxEoCnjAQKgg4H0p5BcFPF/A\nggAjn8GQpHlXhPXYieKNITc2bh+7eaRmzmIeh17y4joX9vGCT9e4sI2xNJ8qOlfdY6jzs/J49zrX\n11wA55ZkSpp+SKFMZO7l6kkHthx8E3dpjAByIXYcKgLvdi4ZII14CCiqYtArnbNz8lJJDRNkP8Ip\nipL4s6KJZA3PoByI6zQnabLiU8Mg6PmEJGhepskK8sykEcn3SeoromrP9+W1/h/2p7KZMdyQfVPW\nXqqCjZ0Dduh6NTdTIwundg7404B1vxFSDVjmTLBG7Hkfbk7FwCjdMEwTjfb7cnNKX+UMXe70R7vQ\naU5nf5XoJq9g5pSr9ZU99wpmzlW86Ueu3DTnNvbVeVdumlPFmSsFuDl/PXjbnL5vL87MORttouJa\nwcwZbPmb/FIcVcyccqNS/nAAc/oP+HF4gYRaHekAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$\\frac{d}{d x} g{\\left (x \\right )}$$"
+      ],
+      "text/plain": [
+       "d       \n",
+       "──(g(x))\n",
+       "dx      "
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "g = sp.Symbol('g')\n",
+    "sp.diff(g(x), x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEgAAAAvBAMAAACyMpGWAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrvvmVREEIndzSJ2\nZqtw62vAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACG0lEQVQ4EYVUT0gUURj/uTo7s66be+6yC3VK\nyk7dpKWLHgoWISI6KHQKAucoIe0mQkpCXfKgEirSpcvSIehQTrClgtQevChEd93ADsscDLbvvTff\nPHPezHyH9/3e9/u9Pzvv2x/A4dwaZRifX+AonmRmBaUG49i8hK3JWFITE67GJtRzqQKsmpiztcEq\nHNIlx5SL/WQFsQvI1rPFFNkmLt4dT7x4fuxLBze73cSNHjYyfqKASHsEfWtpoj4fuXqaqLeM2mSa\nqFbHRJoGtSquWGkd0O8V3jhpW9ntZ5+/RUT5lioVks54z8uOGRjyO649YRDNhQrXHI9RJOfCq9jX\nIyQXPjIA3mqokXX7axlNms98/7DjAXOa0mgWWxVcpYevF1Zza8ChpkJk+aCOfw04ruOLl7iP7rkA\n6L3pb3qDdkJ/WSwthes1KLWwCyECBj0xmkS/GrgMcRzRRTE+EkMYyliobToQF7fcHxhwz19cGUut\nceFU/u6p6jA+0Q5j4S4CKGPJtudfyTOe7s3caVF5XXDSCARgY8lUAP0seVpCQZ8lCGEsRdnxkQcm\nIwiCjMXxcU3MhrgWtMoCz4WxWL+bcuOw6QL1JovOGst/7SuNwN47fryYYCzSCKZx4C3HG4sygud4\n6T6INxZlBC42+F6mzEbw10RyLTCCnj9cMGVlBPcGTrBtolVNGkG2kznh72KSSiOw29vNnyZW1f4B\nBc+T+DYRbNEAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$\\frac{d^{2}}{d x^{2}}  g{\\left (x \\right )}$$"
+      ],
+      "text/plain": [
+       "  2      \n",
+       " d       \n",
+       "───(g(x))\n",
+       "  2      \n",
+       "dx       "
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.diff(g(x), x, 2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As for limits, we can define a derivative without its evaluation, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAJ8AAAAtBAMAAABCN6StAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAZnaJIhC7RM0y75nd\nVKu+STY0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADQUlEQVRIDa1WTWgTQRh9yWbz0yRt1Zs/sLQU\n0YJNpYLFg/HkzS619KBgchQ8WDz20ihUFhTpScRL48Gfg2K1WBRBbRUURQmiXkQaiwcvQtpai0ip\n85uZ3WyVDbvQmfd9783LTLLz9QPoE+nsY3NoQx+GR0IzoxssIVUO0zBN3BbDNKReb0I1TO3ArzAN\nU2eH+v+EaTg6gfhSiIYxYpZZDdGwdQVoKYdo2FYCCrkNDI2ZBxswG6cLU0CPXedTrkvTh+915n8g\nKgQFC3iuxJcVJOgFJvOuxD+CRJWT8SpaixzScVxBgl5iwLVjF+kNenkiNjv0WFFpS2GG5tW34WEa\nwoyQZnvzihvwrp9THEXDt92xHkWn9EjgA56c4RVd8gi0MFbTAgnvSCDmbWLOWgKsiVlM7/VwVg84\nTpG3XH8SucQEi6VhwiNwGc7oSzmOlN25K18+2SwjDY1nboHLcLebo1G6RIbY9P3rMDu+ndmLu+vr\nNA1Iw+RCdwWDew53WiwNaWh07ALG+Idzho/xIplH88kajmK79UpR0rAwbv40c5G5TIlzwjD2Fg4w\nyb8etQpIVgHzGtJF7MNB+4OipCF5LZcN21jJ5jknDFty+AG/S5CZIsdeQcaCjfN1O8NxLt5ynCpJ\nPIS5bCJZZNx+x3ntOPRFesoOO1DBuvbUCEF32FJEge59ifzVH7nDC0iQF6fNkoTY4Q0W+1xTakhq\n2TzhU7/lIjpLw0V6AO3L4obmMtP6FBJaJgoVnMzmP0Zr6GIyNkjDVRxrz9o9iLIzQv7K5N9w1vdX\njpbJsa3IOyOxFq/F2hsNv+IUxiqncUhQ4shPYD4Ctiq9RPQimAv9R3aaC13dm2SWzHKHx7vbcaJj\n8J78LGFo9G4mInZTPJ3STc1Eh9JQz1EsDHn6HJ08ndI0pxpGM9+QYokhLW3Sex7xdEpXNUFQGKmS\nFd5OqbUS1EbpMxMC652SWVKCoGgLW+DtlD4HtanrY0UKeaek1aPsSF0REKRtuoB1Sno9CujilfNO\nSa9HXkXAmHdK9XoUcLWPXHZKqh75iIKkZKfkU7yD2Cgt75T0eqS4phDvlPR61JSNWsQ7Jb0eKa45\n5OqUmrPQV/0F0uTDomgX3CgAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$\\frac{\\partial}{\\partial x}\\left(a x^{2} + b x + c\\right)$$"
+      ],
+      "text/plain": [
+       "∂ ⎛   2          ⎞\n",
+       "──⎝a⋅x  + b⋅x + c⎠\n",
+       "∂x                "
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.Derivative(f, x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here, note the *partial* derivative symbols $\\partial$.  Because $a$, $b$, and $c$ are symbols, SymPy cannot know that we intend $f$ to be a function only of $x$ and that the coeffiecients are themselves not functions of $x$.  \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Partial Derivatives\n",
+    "\n",
+    "So what *is* a partial derivative?  Let $f(x, y)$ be some arbitrary function of the two variables $x$ and $y$.  We define the *partial derivative* of $f$ with respect to $x$ as\n",
+    "\n",
+    "$$\n",
+    " \\frac{\\partial f}{\\partial x} = \\lim_{h\\to 0} \\frac{ f(x+h,y)-f(x) }{h}\n",
+    "$$\n",
+    "\n",
+    "which is sometimes written compactly as $f_x$.  A similar expression exists for $f_y$.  Based on the formal limit definition, partial  derivatives are no different from *ordinary* derivatives if we imagine the other variables (here, $y$) as constants. \n",
+    "\n",
+    "SymPy can evaluate such partial derivatives:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAACMAAAAuBAMAAABQab20AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIpm7MhCriUTv3c12\nVGZoascqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABJ0lEQVQoFb3Sv0vDQBTA8W9SrmmTtlYHcZKC\noINFMoiLgsV/wExOhXRz0CGD4GhXQaiLm0imuoj0T6gZ/AGCWZ30T6hgVmuK1N5LZ33Dcffh8d69\n42BuaR0ZqsVJW1Leo3guqRiS/5TkJFOUJtgJxkr9Qk/tBJxWnYFOXdQVpquRWcNMsPsaRVB08RsT\nKteY9QPeJsIO3Pkxm+XqGI3r4+XQ6Ve61lhwhsNhqA6P5h9/6T83zfuFh75oqILKjd0TZHlWkg6R\n3nQcKBz9iX7SZ2SlEe42RqsWZe+FkqcBdOJtFoWw99xce5f0N6dmHUP8CAheKQ1ENyNeJSfHVVyS\nHbeQTI1r9ngSpSDXYiNDplv4ypDajz4yBGk1GQf4bSncspURzqKGTt+VNEcDNk79jAAAAABJRU5E\nrkJggg==\n",
+      "text/latex": [
+       "$$\\frac{2 a}{y} x$$"
+      ],
+      "text/plain": [
+       "2⋅a⋅x\n",
+       "─────\n",
+       "  y  "
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y = sp.symbols('y')\n",
+    "f = a*x**2/y\n",
+    "pf_px = sp.Derivative(a*x**2/y, x)\n",
+    "pf_px.doit()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Implicit Differentiation\n",
+    "\n",
+    "Consider the equation\n",
+    "\n",
+    "$$\n",
+    "  5\\sin(x) + 3\\sec(y) = y - x^2 + 3\n",
+    "$$\n",
+    "\n",
+    "How do we find $dy/dx$?  It is not possible to solve directly for $y$ in terms of $x$ or vice-versa.  Therefore, *implicit differentiation* is needed.  The trick is to differentiate both sides with  respect to $x$ and solve for $dy/dx$.  Here it all is with a bit of help from SymPy, where we first define $y$ as an explicit function of $x$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y = sp.Symbol('y')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Then we represent the equation by a single expression and differentiate:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAVUAAAAZBAMAAABzz6C+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarIkSJZt3NVLsy\nme8Q6PJIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEoElEQVRYCdWXTWhcVRTH/2/mzfckfSQgFtS+\nRKm4GBNKUboofQu1Yq0OXUgXxYyt1oWEzqIQXYiDFDSCOAuFRkVHEBQXOqaCgkgGly6a2EVLbMWk\nflEFSWxFLZZ4zr333PcxwzjumgPz7rnn/v7nnrnv3jdvAG3TX3jGu+6bbJBuXvdFmgLzQfnKpqm1\n6v6xWWoFiuubp9a837PWvSZ6vOdod1D4XNA91jMiArh1Pc7K/1BP98zktk04TRliVhgrf2MCp307\nYnnstDHtuEefaiVC3A0F+2SUlX3VuSVBY20hMF0n+ZgY3tiombFFcQDLY6sZlGY/in+KH2lDwasS\nZWVf9SM4JGy0fdZ2Dhuv6GuncOQ2OxY6IZ81nPATLfwVctazgnCxWClq4aLq8usffCzxaHvCdm4x\nnsydtiNRJ+SdFR0X/tGq83eUNL4V5AMZZaWoJRZV0x1dk3ikdRu2U6hqV+aO1PpgRyi3IR7wmnaF\npydNjz0QCu6PK406DCr1yK33bvfDmPGcio+HvBTtYmd85wHaAFly2WTu9EylQ90v37vDXZgsv3Vh\nfAf1mIdJaA6r8MCNNc3DPXckwM1H+WiyYOQM3FVU4squo85qp5Z7Pt8kMG7Z4gomUKoDN+Bpf5Ye\nI4aRuUse/3o4beRRmER+Hg8HULwkfEYnFB73vewZ/qCXWXV/wWkjqH2I1Bo+DUthpVHrHHRV6qyX\nXS+SKmEPDDXxOfIt4DEc896l9Wxows4NfAZkVpFCaRKlFWyh78W8JHw/yWd/NPxPwMVCEx91lMBt\nLaPUxktxpVHrHHxltYNC20acky+SzXYAb9jH7xiukoc3eLy8Rpfs3NzJS3NzkxwAvguAV+YDVWsT\nW3woXhIuEhHnf/MUX742M3P3tiUaVgIHF1kbKYWV/AmrYZTVahLuxG3KK/+j5gbVTKZqpVbWdRdw\nrEo75O1rqta2rVUS8mwR/h5goaX43FUKT/l00V8us47FDtcaVRo1B9mMmsEetozUirqnoJrJMg0N\nSa2XaF09uB6eq/Ie0LXyHqA16fD1IF/C77bhca3MH+LvbtaVBbTb7gTvgajSqDnIptVFbwIpXt6E\nnVLLVQfeoY0/1n22loBZVUm6HtbKZ1ESJs7Wr3T/A74r6TrpRmi/oqUPI8lPgc9WVJk4W1o91VrA\n3kSd3D2PqTo/qDJXS2v8WjFU05Cs637kfqD0qygFtKhmXfnBJgnPxvkZFGk9Fb9Yx9fuz8gGtKFJ\nMNTO0JN3Oq40ap0D0OrR8ZFzVEqXjR6mo0M33tkxVpmh0UJHI1Kre3a3RzvjydufKO+5fNOey18t\nfK83iiR8M85nvj1f1Tyc3ds9jJ55nADeWc5dlStqy0SVRq1zEKfU0utulyl0wobld0VqtQMxJ+Td\nhh7oz+sJaMci/I1lJX8GtnTT4T8K9tUC8u7iBP1yhLy8ffTneYJd2EYr3v/dpd+cyNdLPgGlwFBd\n74Qmnmgs3/VWlwClS4IXMM+9TyS0lRz+DGyZ8QvM2lfhsIi+KSwfTt2X5wkOVDrM7BOQi7aFS3CQ\nVh4RxweBiRE+F/xPwQD/Yf4FXBwy88rUyRkAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$x^{2} - y{\\left (x \\right )} + 5 \\sin{\\left (x \\right )} + 3 \\sec{\\left (y{\\left (x \\right )} \\right )} - 3$$"
+      ],
+      "text/plain": [
+       " 2                                    \n",
+       "x  - y(x) + 5⋅sin(x) + 3⋅sec(y(x)) - 3"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "expr = 5*sp.sin(x) + 3*sp.sec(y(x)) - y(x) + x**2 - 3\n",
+    "expr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\noxP9NycfZ+cFbNEuAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$2 x + 5 \\cos{\\left (x \\right )} + 3 \\tan{\\left (y{\\left (x \\right )} \\right )} \\sec{\\left (y{\\left (x \\right )} \\right )} \\frac{d}{d x} y{\\left (x \\right )} - \\frac{d}{d x} y{\\left (x \\right )}$$"
+      ],
+      "text/plain": [
+       "                                       d          d       \n",
+       "2⋅x + 5⋅cos(x) + 3⋅tan(y(x))⋅sec(y(x))⋅──(y(x)) - ──(y(x))\n",
+       "                                       dx         dx      "
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d_expr = sp.diff(expr, x)\n",
+    "d_expr"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To find $dy/dx$ is as easy as doing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nPwMu/18i/wEhvTJNkwwBggAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\left [ - \\frac{2 x + 5 \\cos{\\left (x \\right )}}{3 \\tan{\\left (y{\\left (x \\right )} \\right )} \\sec{\\left (y{\\left (x \\right )} \\right )} - 1}\\right ]$$"
+      ],
+      "text/plain": [
+       "⎡    -(2⋅x + 5⋅cos(x))    ⎤\n",
+       "⎢─────────────────────────⎥\n",
+       "⎣3⋅tan(y(x))⋅sec(y(x)) - 1⎦"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.solve(d_expr, sp.diff(y(x), x))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Pretty slick!\n",
+    "\n",
+    "Notice, to represent the (mathematical) function $y(x)$, all that is needed is a symbol $y$.  Then `y(x)` is treated like a function, and its derivative with respect to `x` is"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAD4AAAArBAMAAADS9CZfAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrvvmVREEIndzSJ2\nZqtw62vAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABv0lEQVQ4EYWTz0sCQRTHv5q66ir6Hyh06/ep\nLgUdJQqEDhEdCjoFgnuMkDQIIgjq0iUqLKJLF+kQdCg2kuwg5bUg6BjpwQ7ioaL2zTqObu70Dm++\nM583s7uz7wuwcHSPm8Iuh+J2xFxPanK+Kcc4kXE1dlOT8cWcsy7hyhhcWQl31eHLSHhXFOkFCU9n\nMC/BSMfR487ZV/j14KHXHkOprF3ftXK1ZM6CNoee8+IyF+3jGZ+ucNE2Bsf51Ktz1Tr6mo9VhlrX\nub7kAjgVklRqEuoI8qQeLu51YJ1WRWSmEaiiH1AywX1fFngWzFBqfALOKHYBr+at05XOtnEFowjp\nGDb2wx8lFMGPiCo8dUTCxEF1RkQoiTDa5BZ0vkHClJcoiXC+YgD0fm7tEQHN+n5wRT3f7KOS8UFc\nGftiYi8p5S3/yQ5dLaamSsbCUTsHa1Rxv+oOcWHOd9aIf/5P05wH6KMNvZQoGv+3ac5Enn1Vsz8a\nhVZzWvvrf3MqxXJiy3ymNTNzLuNJ37MSNjfNuYFtba4jN82p4bgjBbg5v2x4w5yODzvOzDljtF2h\nYwUzp6fmrPJLsVQxcyqVQv7FAszpL+8vdrgo3J4/AAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\frac{d}{d x} y{\\left (x \\right )}$$"
+      ],
+      "text/plain": [
+       "d       \n",
+       "──(y(x))\n",
+       "dx      "
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.diff(y(x), x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "However, always make sure to use `y(x)` when `y` is to be a function of `x`.  Typing `y` alone, which suggests `y` is a symbol all by itself, will lead to the following derivative:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAOBAMAAADkjZCYAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAVElEQVQIHWNgEDIxZWBgSGeQmMDAsoCBOYGB\n+wAD+0cG/gMMvN8Z5BUYeP8xzDdgYP3MMF8BREJEgLLs3xm4NzCwfATpYkpgYGhnkApgYBB+d5QB\nAPogE3QldevOAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$0$$"
+      ],
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.diff(y, x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## And Then There Were More Limits\n",
+    "\n",
+    "Once you got done with differentiation, life was good.  All sorts of problems could be solved by differential calculus.  But then you encountered antiderivatives and integrals.  For the specific case of  *definite* integrals, you may remember the following formal definition:\n",
+    "\n",
+    "$$\n",
+    "  \\int^b_a f(x) dx = \n",
+    "     \\lim_{n \\to \\infty} \\sum^{n}_{i=1} f(i (b-a)/n + a) (b-a)/n\n",
+    "$$\n",
+    "\n",
+    "Here, the sum is a *Riemann sum* (specifically a right-sided sum).  Integrals are areas under curves, and Riemann sums approximate those areas by  rectangles.\n",
+    "\n",
+    "SymPy can represent sums symbolically.  For instance, the Riemann sum above can be defined for $f(x) = x^2$ as"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nQmCC\n",
+      "text/latex": [
+       "$$\\sum_{i=1}^{n} \\frac{1}{n} \\left(- a + b\\right) \\left(a + \\frac{i}{n} \\left(- a + b\\right)\\right)^{2}$$"
+      ],
+      "text/plain": [
+       "  n                             \n",
+       "_____                           \n",
+       "╲                               \n",
+       " ╲                             2\n",
+       "  ╲            ⎛    i⋅(-a + b)⎞ \n",
+       "   ╲  (-a + b)⋅⎜a + ──────────⎟ \n",
+       "   ╱           ⎝        n     ⎠ \n",
+       "  ╱   ──────────────────────────\n",
+       " ╱                n             \n",
+       "╱                               \n",
+       "‾‾‾‾‾                           \n",
+       "i = 1                           "
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x, i, n, a, b, = sp.symbols('x i n a b')\n",
+    "f = x**2\n",
+    "sp.Sum(((b-a)/n) * f.subs({x:i*(b-a)/n+a}), (i, 1, n))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For the specific case of $f(x) = x^2$, $a=0$, and $b=1$, we have"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAADkAAAA6BAMAAAD4ouwYAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAZpkydkTvIhDdq1SJ\nzbuhrXSrAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACN0lEQVQ4EXWUO2gUQRzGv81m7+b27ri1sdDC\njVqqOcRSyZEiYIhwIASEQISkSCFkEYWgxW0RxC42Phq5KwJREFwQBLG4Jb14gp2IIhY26kLMwxfj\n7GzmcTvrFPv/vt838z9mZvcANqyxM5NpLR7WvFcKhqPNT6EAK+fRkIbDWuAORIp1zErNRSWwdyVZ\nwFFbmlRU2uVtAcoJ7j4ThlX3I1DdE8DpYcYThlWXmUpLA4bcNIgGLF8zhpzDRYNlYPU47Hcvv/wn\njWdRojQpTsvRSRl8oGr84JQgq6np0yZnt68fWt7hSjsIuPROxthFdiMu671QIHR/STky4HItiiWa\noJ7Ux7iaLytiUXVXozx1D8jpwPefmjHkLeobTAGH/lbGVK93QhNKUqfZTiQYEmT5z5DPmT5t54hu\nR+iSbvO6q7VuqDtLsnmdB/n5up8KdJfTzlYOMFubfLQPJyIzHcOpDJJFM8QJHMlovVeQQqz9WhiS\nBY5rajtVbd6FFjcH1XYOa2nWWduOc1lPO+lO+INTMu6ndW7j2nSL/WrHA8gVnrDHzafZi+9/a5Fd\n3MdUCNT/vufjHjt8/vrZ0UOUt3B2ZoOtGFdXQvn3Q8g2rEQ0NGo1gfZnlY/Z99LwwjwVvhSjH8bC\n5WunjVdWM0+FvwTckIc26gt8Tgit2sG+Of1Yo6Z8YSKNFKTOtMwL0tpa6KYH/QYoSFcUU0q2w2cp\nC1Ky1+Sd3xZ2rg5isfi5EKqSJ+I0rnbXFc7UP3T2qlyIC+hBAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\sum_{i=1}^{n} \\frac{i^{2}}{n^{3}}$$"
+      ],
+      "text/plain": [
+       "  n     \n",
+       "_____   \n",
+       "╲       \n",
+       " ╲     2\n",
+       "  ╲   i \n",
+       "   ╲  ──\n",
+       "   ╱   3\n",
+       "  ╱   n \n",
+       " ╱      \n",
+       "╱       \n",
+       "‾‾‾‾‾   \n",
+       "i = 1   "
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "S = sp.Sum(((b-a)/n) * f.subs({x:i*(b-a)/n+a}), (i, 1, n)).subs({a:0, b:1})  \n",
+    "S"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.385000000000000\n",
+      "0.338350000000000\n",
+      "0.333833500000000\n",
+      "0.333383335000000\n",
+      "0.333338333350000\n"
+     ]
+    }
+   ],
+   "source": [
+    "for m in [10, 100, 1000, 10000, 100000]:\n",
+    "    print(S.subs({n:m}).evalf())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Of course, the greater the number of little rectangles, the closer to $\\int^1_0 x^2 dx = 1/3$ we get.  Can we take $n=\\infty$?  Note, `sp.oo` represents $\\infty$ in SymPy.  Let's try"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAAoAAAAOBAMAAADkjZCYAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAVElEQVQIHWNgEDIxZWBgSGeQmMDAsoCBOYGB\n+wAD+0cG/gMMvN8Z5BUYeP8xzDdgYP3MMF8BREJEgLLs3xm4NzCwfATpYkpgYGhnkApgYBB+d5QB\nAPogE3QldevOAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$0$$"
+      ],
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "S.subs({n:sp.oo}).evalf() "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Well, that does not work.  How about using a limit?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAAsAAAAqBAMAAACXcryGAAAALVBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAVO8Qq5l2zWYiibvdRH6G\nTkUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAB0SURBVBgZY2CAASEDIIvZ1Q9EMTDkUYMK0StpAJtG\nFvEOBB4QpXXWqo1AdZwBDHINDAxsDxn4DjAw8Ooy2BWAdYMEgV47BSI51wSDKAaGRRfAFJMyUGwC\nA/dDBga+x2CKaQMDz0sGBo4GBrkEoJKroXsZGAAuYx+6av2YygAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\frac{1}{3}$$"
+      ],
+      "text/plain": [
+       "1/3"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.limit(S, n, sp.oo)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That is the right result."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Symbolic Integration\n",
+    "\n",
+    "Just as SymPy can differentiate expressions, it can integrate them.  For \n",
+    "indefinite integrals, the syntax is"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABYAAAAvBAMAAAAV7ydtAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarIkSJZt3NVLsy\nme8Q6PJIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA1klEQVQoFWNggICkywJQFgNvAe8GODuB/QOM\nzcCAEGdgkDsAF2eaBGeiqmH5BZOQO8DyHcbmcGB6CGQLKbuqKfAkJTswMDAmsDdxTIDIswmwfeQC\nioEAIwMn3CUMDPwKYEEwcf4AjM0loM/AJADhxS/Yz+AOlRBWErpeAFNEY/o/AlBsk1vaLpgZLBcY\n1sO8wPSLgb8BKsH6lEF+AkwRA0INMMDa4MIsGRfhbAaGvAAEhw8U+iDA4sDADYsh/o8INt8GBo4v\nECUM7AUM6xWgbIbYu1tBTABGZDQhWVh3aAAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\frac{x^{3}}{3}$$"
+      ],
+      "text/plain": [
+       " 3\n",
+       "x \n",
+       "──\n",
+       "3 "
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "f = x**2\n",
+    "sp.integrate(f, x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To add bounds and make the integral definite, the syntax becomes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAFcAAAAvBAMAAABkl0vzAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEM3dMiKZiXbvRGa7\nVKtFbb1tAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABwElEQVRIDd2VvUvDQBjGn1MTq7YmCA5dbCkO\nTlUQUTcXce2ko3VRwU8s+LGIOPgxCrqoQydXA/4BdlUQXAQ3dRAcVRQHKZpL6vXN3dvBxcEbwvP+\nnl+SSygNEF2r824UVKbGrQeD255dMqAEM5g1uL3Y8mxACaZwznC7xECJzCsDySFeFvsmj3UZTFz0\n+GxzwygAu2TAunuJuG1YZUN2riUaD460TA5Zn3QO8qkLf8fjnl7U52J7OkPBJ33YdWkxurzrNqyu\n5ygLcnZnDiPbj5Q3H6CbziqLVzelXyHpsQ8MJF7gLKpTw7DgYkBD4WinkdLlY4g3Vq7L4/Q62ogP\nJJ6jqDI5Hvy7RpYoI56+iaAfuSiOdN6Fs3t9a4HT6sXzutyxPfxU1KGcxfQMh/+K3f7mRv9EbuuV\nqxPOl1ryLSxlMoOZTFZGxfmfjlSAf/I2wocJj2MrV2QkDxgtAsfK486r2u0qakXAY2U4PcoggSua\nD5FKE0fFGgXdhnJlYArRHzGqA1NYhYlqTxNfrBWpQzJXNJn/zuEZRmHlEDc/Er7MFc5LDZkrmkqo\nfyf7VJErWjzcbSiDBLY4mbwkComV4hsCNHoOaknu3gAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$- \\frac{a^{3}}{3} + \\frac{b^{3}}{3}$$"
+      ],
+      "text/plain": [
+       "   3    3\n",
+       "  a    b \n",
+       "- ── + ──\n",
+       "  3    3 "
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.integrate(f, (x, a, b))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, consider the following, rather benign looking integral:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\begin{cases} \\frac{1}{a - 1} & \\text{for}\\: \\Re{\\left(a\\right)} > 1 \\\\\\int_{1}^{\\infty} x^{- a}\\, dx & \\text{otherwise} \\end{cases}$$"
+      ],
+      "text/plain": [
+       "⎧   1                   \n",
+       "⎪ ─────    for re(a) > 1\n",
+       "⎪ a - 1                 \n",
+       "⎪                       \n",
+       "⎪∞                      \n",
+       "⎨⌠                      \n",
+       "⎪⎮  -a                  \n",
+       "⎪⎮ x   dx    otherwise  \n",
+       "⎪⌡                      \n",
+       "⎪1                      \n",
+       "⎩                       "
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sp.integrate(1/x**a, (x, 1, sp.oo))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "SymPy provides two outputs because in one case ($\\Re(a) > a$, i.e., the real part of $a$ must be greater than unity),  the integral exists, while in the second, the integral is left in the symbolic form because it cannot be evaluated. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The whole business of being real or imaginary takes us a bit out of our scope, but we're  not really interested in complex numbers here.  Can we avoid the issue and simply tell SymPy that $a$ should be a real number?  Yes.  One way is simply to  define $a$ to be real from the start:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\begin{cases} \\frac{1}{a - 1} & \\text{for}\\: a > 1 \\\\\\int_{1}^{\\infty} x^{- a}\\, dx & \\text{otherwise} \\end{cases}$$"
+      ],
+      "text/plain": [
+       "⎧   1               \n",
+       "⎪ ─────    for a > 1\n",
+       "⎪ a - 1             \n",
+       "⎪                   \n",
+       "⎪∞                  \n",
+       "⎨⌠                  \n",
+       "⎪⎮  -a              \n",
+       "⎪⎮ x   dx  otherwise\n",
+       "⎪⌡                  \n",
+       "⎪1                  \n",
+       "⎩                   "
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = sp.Symbol('a', real=True)\n",
+    "sp.integrate(1/x**a, (x, 1, sp.oo))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The result is basically the same (evaluated only for $a>1$), but it no longer has $\\Re(a)$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "One can also define but not evaluate an integral (just as was shown above for derivatives).  For example, consider"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEYAAABKBAMAAAD0wj/MAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMARM2JmVQidqsQ3btm\n7zKsjR9xAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACK0lEQVRIDdWUvYvTYBzHv7nmLpekSbq5KFdE\npwMJKIo3eAUn0SGLiji04OLWCII9BK94YAeHC+gqPR18WbzifpyDiy+gk5NwxX+gPaXeFV9q2uR5\nCST5ddQOeb4vnz7J8+QFGP+Uw5Mh/3Aiv560R6dgftCMstcIKEp7oVUoxvSLZYqxSmqTYpzA8ijG\nCN5TCOw1l2T+PUA9Tt4MNB41qQvXdw2fYrQ+RQBGh2bq5JmA1RI9z3ZAM79pxN6XmML5c5LjUtvj\nEjiJu5Lj0tzlEniKXk2yTDpDpsLxMeppq+xtSAxQTVvlx2aCeRY5e6sixeu+ZFBgleNJ8WbiAt6w\nZkE6pz6SDBRX6UbUEoPDcTaxzV8vXo3/ckRiCj8jo9+6d+AUdkajsZ07e2eAKBnbme/jI/AA7/wn\nkQQO1cyhlDiDqDiN5eBSzOhfoJYhknr8GQuwyGaBOoThQiTVPqvEvbU6aJfCmCXL5Zix/zAYbRfV\n0PBkuxJVV8LXYyWm2h5ezdZEsuNNCmVg9udex8yMX3xeEAnbZr21cvNDjEBvnbl+QyRKYpsZlBw1\n+WlOVtzN/+IyUxhixZmMw7cwE0Gvk92xZtVlKntcL2V3rNlkImf8ltPFlR0/hXlkcYrtmf+UN0PU\nOVMsfaFLzbOE+xSCLfszyVy7TZ6KnOO/BR42jlHXrr+05Q94Kq5W7I3UQgotT2tKNlW2a+bbILUR\nodXtHRQuXSmtyxfSG57+BRqefRIlkNAeAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\int_{a}^{b} x^{2}\\, dx$$"
+      ],
+      "text/plain": [
+       "b      \n",
+       "⌠      \n",
+       "⎮  2   \n",
+       "⎮ x  dx\n",
+       "⌡      \n",
+       "a      "
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "I = sp.Integral(f, (x, a, b))\n",
+    "I"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This integral can be formally evaluated using `doit`, or"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAAsAAAAqBAMAAACXcryGAAAALVBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAVO8Qq5l2zWYiibvdRH6G\nTkUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAB0SURBVBgZY2CAASEDIIvZ1Q9EMTDkUYMK0StpAJtG\nFvEOBB4QpXXWqo1AdZwBDHINDAxsDxn4DjAw8Ooy2BWAdYMEgV47BSI51wSDKAaGRRfAFJMyUGwC\nA/dDBga+x2CKaQMDz0sGBo4GBrkEoJKroXsZGAAuYx+6av2YygAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\frac{1}{3}$$"
+      ],
+      "text/plain": [
+       "1/3"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "I.subs({a:0, b:1}).doit()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "and numerically evaluated using `evalf`, or"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAKoAAAAOBAMAAABN1ZpJAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABVUlEQVQ4EXXTsU4CQRCA4R/B4EFOiDbEBqS1\nIUETow2FD+Aj0NnyBhgtbEwkUlmhrYaEzspIY08srXwCDdGINujsnmaXcbnib75hQvb2YGVzC/N0\n67fhRPXdFjZ6xolmDih1ZGlUod0IhXOy70kUe2JnHJO5JN2UrcsTCoeh8NriM4liT+yMY/JDsmPZ\nGvcpN0PhaZT6SKLYEzvjmMKQeCJb5Wk35kROAHMM/9nJLJcrxFMzT+p4TijVRGzUjCez3Kux+GaW\nRtvr4dA9KsrtMFEznijuVX63ws5IloeS7gvYaHYyy+4EyF3Jj0PhWv5nEsWe2Jk/lreVNW8r6pCf\nhMIF3LdsFHuimPyAjLlZhbFsDYXvomy1UeyJYvMVLDRla27A0lco3MBZx0axJ4rhhLV9ueaZBu3n\nUNgjO02i2BM74xhWXx7gFB6rd+HE1Y0RNnrGieIfulAiu7+rFUcAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$0.333333333333333$$"
+      ],
+      "text/plain": [
+       "0.333333333333333"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "I.subs({a:0, b:1}).evalf()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "None at this time.  That said, this lesson is but a taste of *how* SymPy can be used for calculus.  Much more value will come by *practicing* with the tools presented, and one way to do that would be to revisit problems from past calculus courses.  Some possible topics to explore may include evaluating limits (with tools like l'Hopital's rule), the various differentiation rules (chain, product, etc., all of which can be demonstrated symbolically), and multidimensional integrals."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
