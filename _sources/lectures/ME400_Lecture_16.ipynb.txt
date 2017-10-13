@@ -593,7 +593,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 13,
    "metadata": {},
    "outputs": [
     {
@@ -610,14 +610,14 @@
        " '__spec__']"
       ]
      },
-     "execution_count": 16,
+     "execution_count": 13,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "import my_module\n",
-    "dir(my_module)"
+    "import my_package\n",
+    "dir(my_package)"
    ]
   },
   {
@@ -629,7 +629,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 21,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [
     {
@@ -639,45 +639,26 @@
       "<class 'module'>\n",
       "<class 'module'>\n"
      ]
-    },
-    {
-     "data": {
-      "text/plain": [
-       "['__builtins__',\n",
-       " '__cached__',\n",
-       " '__doc__',\n",
-       " '__file__',\n",
-       " '__loader__',\n",
-       " '__name__',\n",
-       " '__package__',\n",
-       " '__path__',\n",
-       " '__spec__',\n",
-       " 'error_metrics']"
-      ]
-     },
-     "execution_count": 21,
-     "metadata": {},
-     "output_type": "execute_result"
     }
    ],
    "source": [
-    "import my_module.error_metrics\n",
-    "print(type(my_module))\n",
-    "print(type(my_module.error_metrics))"
+    "import my_package.error_metrics\n",
+    "print(type(my_package))\n",
+    "print(type(my_package.error_metrics))"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Although `my_module` is nothing more than a directory on our filesystem, it appears as a `module` in Python, as does `my_module.error_metrics`.  Usually, the modules accessed by  the \"dot\" operation are called *submodules* but that is not an actual Python type.\n",
+    "Although `my_package` is nothing more than a directory on our filesystem, it appears as a `module` in Python, as does `my_package.error_metrics`.  Usually, the modules accessed by  the \"dot\" operation are called *submodules* but that is not an actual Python type.\n",
     "\n",
-    "With `my_module.error_metrics` imported, the contents of `my_module` are now extended:"
+    "With `my_module.error_metrics` imported, the contents of `my_package` are now extended:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": 15,
    "metadata": {},
    "outputs": [
     {
@@ -695,13 +676,13 @@
        " 'error_metrics']"
       ]
      },
-     "execution_count": 22,
+     "execution_count": 15,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "dir(my_module)"
+    "dir(my_package)"
    ]
   },
   {
@@ -713,7 +694,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 25,
+   "execution_count": 16,
    "metadata": {},
    "outputs": [
     {
@@ -722,13 +703,13 @@
        "0.37416573867739417"
       ]
      },
-     "execution_count": 25,
+     "execution_count": 16,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "my_module.error_metrics.rms_error([0.1, -0.2, 0.3])"
+    "my_package.error_metrics.rms_error([0.1, -0.2, 0.3])"
    ]
   },
   {
