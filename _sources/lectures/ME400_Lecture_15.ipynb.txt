@@ -327,7 +327,7 @@
     "            Set c[k] = a[i] \n",
     "            Set i = i + 1\n",
     "        Otherwise\n",
-    "            Set c[k] = b[k]\n",
+    "            Set c[k] = b[j]\n",
     "            Set j = j + 1\n",
     "    Otherwise, if i == m then\n",
     "        # Only b has elements left to merge\n",
