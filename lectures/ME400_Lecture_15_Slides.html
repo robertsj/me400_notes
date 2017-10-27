@@ -1,0 +1,632 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 15 - Sorting &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-15---Sorting">
+<h1>Lecture 15 - Sorting<a class="headerlink" href="#Lecture-15---Sorting" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture and <a class="reference internal" href="ME400_Lecture_14.html"><span class="doc">Lecture 14</span></a>, we tackle
+two of the most important practical problems in computing: <em>searching</em>
+and <em>sorting</em>. In this lecture, we turn to <em>sorting</em>, the more
+challenging problem and one that was a focus of much research in the
+early years of computing for making searching easier. We’ll flex our
+knowledge of functions to help write clean and clear sorting programs.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Sort an array of numbers using brute-force, <span class="math">\(\mathcal{O}(n^2)\)</span>
+schemes like <em>selection sort</em>.</li>
+<li>Sort an array of numbers using divide-and-conquer,
+<span class="math">\(\mathcal{O}(n\log n)\)</span> schemes like <em>merge sort</em>.</li>
+<li>Apply built-in Python functions to sort sequences.</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>selection sort</li>
+<li>stable sorting algorithm</li>
+<li>merge sort</li>
+<li>merge</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Sorting-is-Hard-Work">
+<h2>Sorting is Hard Work<a class="headerlink" href="#Sorting-is-Hard-Work" title="Permalink to this headline">¶</a></h2>
+<p>To sort a sequence, leverage what we know: <strong>find the minimum value in a
+sequence</strong></p>
+<p>The basic idea is simple. Given a sequence of <span class="math">\(n\)</span> numbers to sort
+in increasing order, we</p>
+<ol class="arabic simple">
+<li>Find the smallest value (just as we have previously done).</li>
+<li>Swap it with the first element in the sequence.</li>
+<li>Repeat steps (1) and (2) this process for the last <span class="math">\(n-1\)</span> items
+in the sequence.</li>
+</ol>
+<p>This is <strong>selection sort</strong>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;The selection sort algorithm to sort an array&#39;&#39;&#39;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="c1"># sequence of numbers and its length</span>
+<span class="c1"># Loop through each element a[i]</span>
+<span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="n">do</span>
+   <span class="c1"># Find the location k of the smallest element after a[i]</span>
+   <span class="n">Set</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+   <span class="n">Set</span> <span class="n">k</span> <span class="o">=</span> <span class="n">i</span>
+   <span class="n">While</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="n">do</span>
+       <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="n">then</span>
+           <span class="n">Set</span> <span class="n">k</span> <span class="o">=</span> <span class="n">j</span>
+       <span class="n">Set</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+   <span class="c1"># Switch the values of a[i] and a[k], putting them in order</span>
+   <span class="n">Swap</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+   <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p><strong>Exercise</strong>: What happens to <code class="docutils literal"><span class="pre">a[i]</span></code> if <code class="docutils literal"><span class="pre">a[j]</span></code> is never less than
+<code class="docutils literal"><span class="pre">a[k]</span></code>?</p>
+<p><strong>Exercise</strong>: Apply this algorithm to the sequence [3, <span class="math">\(1_0\)</span>, 4,
+<span class="math">\(1_1\)</span>, 2]. Here, the subscript is used to count the number of
+times a 1 appears in the sequence. Does the algorithm produce
+[<span class="math">\(1_0\)</span>, <span class="math">\(1_1\)</span>, 2, 3, 4] or [<span class="math">\(1_1\)</span>, <span class="math">\(1_0\)</span>, 2, 3,
+4]?</p>
+<p><strong>Exercise</strong>: Selection sort is <span class="math">\(\mathcal{O}(n^2)\)</span>, but what’s the
+quickest it can do a problem of size <span class="math">\(n\)</span>?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">selection_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Applies the selection sort algorithm to sort the sequence a.&quot;&quot;&quot;</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">selection_sort</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 2, 3]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">selection_sort</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 2, 3, 4, 5]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">selection_sort</span><span class="p">([</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">selection_sort</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-3-acc5244597b7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>selection_sort<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-1-922691fc0914&gt;</span> in <span class="ansi-cyan-fg">selection_sort</span><span class="ansi-blue-fg">(a)</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span>                 k <span class="ansi-blue-fg">=</span> j
+<span class="ansi-green-intense-fg ansi-bold">     10</span>             j <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">---&gt; 11</span><span class="ansi-red-fg">         </span>a<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> a<span class="ansi-blue-fg">[</span>k<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> a<span class="ansi-blue-fg">[</span>k<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> a<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span>         i <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span>     <span class="ansi-green-fg">return</span> a
+
+<span class="ansi-red-fg">TypeError</span>: &#39;tuple&#39; object does not support item assignment
+</pre></div></div>
+</div>
+<p>As implemented, <code class="docutils literal"><span class="pre">selection_sort(a)</span></code> sorts <code class="docutils literal"><span class="pre">a</span></code> <strong>in place</strong>, i.e., it
+<em>modifies the sequence</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">selection_sort</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[1, 2, 3]
+[1, 2, 3]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Better-Sorting-for-Bigger-Data">
+<h2>Better Sorting for Bigger Data<a class="headerlink" href="#Better-Sorting-for-Bigger-Data" title="Permalink to this headline">¶</a></h2>
+<p><strong>Binary search</strong> finds things in <span class="math">\(\mathcal{O}(\log n)\)</span> operations
+by <strong>divide and conquer</strong>.</p>
+<p>The best algorithms (sorting and otherwise) use the same principle to
+turn apparently <span class="math">\(\mathcal{O}(n^2)\)</span> problems into
+<span class="math">\(\mathcal{O}(n\log n)\)</span> ones.</p>
+<p>For our purposes, it is sufficient to consider the simplest of the
+divide and conquer approaches to sorting: <a class="reference external" href="https://en.wikipedia.org/wiki/Merge_sort">merge
+sort</a></p>
+<div class="section" id="Merge-Sort">
+<h3>Merge Sort<a class="headerlink" href="#Merge-Sort" title="Permalink to this headline">¶</a></h3>
+<p>Merge sort is simplest of <span class="math">\(\mathcal{O}(n\log n)\)</span> sorting
+algorithms: 1. divide a sequence into smaller chunks that can be sorted
+directly 2. merge two sorted (sub)sequences.</p>
+</div>
+<div class="section" id="Merging-Sorted-Sequences">
+<h3>Merging Sorted Sequences<a class="headerlink" href="#Merging-Sorted-Sequences" title="Permalink to this headline">¶</a></h3>
+<p>Main work of merge sort is to merge <em>sorted</em> sequences into one larger,
+<em>sorted</em> sequence.</p>
+<p>Example: <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">8]</span></code> and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">[7,</span> <span class="pre">5]</span></code> are merged to produce
+<code class="docutils literal"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">5,</span> <span class="pre">7,</span> <span class="pre">8]</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Merge: an algorithm to merge two sorted sequences&#39;&#39;&#39;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span>
+<span class="c1"># Initialize the sorted sequence</span>
+<span class="n">Set</span> <span class="n">c</span> <span class="n">to</span> <span class="n">be</span> <span class="n">a</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">length</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">)</span>
+<span class="c1"># Initialize the counter for a, b, and c</span>
+<span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">While</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="n">do</span>
+    <span class="n">If</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="n">then</span>
+        <span class="c1"># Both a and b still have elements to merge</span>
+        <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="n">then</span>
+            <span class="n">Set</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">Otherwise</span>
+            <span class="n">Set</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">Set</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">Otherwise</span><span class="p">,</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">m</span> <span class="n">then</span>
+        <span class="c1"># Only b has elements left to merge</span>
+        <span class="n">Set</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">Set</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">Otherwise</span><span class="p">,</span>
+        <span class="c1"># Only a has elements left to merge</span>
+        <span class="n">Set</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">Set</span> <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">Output</span><span class="p">:</span> <span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Divide-and-Conquer">
+<h3>Divide and Conquer<a class="headerlink" href="#Divide-and-Conquer" title="Permalink to this headline">¶</a></h3>
+<p>Merging is half thee battle: we need to dive down and get the smaller
+arrays to sort.</p>
+<p>A natural approach is to use <em>recursion</em>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">divide_and_print</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">divide_and_print</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">divide_and_print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">:])</span>
+    <span class="k">return</span>
+<span class="n">divide_and_print</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--------&gt; [8, 7, 6, 5, 4, 3, 2, 1]
+----&gt; [8, 7, 6, 5]
+--&gt; [8, 7]
+--&gt; [6, 5]
+----&gt; [4, 3, 2, 1]
+--&gt; [4, 3]
+--&gt; [2, 1]
+</pre></div></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Merge Sort: an algorithm to sort the sequence a&#39;&#39;&#39;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">a</span>
+<span class="n">Set</span> <span class="n">n</span> <span class="n">to</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">a</span>
+<span class="n">If</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">then</span>
+    <span class="n">Swap</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">Otherwise</span><span class="p">,</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">a_L</span> <span class="n">to</span> <span class="n">be</span> <span class="n">the</span> <span class="n">first</span> <span class="n">half</span> <span class="n">of</span> <span class="n">a</span>
+    <span class="n">Set</span> <span class="n">a_R</span> <span class="n">to</span> <span class="n">be</span> <span class="n">the</span> <span class="n">second</span> <span class="n">half</span> <span class="n">of</span> <span class="n">a</span>
+    <span class="n">Call</span> <span class="n">Merge</span> <span class="n">Sort</span> <span class="n">to</span> <span class="n">sort</span> <span class="n">a_L</span> <span class="ow">and</span> <span class="n">assign</span>
+      <span class="n">its</span> <span class="n">output</span> <span class="n">to</span> <span class="n">a_L</span>
+    <span class="n">Call</span> <span class="n">Merge</span> <span class="n">Sort</span> <span class="n">to</span> <span class="n">sort</span> <span class="n">a_R</span> <span class="ow">and</span> <span class="n">assign</span>
+      <span class="n">its</span> <span class="n">output</span> <span class="n">to</span> <span class="n">a_R</span>
+    <span class="n">Call</span> <span class="n">Merge</span> <span class="n">to</span> <span class="n">combine</span> <span class="n">a_L</span> <span class="ow">and</span> <span class="n">a_R</span><span class="p">,</span> <span class="ow">and</span> <span class="n">assign</span>
+      <span class="n">its</span> <span class="n">output</span> <span class="n">to</span> <span class="n">a</span>
+<span class="c1"># Note, nothing is done when n is 1</span>
+<span class="n">Output</span><span class="p">:</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>Merge sort is <span class="math">\(\mathcal{O}(n \log n)\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">0.23</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathcal{O}(n^2)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathcal{O}(n\, \log \, n)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_15_Slides_26_0.png" src="../_images/lectures_ME400_Lecture_15_Slides_26_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Built-in-Sorting">
+<h2>Built-in Sorting<a class="headerlink" href="#Built-in-Sorting" title="Permalink to this headline">¶</a></h2>
+<p>Several options: - <code class="docutils literal"><span class="pre">sorted</span></code> - <code class="docutils literal"><span class="pre">list.sort</span></code> - <code class="docutils literal"><span class="pre">np.sort</span></code></p>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>By now, you should be able to</p>
+<ul class="simple">
+<li>Sort an array of numbers using brute-force, <span class="math">\(\mathcal{O}(n^2)\)</span>
+schemes like <em>selection sort</em>.</li>
+<li>Sort an array of numbers using divide-and-conquer,
+<span class="math">\(\mathcal{O}(n\log n)\)</span> schemes like <em>merge sort</em>.</li>
+<li>Apply built-in Python functions to sort sequences.</li>
+</ul>
+<p>Office hours today 2:30–4 intermixed with advising. John should be
+available for part of that time.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 15 - Sorting</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Sorting-is-Hard-Work">Sorting is Hard Work</a></li>
+<li><a class="reference internal" href="#Better-Sorting-for-Bigger-Data">Better Sorting for Bigger Data</a><ul>
+<li><a class="reference internal" href="#Merge-Sort">Merge Sort</a></li>
+<li><a class="reference internal" href="#Merging-Sorted-Sequences">Merging Sorted Sequences</a></li>
+<li><a class="reference internal" href="#Divide-and-Conquer">Divide and Conquer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Built-in-Sorting">Built-in Sorting</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_15_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_15_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

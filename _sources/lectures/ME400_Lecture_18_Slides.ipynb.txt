@@ -2,22 +2,44 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
    "source": [
     "# Lecture 18 - SymPy: Symbols, Expressions, and Equations.\n",
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     " \n",
-    "From [Lecture 1](ME400_Lecture_7.ipynb) through [Lecture 17](ME400_Lecture_17.ipynb), the focus has been squarely on the fundamentals of programming, with some basic numerical tools (like numerical arrays and plotting) and best practices (like unit testing) included along the way.  This lecture marks a transition to new topics that will leverage the material already covered and provide students with tools for solving difficult analytical or numerical problems common to upper-level engineering courses.  In particular, the SymPy module will be used to define *symbols* and *symbolic expressions*, leading to a very different (but very useful) tool for the engineer's toolbox.\n",
-    "\n",
+    "From [Lecture 1](ME400_Lecture_7.ipynb) through [Lecture 17](ME400_Lecture_17.ipynb), the focus has been squarely on the fundamentals of programming, with some basic numerical tools (like numerical arrays and plotting) and best practices (like unit testing) included along the way.  This lecture marks a transition to new topics that will leverage the material already covered and provide students with tools for solving difficult analytical or numerical problems common to upper-level engineering courses.  In particular, the SymPy module will be used to define *symbols* and *symbolic expressions*, leading to a very different (but very useful) tool for the engineer's toolbox."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
     "### Objectives\n",
     "\n",
     "By the end of this lesson, you should be able to\n",
     "\n",
     "- Define symbols and symbolic expressions using SymPy\n",
     "- Define and solve systems of symbolic equations\n",
-    "- Manipulate expressions by applying simplification and other symbolic tools. \n",
-    "\n",
+    "- Manipulate expressions by applying simplification and other symbolic tools. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
     "### Key Terms\n",
     "\n",
     "- `sympy`\n",
@@ -33,38 +55,61 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
    "source": [
     "## Symbols \n",
     "\n",
-    "Symbolic computation, as the name suggests, depends on *symbols*.  Unlike numerical computation, in which one manipulates *values*, symbolic computations involves the manipulation of symbols.  That's just like when you made the jump from grade-school number crunching to algebra for the first time.  Now, we get to do it again (for, I hope, more interesting \n",
-    "problems and with the help of Python).\n",
-    "\n",
-    "Start by importing SymPy (using `sp` as an abbreviation) as follows:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "metadata": {
-    "collapsed": true
-   },
-   "outputs": [],
-   "source": [
-    "import sympy as sp"
+    "Symbolic computation based on *symbols* rather than *values*."
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
-    "A symbol can be defined using the `Symbol` function, whose single argument is a string representing the name of the symbol.  For example, the symbol $x$ can be defined by"
+    "In Python, symbolic computing via SymPy: "
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
-   "metadata": {},
+   "execution_count": 4,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import sympy as sy # note sy and not sp; just be consistent"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Defining symbols:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -72,20 +117,24 @@
        "x"
       ]
      },
-     "execution_count": 2,
+     "execution_count": 6,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "x = sp.Symbol('x')\n",
+    "x = sy.Symbol('x')\n",
     "x"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {},
+   "execution_count": 7,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -93,7 +142,7 @@
        "sympy.core.symbol.Symbol"
       ]
      },
-     "execution_count": 3,
+     "execution_count": 7,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -103,33 +152,32 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "That was easy.  We could do the same thing for $x$, $y$, and $z$, but an all-in-one approach is"
-   ]
-  },
-  {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 9,
    "metadata": {
-    "collapsed": true
+    "slideshow": {
+     "slide_type": "fragment"
+    }
    },
    "outputs": [],
    "source": [
-    "x, y, z = sp.symbols('x y z')"
+    "x, y, z = sy.symbols('x y z')"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "SymPy does not require that the string given to `Symbol` or `symbols` matches in any meaningful way to the name to which the symbol is assigned.  For example, one could (but should *not*) do"
+    "What not to do:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
+   "execution_count": 11,
    "metadata": {},
    "outputs": [
     {
@@ -138,54 +186,49 @@
        "u"
       ]
      },
-     "execution_count": 5,
+     "execution_count": 11,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "v = sp.Symbol('u')\n",
+    "v = sy.Symbol('u')\n",
     "v"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
    "source": [
-    "Such naming, of course, could lead to confusion, bugs, etc."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Nicer Output\n",
-    "\n",
-    "When a mathematical symbol is defined, it is often given a special font, e.g., \"x\" would be typeset as $x$ and not `x`. SymPy provides a way to get nicer output in IPython consoles and Jupyter notebooks.  One just needs to do"
+    "## Nicer Output"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 12,
    "metadata": {
-    "collapsed": true
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
    },
    "outputs": [],
    "source": [
-    "sp.init_printing()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Note how the output of `x` changes slightly:"
+    "sy.init_printing()"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 7,
-   "metadata": {},
+   "execution_count": 13,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -197,7 +240,7 @@
        "x"
       ]
      },
-     "execution_count": 7,
+     "execution_count": 13,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -207,57 +250,108 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "This nicely typeset format will be very useful for reading and understanding complex, symbolic expressions.  In fact, it supports some pretty neat formatting features.  For example, a symbol like $x_0$ is often used to represent an initial value for some quantity $x$.  We might express that in Python as `x0` or `x_0`.  In SymPy, both styles work:"
-   ]
-  },
-  {
    "cell_type": "code",
-   "execution_count": 8,
-   "metadata": {},
+   "execution_count": 14,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAFMAAAAUBAMAAAADwRznAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIma7zZnddlTvRIkQ\nqzLsm4+cAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABUElEQVQoFY2TvU7CUBSAP8pfpQUbTYw61Tfw\nZzbWNyDKrMRBHFkIAzH4CGwaJyZXWAjr3YgDkUfgDXAwMSHEeG4vaFpM7El6b5vv682595wLKZ8E\ncaCd7QQiFD3RzhOpbgBWOZHKEHJ65QTxCjsJNK1kujRkGt3vt+p//eI26uypkDhljsHtW7VcQKu1\nZjt2h7YBVsAdOMpZ2J7VtydxdzcbcGKAXeVZViVzKPvrsoiraqPOpwGld63CpmT6NuUprtJTpS8D\nRJUEYDaVx+NmTa2Q7xhQqOpt2apNXs0UtTX1lPTEACtgAL2HM7b0qo+4H1H7kp4fArJ9XmDcHF34\nOtc53KqIOx5eewZkpr+FNRu1vYgKleXRSFV/2iVf1ufqRMxi4M4xQNqFoxUcDJTUePUVzjk/Lceo\ngW7CWGv7obIaCs2r5WtaJ5byZfg35MJ8A5OzVyvGvrDAAAAAAElFTkSuQmCC\n",
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarIkSJZt3NVLsy\nme8Q6PJIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAfElEQVQIHWNggIDcvQJQFpsD8wQok8OB5wuM\nGcDyFcpkYOD6CGdyKMCZuXAW+wU4M4whBsrmmbVqI5TJ9///BwYGIWVXNQWwCGMCexMHxFI2AbaP\nXA4QUQbODWAGiOBXgDPPH4AyuQT0GZgEwJz4BfsZ3CHCwkpC1wvATAAvUhbC3/cGUAAAAABJRU5E\nrkJggg==\n",
       "text/latex": [
-       "$$\\left ( x_{0}, \\quad y_{0}\\right )$$"
+       "$$x^{2}$$"
       ],
       "text/plain": [
-       "(x₀, y₀)"
+       " 2\n",
+       "x "
       ]
      },
-     "execution_count": 8,
+     "execution_count": 14,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "x0, y_0 = sp.symbols('x0  y_0')\n",
-    "x0, y_0"
+    "x**2"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "Actually, this output not only confirms that subscripts can be formatted as expected, but it shows that SymPy `symbol` can be placed in containers like any other Python type."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Symbolic Expressions\n",
-    "\n",
-    "We can use symbols to define mathematical expressions.  For instance, we know that the total energy of a system is given by its (relativistic) mass times the speed of light squared, i.e.,"
+    "More complicated symbols are supported:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
-   "metadata": {},
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "phi, y_0 = sy.symbols('phi y_0')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEoAAAAUBAMAAADYerbFAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIma7zZnddlTvRIkQ\nMqvFy5UvAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABXUlEQVQoFYWSMUvDUBSFT1Lbpk2UUFHq9or9\nA1Zcpa6CUrC4iFgc1DFLceigk3M3xcnJtVmCm2QQ3LSLi0vrfxCUouC5L2psCPUOh5tzP+7Lu/cB\nhgLDFUkPU2qzuuanE9p9oa79S90BZkMox9NsutgecnIqiv10QLtOF/M6sSdAwDraUn+eK+uWf1in\n7WEhjIwANSbZ09L3JWLMtro4QacjThVH1BoquI0BnZWzdSybvjXk1xkuec0WfGwnqLDg4S13hQ/6\nA6EyDVKbCQq9cPrzsY8LTfHEgjKU8Z6kmsh3By726V/L3095pst+iVhFZjgIcUi7ioAjbdlYgfM6\njm2hp9jrnO4OuwFPi23O/iBkGsfDzZ7L/xrR2Yg2VJKilRxsE9EdjVa07YpQ41uaqTsj5BsyL24b\nSwR8oe5FfiOnMiwGQQjw5ehXqKSoRRIdxePdn1T6GIoyKfiivwB7oEST+BJbUgAAAABJRU5ErkJg\ngg==\n",
+      "text/latex": [
+       "$$\\left ( \\phi, \\quad y_{0}\\right )$$"
+      ],
+      "text/plain": [
+       "(φ, y₀)"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "phi, y_0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Symbolic Expressions\n",
+    "\n",
+    "Symbols are combined using operators to make **symbolic expressions**.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -270,29 +364,46 @@
        "c ⋅m"
       ]
      },
-     "execution_count": 9,
+     "execution_count": 21,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "m, c = sp.symbols('m c')\n",
+    "m, c = sy.symbols('m c')\n",
     "m*c**2"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
-    "Notice that the expression's order was changed.  The particular order of symbols in the stored expression may differ from the expression originally entered. \n",
-    "\n",
+    "Note: the order of symbols stored may differ from original definition."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
     "When storing expressions, Sympy often performs simplification automatically, e.g.,"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {},
+   "execution_count": 23,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -305,7 +416,7 @@
        "x "
       ]
      },
-     "execution_count": 10,
+     "execution_count": 23,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -316,15 +427,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
     "but not always, e.g.,"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
-   "metadata": {},
+   "execution_count": 24,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -336,7 +455,7 @@
        "x⋅(x + 2)"
       ]
      },
-     "execution_count": 11,
+     "execution_count": 24,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -347,15 +466,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "Just as one can assign the result of evaluated expressions (e.g., `2**3`) to a variable name, so too, can symbolic expressions be assigned.  For example, we can define"
+    "Symbolic expressions can be variables just like any other expressions:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
-   "metadata": {},
+   "execution_count": 25,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -368,7 +495,7 @@
        "c ⋅m"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 25,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -380,15 +507,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
-    "However, now `E` is a symbolic variable (here, a `sympy.core.mul.Mul`, but that's just a detail) and can be manipulated just like any other symbol, e.g., "
+    "Now, `E` is a symbolic variable and can be manipulated just like any other symbol, e.g., "
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
-   "metadata": {},
+   "execution_count": 26,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -401,7 +536,7 @@
        "c ⋅m "
       ]
      },
-     "execution_count": 13,
+     "execution_count": 26,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -412,15 +547,25 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "In many cases, we wish to do a sequence of symbolic computations before substituting numerical value.  We know, for example, that the speed of light is about 300 million meters per second, and we can substitute that value in $c$ by"
+    "Good practice for all problem solving: **do not substitute numbers until the end!**\n",
+    "\n",
+    "With SymPy:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
-   "metadata": {},
+   "execution_count": 27,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -432,7 +577,7 @@
        "9.0e+16⋅m"
       ]
      },
-     "execution_count": 14,
+     "execution_count": 27,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -443,15 +588,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
     "Note that this does *not* change the original expression:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
-   "metadata": {},
+   "execution_count": 28,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -464,7 +617,7 @@
        "c ⋅m"
       ]
      },
-     "execution_count": 15,
+     "execution_count": 28,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -475,15 +628,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "To save the result of the substitution, one needs to assign it to a new name, e.g.,"
+    "Save the result of the substitution with another variable:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
-   "metadata": {},
+   "execution_count": 29,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -495,7 +656,7 @@
        "9.0e+16⋅m"
       ]
      },
-     "execution_count": 16,
+     "execution_count": 29,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -507,18 +668,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "You may (or may not) recall that the relativistic mass is given\n",
-    "by $m = m_0 / \\sqrt{1+(c/v)^2}$, where $m_0$ is the\n",
-    "rest mass of an object and $v$ is the magnitude of its velocity.\n",
-    "We can substitute this, too, via"
+    "Substitute $m = m_0 / \\sqrt{1+(c/v)^2}$ in $E$:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
-   "metadata": {},
+   "execution_count": 31,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -537,27 +703,24 @@
        "╲╱     v      "
       ]
      },
-     "execution_count": 17,
+     "execution_count": 31,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "m_0, v = sp.symbols('m_0 v')\n",
-    "E.subs({m:m_0/sp.sqrt(1+(c/v)**2), c:3e8})"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Note three things. First, the argument to `E.subs` is a dictionary, with keys equal to the symbols being replaced and values equal to what is being added in place of those keys.  Second, the function `sp.sqrt` has been used.  Only symbolic functions (in the `sympy` module) should generally be used in symbolic expressions.  Third, $c$ appears in the denominator even though we attempted to substitute its numerical value.  The solution is to use *chained substitution*, e.g.,"
+    "m_0, v = sy.symbols('m_0 v')\n",
+    "E.subs({m:m_0/sy.sqrt(1+(c/v)**2), c:3e8})"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
-   "metadata": {},
+   "execution_count": 33,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -575,44 +738,38 @@
        "╲╱           v    "
       ]
      },
-     "execution_count": 18,
+     "execution_count": 33,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "E.subs({m: m_0/sp.sqrt(1+(c/v)**2)}).subs({c: 3e8})"
+    "E.subs({m: m_0/sy.sqrt(1+(c/v)**2)}).subs({c: 3e8})"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Symbolic Equations"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "From above, we saw that symbolic expressions can be assigned to  a name, e.g., $E=mc^2$.  That would, at first glance, appear to be an equation.  However, in the world of SymPy, equations are defined by use of the function $Eq$.  For example,  we could define the following equation:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 19,
    "metadata": {
-    "collapsed": true
+    "slideshow": {
+     "slide_type": "slide"
+    }
    },
-   "outputs": [],
    "source": [
-    "a, b, x, y = sp.symbols('a b x y')"
+    "## Symbolic Equations\n",
+    "\n",
+    "The syntax `E = mc**2` is **not** an equation; it is **assignment**.\n",
+    "\n",
+    "A **symbolic equation**, e.g., $ax = by$ is defined via"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
-   "metadata": {},
+   "execution_count": 36,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -624,44 +781,60 @@
        "a⋅x = b⋅y"
       ]
      },
-     "execution_count": 20,
+     "execution_count": 36,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.Eq(a*x, b*y)"
+    "a, b, x, y = sy.symbols('a b x y')\n",
+    "sy.Eq(a*x, b*y)"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
-    "and we could actually assign that equation a name via"
+    "Save the equation as a variable:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 21,
+   "execution_count": 44,
    "metadata": {
-    "collapsed": true
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
    },
    "outputs": [],
    "source": [
-    "eq1 = sp.Eq(a*x, b*y)"
+    "eq1 = sy.Eq(a*x, b*y)"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "Suppose we would like to solve for `y` in terms of `x`.  With SymPy, we could do"
+    "Solve for `y` in terms of `x`:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
-   "metadata": {},
+   "execution_count": 50,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -675,28 +848,23 @@
        "⎣ a ⎦"
       ]
      },
-     "execution_count": 22,
+     "execution_count": 50,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.solve(eq1, x)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The result is what we expect, and it is returned as the single element of a list.\n",
-    "\n",
-    "If we forgot to specify the variable for which we want a solution, we find"
+    "sy.solve(eq1, x) # Note the type returned"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
-   "metadata": {},
+   "execution_count": 51,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -710,26 +878,23 @@
        "⎣⎩    x ⎭⎦"
       ]
      },
-     "execution_count": 23,
+     "execution_count": 51,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.solve(eq1)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Here, the solution is a list also with one element, and that element is a dictionary.  Apparently, `sp.solve` solved for $a$, but why? Consider the following:"
+    "sy.solve(eq1) # Note the type returned"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
-   "metadata": {},
+   "execution_count": 52,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -743,59 +908,77 @@
        "⎣⎩    y ⎭⎦"
       ]
      },
-     "execution_count": 24,
+     "execution_count": 52,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.solve(sp.Eq(c*x, b*y))"
+    "sy.solve(sy.Eq(c*x, b*y)) # Note the type returned"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "This suggests (but does not prove) that the solution is by default in alphabetical order, and if one does not specify the variables to solve.  Therefore, a good rule of thumb is always to specify which variable is to be found by `solve`. \n",
-    "\n",
-    "> **Note**: Always specify the names of variables to be solved.\n",
-    "\n",
-    "More information can be found on `sp.solve` by calling `help(sp.solve)`.  The output is quite long, but the signature of `sp.solve` is `sp.solve(f, *symbols, **flags)`.  Here, `f` must be (1) one equation (e.g., `sp.Eq(expr1, expr2)`), (2) one symbolic expression `expr` (treated implicitly as `sp.Eq(expr, 0)`, or (3) a sequence (e.g., `list`) of such equations or expressions.  \n",
-    "\n",
-    "Notice that `*symbols` and `**flags` have the special `*` and `**` characters discussed in [Lecture 13](ME400_Lecture_13.ipynb).  Convention usually puts `*` with `*args` and `**` with `**kwargs`.  However, the meaning is the same: `*symbols` is a sequence of position arguments that represent the symbols for which the equations are to be solved, while `**flags` are named arguments that (may) modify how `sp.solve` works."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Now, let us define the second equation:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 25,
    "metadata": {
-    "collapsed": true
+    "slideshow": {
+     "slide_type": "fragment"
+    }
    },
-   "outputs": [],
    "source": [
-    "d = sp.Symbol('d')\n",
-    "eq2 = c*x - d*y + 1"
+    "**Note**: Always specify the names of variables to be solved."
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "which, as you'll note, is just an expression.  When used in  solvers, an expression `expr` is equivalent to the\n",
-    "equation `Eq(expr, 0)`.  We can solve the two equations simultaneously via"
+    "### Systems of Equations\n",
+    "\n",
+    "Define a second equation $cx - dy = 1$ and (with $ax = by$) solve for $x$ and $y$:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 26,
-   "metadata": {},
+   "execution_count": 56,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAGYAAAASBAMAAABbQraGAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAiXYyIt1Uze+rmRC7\nZkTTotXTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABUUlEQVQoFWNgwAmYTyzAKYdTgj8BixRbNxZB\nhND7DQg2mwKEvXPlb4QgFpYokhhMDwMTfj1VuPUIKRlwK015JISkAshkWaj8jWHTIgYWiPtR7XFN\nYC/YyHBVIRxVzwsHnt8MAhkMTB/A4qh6Ghk4E6QZ5DekoOjh7mXgKmBJWM7AcwBTDxfITxsYasAy\n20NBoBjIBgqzCnAzNDHwKzAwMJaXl7aXl08AqQGFAccBEIvhE5hEEEDh/Q8Y+H4z2BuABVHctl8A\nJMb8GaEczAIK5wNtK2DQgEig6OG/wMCQkA30qTaKrv0JDMfZHHgmMJzEoodrAsMuu288H1iAepEA\nuwJvJCMD1wG+v1j0MAjeVeCepK11F0kDkMk9SdhTj4F7otYXVD1cM77PRVWJyQP6CAzg/sFUgiYy\nHRR4YMDtAKEJk7EMhwgrQlPxSMsATQTEBQAnO1IMh6W40AAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$c x - d y + 1$$"
+      ],
+      "text/plain": [
+       "c⋅x - d⋅y + 1"
+      ]
+     },
+     "execution_count": 56,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d = sy.Symbol('d')\n",
+    "eq2 = c*x - d*y + 1 # Wait, no Eq??\n",
+    "eq2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -809,54 +992,62 @@
        "⎩   a⋅d - b⋅c     a⋅d - b⋅c⎭"
       ]
      },
-     "execution_count": 26,
+     "execution_count": 58,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.solve([eq1, eq2], x, y)"
+    "sy.solve([eq1, eq2], x, y)"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "Go ahead and verify this by hand, and then take a look to the full SymPy tutorial (link below) to check out what sorts of equations (and sets of equations) SymPy can solve.\n",
-    "\n",
-    "> **Note**: As with *any* function one uses from SymPy or other modules, make sure that the return value is the expected result (in terms not just of *value* but also *type*."
+    "**Exercise**: Solve $a x^2 + b x + c = 0$ for $x$, and name the solutions $x_0$ and $x_1$."
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "In order to get comfortable with SymPy and solving symbolic equations, tackle the following:\n",
-    "\n",
-    "> **Exercise**: Solve $a x^2 + b x + c = 0$ for $x$, and name the solutions $x_0$ and $x_1$.\n",
-    "\n",
-    "> **Exercise**: Solve $e^{ax} = b$ for $x$, and name the solution $x_0$.  Substitute $b = 2$, and name the result $x_1$.\n",
-    "\n",
-    "> **Exercise**: Solve $x - y = 1$ and $2x + y = 1$ for $x$ and $y$.\n",
-    "\n",
-    "> **Exercise**: Given $3a + 4b + 7c + 11 = 0$, $5a + 3b + 3c + 4 = 0$, and $7a + 13b + 5c + 9=0$, find $a$, $b$, and $c$."
+    "**Exercise**: Given $3a + 4b + 7c + 11 = 0$, $5a + 3b + 3c + 4 = 0$, and $7a + 13b + 5c + 9=0$, find $a$, $b$, and $c$."
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
    "source": [
     "## Numerical Evaluation\n",
     "\n",
-    "The solution of one equation or a system of equations, linear or nonlinear, is generally not the end of one's analysis.  Often, the ultimate goal is to produce a final, numerical answer, with all problem-specific parameters substituted into the final result.\n",
+    "After the final, symbolic is found, **then evaluate numerically**.\n",
     "\n",
-    "Consider the expression"
+    "Possible steps:\n",
+    " - `expr.subs`\n",
+    " - `expr.evalf`"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 27,
-   "metadata": {},
+   "execution_count": 61,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -869,27 +1060,24 @@
        "sin⎝x ⎠"
       ]
      },
-     "execution_count": 27,
+     "execution_count": 61,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "expr = sp.sin(x**3)\n",
+    "expr = sy.sin(x**3)\n",
     "expr"
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Suppose we substitute $x = 3$, which can be done via"
-   ]
-  },
-  {
    "cell_type": "code",
-   "execution_count": 28,
-   "metadata": {},
+   "execution_count": 62,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -901,7 +1089,7 @@
        "sin(27)"
       ]
      },
-     "execution_count": 28,
+     "execution_count": 62,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -912,16 +1100,13 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "As clean as this is, it's not a *number*.  The trick is to use `evalf`:"
-   ]
-  },
-  {
    "cell_type": "code",
-   "execution_count": 29,
-   "metadata": {},
+   "execution_count": 63,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -933,44 +1118,183 @@
        "0.956375928404503"
       ]
      },
-     "execution_count": 29,
+     "execution_count": 63,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "expr_sub.evalf()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Other Symbolic Tools"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Consider the following example:"
+    "expr_sub.evalf() # SymPy Float"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": 65,
    "metadata": {
-    "collapsed": true
+    "slideshow": {
+     "slide_type": "fragment"
+    }
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAKoAAAAPBAMAAACGiUnsAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADN0lEQVQ4Ea2Uz4ubRRjHP2/y5k3e5M0mtFBl\nDybdRT2obDBVRJduQBHcQ32pV2GzWPGw0qYUb4UECoq0h5fqRS+bgj8oVXwVREXFUFdBWbrBkycb\nWyxUpDV1t8u2u8bvzJv9D5zDm2ee+X4/M/PMTGDPgccwbU/9JzhaPtyC+tWQt+pfkDkzXa/j/Z55\nEGd6NoKzD30O9119xOgPo+TToaJMNdEkKGOEV7hXepz3eDfik9E/sK+favpV2g13NBptkx+Nakw2\n/PM4Peb6VAk0M6fBazlvKsrFicairBG3S7qpoaBLUOWlS5rhMwrxxCalTkqdHt7sdfgZLhKUyXez\nDXwZJi7APDwu659xorEoa6TQIzvUUKlJ+m8xoLhlPh9TaaYhHRKoy22YI98h2EjHOB14ewm+gXYZ\n/9k40ViUNVLqUdyUrRIzsWGpha66au2GPr9pF/px7sLN0BuKWrxbTmukJuo2XG6R9sbUXZSMlSrF\nf+XLa607rBy6n9LLB81xOKf0IRb1mSshH2itffVzQ9bWD4AbLeHcEnXAc4ZqNGOUMS7XyOiEzPa9\ndT5luV85Qr6F/8R+k21AoezvaPscU8zlGunRoi4CS/jyLdScgahWk6CscbmaUDnKCVOJQqcyJHVO\n0ZNaW0W/al/iDbJzLUVn4OSvd/rUDFVrXailEdVqdlEyjpetPd14YUODqa1SB3dHUV7oa0YPMxGH\n/pgLNVrF7XHzXDYUNanAa2PqTLSLklElzpo1qgXDwBQ318Rd9yMKSp9W+sdxSdfKcEWTRWQ29yKq\nOa328ZqhWo1FJcZCjGtulprX05GlhkFXay0NDdWRzxzUjIC8Ctkq75iirJxcXb1zia/h+XtWV9c+\nGliNRSVGt0uqKaF7noUopUNuZlTXbj4mt0VGlaMKrzMfZXSN9Uqva618pfQF+woeUCSt1VhUYuQN\nJkPnNhOLzhH03OYjvmey5TZoD8ga6lkz47XyPr2pU/WHO8VF3IHSusG5lvO+olKcaCwqMbL3xg/2\naB+d6oswu1/XaUqZX6a+Bf9Dmfzpi2XldIc9/S90eHHaXOenRis4B/8KJf9uu2E1CcoaJfj/23+I\nphaRueQ7OgAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$0.956375928404503$$"
+      ],
+      "text/plain": [
+       "0.956375928404503"
+      ]
+     },
+     "execution_count": 65,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
    "source": [
-    "t = sp.Symbol('t')"
+    "float(expr_sub) # Python float"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 31,
-   "metadata": {},
+   "execution_count": 64,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAEIAAAAOBAMAAABp4NfMAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABh0lEQVQYGT2QP0gcURDGf7v3zrvbP7eiIMHC\nXU8sBckpiATZ2kLEtAH3iCGdHKQV7sAiTYrFdDbugY2FeNqEFIEFtbDRJZWlYG+y5MxxCcbMS8Ap\n3vvme9+b+WZgZG4eHSP1C9gcXmtC/XaVj/VPMHE7Iy9veRbLZeyzG3P0+APGMjOqBLRCApwmKqEQ\nicJJcAJeX4r6BLtb7eO1SyGVCDullIvCiyh8JxXkDvRxiB8VuhhtvBS3L5TfpXr/T2Enkkq0Qvf3\ncCHED3D/SG5JjQfOVqbx3ixpf8Y2XPXmYG+WorjTLYZ6HLOX+RtYTSoLk0I+NkQR/FewyTvdzW77\nOWZH0GLG1vWv7KkL6u7lvfDmwGujHgRZHZXyraOdlvRfCSd3tJlyhOpVYuy+FVPsy+goPa3EUCp2\nzdxJpIaXi8IX8kxvzIwEqQPWYxPKUVF8JFaX8kBq8BneM75q/KTaMDaQXS/HnDLeVCGtG7eBuoHR\nu3P4AM9rGey8mJQZa8J8rX2BV1Mz/AXFPXBiw/RWTgAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$0.95638$$"
+      ],
+      "text/plain": [
+       "0.95638"
+      ]
+     },
+     "execution_count": 64,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "expr_sub.evalf(5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "SymPy let's one use numbers with arbitrary precision.  Compare the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'0.10000000000000000555'"
+      ]
+     },
+     "execution_count": 66,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\"{:.20f}\".format(0.1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAN4AAAAPBAMAAAB5K2wOAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABzklEQVQ4Eb2Uu0oDQRSG/425bS44aCM2iYja\nCKZQIRBU0CqFBl8gCxY2IqlttFIEi5AXiI2CVbQTtAiilpo30NgJokTBIBjjzJm4ZwluSKNbfOx/\nvswezu5MgL7JKdgXBYYxPJ8BQ//2N+1u/FXfGLAulnMaWMVAnvptCOhAFYI/Z+yC4a7dTajZTACl\n5lsL3n30WLKfcXErQIGBNDDtABu9irW78ace5dNXbuRMhHAZgZqsAC8CFBg4BzYFg41e1Y2J0LPL\nioTeMqJ1lVQ/Cgx8Anc5Bhu9qhvT3i8WR/Trpx8FhvEq+1Vt3LOhO9YdTGThIQNcLo60UEzAJ7+l\nno8Cw5Qim7SRYEN3rDuYsDAbwAmKFY1i3NlPBaoQTDlaNmkjwaZNdzBykFM1TXhLI/bH71N2mZB7\nE54PDfnlA879EqhTRZflhthU+6UFNu3a3VwDs5WIhZ4GAeFjePk8qEAVXT4DlgSDTbt2N4dyPhGy\n4KkR1BH3WHJUOg8UGOqojzrAhu66MnFgGx4gaBGAHQxmjHfdj4IDwZxxAIbDqFVdmQK8RzDjSOcJ\nQP/zFbAHjJfW5nSgCsGYeZL/1zbctbsxhy8EUEgNtaDe5D9e3y1ckJPF2hGAAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$0.10000000000000000555$$"
+      ],
+      "text/plain": [
+       "0.10000000000000000555"
+      ]
+     },
+     "execution_count": 68,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.Float(0.1, 20)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABkAAAAPBAMAAADjSHnWAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEJmJZjLNVN0i77ur\nRHZ72Yd1AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAeElEQVQIHWNgEDIxZUCAdAaJCWBelQADA8sC\nBuYEII/x0Hkgj/sAA/tHII+B4T2Qx3+Agfc7nCevwMD7D86bb8DA+hnBU0DmoaoEmsKOMIV7AwML\nwgag7UwJcFMY2hmkAhi/Afkg2xmE3x1lYOhhYNBZn+MAVgMnAMkeIqCZaxDCAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$0.1$$"
+      ],
+      "text/plain": [
+       "0.10000000000000000000"
+      ]
+     },
+     "execution_count": 69,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.Float('0.1', 20)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Other Symbolic Tools\n",
+    "\n",
+    "Simplification:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -985,27 +1309,25 @@
        "                tan(t)                "
       ]
      },
-     "execution_count": 31,
+     "execution_count": 70,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "expr = ((sp.sin(t)+sp.tan(t))**2 + sp.cos(t)**2 - sp.sec(t)**2) / sp.tan(t)\n",
+    "t = sy.Symbol('t')\n",
+    "expr = ((sy.sin(t)+sy.tan(t))**2 + sy.cos(t)**2 - sy.sec(t)**2) / sy.tan(t)\n",
     "expr"
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Nope. SymPy didn't simplify what looks to be a fairly formidable trigonometric expression.  But then again, we didn't tell it to  do so.  How's this?"
-   ]
-  },
-  {
    "cell_type": "code",
-   "execution_count": 32,
-   "metadata": {},
+   "execution_count": 71,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -1021,28 +1343,34 @@
        "  2⋅sin(t)  "
       ]
      },
-     "execution_count": 32,
+     "execution_count": 71,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.simplify(expr)"
+    "expr.simplify()"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "That's a bit cleaner.  Exactly what \"simplest\" means as SymPy does this magic is not really concrete.  In fact, SymPy does simplification via a sort of *heuristic* optimization (an area of active research).\n",
-    "\n",
-    "Another way to simplify (at least visually, perhaps) is to `collect` additive terms of some expression.  What does that mean?  Suppose we define"
+    "Expanding expressions and collecting like terms:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 33,
-   "metadata": {},
+   "execution_count": 74,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -1055,7 +1383,7 @@
        "(a⋅x + b⋅y) ⋅(c⋅x + d⋅y)"
       ]
      },
-     "execution_count": 33,
+     "execution_count": 74,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1067,8 +1395,12 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 34,
-   "metadata": {},
+   "execution_count": 75,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -1081,26 +1413,23 @@
        "a ⋅c⋅x  + a ⋅d⋅x ⋅y + 2⋅a⋅b⋅c⋅x ⋅y + 2⋅a⋅b⋅d⋅x⋅y  + b ⋅c⋅x⋅y  + b ⋅d⋅y "
       ]
      },
-     "execution_count": 34,
+     "execution_count": 75,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.expand(expr)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "where `expand` does exactly what its name suggests: it expands the  product of sums to individual sums.  But gosh, that output is complicated. Suppose we want to group together all terms with like powers of $x$.  That's where `collect` comes in:"
+    "expr.expand()"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
-   "metadata": {},
+   "execution_count": 76,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -1113,70 +1442,119 @@
        "a ⋅c⋅x  + b ⋅d⋅y  + x ⋅⎝a ⋅d⋅y + 2⋅a⋅b⋅c⋅y⎠ + x⋅⎝2⋅a⋅b⋅d⋅y  + b ⋅c⋅y ⎠"
       ]
      },
-     "execution_count": 35,
+     "execution_count": 76,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "sp.collect(sp.expand(expr), x)"
+    "expr.expand().collect(x)"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
    "source": [
-    "With `simplify`, `expand`, and `collect`, one has substantial flexibility in manipulating expressions into forms more easily understood or used."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Finally, it is often the case that we want to visuallize our symbolic results graphically.  How to plot something like $\\sin(x)$?  Of course, NumPy has arrays and its own `np.sin(x)` functions, but that will not work if `x` is a symbol.  Fortunately, SymPy has the function `lambdify`, which will turn any symbolic expression into a `lambda` function suitable for numerical evaluations (array-based or otherwise) and, hence, plotting.\n",
+    "## Lambdify and Plotting\n",
     "\n",
-    "For example, convert the expression `f = x**2` into a function:"
+    "Consider a symbolic expression representing the function $f(x) = x^2$:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 36,
-   "metadata": {},
+   "execution_count": 78,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABoAAAAPBAMAAAAIf8LVAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMpndu3bvImbNiRBU\nq0Qb3U6NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAlElEQVQIHWNgYGAQAmIGhk0rFoJpEzA5h2Fz\nAZDBmgLicSQwcE0A0hVTQDyWCww8v4H0AjCP/wID3x+gkgIwb78CA99XBoatDGBe/QIGxl9AhVCe\nAojHIwDhQVTuYoDwgKbw/GE4e/fut6sgGxwYOEA2MMBsZwLZzvCFgfsnA4MNwzYBIGfJ/xsMtgwM\nu0IvgqSQAAAKZSjfL/mHvwAAAABJRU5ErkJggg==\n",
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarIkSJZt3NVLsy\nme8Q6PJIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAfElEQVQIHWNggIDcvQJQFpsD8wQok8OB5wuM\nGcDyFcpkYOD6CGdyKMCZuXAW+wU4M4whBsrmmbVqI5TJ9///BwYGIWVXNQWwCGMCexMHxFI2AbaP\nXA4QUQbODWAGiOBXgDPPH4AyuQT0GZgEwJz4BfsZ3CHCwkpC1wvATAAvUhbC3/cGUAAAAABJRU5E\nrkJggg==\n",
       "text/latex": [
-       "$$4.0$$"
+       "$$x^{2}$$"
       ],
       "text/plain": [
-       "4.0"
+       " 2\n",
+       "x "
       ]
      },
-     "execution_count": 36,
+     "execution_count": 78,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
     "f = x**2\n",
-    "f_fun = sp.lambdify(x, f)\n",
-    "f_fun(2.0)"
+    "f"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
-    "Note something important: the original expression was named `f`.  To keep names straight, I recommend naming any *lambdified* expression `f` in the form `f_fun` `f_lam` to indicate its use as a function.\n",
-    "\n",
-    "The result works by default for `ndarrays`:"
+    "Use `lambdify` to produce a callable function for `f`:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 37,
-   "metadata": {},
+   "execution_count": 86,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "f_fun = sy.lambdify(x, f)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAALQAAAAPBAMAAAC/7vi3AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVO8Qq5l2zWbdiSK7\nMkS0yDVVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB7klEQVQ4EbWSv2sTYRjHP/EuSZPUerOLooNC\nRQ9RxCmhUCk4GNAs/qKTTtKApYiLwaG46eJshgoSlByFLjpY8A8wIA669PAviAgmWuv53vPm8rwc\nXb3hw/v9wZfjvYPJ413fiFDUeq8DK1kLPwec713GQjuOKbEmXxZ7vS4Ujsv42U5tHsUWhbGVnEl+\n451kMxI4HTXzydMkSRqcu/ZDphdgEcVKwC8reXgpwj+K3xQ4HTXzyQ3wzWrJTo+gj+Jb7I2spGFK\nh9pUhwKno2Y+6cKb6bT3B1Y+TTEwFzUWbyDT9W1KewItDtTMJzC3PJ3mhHnrWAEXu9Zjaf0WB8xb\n/xU4RTXzCcya5exC+vCoo+Dt89DckPH4wPu4OqQ8FlhTEjXzCbxypsvLhX6ggOppRJrO7DPWOPzd\nwumoKScn8YbONOv3+gMHcCy0Eoq7zNz5umfhdNSUk5OU2u40XAmNnuAdfAxE+uk1m5Of/kmCrJPp\nfZLKtgmzuzan1VROkIR2ejX9gsV0tdzIkHUyvU9ST8vZ9OPo4C6KU/AiElmESntmnp1I4HTUzCfs\nNLPpepu74YWOgycUflpZa5q10n3vAQKno2Y+4Ug6XVwYLVFpUG3dNn/FFHOtm7GVbG1chZeteALt\nOKbETrKZfqf/9/wD0n49uaQ4LrAAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$1.9993959999999997$$"
+      ],
+      "text/plain": [
+       "1.9993959999999997"
+      ]
+     },
+     "execution_count": 87,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "f_fun(1.414)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 93,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [
     {
      "data": {
@@ -1184,7 +1562,7 @@
        "array([1, 4, 9])"
       ]
      },
-     "execution_count": 37,
+     "execution_count": 93,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1196,21 +1574,34 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "Use of `lambdify` is highly recommended for producing plots of symbolic expressions.  For example, the expressions `f = x**2` and `g = x**3` can be plotted as follows (pay close attention to the naming convention and the cool `latex` trick):"
+    "SymPy has a built in `plot` function, but it's not very flexible.  Rather, take these steps to plot `expr` that depends on `x`:\n",
+    " - Define all symbols, solve all equations, and make any substitutions needed to define `expr`\n",
+    " - Define `expr_fun` via `sy.lambdify(x, expr)`\n",
+    " - Define `x_plot` as `np.array` with values for plotting\n",
+    " - Define `expr_plot` as `expr_fun(x)` for plotting\n",
+    " - Plot `plt.plot(x_plot, expr_plot)` etc."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 38,
-   "metadata": {},
+   "execution_count": 94,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "outputs": [
     {
      "data": {
       "image/png": "iVBORw0KGgoAAAANSUhEUgAAAW4AAAEKCAYAAAAyx7/DAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz\nAAALEgAACxIB0t1+/AAAIABJREFUeJzt3XmcjeX/x/HXZZjGMkmobNNIEiF8R0l2KktJWlRfpRIK\nhfJr8S2lUiEtsmX5Vgr1LWv2falsYzdjX2KYmMZuZhjm+v1xDyHMGc459zkz7+fjcT+cOec+9/2e\n093H5TrXfV3GWouIiASPHG4HEBGRzFHhFhEJMircIiJBRoVbRCTIqHCLiAQZFW4RkSCjwi0iEmRU\nuEVEgowKt4hIkMnpi4MWKlTIRkZG+uLQIiJZ0vLly/+y1hb2ZF+fFO7IyEiio6N9cWgRkSzJGPOH\np/uqq0REJMiocIuIBBkVbhGRIOOTPu4LSU1NJS4ujpSUFH+d0mvCwsIoXrw4uXLlcjuKiIj/Cndc\nXBzh4eFERkZijPHXaa+YtZbExETi4uIoWbKk23FERDzrKjHGdDHGxBhj1hljRhtjwjJ7opSUFAoW\nLBhURRvAGEPBggWD8l8KIpI1ZVi4jTHFgJeBKGtteSAEePxyThZsRfu0YM0tIlmTp19O5gRyG2Ny\nAnmAPb6LJCISfE6e9N+5Mizc1trdwCfATiAeOGStnXH+fsaYtsaYaGNMdEJCgveTiogEsHHjYNgw\n/5zLk66SAsCDQEmgKJDXGNPy/P2stUOstVHW2qjChT26azNgjB8/njZt2tCiRQtmzPjH30kiIhl6\n9FFo3do/5/Kkq6QBsN1am2CtTQXGAtV9G8u/mjVrxtChQxk8eDA//vij23FEJIikpsKPP8KpU+Cv\nr8M8Kdw7gWrGmDzG+ZauPrDet7Hc8cEHH9ChQwe3Y4hIEPn6a3j8cZgzx3/n9KSPewnwM7ACWJv+\nniE+zuUzdevWZebMmQC89dZbvPTSS1href3112nUqBFVqlRxOaGIBIvkZHjvPaheHRo08N95PboB\nx1r7DvCOj7P4RY8ePejevTv79u1j5cqVTJw4kS+//JJZs2Zx6NAhtmzZwgsvvOB2TBEJAoMGwe7d\nMHKk/7pJAIy11usHjYqKsudP67p+/XrKli3r9XNdjtq1a3P06FHmzZtHeHi4R+8JpPwi4r7Dh+Gm\nm+Bf/4Lp06/8eMaY5dbaKE/29dst72fr3Lkzq1at8uoxK1WqxOeff57hfmvXriU+Pp6CBQt6XLRF\nRM63axcULgw9e/r/3NlqdsD4+Hj+/e9/M2HCBPLly8e0adPcjiQiQeq22yAmBqI8aiN7lystbk9a\nxt6WlJRE8+bN6du3L2XLluXtt9/m9ddfp2HDhn7PIiLBbdYsuPNOcOsf7a4UbjfkyZOHRYsWnfm5\nVq1a5/wsIuKJPXvggQfg2Wdh4EB3MmSrrhIRkSv1/vvOzTb/93/uZVDhFhHx0MaNMHQotG0Lbk7P\nr8ItIuKhbt0gd27o3t3dHCrcIiIeSElxxm6/9hpcd527WbLNl5MiIlciLAxmzIC0NLeTqMUtIpKh\nZcucG26MgZAQt9OoxS0ickmpqdCyJeTNC8uX+3dOkotR4RYRuYThw2HTJpgwITCKNqirRETkoo4e\nhXffhZo1nZtuAoVa3Dgz/33xxRf89ddf1K9fnxdffNHtSCISAPr2hb17Yfz4wGltg2drTpYxxqw6\naztsjOnsj3D+UrZsWQYPHsz//vc/fvvtN7fjiEiAOHgQWrSAatXcTnKuDFvc1tqNQCUAY0wIsBsY\n5+Ncfjdx4kQGDRrEU0895XYUEQkQn30WGMP/zpfZPu76wFZr7R++COMPF1q6DKBp06ZMnTqVkSNH\nuhlPRALApk2wZInzOEcAfhOY2T7ux4HRvgjiLxdaumzevHmMHTuW48eP07hxY7cjiojLOnVyCveu\nXc4wwEDjceE2xoQCTYE3L/J6W6AtQERERIbHq1Pnn8899hi0bw9JSXCh+vnMM87211/wyCPnvjZv\nXoanBJzpXK21fPrpp8ybN4+QkBDq1KlDnQsFEpFsZ+pUmDYNPv00MIs2ZK6rpBGwwlq790IvWmuH\nWGujrLVRhQsX9k46Hzi9dFloaKiWLhORc6SmwiuvQOnS0KGD22kuLjNdJU/gxW6SS7WQ8+S59OuF\nCnnewj7b2UuXvfzyy0ybNk0r4IjIGYMHw4YNMHEihIa6nebiPGpxG2PyAvcAY30bx3cutHRZjx49\n3I4lIgHEGHjoIbj/freTXJqx1nr9oFFRUTY6Ovqc59avX0/ZsmW9fi5/Cfb8IuIZa9252cYYs9xa\n69HSwwE40EVExL82bID//c+9op1ZKtwiku29+iq0aQP797udxDOaq0REsrXp02HKFOjTBwoWdDuN\nZ9TiFpFs6+RJZ/hfqVKQfhN1UPBri9taiwmGDqTz+OILXBFx38CBEBsL48bBVVe5ncZzfmtxh4WF\nkZiYGHRF0FpLYmIiYWFhbkcRES+LiIBnn4UHH3Q7Seb4rcVdvHhx4uLiSEhI8NcpvSYsLIzixYu7\nHUNEvKxZM2cLNn4r3Lly5aJkyZL+Op2IyEUtXgxz5zr928HURXKavpwUkWzl1ClnHpL+/Z25SYKR\nhgOKSLYydCisWAGjR0O+fG6nuTxqcYtItpGYCP/5jzOtdIsWbqe5fCrcIpJt/Oc/cOgQfPllcNza\nfjHqKhGRbOPZZ6F8eWcLZircIpJt3HmnswU7dZWISJb3zTfQrh0kJ7udxDtUuEUkS0tIcGb/i40N\nzjHbF+LpCjjXGGN+NsZsMMasN8bc5etgIiLe0LUrHDkCX30FObJIU9XTPu4vgGnW2kfSV3vP48NM\nIiJeMXcujBgB3bpBuXJup/GeDAu3MSY/UAt4BsBaewI44dtYIiJXxlqntX3TTfDWW26n8S5PWtwl\ngQTga2PM7cByoJO19phPk4mIXAFjYOxY2LcPcud2O413edLjkxOoAgyy1lYGjgFvnL+TMaatMSba\nGBMdjDMAikjWcfiw0+K+8UaoWtXtNN7nSeGOA+KstUvSf/4Zp5Cfw1o7xFobZa2NKly4sDczioh4\nzFp46CF4/HG3k/hOhoXbWvsnsMsYUyb9qfpArE9TiYhcppEjYc4cZz6SrMrTUSUvASPTR5RsA571\nXSQRkcuTmAhdujh3R7Zr53Ya3/GocFtrVwFRPs4iInJFXnsNDhyAIUOyzpjtC8nCv5qIZCcHDsD0\n6c5dkhUrup3GtzTJlIhkCQUKQEwMhIa6ncT31OIWkaA3fTqcOAH582e9MdsXosItIkHt99+hUSPo\n08ftJP6jwi0iQSslBVq3hhIl4OWX3U7jP+rjFpGg9cEHsGEDTJsG4eFup/EftbhFJCitWgUffwyt\nWsF997mdxr9UuEUkKIWEQIMG8OmnbifxP3WViEhQqlDB6SLJjtTiFpGgEhMDbdrAoUNuJ3GPCreI\nBI3UVHj6aZgwwRm3nV2pq0REgsYHH8CKFTBuHGTn2aPV4haRoBAdDT17wlNPQbNmbqdxlwq3iAQ8\na+Gll6BIEejXz+007lNXiYgEPGPgxx8hPh6uucbtNO5T4RaRgLZnj9PSjohwNvGwq8QYs8MYs9YY\ns8oYE+3rUCIiAEeOQI0a8OKLbicJLJlpcde11v7lsyQiIufp2hV27ICWLd1OElj05aSIBKRJk5wl\nyLp2dVrd8jdPC7cFZhljlhtj2l5oB2NMW2NMtDEmOiEhwXsJRSTbiY+HZ5+FSpXg/ffdThN4PC3c\nNay1lYBGQAdjTK3zd7DWDrHWRllrowpn55HxInLFdu92Ro+MGgVXXeV2msDj6Srvu9P/3GeMGQfc\nASzwZTARyb6iopx5tkNC3E4SmDJscRtj8hpjwk8/Bu4F1vk6mIhkP6tWwdtvO3OSqGhfnCddJdcD\nvxpjVgNLgcnW2mw6maKI+EpSEjzxBAwfDocPu50msGXYVWKt3Qbc7ocsIpKNvfqq0z0ycyYULOh2\nmsCm4YAi4roJE2DwYGfoX4MGbqcJfCrcIuKqEyegQweoXNmZ/U8yprlKRMRVoaEwcSLkzes8loyp\nxS0irlmXPj6tShUoU8bdLMFEhVtEXDF9OlSsCCNHup0k+Khwi4jf7d7tTBx1223w0ENupwk+Ktwi\n4lcnTzrjtZOT4aefIE8etxMFH305KSJ+1b07LFwI338Pt97qdprgpBa3iPhV+fLQqRP8+99uJwle\nanGLiF9Y66wd+eSTziaXTy1uEfG5Eyegfn349lu3k2QNKtwi4nOdO8Pcuc5NNnLlVLhFxKe+/hoG\nDYLXXoNHHnE7Tdagwi0iPrN8ubNCe/36mofEm1S4RcRn5s2DG26A0aMhp4ZCeI3HhdsYE2KMWWmM\nmeTLQCKSdbz6KqxZA1qG1rsy0+LuBKz3VRARyTp69YLffnMeX321u1myIo8KtzGmONAEGObbOCIS\n7H7+Gd54w+keEd/wtMX9OfAakObDLCIS5FauhFatoFo16NvX7TT+Y61l2LBhtG7d2i/n82SV9/uB\nfdba5Rns19YYE22MiU5ISPBaQBEJDn/+CU2bOutFjhsHV13ldiL/2Lx5M/Xq1aNNmzZs27aNY8eO\n+fycnrS47waaGmN2AD8A9Ywx35+/k7V2iLU2ylobVVjfRIhkO/37w/79zmo2N9zgdhrfS01NpVev\nXlSsWJGVK1cydOhQ5syZQ14/3GVkrLWe72xMHaCrtfb+S+0XFRVlo6OjrzCaiASTtDSIiYEKFdxO\n4nsrVqzg+eefZ+XKlTz00EP079+fokWLXtExjTHLrbVRnuyrcdwickW++QZ27oQcObJ+0U5KSuL1\n11/njjvuID4+njFjxjB27NgrLtqZlanCba2dl1FrW0SyjwkT4LnnoHdvt5P43vTp0ylfvjy9e/fm\nmWeeITY2lubNm7uSRS1uEbksq1c7c2pHRUGfPm6n8Z29e/fy5JNP0rBhQ0JDQ5k/fz7Dhg2jQIEC\nrmVS4RaRTIuPd0aQXHON0+rOndvtRN6XlpbGsGHDKFu2LGPGjOGdd95h9erV1KpVy+1oWkhBRDLv\n9dchMREWLIAiRdxO432xsbG8+OKLLFiwgFq1avHVV19xawCts6YWt4hkWv/+MGMGVKnidhLvSkpK\nolu3btx+++2sXbuWYcOGMXfu3IAq2qDCLSIeshYGD4akJGf+kerV3U7kXZMnT+a2227jo48+omXL\nlmzcuJHWrVuTI0fglcnASyQiAenDD525tbPa8mNxcXE8/PDD3H///eTOnZt58+bx9ddfE8g3Eqpw\ni0iGvv8e3noLWraEF15wO413pKam0rdvX8qWLcuUKVP48MMPWbVqFbVr13Y7Wob05aSIXNKcOc5Y\n7bp1YfhwZ6X2YDdv3jw6dOhAbGwsTZo0oV+/ftx0001ux/KYWtwiclEnTzot7FtugbFjITTU7URX\nJj4+npYtW1K3bl2OHTvGhAkTmDRpUlAVbVCLW0QuIWdOmDQJwsKcMdvB6uTJkwwYMIDu3buTkpLC\n22+/zRtvvEGePHncjnZZ1OIWkX/Ys8e5G9Jap7UdEeF2oss3b948KleuTOfOnbnrrrtYt24d7733\nXtAWbVDhFpHz7N8P994L770H27e7neby7dq1ixYtWlC3bl2OHDnC2LFjmTp1KqVLl3Y72hVTV4mI\nnHHsGDRpAps3w9SpEGRdvwCkpKTQt29fPvzwQ9LS0nj33Xd57bXXyJ2F7stX4RYRAI4fh+bNYelS\nZ93IevXcTpQ51lomTZpEly5d2Lp1K82bN6dv375ERka6Hc3r1FUiIoBTsOfOhaFD4aGH3E6TOTEx\nMdx33300bdqUXLlyMWPGDMaMGZMlizaoxS0i6WrWhE2bIJhq3f79+3nnnXcYNGgQ4eHhfPHFF7z4\n4ovkypXL7Wg+5cliwWHGmKXGmNXGmBhjTA9/BBMR37MWOnaEn35yfg6Won16eF/p0qUZOHAg7dq1\nY/Pmzbz88stZvmiDZ10lx4F61trbgUpAQ2NMNd/GEhFfsxZefhkGDHAWRQgW06dPp1KlSnTs2JFK\nlSqxatUqBgwYQKFChdyO5jcZFm7rOJr+Y670zfMVhkUk4FgLr77qTM/66qvw/vtuJ8pYTEwMjRo1\nomHDhqSkpDBu3DhmzZpFhay+0OUFePTlpDEmxBizCtgHzLTWLvFtLBHxFWvhzTfhs8+cFnefPoE9\n/8i+fft48cUXqVixIosXL+bTTz8lNjaWZs2aYQI5uA95VLittaestZWA4sAdxpjy5+9jjGlrjIk2\nxkQnJCR4O6eIeFFamjNF6+efB27RTklJoXfv3pQuXZqhQ4fSoUMHtmzZQpcuXQgN9klTrpCxNnO9\nHsaY7kCStfaTi+0TFRVlo6OjrzSbiHiRtZCQANdd5zyGwCzaaWlpjBo1iv/85z/s3LmT+++/nz59\n+gTcKjTeZoxZbq2N8mRfT0aVFDbGXJP+ODdwD7DhyiKKiD+d7h6pUAHi4pyCHYhFe/bs2URFRfHU\nU09RqFAhZs+ezS+//JLli3ZmedJVUgSYa4xZAyzD6eOe5NtYIuIt1kLnztCrFzz8MBQt6naif1q3\nbh2NGzemQYMGJCYm8v3337Ns2TLqBdvtm36S4Q041to1QGU/ZBERL0tLg/bt4auvoEsX6Ns3sFra\nO3fu5J133mHEiBGEh4fTu3dvXnrpJcLCwtyOFtB056RIFvb5507R7tYNPvggcIp2YmIiH330Ef37\n98daS+fOnenWrRsFCxZ0O1pQUOEWycLatYOCBaFVK7eTOJKSkvjiiy/o1asXhw8f5umnn6ZHjx7c\neOONbkcLKppkSiSLSUlxWtiHD0PevIFRtFNTU/nqq68oXbo03bp1o2bNmqxevZpvvvlGRfsyqHCL\nZCEHD8J998HHH8PMmW6ngVOnTjFy5EhuvfVWXnjhBSIjI1m4cCG//PJLtrzj0VtUuEWyiPh4qF0b\nFi2C0aOdESRusdYyYcIEKlWqRMuWLQkPD2fy5Mn8+uuv1KhRw71gWYQKt0gWsGUL3H03bN0KkydD\nixbu5LDWMmvWLKpVq0azZs04fvw4P/zwAytWrKBx48bZ9hZ1b1PhFskCcuaEq6+GefPgnnvcyTB/\n/nzq1KnDPffcw549exg2bBixsbG0aNGCHDlUarxJn6ZIEFuzxhmrHRkJK1ZAlEc3THvXokWLaNCg\nAXXq1GHz5s18+eWXbN68mdatW5Mzpwau+YIKt0iQGjHCKdSfpM8a5O9G7bJly2jUqBHVq1dn7dq1\nfPrpp2zdupWOHTvqBhofU+EWCTLWQvfuzjC/mjWhTRv/nn/p0qU0adKEO+64g6VLl/Lxxx+zbds2\nunTpkqVWUg9k+neMSBBJSYHnnnNGjTz3HAwaBP6a4XTx4sX06NGDadOmce2119KzZ086duzI1Vdf\n7Z8AcoYKt0gQiY2FcePgo4/g9df9cwv7okWL6NGjB9OnT6dgwYJ89NFHdOjQgfDwcN+fXC5IhVsk\nCBw4AAUKQJUqztC/YsV8ez5rLfPnz+eDDz5g9uzZFCpUiF69etG+fXvy5cvn25NLhtTHLRLgZs6E\nm292ukfAt0XbWsu0adOoWbMmdevWJSYmhj59+rB9+3Zee+01Fe0AocItEqCsdaZhbdgQihSBatV8\nd660tDTGjx9P1apVadSoETt37qR///5s27aNrl27qmAHGHWViASg5GRntMjIkdC8OXz7Lfiidqam\npjJ69Gh69epFbGwspUqVYvjw4bRs2TLbr+sYyDxZuqyEMWauMSbWGBNjjOnkj2Ai2dmMGTBqlDOH\n9s8/e79oJyUl8eWXX3LzzTfTqlUrQkJCGDlyJBs2bOC5555T0Q5wnrS4TwKvWmtXGGPCgeXGmJnW\n2lgfZxPJdhITnfmzH3wQ1q2DcuW8e/z9+/czYMAA+vXrx19//UWNGjUYOHCg5hEJMhm2uK218dba\nFemPjwDrAR9/py2SvVgLn332963r4N2ivWPHDjp16kRERATdu3fnzjvvZOHChSxcuJAmTZqoaAeZ\nTPVxG2MicdafXHKB19oCbQEiIiK8EE0kezhwwLmZZvx4p6VdqpT3jr1ixQr69OnDTz/9hDGGJ554\ngq5du1KxYkXvnUT8zuPCbYzJB4wBOltrD5//urV2CDAEICoqynotoUgWFh0Njz4KcXHw6afOauxX\n2vi11jJ9+nT69OnDnDlzCA8Pp3PnznTq1IkSJUp4J7i4yqPCbYzJhVO0R1prx/o2kkj2MWYMnDoF\nCxde+XC/5ORkRo4cyWeffUZsbCxFixalV69etG3blmuuucY7gSUgGGsv3Tg2TufXt8B+a21nTw4a\nFRVlo6OjvRBPJOs5fBj++AMqVIDUVDhyBK699vKPt3fvXgYOHMigQYNISEigUqVKdOnShRYtWnDV\nVVd5L7j4lDFmubXWo4l5PWlx3w08Baw1xqxKf66btXbK5QYUya5++w2eesppZW/e7EwQdblFe/Xq\n1fTr14/vv/+eEydO8MADD/DKK69Qu3ZtfdmYxWVYuK21vwK6CkSuQGoqvP8+9OwJN97o3L5+OUOl\nT548ycSJE+nXrx/z588nT548tG7dms6dO3PLLbd4P7gEJN05KeJj+/dDo0awdKkzh3a/fs4yY5k7\nxn6GDx9O//792blzJ5GRkXzyySc899xzFChQwDfBJWCpcIv4WIECzhC/rl2dESSZsXLlSgYMGMCo\nUaNITk6mbt26fPHFFzzwwAOEhIT4JrAEPBVuER/480/4v/9zukYiIpzb1z11/Phxfv75ZwYMGMCi\nRYvIkycPLVu2pGPHjhp/LYAKt4hXWQvffeeMx05Kcm6o8fR+tD/++IMhQ4YwdOhQEhISuOWWW/j8\n889p1aqVhvPJOVS4RbwkLg7atYMpU6B6dfjvf6FMmUu/5+TJk0yZMoWvvvqKqVOnYozhgQceoEOH\nDtSvX58c/l4BWIKCCreIl3z0EcydC59/Dh07wqW6oHfv3s2wYcMYNmwYcXFxFClShLfeeovnn39e\nU0ZIhlS4Ra7Ali3OAr7lyzv92V26OKvVXMjJkyeZOnUqw4YNY/LkyZw6dYp7772Xfv36cf/995Mr\nVy7/hpegpcItchmOH4deveDDD51b1efNg2uucbbzbdu2jeHDh/P1118THx/P9ddfT9euXWnTpg2l\nvDmjlGQbKtwimTRrFrRv79z52KKFMznU+ZKTkxk/fjzDhw9n9uzZ5MiRg0aNGvH888/TpEkTta7l\niqhwi2TC+PHw0ENOd8j06XDvvX+/Zq1l6dKlfPPNN4wePZpDhw4RGRnJ+++/zzPPPEPx4sXdCy5Z\nigq3SAZOnHD6ssuVg8aNnS8f27WDsDDn9T///JPvvvuOr7/+mvXr15M7d24efvhhnn32WerUqaOR\nIeJ1KtwiF2EtTJzo3PGYnOwU77Aw6NTJWbNx1KjxfPfdd8yYMYO0tDSqV6/O0KFDefTRR8mfP7/b\n8SULU+EWuYA1a5wRInPmQNmy8OWXEBqaxpw58xgxYgRjxozh6NGjRERE8MYbb/D0009TJqNB2yJe\nosItcp6VKyEqyhkh8uWXljvvXM1PP42iTZvRxMXFER4ezmOPPcZTTz1FrVq11BUifqfCLQIcPAjL\nlsE990ClSvDWWwmcPPktAwf+l5deWk/OnDm57777+OSTT2jatCm5c+d2O7JkYyrckq0lJTndIL16\nwYkTabz11mDGjx/BkiXOeti1atWiU6dOPPLIIxQsWNDltCKODAu3Mea/wP3APmtted9HEvG91FQY\nPhzeffcUe/eGUKDAbxw71p4331xDpUqV6N27N48//rgW15WA5EmL+xugPzDCt1FE/CM+Pp4BA+bR\ns+cTwO/AmxQrdohXXmnBY4/9pJVkJOB5snTZAmNMpO+jiPjOxo07eeONrSxZso8//3wCay2RkT/z\n9NMVaNFiCOXKlXM7oojHvNbHbYxpC7QFNLuZBIQNGzbw44+TGTYsJ3FxLYC65M27lLfffo/HHnuI\ncuXKaVFdCUpeK9zW2iHAEICoqCjrreOKeCotLY0lS5Ywfvx4JkyYwMaNEcBooCClS2/n3XfjePLJ\nO4A7XE4qcmU0qkSCWlJSErNnz+aXX35h4sSJ7N17HSEhualXL4Knn36C33/Pzdtvw513lnQ7qojX\nqHBL0Nm1axeTJ09m0qRJzJ49m5SU44SFPUj+/NOB26lTJ5UZMzT7nmRdngwHHA3UAQoZY+KAd6y1\nw30dTOS0kydPsmjRIqZNm8aUKVNYtWoVACVLlqRmzaHExDRnz548XHutswpNu3Yq2pK1eTKq5Al/\nBBE52549e5g2bRpTp05l5syZHDp0iJCQEKpXv5sOHb6ndet/UalSGT77zJCcDH36wCOPQGio28lF\nfE9dJRIQkpOTWbhwITNmzGDmzJmsWbMGgKJFi/LII49Qo8aDJCQ0YNSo3AwY4MwlUrmys5r6K6+4\nHF7Ez1S4xRVpaWmsXr2aWbNmMWPGDBYuXMjx48cJDQ2lRo0afPzxxzRq1IhSpSrQqpWhbVvnbsfK\nlWHwYHj4Yec4mt9JsiMVbvELay0bN25kzpw5zJ49m3nz5rF//34AypcvT/v27bn33nupWbMWmzbl\nYcMGqFjRee/hw86q6a1awe23u/hLiAQIFW7xCWstmzZtYv78+cyfP5+5c+cSHx8PODdoPfjgg9Sr\nV4969epRtGhRYmLgxx/h5ZedtRyvucZpVYeGwowZLv8yIgFGhVu8Ii0tjZiYGBYsWMD8+fNZsGAB\ne/fuBeD666+nbt26Zwr1TTfdhDEGa8EY54vF115zuj3q1HFWnGneXF80ilyMCrdcluTkZJYtW8av\nv/7Kb7/9xu+//87BgwcBKF68OA0aNKB27drUrl2b0qVLY4zh1ClYsgSGDIEJE5y1Gxs2hCZNIHdu\nZ1TIDTe4/IuJBAEVbsmQtZZdu3axePFiFi9ezKJFi1i+fDmpqakAlC1blkcffZS7776bWrVqERkZ\nec4cIIcOwauvwi+/wL59kDOn07I+vdhuuXLOJiKeUeGWfzh8+DArVqxg6dKlZ4r16f7psLAwoqKi\neOWVV6hMEPpyAAALJElEQVRRowZ33XXXOQsMpKXBqlUwfbrTiu7UCcLDYeFCqFcPmjaFRo2cPmwR\nuTwq3NlcUlISq1atIjo6mmXLlhEdHc3GjRux1pkn7Oabb6Z+/fpUq1aNatWqUbFiRXLl+uediWPG\nwLhxMHOm06oGp0h36uT0XW/Y4PRni8iVU+HORg4cOMDKlSvP2TZs2EBaWhoAN9xwA1WrVuXJJ5+k\natWqREVFUahQoXOOYa0z6mP+fGeNxsGDnYI8ebIz+uOee+C+++Dee8/tr1bRFvEec7pl5U1RUVE2\nOjra68cVz5w8eZItW7awZs0a1qxZw9q1a1mzZg07duw4s0+xYsWoXLkylStXpkqVKlStWpVixYpd\n9Jhz5zpfJi5aBAkJznPXXw8rVkDRonD0KOTNqwItcrmMMcuttVGe7KsWdxBLS0tj+/btxMbGEhMT\nc86fKSkpAISEhFCmTBnuvPNO2rVrd6ZYX3fddf84XnIyrF3rFOMVK5wW9aBBUK2a8wXjhg3QuDHc\ndRfUrg1lyvxdqPPl8+dvLpK9qXAHgWPHjrFp0yY2btx4ZtuwYQMbNmwgOTn5zH7FihWjXLlytG/f\nnooVK1KxYkXKli1L2OnhG+mshfh4WLcOSpSAW2+FlSuhalU4dcrZp0AB+Ne//v75wQehWTN//cYi\ncikq3AHi6NGjbN26lS1btpzz56ZNm4iLizuznzGGiIgIypQpQ506dShXrhy33XYbZcuW5Zrzhmqk\npcGxY86wu+RkZ0jeunXOduCAs0+3btCzJ9xyC7z5JlSp4swHcuON53Z7qAtEJHCoj9tPjh07xq5d\nu/jjjz/Yvn07O3bsOLNt376dfaeHYqQrXLgwpUqVonTp0pQpU4YyZcpwyy23ULp0aXLnzn1mv7S0\nvyda+uYbWL/e+fLw9NaiBXz7rdPKLlkSihWD8uX/3ipWhLNG84mIS7zex22MaQh8AYQAw6y1H19B\nvizFWktiYiJ79uwhPj6ePXv2sGfPHnbt2kVcXBy7du1i165dHDjdxE2XK1cuIiIiKFmyJE2bNqVk\nyZKULl2aUqVKUapUKfLnz8+JE3DwIJzujv7+exgxAnbvhl27YMcOp5959mzn9d69YcsWKFXKaUE3\nbAg1azqvGePsLyLBz5MVcEKAAcA9QBywzBgz0Vob6+twbrDWcvjwYRITE0lMTGT//v0kJCSwb9++\nf2x79+4lPj7+zB2EZytYsCAlSpTgxhtv5O6776ZEiRJcd10k4eGlCA+/EWMKcfBgCMnJ8Oyzzns+\n/hj694e9e53t4EG46SbYutV5fcQI50aW4sWd7Z57nK6N0xYudG5sCQnxwwclIq7xpMV9B7DFWrsN\nwBjzA/AgEBCF+9SpUyQnJ5OSkkJKSsqZx8nJyRw9evTMduzYMY4ePcqRI0c4dOjQme3gwcMcOnSQ\nw4cPkZh4jP37T5KWlhMIPWtbD6SSM2dZrr76bq6+uhL58hXk+usLUbJkYR54YCsREdexYUMFli4t\nzqlTuTl6NIRDh5xRGuPGOcW0XTtnno6zXXUVPPOM0yI+csTp0qhQARo0cIbbRUT8ve/48c7diBfr\nb1aXh0j24EnhLgbsOuvnOOBOX4QpV64FW7f2BJwC5rAUKNCTXLlmkZRUkUOHPsdaA9j0u/sM0BaY\nDzQAhgDhQH4gB07vzkPAEuAxYGj6czmBXEAO7rqrPbffnsiePc349dd/rtQ2Y8Y2qla9lsGD8/Pm\nm4b0aaTP+OEH52aTvn1h40ZnaFz+/E6fcv78zgIAISHw5JNwxx1OgT29XXvt38fp2fPSn0+ePJ5+\nkiKSlXltVIkxpi1OBSXi7GZiJpQuXZwjRxLOTFBkjMEYKFv2ZooUycHRo5GsWnUEY3KQI4chR44c\n5MiRg/r1n6VUqYfZt684c+dacuY05MplCA0N4aqrctK27SgqVLiKTZuuZvz4PISGhpAzJ2e2tm0H\nUqSIM9piwQJnOtHQUKc1HBoK1ardRHi40zJu2NBp9Z7e8uX7e7KkV191toupXdvZRESuRIajSowx\ndwHvWmvvS//5TQBr7UcXe49GlYiIZE5mRpV4smLfMqC0MaakMSYUeByYeCUBRUTk8mXYVWKtPWmM\n6QhMx+kc/q+1NsbnyURE5II86uO21k4Bpvg4i4iIeMCTrhIREQkgKtwiIkFGhVtEJMiocIuIBBkV\nbhGRIOOTaV2NMQnAH5f59kLAX16M4y3KlTnKlTnKlTlZMdeN1trCnuzok8J9JYwx0Z7ePeRPypU5\nypU5ypU52T2XukpERIKMCreISJAJxMI9JONdXKFcmaNcmaNcmZOtcwVcH7eIiFxaILa4RUTkEvxW\nuI0xDY0xG40xW4wxb1zgdWOM6Zf++hpjTBVP3+vjXP9Oz7PWGPO7Meb2s17bkf78KmOMVycg9yBX\nHWPMofRzrzLGdPf0vT7O9X9nZVpnjDlljLk2/TVffl7/NcbsM8asu8jrbl1fGeVy6/rKKJdb11dG\nudy6vkoYY+YaY2KNMTHGmE4X2Md/15i11ucbznSwW4GbcBZxXA2UO2+fxsBUnLXIqgFLPH2vj3NV\nBwqkP250Olf6zzuAQi59XnWASZfzXl/mOm//B4A5vv680o9dC6gCrLvI636/vjzM5ffry8Ncfr++\nPMnl4vVVBKiS/jgc2ORmDfNXi/vMgsPW2hPA6QWHz/YgMMI6FgPXGGOKePhen+Wy1v5urT2Q/uNi\noLiXzn1FuXz0Xm8f+wlgtJfOfUnW2gXA/kvs4sb1lWEul64vTz6vi3H18zqPP6+veGvtivTHR3BW\nEC923m5+u8b8VbgvtODw+b/0xfbx5L2+zHW21jh/o55mgVnGmOXGWXPTWzzNVT39n2RTjTG3ZfK9\nvsyFMSYP0BAYc9bTvvq8POHG9ZVZ/rq+POXv68tjbl5fxphIoDLOCuRn89s15rXFgrM6Y0xdnP+x\napz1dA1r7W5jzHXATGPMhvQWgz+sACKstUeNMY2B8UBpP53bEw8Av1lrz249ufl5BTRdX5nmyvVl\njMmH85dFZ2vtYW8eOzP81eLeDZQ46+fi6c95so8n7/VlLowxFYFhwIPW2sTTz1trd6f/uQ8Yh/NP\nIr/kstYettYeTX88BchljCnkyXt9messj3PeP2N9+Hl5wo3ryyMuXF8Zcun6ygy/X1/GmFw4RXuk\ntXbsBXbx3zXmi478C3Ts5wS2ASX5u3P+tvP2acK5HftLPX2vj3NFAFuA6uc9nxcIP+vx70BDP+a6\ngb/H4d8B7Ez/7Fz9vNL3y4/TT5nXH5/XWeeI5OJftvn9+vIwl9+vLw9z+f368iSXW9dX+u8+Avj8\nEvv47Rrz2oftwS/eGOeb2K3Af9KfewF44awPZkD662uBqEu914+5hgEHgFXpW3T68zel/wdYDcS4\nkKtj+nlX43ypVf1S7/VXrvSfnwF+OO99vv68RgPxQCpOH2LrALm+Msrl1vWVUS63rq9L5nLx+qqB\n04e+5qz/Vo3dusZ056SISJDRnZMiIkFGhVtEJMiocIuIBBkVbhGRIKPCLSISZFS4RUSCjAq3iEiQ\nUeGWLM8YUzV9sqQwY0ze9PmUy7udS+Ry6QYcyRaMMR8AYUBuIM5a+5HLkUQumwq3ZAvGmFBgGZCC\nc/v2KZcjiVw2dZVIdlEQyIezekmYy1lEroha3JItGGMm4qw8UhIoYq3t6HIkkcumhRQkyzPGPA2k\nWmtHGWNCgN+NMfWstXPcziZyOdTiFhEJMurjFhEJMircIiJBRoVbRCTIqHCLiAQZFW4RkSCjwi0i\nEmRUuEVEgowKt4hIkPl/yFvXOdjQd3AAAAAASUVORK5CYII=\n",
       "text/plain": [
-       "<matplotlib.figure.Figure at 0x7efca0403b70>"
+       "<matplotlib.figure.Figure at 0x7f06c25f8390>"
       ]
      },
      "metadata": {},
@@ -1225,10 +1616,10 @@
     "x_plot = np.linspace(0, 2)\n",
     "f_plot = f_fun(x_plot) # x**2\n",
     "g = x**3\n",
-    "g_fun = sp.lambdify(x, g)\n",
+    "g_fun = sy.lambdify(x, g)\n",
     "g_plot = g_fun(x_plot)\n",
-    "plt.plot(x_plot, f_plot, 'k-', label='${}$'.format(sp.latex(f)))\n",
-    "plt.plot(x_plot,  g_plot, 'b--', label='${}$'.format(sp.latex(g)))\n",
+    "plt.plot(x_plot, f_plot, 'k-', label='${}$'.format(sy.latex(f)))\n",
+    "plt.plot(x_plot,  g_plot, 'b--', label='${}$'.format(sy.latex(g)))\n",
     "plt.xlabel('x')\n",
     "plt.legend()\n",
     "plt.show()"
@@ -1236,42 +1627,23 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "For those curious, here's what that `latex` function does:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 39,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "'x^{2}'"
-      ]
-     },
-     "execution_count": 39,
-     "metadata": {},
-     "output_type": "execute_result"
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
     }
-   ],
+   },
    "source": [
-    "sp.latex(f)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Further Reading\n",
+    "## Recap\n",
     "\n",
-    "Much of what has been covered here is drawn from the [SymPy tutorial](http://docs.sympy.org/latest/tutorial/index.html).  That's a great resource (as is the rest of the [SymPy documentation](http://docs.sympy.org/latest/index.html).  Because SymPy is a relatively young module, you can expect it to be updated rather frequently."
+    "You should now be able to \n",
+    "- Define symbols and symbolic expressions using SymPy\n",
+    "- Define and solve systems of symbolic equations\n",
+    "- Manipulate expressions by applying simplification and other symbolic tools. "
    ]
   }
  ],
  "metadata": {
+  "celltoolbar": "Slideshow",
   "kernelspec": {
    "display_name": "Python 3",
    "language": "python",

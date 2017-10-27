@@ -24,8 +24,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Lecture 20 - Taylor Series and the Root of Numerical Methods" href="ME400_Lecture_20.html" />
-    <link rel="prev" title="Lecture 18 - SymPy: Symbols, Expressions, and Equations." href="ME400_Lecture_18.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -234,14 +232,12 @@ demonstrated.</p>
 </div>
 <div class="section" id="In-the-Beginning-There-Were-Limits">
 <h2>In the Beginning There Were Limits<a class="headerlink" href="#In-the-Beginning-There-Were-Limits" title="Permalink to this headline">¶</a></h2>
-<p>An understanding of calculus usually starts with the concept of <em>limit</em>.
-In fact, the classical definition for the derivative of a function
-<span class="math">\(f(x)\)</span> is</p>
+<p>Classical definition for the derivative of a function <span class="math">\(f(x)\)</span> is</p>
 <div class="math">
 \[\lim_{h \to 0} \frac{f(x+h)-f(x)}{h} \, .\]</div>
-<p>SymPy can handle limits, so let’s see if we use limits to find the
-derivative of <span class="math">\(f(x) = ax^2 + bx + c\)</span>. First, remember to do the
-necessary import and initialization, and get symbols ready:</p>
+<p><strong>3-minute Exercise</strong>: Determine <span class="math">\(df/dx\)</span> for
+<span class="math">\(f(x) = ax^2 + bx + c\)</span> using this definition.</p>
+<p>SymPy can handle limits:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -254,8 +250,6 @@ necessary import and initialization, and get symbols ready:</p>
 </pre></div>
 </div>
 </div>
-<p>Then, define the function and use substitution to define it at the
-perturbed value <span class="math">\(x+h\)</span>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
@@ -267,15 +261,13 @@ perturbed value <span class="math">\(x+h\)</span>:</p>
 </pre></div>
 </div>
 </div>
-<p>Evaluation of the limit is easy:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">f_prime</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">limit</span><span class="p">((</span><span class="n">f_plus</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">f_prime</span>
+<span></span><span class="n">sp</span><span class="o">.</span><span class="n">limit</span><span class="p">((</span><span class="n">f_plus</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -288,9 +280,7 @@ perturbed value <span class="math">\(x+h\)</span>:</p>
 <div class="math">
 $$2 a x + b$$</div></div>
 </div>
-<p>The result <span class="math">\(2ax+b\)</span> is precisely what one should expect. If we want
-the symbolic representation of the limit, we need only use <code class="docutils literal"><span class="pre">Limit</span></code>
-instead of <code class="docutils literal"><span class="pre">limit</span></code>, e.g.,</p>
+<p>Limits don’t need to be evaluated:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
@@ -310,7 +300,6 @@ instead of <code class="docutils literal"><span class="pre">limit</span></code>,
 <div class="math">
 $$\lim_{h \to 0^+}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$</div></div>
 </div>
-<p>which can be then be evaluated via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
@@ -330,16 +319,18 @@ $$\lim_{h \to 0^+}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} -
 <div class="math">
 $$2 a x + b$$</div></div>
 </div>
-<p>Note the “+” in the limit above: by default, SymPy evaluates the the
-right-hand limit, i.e., as <span class="math">\(h\)</span> approaches zero from the right.
-Alternative, we could evaluate the left-hand limit with</p>
+<p><strong>Exercise</strong>: Is <span class="math">\(\lim_{h \to 0} \frac{f(x)-f(x-h)}{h}\)</span> just as
+good for <span class="math">\(df/dx\)</span>?</p>
+</div>
+<div class="section" id="Derivatives">
+<h2>Derivatives<a class="headerlink" href="#Derivatives" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">Limit</span><span class="p">((</span><span class="n">f_plus</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -350,19 +341,15 @@ Alternative, we could evaluate the left-hand limit with</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\lim_{h \to 0^-}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$</div></div>
+$$2 a x + b$$</div></div>
 </div>
-<p>When the right-hand and left-hand limits of <span class="math">\(f(x)\)</span> agree as
-<span class="math">\(x\)</span> approaches some value <span class="math">\(x_0\)</span>, a two-sided limit is said
-to exist. A simple examples illustrates that such a limit does not
-always exist:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">),</span> <span class="n">sp</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -373,20 +360,15 @@ always exist:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left ( \infty, \quad -\infty\right )$$</div></div>
+$$2 a$$</div></div>
 </div>
-</div>
-<div class="section" id="Derivatives">
-<h2>Derivatives<a class="headerlink" href="#Derivatives" title="Permalink to this headline">¶</a></h2>
-<p>Thankfully, we don’t need to use limits everytime we want to
-differentiate a function with SymPy:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -397,52 +379,12 @@ differentiate a function with SymPy:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$2 a x + b$$</div></div>
+$$0$$</div></div>
 </div>
-<p>Higher-order derivatives are also easily computed:</p>
+<p>Symbolic “functions” can also be differentiated:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$2 a$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$0$$</div></div>
-</div>
-<p>If a function <code class="docutils literal"><span class="pre">g(x)</span></code> is not given an explicit form, SymPy leaves its
-derivatives in symbolic form:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -453,7 +395,7 @@ derivatives in symbolic form:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
+<span></span>Out[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -462,7 +404,7 @@ $$\frac{d}{d x} g{\left (x \right )}$$</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -472,17 +414,17 @@ $$\frac{d}{d x} g{\left (x \right )}$$</div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
+<span></span>Out[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$\frac{d^{2}}{d x^{2}}  g{\left (x \right )}$$</div></div>
 </div>
-<p>As for limits, we can define a derivative without its evaluation, e.g.,</p>
+<p>Derivatives can be defined and not evaluated:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -492,198 +434,28 @@ $$\frac{d^{2}}{d x^{2}}  g{\left (x \right )}$$</div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
+<span></span>Out[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$\frac{\partial}{\partial x}\left(a x^{2} + b x + c\right)$$</div></div>
 </div>
-<p>Here, note the <em>partial</em> derivative symbols <span class="math">\(\partial\)</span>. Because
-<span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and <span class="math">\(c\)</span> are symbols, SymPy cannot know that
-we intend <span class="math">\(f\)</span> to be a function only of <span class="math">\(x\)</span> and that the
-coeffiecients are themselves not functions of <span class="math">\(x\)</span>.</p>
-<div class="section" id="Partial-Derivatives">
-<h3>Partial Derivatives<a class="headerlink" href="#Partial-Derivatives" title="Permalink to this headline">¶</a></h3>
-<p>So what <em>is</em> a partial derivative? Let <span class="math">\(f(x, y)\)</span> be some arbitrary
-function of the two variables <span class="math">\(x\)</span> and <span class="math">\(y\)</span>. We define the
-<em>partial derivative</em> of <span class="math">\(f\)</span> with respect to <span class="math">\(x\)</span> as</p>
+<p>That’s a <em>partial derivative</em>, e.g.,:</p>
 <div class="math">
-\[\frac{\partial f}{\partial x} = \lim_{h\to 0} \frac{ f(x+h,y)-f(x) }{h}\]</div>
-<p>which is sometimes written compactly as <span class="math">\(f_x\)</span>. A similar
-expression exists for <span class="math">\(f_y\)</span>. Based on the formal limit definition,
-partial derivatives are no different from <em>ordinary</em> derivatives if we
-imagine the other variables (here, <span class="math">\(y\)</span>) as constants.</p>
-<p>SymPy can evaluate such partial derivatives:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">y</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">y</span>
-<span class="n">pf_px</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">pf_px</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{2 a}{y} x$$</div></div>
-</div>
-</div>
-<div class="section" id="Implicit-Differentiation">
-<h3>Implicit Differentiation<a class="headerlink" href="#Implicit-Differentiation" title="Permalink to this headline">¶</a></h3>
-<p>Consider the equation</p>
-<div class="math">
-\[5\sin(x) + 3\sec(y) = y - x^2 + 3\]</div>
-<p>How do we find <span class="math">\(dy/dx\)</span>? It is not possible to solve directly for
-<span class="math">\(y\)</span> in terms of <span class="math">\(x\)</span> or vice-versa. Therefore, <em>implicit
-differentiation</em> is needed. The trick is to differentiate both sides
-with respect to <span class="math">\(x\)</span> and solve for <span class="math">\(dy/dx\)</span>. Here it all is
-with a bit of help from SymPy, where we first define <span class="math">\(y\)</span> as an
-explicit function of <span class="math">\(x\)</span>:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">y</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Then we represent the equation by a single expression and differentiate:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">expr</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sec</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">-</span> <span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">3</span>
-<span class="n">expr</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$x^{2} - y{\left (x \right )} + 5 \sin{\left (x \right )} + 3 \sec{\left (y{\left (x \right )} \right )} - 3$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d_expr</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">d_expr</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$2 x + 5 \cos{\left (x \right )} + 3 \tan{\left (y{\left (x \right )} \right )} \sec{\left (y{\left (x \right )} \right )} \frac{d}{d x} y{\left (x \right )} - \frac{d}{d x} y{\left (x \right )}$$</div></div>
-</div>
-<p>To find <span class="math">\(dy/dx\)</span> is as easy as doing</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">d_expr</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\left [ - \frac{2 x + 5 \cos{\left (x \right )}}{3 \tan{\left (y{\left (x \right )} \right )} \sec{\left (y{\left (x \right )} \right )} - 1}\right ]$$</div></div>
-</div>
-<p>Pretty slick!</p>
-<p>Notice, to represent the (mathematical) function <span class="math">\(y(x)\)</span>, all that
-is needed is a symbol <span class="math">\(y\)</span>. Then <code class="docutils literal"><span class="pre">y(x)</span></code> is treated like a
-function, and its derivative with respect to <code class="docutils literal"><span class="pre">x</span></code> is</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{d}{d x} y{\left (x \right )}$$</div></div>
-</div>
-<p>However, always make sure to use <code class="docutils literal"><span class="pre">y(x)</span></code> when <code class="docutils literal"><span class="pre">y</span></code> is to be a function
-of <code class="docutils literal"><span class="pre">x</span></code>. Typing <code class="docutils literal"><span class="pre">y</span></code> alone, which suggests <code class="docutils literal"><span class="pre">y</span></code> is a symbol all by
-itself, will lead to the following derivative:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$0$$</div></div>
-</div>
-</div>
+\[\frac{\partial f}{\partial x} = \lim_{h\to 0} \frac{ f(x+h,y)-f(x, y) }{h}\]</div>
 </div>
 <div class="section" id="And-Then-There-Were-More-Limits">
 <h2>And Then There Were More Limits<a class="headerlink" href="#And-Then-There-Were-More-Limits" title="Permalink to this headline">¶</a></h2>
-<p>Once you got done with differentiation, life was good. All sorts of
-problems could be solved by differential calculus. But then you
-encountered antiderivatives and integrals. For the specific case of
-<em>definite</em> integrals, you may remember the following formal definition:</p>
+<p>For <em>definite</em> integrals, you may remember the following formal
+definition:</p>
 <div class="math">
 \[\int^b_a f(x) dx =
    \lim_{n \to \infty} \sum^{n}_{i=1} f(i (b-a)/n + a) (b-a)/n\]</div>
-<p>Here, the sum is a <em>Riemann sum</em> (specifically a right-sided sum).
-Integrals are areas under curves, and Riemann sums approximate those
-areas by rectangles.</p>
-<p>SymPy can represent sums symbolically. For instance, the Riemann sum
-above can be defined for <span class="math">\(f(x) = x^2\)</span> as</p>
+<p>The right-hand side is called a <em>Riemann sum</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -695,18 +467,18 @@ above can be defined for <span class="math">\(f(x) = x^2\)</span> as</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
+<span></span>Out[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$\sum_{i=1}^{n} \frac{1}{n} \left(- a + b\right) \left(a + \frac{i}{n} \left(- a + b\right)\right)^{2}$$</div></div>
 </div>
-<p>For the specific case of <span class="math">\(f(x) = x^2\)</span>, <span class="math">\(a=0\)</span>, and
-<span class="math">\(b=1\)</span>, we have</p>
+<p><strong>Example</strong> Evaluate <span class="math">\(\int^b_a f(x) dx\)</span> for <span class="math">\(f(x) = x^2\)</span>,
+<span class="math">\(a=0\)</span>, and <span class="math">\(b=1\)</span> using the formal limit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -717,7 +489,7 @@ $$\sum_{i=1}^{n} \frac{1}{n} \left(- a + b\right) \left(a + \frac{i}{n} \left(- 
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
+<span></span>Out[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -726,7 +498,7 @@ $$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -747,12 +519,10 @@ $$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$</div></div>
 0.333338333350000
 </pre></div></div>
 </div>
-<p>Of course, the greater the number of little rectangles, the closer to
-<span class="math">\(\int^1_0 x^2 dx = 1/3\)</span> we get. Can we take <span class="math">\(n=\infty\)</span>?
-Note, <code class="docutils literal"><span class="pre">sp.oo</span></code> represents <span class="math">\(\infty\)</span> in SymPy. Let’s try</p>
+<p>Can the limit be taken formally?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -762,17 +532,16 @@ Note, <code class="docutils literal"><span class="pre">sp.oo</span></code> repre
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[24]:
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$0$$</div></div>
 </div>
-<p>Well, that does not work. How about using a limit?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -782,22 +551,20 @@ $$0$$</div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[25]:
+<span></span>Out[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$\frac{1}{3}$$</div></div>
 </div>
-<p>That is the right result.</p>
 </div>
 <div class="section" id="Symbolic-Integration">
 <h2>Symbolic Integration<a class="headerlink" href="#Symbolic-Integration" title="Permalink to this headline">¶</a></h2>
-<p>Just as SymPy can differentiate expressions, it can integrate them. For
-indefinite integrals, the syntax is</p>
+<p>Improper:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -808,17 +575,17 @@ indefinite integrals, the syntax is</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[26]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$\frac{x^{3}}{3}$$</div></div>
 </div>
-<p>To add bounds and make the integral definite, the syntax becomes</p>
+<p>Definite:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -828,69 +595,17 @@ $$\frac{x^{3}}{3}$$</div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[27]:
+<span></span>Out[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$</div></div>
 </div>
-<p>Now, consider the following, rather benign looking integral:</p>
+<p>Define with evaluation (like for limits and derivatives):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [28]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="o">**</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[28]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\begin{cases} \frac{1}{a - 1} &amp; \text{for}\: \Re{\left(a\right)} &gt; 1 \\\int_{1}^{\infty} x^{- a}\, dx &amp; \text{otherwise} \end{cases}$$</div></div>
-</div>
-<p>SymPy provides two outputs because in one case (<span class="math">\(\Re(a) &gt; a\)</span>,
-i.e., the real part of <span class="math">\(a\)</span> must be greater than unity), the
-integral exists, while in the second, the integral is left in the
-symbolic form because it cannot be evaluated.</p>
-<p>The whole business of being real or imaginary takes us a bit out of our
-scope, but we’re not really interested in complex numbers here. Can we
-avoid the issue and simply tell SymPy that <span class="math">\(a\)</span> should be a real
-number? Yes. One way is simply to define <span class="math">\(a\)</span> to be real from the
-start:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [29]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="o">**</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[29]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\begin{cases} \frac{1}{a - 1} &amp; \text{for}\: a &gt; 1 \\\int_{1}^{\infty} x^{- a}\, dx &amp; \text{otherwise} \end{cases}$$</div></div>
-</div>
-<p>The result is basically the same (evaluated only for <span class="math">\(a&gt;1\)</span>), but
-it no longer has <span class="math">\(\Re(a)\)</span>.</p>
-<p>One can also define but not evaluate an integral (just as was shown
-above for derivatives). For example, consider</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -901,63 +616,82 @@ above for derivatives). For example, consider</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[30]:
+<span></span>Out[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
 $$\int_{a}^{b} x^{2}\, dx$$</div></div>
 </div>
-<p>This integral can be formally evaluated using <code class="docutils literal"><span class="pre">doit</span></code>, or</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [31]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">I</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">a</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
+<span></span><span class="n">I</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[31]:
+<span></span>Out[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1}{3}$$</div></div>
+$$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$</div></div>
 </div>
-<p>and numerically evaluated using <code class="docutils literal"><span class="pre">evalf</span></code>, or</p>
+<p>Multiple integrals:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [32]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">I</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">a</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span>
+<span></span><span class="n">r</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;r R phi theta&#39;</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Integral</span><span class="p">(</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="p">),</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+<span class="n">V</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[32]:
+<span></span>Out[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0.333333333333333$$</div></div>
+$$\int_{0}^{2 \pi}\int_{0}^{\pi}\int_{0}^{R} r^{2} \sin{\left (\theta \right )}\, dr\, d\theta\, d\phi$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">V</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="Further-Reading">
-<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
-<p>None at this time. That said, this lesson is but a taste of <em>how</em> SymPy
-can be used for calculus. Much more value will come by <em>practicing</em> with
-the tools presented, and one way to do that would be to revisit problems
-from past calculus courses. Some possible topics to explore may include
-evaluating limits (with tools like l’Hopital’s rule), the various
-differentiation rules (chain, product, etc., all of which can be
-demonstrated symbolically), and multidimensional integrals.</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{4 \pi}{3} R^{3}$$</div></div>
+</div>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>By now, you should be able to</p>
+<ul class="simple">
+<li>Evaluate limits using SymPy</li>
+<li>Evaluate derivatives using SymPy</li>
+<li>Evaluate integrals using SymPy</li>
+</ul>
 </div>
 </div>
 
@@ -976,14 +710,10 @@ demonstrated symbolically), and multidimensional integrals.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#In-the-Beginning-There-Were-Limits">In the Beginning There Were Limits</a></li>
-<li><a class="reference internal" href="#Derivatives">Derivatives</a><ul>
-<li><a class="reference internal" href="#Partial-Derivatives">Partial Derivatives</a></li>
-<li><a class="reference internal" href="#Implicit-Differentiation">Implicit Differentiation</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Derivatives">Derivatives</a></li>
 <li><a class="reference internal" href="#And-Then-There-Were-More-Limits">And Then There Were More Limits</a></li>
 <li><a class="reference internal" href="#Symbolic-Integration">Symbolic Integration</a></li>
-<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
 </ul>
@@ -991,15 +721,13 @@ demonstrated symbolically), and multidimensional integrals.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="ME400_Lecture_18.html" title="previous chapter">Lecture 18 - SymPy: Symbols, Expressions, and Equations.</a></li>
-      <li>Next: <a href="ME400_Lecture_20.html" title="next chapter">Lecture 20 - Taylor Series and the Root of Numerical Methods</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_19.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_19_Slides.ipynb.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -1025,7 +753,7 @@ demonstrated symbolically), and multidimensional integrals.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_19.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_19_Slides.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 

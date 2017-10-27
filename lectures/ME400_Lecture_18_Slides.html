@@ -24,8 +24,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Lecture 19 - Symbolic Calculus with SymPy" href="ME400_Lecture_19.html" />
-    <link rel="prev" title="Lecture 17 - Unit Tests and Defensive Programming" href="ME400_Lecture_17.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -244,40 +242,33 @@ tools.</li>
 </div>
 <div class="section" id="Symbols">
 <h2>Symbols<a class="headerlink" href="#Symbols" title="Permalink to this headline">¶</a></h2>
-<p>Symbolic computation, as the name suggests, depends on <em>symbols</em>. Unlike
-numerical computation, in which one manipulates <em>values</em>, symbolic
-computations involves the manipulation of symbols. That’s just like when
-you made the jump from grade-school number crunching to algebra for the
-first time. Now, we get to do it again (for, I hope, more interesting
-problems and with the help of Python).</p>
-<p>Start by importing SymPy (using <code class="docutils literal"><span class="pre">sp</span></code> as an abbreviation) as follows:</p>
+<p>Symbolic computation based on <em>symbols</em> rather than <em>values</em>.</p>
+<p>In Python, symbolic computing via SymPy:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span> <span class="c1"># note sy and not sp; just be consistent</span>
 </pre></div>
 </div>
 </div>
-<p>A symbol can be defined using the <code class="docutils literal"><span class="pre">Symbol</span></code> function, whose single
-argument is a string representing the name of the symbol. For example,
-the symbol <span class="math">\(x\)</span> can be defined by</p>
+<p>Defining symbols:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">x</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[2]:
+<span></span>Out[6]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -287,7 +278,7 @@ the symbol <span class="math">\(x\)</span> can be defined by</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -297,7 +288,7 @@ the symbol <span class="math">\(x\)</span> can be defined by</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
+<span></span>Out[7]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -305,167 +296,25 @@ the symbol <span class="math">\(x\)</span> can be defined by</p>
 </pre></div>
 </div>
 </div>
-<p>That was easy. We could do the same thing for <span class="math">\(x\)</span>, <span class="math">\(y\)</span>, and
-<span class="math">\(z\)</span>, but an all-in-one approach is</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x y z&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>SymPy does not require that the string given to <code class="docutils literal"><span class="pre">Symbol</span></code> or
-<code class="docutils literal"><span class="pre">symbols</span></code> matches in any meaningful way to the name to which the
-symbol is assigned. For example, one could (but should <em>not</em>) do</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">v</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
-<span class="n">v</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>u
-</pre></div>
-</div>
-</div>
-<p>Such naming, of course, could lead to confusion, bugs, etc.</p>
-</div>
-<div class="section" id="Nicer-Output">
-<h2>Nicer Output<a class="headerlink" href="#Nicer-Output" title="Permalink to this headline">¶</a></h2>
-<p>When a mathematical symbol is defined, it is often given a special font,
-e.g., “x” would be typeset as <span class="math">\(x\)</span> and not <code class="docutils literal"><span class="pre">x</span></code>. SymPy provides a
-way to get nicer output in IPython consoles and Jupyter notebooks. One
-just needs to do</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<p>Note how the output of <code class="docutils literal"><span class="pre">x</span></code> changes slightly:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$x$$</div></div>
-</div>
-<p>This nicely typeset format will be very useful for reading and
-understanding complex, symbolic expressions. In fact, it supports some
-pretty neat formatting features. For example, a symbol like <span class="math">\(x_0\)</span>
-is often used to represent an initial value for some quantity <span class="math">\(x\)</span>.
-We might express that in Python as <code class="docutils literal"><span class="pre">x0</span></code> or <code class="docutils literal"><span class="pre">x_0</span></code>. In SymPy, both
-styles work:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x0</span><span class="p">,</span> <span class="n">y_0</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x0  y_0&#39;</span><span class="p">)</span>
-<span class="n">x0</span><span class="p">,</span> <span class="n">y_0</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\left ( x_{0}, \quad y_{0}\right )$$</div></div>
-</div>
-<p>Actually, this output not only confirms that subscripts can be formatted
-as expected, but it shows that SymPy <code class="docutils literal"><span class="pre">symbol</span></code> can be placed in
-containers like any other Python type.</p>
-</div>
-<div class="section" id="Symbolic-Expressions">
-<h2>Symbolic Expressions<a class="headerlink" href="#Symbolic-Expressions" title="Permalink to this headline">¶</a></h2>
-<p>We can use symbols to define mathematical expressions. For instance, we
-know that the total energy of a system is given by its (relativistic)
-mass times the speed of light squared, i.e.,</p>
-<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">m</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;m c&#39;</span><span class="p">)</span>
-<span class="n">m</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span>
+<span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x y z&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$c^{2} m$$</div></div>
-</div>
-<p>Notice that the expression’s order was changed. The particular order of
-symbols in the stored expression may differ from the expression
-originally entered.</p>
-<p>When storing expressions, Sympy often performs simplification
-automatically, e.g.,</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$x^{4}$$</div></div>
-</div>
-<p>but not always, e.g.,</p>
+<p>What not to do:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span></span><span class="n">v</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
+<span class="n">v</span>
 </pre></div>
 </div>
 </div>
@@ -474,43 +323,31 @@ $$x^{4}$$</div></div>
 <span></span>Out[11]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="math">
-$$x \left(x + 2\right)$$</div></div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>u
+</pre></div>
 </div>
-<p>Just as one can assign the result of evaluated expressions (e.g.,
-<code class="docutils literal"><span class="pre">2**3</span></code>) to a variable name, so too, can symbolic expressions be
-assigned. For example, we can define</p>
-<div class="nbinput docutils container">
+</div>
+</div>
+<div class="section" id="Nicer-Output">
+<h2>Nicer Output<a class="headerlink" href="#Nicer-Output" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">E</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">E</span>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$c^{2} m$$</div></div>
-</div>
-<p>However, now <code class="docutils literal"><span class="pre">E</span></code> is a symbolic variable (here, a
-<code class="docutils literal"><span class="pre">sympy.core.mul.Mul</span></code>, but that’s just a detail) and can be manipulated
-just like any other symbol, e.g.,</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">E</span><span class="o">**</span><span class="mi">2</span>
+<span></span><span class="n">x</span>
 </pre></div>
 </div>
 </div>
@@ -521,19 +358,15 @@ just like any other symbol, e.g.,</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$c^{4} m^{2}$$</div></div>
+$$x$$</div></div>
 </div>
-<p>In many cases, we wish to do a sequence of symbolic computations before
-substituting numerical value. We know, for example, that the speed of
-light is about 300 million meters per second, and we can substitute that
-value in <span class="math">\(c\)</span> by</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">3e8</span><span class="p">)</span>
+<span></span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
 </div>
 </div>
@@ -544,62 +377,26 @@ value in <span class="math">\(c\)</span> by</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$9.0 \cdot 10^{16} m$$</div></div>
+$$x^{2}$$</div></div>
 </div>
-<p>Note that this does <em>not</em> change the original expression:</p>
-<div class="nbinput docutils container">
+<p>More complicated symbols are supported:</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">E</span>
+<span></span><span class="n">phi</span><span class="p">,</span> <span class="n">y_0</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;phi y_0&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$c^{2} m$$</div></div>
-</div>
-<p>To save the result of the substitution, one needs to assign it to a new
-name, e.g.,</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">Esub</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">3e8</span><span class="p">)</span>
-<span class="n">Esub</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$9.0 \cdot 10^{16} m$$</div></div>
-</div>
-<p>You may (or may not) recall that the relativistic mass is given by
-<span class="math">\(m = m_0 / \sqrt{1+(c/v)^2}\)</span>, where <span class="math">\(m_0\)</span> is the rest mass
-of an object and <span class="math">\(v\)</span> is the magnitude of its velocity. We can
-substitute this, too, via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">m_0</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;m_0 v&#39;</span><span class="p">)</span>
-<span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">m</span><span class="p">:</span><span class="n">m_0</span><span class="o">/</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">v</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">c</span><span class="p">:</span><span class="mf">3e8</span><span class="p">})</span>
+<span></span><span class="n">phi</span><span class="p">,</span> <span class="n">y_0</span>
 </pre></div>
 </div>
 </div>
@@ -610,114 +407,42 @@ substitute this, too, via</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{\frac{c^{2}}{v^{2}} + 1}}$$</div></div>
+$$\left ( \phi, \quad y_{0}\right )$$</div></div>
 </div>
-<p>Note three things. First, the argument to <code class="docutils literal"><span class="pre">E.subs</span></code> is a dictionary,
-with keys equal to the symbols being replaced and values equal to what
-is being added in place of those keys. Second, the function <code class="docutils literal"><span class="pre">sp.sqrt</span></code>
-has been used. Only symbolic functions (in the <code class="docutils literal"><span class="pre">sympy</span></code> module) should
-generally be used in symbolic expressions. Third, <span class="math">\(c\)</span> appears in
-the denominator even though we attempted to substitute its numerical
-value. The solution is to use <em>chained substitution</em>, e.g.,</p>
+</div>
+<div class="section" id="Symbolic-Expressions">
+<h2>Symbolic Expressions<a class="headerlink" href="#Symbolic-Expressions" title="Permalink to this headline">¶</a></h2>
+<p>Symbols are combined using operators to make <strong>symbolic expressions</strong>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">m</span><span class="p">:</span> <span class="n">m_0</span><span class="o">/</span><span class="n">sp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">v</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)})</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="mf">3e8</span><span class="p">})</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{1 + \frac{1}{v^{2}} 9.0 \cdot 10^{16}}}$$</div></div>
-</div>
-</div>
-<div class="section" id="Symbolic-Equations">
-<h2>Symbolic Equations<a class="headerlink" href="#Symbolic-Equations" title="Permalink to this headline">¶</a></h2>
-<p>From above, we saw that symbolic expressions can be assigned to a name,
-e.g., <span class="math">\(E=mc^2\)</span>. That would, at first glance, appear to be an
-equation. However, in the world of SymPy, equations are defined by use
-of the function <span class="math">\(Eq\)</span>. For example, we could define the following
-equation:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a b x y&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$a x = b y$$</div></div>
-</div>
-<p>and we could actually assign that equation a name via</p>
-<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">eq1</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Suppose we would like to solve for <code class="docutils literal"><span class="pre">y</span></code> in terms of <code class="docutils literal"><span class="pre">x</span></code>. With SymPy,
-we could do</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">eq1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span></span><span class="n">m</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;m c&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
+<span></span>Out[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ \frac{b y}{a}\right ]$$</div></div>
+$$c^{2} m$$</div></div>
 </div>
-<p>The result is what we expect, and it is returned as the single element
-of a list.</p>
-<p>If we forgot to specify the variable for which we want a solution, we
-find</p>
+<p>Note: the order of symbols stored may differ from original definition.</p>
+<p>When storing expressions, Sympy often performs simplification
+automatically, e.g.,</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">eq1</span><span class="p">)</span>
+<span></span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">x</span>
 </pre></div>
 </div>
 </div>
@@ -728,18 +453,16 @@ find</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ \left \{ a : \frac{b y}{x}\right \}\right ]$$</div></div>
+$$x^{4}$$</div></div>
 </div>
-<p>Here, the solution is a list also with one element, and that element is
-a dictionary. Apparently, <code class="docutils literal"><span class="pre">sp.solve</span></code> solved for <span class="math">\(a\)</span>, but why?
-Consider the following:</p>
+<p>but not always, e.g.,</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">))</span>
+<span></span><span class="n">x</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -750,49 +473,38 @@ Consider the following:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ \left \{ b : \frac{c x}{y}\right \}\right ]$$</div></div>
+$$x \left(x + 2\right)$$</div></div>
 </div>
-<p>This suggests (but does not prove) that the solution is by default in
-alphabetical order, and if one does not specify the variables to solve.
-Therefore, a good rule of thumb is always to specify which variable is
-to be found by <code class="docutils literal"><span class="pre">solve</span></code>.</p>
-<blockquote>
-<div><strong>Note</strong>: Always specify the names of variables to be solved.</div></blockquote>
-<p>More information can be found on <code class="docutils literal"><span class="pre">sp.solve</span></code> by calling
-<code class="docutils literal"><span class="pre">help(sp.solve)</span></code>. The output is quite long, but the signature of
-<code class="docutils literal"><span class="pre">sp.solve</span></code> is <code class="docutils literal"><span class="pre">sp.solve(f,</span> <span class="pre">*symbols,</span> <span class="pre">**flags)</span></code>. Here, <code class="docutils literal"><span class="pre">f</span></code> must be
-(1) one equation (e.g., <code class="docutils literal"><span class="pre">sp.Eq(expr1,</span> <span class="pre">expr2)</span></code>), (2) one symbolic
-expression <code class="docutils literal"><span class="pre">expr</span></code> (treated implicitly as <code class="docutils literal"><span class="pre">sp.Eq(expr,</span> <span class="pre">0)</span></code>, or (3) a
-sequence (e.g., <code class="docutils literal"><span class="pre">list</span></code>) of such equations or expressions.</p>
-<p>Notice that <code class="docutils literal"><span class="pre">*symbols</span></code> and <code class="docutils literal"><span class="pre">**flags</span></code> have the special <code class="docutils literal"><span class="pre">*</span></code> and
-<code class="docutils literal"><span class="pre">**</span></code> characters discussed in <a class="reference internal" href="ME400_Lecture_13.html"><span class="doc">Lecture 13</span></a>.
-Convention usually puts <code class="docutils literal"><span class="pre">*</span></code> with <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**</span></code> with
-<code class="docutils literal"><span class="pre">**kwargs</span></code>. However, the meaning is the same: <code class="docutils literal"><span class="pre">*symbols</span></code> is a
-sequence of position arguments that represent the symbols for which the
-equations are to be solved, while <code class="docutils literal"><span class="pre">**flags</span></code> are named arguments that
-(may) modify how <code class="docutils literal"><span class="pre">sp.solve</span></code> works.</p>
-<p>Now, let us define the second equation:</p>
-<div class="nbinput nblast docutils container">
+<p>Symbolic expressions can be variables just like any other expressions:</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
-<span class="n">eq2</span> <span class="o">=</span> <span class="n">c</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="n">d</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+<span></span><span class="n">E</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">E</span>
 </pre></div>
 </div>
 </div>
-<p>which, as you’ll note, is just an expression. When used in solvers, an
-expression <code class="docutils literal"><span class="pre">expr</span></code> is equivalent to the equation <code class="docutils literal"><span class="pre">Eq(expr,</span> <span class="pre">0)</span></code>. We
-can solve the two equations simultaneously via</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$c^{2} m$$</div></div>
+</div>
+<p>Now, <code class="docutils literal"><span class="pre">E</span></code> is a symbolic variable and can be manipulated just like any
+other symbol, e.g.,</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">([</span><span class="n">eq1</span><span class="p">,</span> <span class="n">eq2</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span></span><span class="n">E</span><span class="o">**</span><span class="mi">2</span>
 </pre></div>
 </div>
 </div>
@@ -803,45 +515,18 @@ can solve the two equations simultaneously via</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left \{ x : \frac{b}{a d - b c}, \quad y : \frac{a}{a d - b c}\right \}$$</div></div>
+$$c^{4} m^{2}$$</div></div>
 </div>
-<p>Go ahead and verify this by hand, and then take a look to the full SymPy
-tutorial (link below) to check out what sorts of equations (and sets of
-equations) SymPy can solve.</p>
-<blockquote>
-<div><strong>Note</strong>: As with <em>any</em> function one uses from SymPy or other
-modules, make sure that the return value is the expected result (in
-terms not just of <em>value</em> but also <em>type</em>.</div></blockquote>
-<p>In order to get comfortable with SymPy and solving symbolic equations,
-tackle the following:</p>
-<blockquote>
-<div><p><strong>Exercise</strong>: Solve <span class="math">\(a x^2 + b x + c = 0\)</span> for <span class="math">\(x\)</span>, and
-name the solutions <span class="math">\(x_0\)</span> and <span class="math">\(x_1\)</span>.</p>
-<p><strong>Exercise</strong>: Solve <span class="math">\(e^{ax} = b\)</span> for <span class="math">\(x\)</span>, and name the
-solution <span class="math">\(x_0\)</span>. Substitute <span class="math">\(b = 2\)</span>, and name the result
-<span class="math">\(x_1\)</span>.</p>
-<p><strong>Exercise</strong>: Solve <span class="math">\(x - y = 1\)</span> and <span class="math">\(2x + y = 1\)</span> for
-<span class="math">\(x\)</span> and <span class="math">\(y\)</span>.</p>
-<p><strong>Exercise</strong>: Given <span class="math">\(3a + 4b + 7c + 11 = 0\)</span>,
-<span class="math">\(5a + 3b + 3c + 4 = 0\)</span>, and <span class="math">\(7a + 13b + 5c + 9=0\)</span>, find
-<span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and <span class="math">\(c\)</span>.</p>
-</div></blockquote>
-</div>
-<div class="section" id="Numerical-Evaluation">
-<h2>Numerical Evaluation<a class="headerlink" href="#Numerical-Evaluation" title="Permalink to this headline">¶</a></h2>
-<p>The solution of one equation or a system of equations, linear or
-nonlinear, is generally not the end of one’s analysis. Often, the
-ultimate goal is to produce a final, numerical answer, with all
-problem-specific parameters substituted into the final result.</p>
-<p>Consider the expression</p>
+<p>Good practice for all problem solving: <strong>do not substitute numbers until
+the end!</strong></p>
+<p>With SymPy:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">expr</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">expr</span>
+<span></span><span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">3e8</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -852,17 +537,16 @@ problem-specific parameters substituted into the final result.</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\sin{\left (x^{3} \right )}$$</div></div>
+$$9.0 \cdot 10^{16} m$$</div></div>
 </div>
-<p>Suppose we substitute <span class="math">\(x = 3\)</span>, which can be done via</p>
+<p>Note that this does <em>not</em> change the original expression:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">expr_sub</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
-<span class="n">expr_sub</span>
+<span></span><span class="n">E</span>
 </pre></div>
 </div>
 </div>
@@ -873,16 +557,17 @@ $$\sin{\left (x^{3} \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\sin{\left (27 \right )}$$</div></div>
+$$c^{2} m$$</div></div>
 </div>
-<p>As clean as this is, it’s not a <em>number</em>. The trick is to use <code class="docutils literal"><span class="pre">evalf</span></code>:</p>
+<p>Save the result of the substitution with another variable:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">expr_sub</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span>
+<span></span><span class="n">Esub</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">3e8</span><span class="p">)</span>
+<span class="n">Esub</span>
 </pre></div>
 </div>
 </div>
@@ -893,30 +578,17 @@ $$\sin{\left (27 \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0.956375928404503$$</div></div>
+$$9.0 \cdot 10^{16} m$$</div></div>
 </div>
-</div>
-<div class="section" id="Other-Symbolic-Tools">
-<h2>Other Symbolic Tools<a class="headerlink" href="#Other-Symbolic-Tools" title="Permalink to this headline">¶</a></h2>
-<p>Consider the following example:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [30]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<p>Substitute <span class="math">\(m = m_0 / \sqrt{1+(c/v)^2}\)</span> in <span class="math">\(E\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">expr</span> <span class="o">=</span> <span class="p">((</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="n">sp</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">sec</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sp</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="n">expr</span>
+<span></span><span class="n">m_0</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;m_0 v&#39;</span><span class="p">)</span>
+<span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">m</span><span class="p">:</span><span class="n">m_0</span><span class="o">/</span><span class="n">sy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">v</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">c</span><span class="p">:</span><span class="mf">3e8</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -927,44 +599,15 @@ $$0.956375928404503$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1}{\tan{\left (t \right )}} \left(\left(\sin{\left (t \right )} + \tan{\left (t \right )}\right)^{2} + \cos^{2}{\left (t \right )} - \sec^{2}{\left (t \right )}\right)$$</div></div>
+$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{\frac{c^{2}}{v^{2}} + 1}}$$</div></div>
 </div>
-<p>Nope. SymPy didn’t simplify what looks to be a fairly formidable
-trigonometric expression. But then again, we didn’t tell it to do so.
-How’s this?</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [32]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[32]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{1 - \frac{\cos{\left (3 t \right )}}{\cos{\left (t \right )}}}{2 \sin{\left (t \right )}}$$</div></div>
-</div>
-<p>That’s a bit cleaner. Exactly what “simplest” means as SymPy does this
-magic is not really concrete. In fact, SymPy does simplification via a
-sort of <em>heuristic</em> optimization (an area of active research).</p>
-<p>Another way to simplify (at least visually, perhaps) is to <code class="docutils literal"><span class="pre">collect</span></code>
-additive terms of some expression. What does that mean? Suppose we
-define</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">d</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
-<span class="n">expr</span>
+<span></span><span class="n">E</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">m</span><span class="p">:</span> <span class="n">m_0</span><span class="o">/</span><span class="n">sy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="n">v</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)})</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">c</span><span class="p">:</span> <span class="mf">3e8</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -975,70 +618,21 @@ define</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left(a x + b y\right)^{2} \left(c x + d y\right)$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [34]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
-</pre></div>
+$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{1 + \frac{1}{v^{2}} 9.0 \cdot 10^{16}}}$$</div></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[34]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$a^{2} c x^{3} + a^{2} d x^{2} y + 2 a b c x^{2} y + 2 a b d x y^{2} + b^{2} c x y^{2} + b^{2} d y^{3}$$</div></div>
-</div>
-<p>where <code class="docutils literal"><span class="pre">expand</span></code> does exactly what its name suggests: it expands the
-product of sums to individual sums. But gosh, that output is
-complicated. Suppose we want to group together all terms with like
-powers of <span class="math">\(x\)</span>. That’s where <code class="docutils literal"><span class="pre">collect</span></code> comes in:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [35]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">expr</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[35]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$a^{2} c x^{3} + b^{2} d y^{3} + x^{2} \left(a^{2} d y + 2 a b c y\right) + x \left(2 a b d y^{2} + b^{2} c y^{2}\right)$$</div></div>
-</div>
-<p>With <code class="docutils literal"><span class="pre">simplify</span></code>, <code class="docutils literal"><span class="pre">expand</span></code>, and <code class="docutils literal"><span class="pre">collect</span></code>, one has substantial
-flexibility in manipulating expressions into forms more easily
-understood or used.</p>
-<p>Finally, it is often the case that we want to visuallize our symbolic
-results graphically. How to plot something like <span class="math">\(\sin(x)\)</span>? Of
-course, NumPy has arrays and its own <code class="docutils literal"><span class="pre">np.sin(x)</span></code> functions, but that
-will not work if <code class="docutils literal"><span class="pre">x</span></code> is a symbol. Fortunately, SymPy has the function
-<code class="docutils literal"><span class="pre">lambdify</span></code>, which will turn any symbolic expression into a <code class="docutils literal"><span class="pre">lambda</span></code>
-function suitable for numerical evaluations (array-based or otherwise)
-and, hence, plotting.</p>
-<p>For example, convert the expression <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">x**2</span></code> into a function:</p>
+<div class="section" id="Symbolic-Equations">
+<h2>Symbolic Equations<a class="headerlink" href="#Symbolic-Equations" title="Permalink to this headline">¶</a></h2>
+<p>The syntax <code class="docutils literal"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">mc**2</span></code> is <strong>not</strong> an equation; it is <strong>assignment</strong>.</p>
+<p>A <strong>symbolic equation</strong>, e.g., <span class="math">\(ax = by\)</span> is defined via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">f_fun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-<span class="n">f_fun</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a b x y&#39;</span><span class="p">)</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1049,15 +643,451 @@ and, hence, plotting.</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$4.0$$</div></div>
+$$a x = b y$$</div></div>
 </div>
-<p>Note something important: the original expression was named <code class="docutils literal"><span class="pre">f</span></code>. To
-keep names straight, I recommend naming any <em>lambdified</em> expression
-<code class="docutils literal"><span class="pre">f</span></code> in the form <code class="docutils literal"><span class="pre">f_fun</span></code> <code class="docutils literal"><span class="pre">f_lam</span></code> to indicate its use as a function.</p>
-<p>The result works by default for <code class="docutils literal"><span class="pre">ndarrays</span></code>:</p>
+<p>Save the equation as a variable:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">eq1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Solve for <code class="docutils literal"><span class="pre">y</span></code> in terms of <code class="docutils literal"><span class="pre">x</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [37]:
+<span></span>In [50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">eq1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="c1"># Note the type returned</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[50]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ \frac{b y}{a}\right ]$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">eq1</span><span class="p">)</span> <span class="c1"># Note the type returned</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[51]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ \left \{ a : \frac{b y}{x}\right \}\right ]$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">))</span> <span class="c1"># Note the type returned</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[52]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ \left \{ b : \frac{c x}{y}\right \}\right ]$$</div></div>
+</div>
+<p><strong>Note</strong>: Always specify the names of variables to be solved.</p>
+<div class="section" id="Systems-of-Equations">
+<h3>Systems of Equations<a class="headerlink" href="#Systems-of-Equations" title="Permalink to this headline">¶</a></h3>
+<p>Define a second equation <span class="math">\(cx - dy = 1\)</span> and (with <span class="math">\(ax = by\)</span>)
+solve for <span class="math">\(x\)</span> and <span class="math">\(y\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">eq2</span> <span class="o">=</span> <span class="n">c</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="n">d</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># Wait, no Eq??</span>
+<span class="n">eq2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[56]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$c x - d y + 1$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [58]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">([</span><span class="n">eq1</span><span class="p">,</span> <span class="n">eq2</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[58]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left \{ x : \frac{b}{a d - b c}, \quad y : \frac{a}{a d - b c}\right \}$$</div></div>
+</div>
+<p><strong>Exercise</strong>: Solve <span class="math">\(a x^2 + b x + c = 0\)</span> for <span class="math">\(x\)</span>, and name
+the solutions <span class="math">\(x_0\)</span> and <span class="math">\(x_1\)</span>.</p>
+<p><strong>Exercise</strong>: Given <span class="math">\(3a + 4b + 7c + 11 = 0\)</span>,
+<span class="math">\(5a + 3b + 3c + 4 = 0\)</span>, and <span class="math">\(7a + 13b + 5c + 9=0\)</span>, find
+<span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and <span class="math">\(c\)</span>.</p>
+</div>
+</div>
+<div class="section" id="Numerical-Evaluation">
+<h2>Numerical Evaluation<a class="headerlink" href="#Numerical-Evaluation" title="Permalink to this headline">¶</a></h2>
+<p>After the final, symbolic is found, <strong>then evaluate numerically</strong>.</p>
+<p>Possible steps: - <code class="docutils literal"><span class="pre">expr.subs</span></code> - <code class="docutils literal"><span class="pre">expr.evalf</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [61]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[61]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\sin{\left (x^{3} \right )}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [62]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr_sub</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="n">expr_sub</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[62]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\sin{\left (27 \right )}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr_sub</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span> <span class="c1"># SymPy Float</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[63]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$0.956375928404503$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">float</span><span class="p">(</span><span class="n">expr_sub</span><span class="p">)</span> <span class="c1"># Python float</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[65]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$0.956375928404503$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [64]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr_sub</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[64]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$0.95638$$</div></div>
+</div>
+<p>SymPy let’s one use numbers with arbitrary precision. Compare the
+following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s2">&quot;{:.20f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[66]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;0.10000000000000000555&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [68]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[68]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$0.10000000000000000555$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [69]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="s1">&#39;0.1&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[69]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$0.1$$</div></div>
+</div>
+</div>
+<div class="section" id="Other-Symbolic-Tools">
+<h2>Other Symbolic Tools<a class="headerlink" href="#Other-Symbolic-Tools" title="Permalink to this headline">¶</a></h2>
+<p>Simplification:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [70]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="p">((</span><span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="n">sy</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">sy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">sy</span><span class="o">.</span><span class="n">sec</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sy</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[70]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{1}{\tan{\left (t \right )}} \left(\left(\sin{\left (t \right )} + \tan{\left (t \right )}\right)^{2} + \cos^{2}{\left (t \right )} - \sec^{2}{\left (t \right )}\right)$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [71]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[71]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{1 - \frac{\cos{\left (3 t \right )}}{\cos{\left (t \right )}}}{2 \sin{\left (t \right )}}$$</div></div>
+</div>
+<p>Expanding expressions and collecting like terms:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">d</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+<span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[74]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left(a x + b y\right)^{2} \left(c x + d y\right)$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[75]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$a^{2} c x^{3} + a^{2} d x^{2} y + 2 a b c x^{2} y + 2 a b d x y^{2} + b^{2} c x y^{2} + b^{2} d y^{3}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[76]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$a^{2} c x^{3} + b^{2} d y^{3} + x^{2} \left(a^{2} d y + 2 a b c y\right) + x \left(2 a b d y^{2} + b^{2} c y^{2}\right)$$</div></div>
+</div>
+</div>
+<div class="section" id="Lambdify-and-Plotting">
+<h2>Lambdify and Plotting<a class="headerlink" href="#Lambdify-and-Plotting" title="Permalink to this headline">¶</a></h2>
+<p>Consider a symbolic expression representing the function
+<span class="math">\(f(x) = x^2\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [78]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[78]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$x^{2}$$</div></div>
+</div>
+<p>Use <code class="docutils literal"><span class="pre">lambdify</span></code> to produce a callable function for <code class="docutils literal"><span class="pre">f</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [86]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f_fun</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [87]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f_fun</span><span class="p">(</span><span class="mf">1.414</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[87]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$1.9993959999999997$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [93]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1068,7 +1098,7 @@ keep names straight, I recommend naming any <em>lambdified</em> expression
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[37]:
+<span></span>Out[93]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1076,13 +1106,16 @@ keep names straight, I recommend naming any <em>lambdified</em> expression
 </pre></div>
 </div>
 </div>
-<p>Use of <code class="docutils literal"><span class="pre">lambdify</span></code> is highly recommended for producing plots of
-symbolic expressions. For example, the expressions <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">x**2</span></code> and
-<code class="docutils literal"><span class="pre">g</span> <span class="pre">=</span> <span class="pre">x**3</span></code> can be plotted as follows (pay close attention to the
-naming convention and the cool <code class="docutils literal"><span class="pre">latex</span></code> trick):</p>
+<p>SymPy has a built in <code class="docutils literal"><span class="pre">plot</span></code> function, but it’s not very flexible.
+Rather, take these steps to plot <code class="docutils literal"><span class="pre">expr</span></code> that depends on <code class="docutils literal"><span class="pre">x</span></code>: -
+Define all symbols, solve all equations, and make any substitutions
+needed to define <code class="docutils literal"><span class="pre">expr</span></code> - Define <code class="docutils literal"><span class="pre">expr_fun</span></code> via
+<code class="docutils literal"><span class="pre">sy.lambdify(x,</span> <span class="pre">expr)</span></code> - Define <code class="docutils literal"><span class="pre">x_plot</span></code> as <code class="docutils literal"><span class="pre">np.array</span></code> with values
+for plotting - Define <code class="docutils literal"><span class="pre">expr_plot</span></code> as <code class="docutils literal"><span class="pre">expr_fun(x)</span></code> for plotting -
+Plot <code class="docutils literal"><span class="pre">plt.plot(x_plot,</span> <span class="pre">expr_plot)</span></code> etc.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [38]:
+<span></span>In [94]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1093,10 +1126,10 @@ naming convention and the cool <code class="docutils literal"><span class="pre">
 <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">f_plot</span> <span class="o">=</span> <span class="n">f_fun</span><span class="p">(</span><span class="n">x_plot</span><span class="p">)</span> <span class="c1"># x**2</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span>
-<span class="n">g_fun</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+<span class="n">g_fun</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
 <span class="n">g_plot</span> <span class="o">=</span> <span class="n">g_fun</span><span class="p">(</span><span class="n">x_plot</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">f_plot</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;${}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span>  <span class="n">g_plot</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;${}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">g</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">f_plot</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;${}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span>  <span class="n">g_plot</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;${}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">g</span><span class="p">)))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1107,39 +1140,16 @@ naming convention and the cool <code class="docutils literal"><span class="pre">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_18_80_0.png" src="../_images/lectures_ME400_Lecture_18_80_0.png" />
-</div>
-</div>
-<p>For those curious, here’s what that <code class="docutils literal"><span class="pre">latex</span></code> function does:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [39]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[39]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;x^{2}&#39;
-</pre></div>
+<img alt="../_images/lectures_ME400_Lecture_18_Slides_77_0.png" src="../_images/lectures_ME400_Lecture_18_Slides_77_0.png" />
 </div>
 </div>
 </div>
-<div class="section" id="Further-Reading">
-<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
-<p>Much of what has been covered here is drawn from the <a class="reference external" href="http://docs.sympy.org/latest/tutorial/index.html">SymPy
-tutorial</a>. That’s a
-great resource (as is the rest of the <a class="reference external" href="http://docs.sympy.org/latest/index.html">SymPy
-documentation</a>. Because
-SymPy is a relatively young module, you can expect it to be updated
-rather frequently.</p>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to - Define symbols and symbolic expressions
+using SymPy - Define and solve systems of symbolic equations -
+Manipulate expressions by applying simplification and other symbolic
+tools.</p>
 </div>
 </div>
 
@@ -1160,10 +1170,14 @@ rather frequently.</p>
 <li><a class="reference internal" href="#Symbols">Symbols</a></li>
 <li><a class="reference internal" href="#Nicer-Output">Nicer Output</a></li>
 <li><a class="reference internal" href="#Symbolic-Expressions">Symbolic Expressions</a></li>
-<li><a class="reference internal" href="#Symbolic-Equations">Symbolic Equations</a></li>
+<li><a class="reference internal" href="#Symbolic-Equations">Symbolic Equations</a><ul>
+<li><a class="reference internal" href="#Systems-of-Equations">Systems of Equations</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#Numerical-Evaluation">Numerical Evaluation</a></li>
 <li><a class="reference internal" href="#Other-Symbolic-Tools">Other Symbolic Tools</a></li>
-<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+<li><a class="reference internal" href="#Lambdify-and-Plotting">Lambdify and Plotting</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
 </ul>
@@ -1171,15 +1185,13 @@ rather frequently.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="ME400_Lecture_17.html" title="previous chapter">Lecture 17 - Unit Tests and Defensive Programming</a></li>
-      <li>Next: <a href="ME400_Lecture_19.html" title="next chapter">Lecture 19 - Symbolic Calculus with SymPy</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_18.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_18_Slides.ipynb.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -1205,7 +1217,7 @@ rather frequently.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_18.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_18_Slides.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 

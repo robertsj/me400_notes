@@ -1,0 +1,493 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 17 - Unit Tests and Defensive Programming\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 7](ME400_Lecture_7.ipynb), errors were identified by debugging.  In this lesson, we look at ways to ensure bugs don't exist in the first place by using *unit tests* and *defensive programming* techniques.  Although the  extent to which these tools should be used depends quite a bit on the  magnitude of the program being developed, even their limited use should help you write better code.\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Write programs and functions that use `assert` statements to ensure correctness of inputs and/or outputs.\n",
+    "- Write unit tests for testing individual functions."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- defensive programming\n",
+    "- `assert`\n",
+    "- test-driven development\n",
+    "- `unittest`\n",
+    "- `unittest.TestCase`\n",
+    "- `unittest.main`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Be on the Defensive\n",
+    "\n",
+    "Functions arguments generally have an acceptable range of values (and types)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Recall `mean_abs_error` from [Lecture 16](ME400_Lecture_16.ipynb) and consider its behavior given a single value:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "object of type 'float' has no len()",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-2-e3bca46ac261>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfrom\u001b[0m \u001b[0merror_metrics\u001b[0m \u001b[0;32mimport\u001b[0m \u001b[0mmean_abs_error\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mmean_abs_error\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m0.1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/Research/me400_notes/source/lectures/error_metrics.py\u001b[0m in \u001b[0;36mmean_abs_error\u001b[0;34m(e)\u001b[0m\n\u001b[1;32m      2\u001b[0m     \u001b[0;34m\"\"\"Mean, absolute error.\"\"\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m     \u001b[0mv\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 4\u001b[0;31m     \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mrange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      5\u001b[0m         \u001b[0mv\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0mabs\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      6\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mv\u001b[0m\u001b[0;34m/\u001b[0m\u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mTypeError\u001b[0m: object of type 'float' has no len()"
+     ]
+    }
+   ],
+   "source": [
+    "from error_metrics import mean_abs_error\n",
+    "mean_abs_error(0.1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Is this obvious?  Not always!  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "A possible fix: **defensive programming** (or, \"how to make your code idiot proof\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The **basic idea**: check *input* and/or *intermediate results* and/or *output*."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: write a function to map a sequence `a` of numbers onto the range $(0, 1)$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def normalize(a):\n",
+    "    \"\"\"Normalize the elements of a to the range [0 1]\"\"\"\n",
+    "    b = []\n",
+    "    for i in a:\n",
+    "        b.append(i/max(a))\n",
+    "    return b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[0.3333333333333333, 0.6666666666666666, 1.0]"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "normalize([1,2,3])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[-0.3333333333333333, 0.6666666666666666, 1.0]"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "normalize([-1,2,3])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def normalize_defensive(a):\n",
+    "    \"\"\"Normalize the elements of a to the range [0 1].  Elements of a should be >= 0.\"\"\"\n",
+    "    b = []\n",
+    "    for i in a:\n",
+    "        assert i >= 0, 'Elements of a must be >= 0!'\n",
+    "        b.append(i/max(a))\n",
+    "    return b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[0.3333333333333333, 0.6666666666666666, 1.0]"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "normalize_defensive([1, 2, 3])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "AssertionError",
+     "evalue": "Elements of a must be >= 0!",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mAssertionError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-9-77598fd7f16e>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mnormalize_defensive\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m-\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m<ipython-input-6-26edd58ca715>\u001b[0m in \u001b[0;36mnormalize_defensive\u001b[0;34m(a)\u001b[0m\n\u001b[1;32m      3\u001b[0m     \u001b[0mb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m     \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m         \u001b[0;32massert\u001b[0m \u001b[0mi\u001b[0m \u001b[0;34m>=\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'Elements of a must be >= 0!'\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      6\u001b[0m         \u001b[0mb\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mappend\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m/\u001b[0m\u001b[0mmax\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      7\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mb\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mAssertionError\u001b[0m: Elements of a must be >= 0!"
+     ]
+    }
+   ],
+   "source": [
+    "normalize_defensive([-1, 2, 3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The shortest `assert`:\n",
+    "```python\n",
+    "assert condition_that_must_be_true\n",
+    "```\n",
+    "\n",
+    "An `assert` with a (hopefully helpful) message:\n",
+    "\n",
+    "```python\n",
+    "assert condition_that_must_be_true, message_about_what_the_idiot_did\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Testing, 1-2-3\n",
+    "\n",
+    "Simple sanity checks, etc. belong under `if __name__ == \"__main__\"`.\n",
+    "\n",
+    "What about more formal checks? Given `e = [0.1, -0.2, 0.3]`, the mean, absolute error is `0.2`, and we should satisfy\n",
+    "\n",
+    "$$\n",
+    "    |result - expected| < \\tau\n",
+    "$$\n",
+    "\n",
+    "for some tolerance $\\tau$. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### `unittest`\n",
+    "\n",
+    "Automate tests with the `unittest` module."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import unittest\n",
+    "from math import sqrt\n",
+    "from error_metrics import mean_abs_error, rms_error, max_abs_error\n",
+    "\n",
+    "class TestErrorMetrics(unittest.TestCase) :\n",
+    "    \"\"\"Some useful information for the user!\n",
+    "    \"\"\"\n",
+    "    \n",
+    "    def test_mean_abs_error(self) :\n",
+    "        \"\"\"Some useful information about this test!\n",
+    "        \"\"\"\n",
+    "        e = [0.1, -0.2, 0.3]\n",
+    "        self.assertAlmostEqual(mean_abs_error(e), 0.2, places=14)\n",
+    "\n",
+    "    def test_rms_error(self) :\n",
+    "        e = [0.1, -0.2, 0.3]\n",
+    "        self.assertAlmostEqual(rms_error(e), sqrt(0.14), places=14)\n",
+    "\n",
+    "    def test_max_abs_error(self) :\n",
+    "        e = [0.1, -0.2, 0.3]\n",
+    "        self.assertAlmostEqual(max_abs_error(e), 0.3, places=14)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "...\n",
+      "----------------------------------------------------------------------\n",
+      "Ran 3 tests in 0.002s\n",
+      "\n",
+      "OK\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "<unittest.runner.TextTestResult run=3 errors=0 failures=0>"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "test = TestErrorMetrics()\n",
+    "suite = unittest.TestLoader().loadTestsFromModule(test)\n",
+    "unittest.TextTestRunner().run(suite)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### But what the heck is a `class`?\n",
+    "\n",
+    "**Classes** are special types that combine data (**attributes**) and functions (called **methods**).  An instance of a class is called an **object**.\n",
+    "\n",
+    "All variables in Python are **objects** of some **class**.\n",
+    "\n",
+    "You are **not responsible for understanding classes, or how to define them, or how to use them** (beyond your homework testing files).\n",
+    "\n",
+    "See ME 701 if you want to learn more."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Test-Driven Development\n",
+    "\n",
+    "Before implementing a function, a module, or an entire program, **write the tests**.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Write unit tests for a module with functions that analyze strings.  Specifically, write the tests for three functions: (1) `is_palindrome(s)` (that checks whether `s` is a [palindrome](https://en.wikipedia.org/wiki/Palindrome)), (2) `longest_palindrome(s)` that returns the largest palindrome in `s`, and (3) `longest_common_sequence(s1, s2)` that returns the longest common substring shared by `s1` and `s2`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "You should  now be able to\n",
+    "\n",
+    "- Write programs and functions that use `assert` statements to ensure correctness of inputs and/or outputs.\n",
+    "- Write unit tests for testing individual functions.\n",
+    "\n",
+    "Remember, John will handle office hours today (student defense)."
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

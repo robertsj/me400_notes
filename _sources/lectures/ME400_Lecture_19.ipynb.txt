@@ -39,7 +39,7 @@
     "  \\lim_{h \\to 0} \\frac{f(x+h)-f(x)}{h} \\, .\n",
     "$$\n",
     "\n",
-    "SymPy can handle limits, so let's see if we use limits to  find the derivative of :math:`f(x) = ax^2 + bx + c`.  First, remember to do the necessary import and initialization, and  get  symbols ready:"
+    "SymPy can handle limits, so let's see if we use limits to  find the derivative of $f(x) = ax^2 + bx + c$.  First, remember to do the necessary import and initialization, and  get  symbols ready:"
    ]
   },
   {
@@ -495,7 +495,9 @@
   {
    "cell_type": "code",
    "execution_count": 15,
-   "metadata": {},
+   "metadata": {
+    "collapsed": true
+   },
    "outputs": [],
    "source": [
     "y = sp.Symbol('y')"
@@ -1143,7 +1145,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.1"
+   "version": "3.6.2"
   }
  },
  "nbformat": 4,

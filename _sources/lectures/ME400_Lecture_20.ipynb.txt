@@ -1,0 +1,423 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 20 - Taylor Series and the Root of Numerical Methods\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "At this point, the reader is equipped with the basic symbolic tools needed to perform algebraic, differential, and integral operations.  In this lecture, another topic from basic calculus is revisited: **Taylor series**. Along the way, we'll see how truncated series expansions lead to useful approximations and how those approximations pave the way for numerical methods.\n",
+    " \n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Symbolically compute series expansions of a function\n",
+    "- Explain what is meant by *order* in the context of series expansions (and numerical approximation)\n",
+    "- Numerically demonstrate that a series expansion of a function provides a good, *local* approximation\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- Taylor series\n",
+    "- Maclaurin series\n",
+    "- $\\mathcal{O}(\\Delta^n)$ as *order* in a different way\n",
+    "- local approximation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Taylor Series\n",
+    "\n",
+    "Recall that the **Taylor series** of a function $f(x)$ about some point $x_0$ is defined by\n",
+    "\n",
+    "$$\n",
+    "\\begin{split}\n",
+    "  f(x) &= f(x_0) + \\frac{df}{dx} \\Big |_{x = x_0} (x-x_0) + \\frac{1}{2} \\frac{d^2 f}{dx^2} \\Big |_{x = x_0} (x-x_0)^2 + \\frac{1}{6}\\frac{d^3 f}{d x^3} \\Big |_{x = x_0} (x-x_0)^3 + \\ldots \\\\\n",
+    "       &= \\sum^{\\infty}_{n=0} \\frac{1}{n!}\\frac{d^n f}{dx^n} \\Big |_{x=x_0} (x-x_0)^n\n",
+    "\\end{split}\n",
+    "$$\n",
+    "\n",
+    "When $x_0$, the series is often called the **Maclaurin** series.\n",
+    "\n",
+    "\n",
+    "For the Taylor series for $f(x)$ about $x_0$ to exist requires that each derivative of $f$ exist at $x_0$.  In other words, $f(x)$ must be continuously differentiable at $x_0$.  A common phrase in analysis is to say such functions are \"well behaved.\"  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: Use the differential tools from [Lecture 19](ME400_Lecture_19.ipynb) to define the $n$th term of the Taylor series of $e^x$ about $x_0$.\n",
+    "\n",
+    "*Solution*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\left ( e^{x_{0}}, \\quad \\left(x - x_{0}\\right) e^{x_{0}}, \\quad \\frac{e^{x_{0}}}{2} \\left(x - x_{0}\\right)^{2}\\right )$$"
+      ],
+      "text/plain": [
+       "⎛                           2  x₀⎞\n",
+       "⎜ x₀            x₀  (x - x₀) ⋅ℯ  ⎟\n",
+       "⎜ℯ  , (x - x₀)⋅ℯ  , ─────────────⎟\n",
+       "⎝                         2      ⎠"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import sympy as sy\n",
+    "sy.init_printing()\n",
+    "def nth_term(n):\n",
+    "    x, x_0 = sy.symbols('x x_0')\n",
+    "    return (1/sy.factorial(n)) * sy.diff(sy.exp(x), x).subs(x, x_0) * (x-x_0)**n\n",
+    "nth_term(0), nth_term(1), nth_term(2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Although one could apply such a solution to construct (partial) series representations of a function $f(x)$, SymPy can do it all at once with the `series` function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$e^{x_{0}} + \\left(x - x_{0}\\right) e^{x_{0}} + \\frac{e^{x_{0}}}{2} \\left(x - x_{0}\\right)^{2} + \\mathcal{O}\\left(\\left(x - x_{0}\\right)^{3}; x\\rightarrow x_{0}\\right)$$"
+      ],
+      "text/plain": [
+       "                             2  x₀                       \n",
+       " x₀             x₀   (x - x₀) ⋅ℯ      ⎛        3        ⎞\n",
+       "ℯ   + (x - x₀)⋅ℯ   + ───────────── + O⎝(x - x₀) ; x → x₀⎠\n",
+       "                           2                             "
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x, x_0 = sy.symbols('x x_0')\n",
+    "sy.series(sy.exp(x), x, x_0, 3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The syntax is easy enough: `sy.series(expr, x, x_0, n)`, where `expr` is the symbolic expression to expand in series form, `x` is the independent variable, and `x_0` is the point about which the series expansion is defined.  In addition, the series will include terms with $(x-x_0)^p$ for $p < n$.\n",
+    "\n",
+    "The result has the same three terms computed explicitly in the solved exercise aboe, but it includes the additional term $\\mathcal{O} \\left ( (x-x_0)^3; x\\to x_0 \\right )$.  \n",
+    "\n",
+    "We'll get to what that means in a bit, but for now, we can remove it via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAS0AAAArBAMAAADf48N0AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEIl2mSJE3e9UMqtm\nzbsXyEShAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEXElEQVRYCc1XQYgbVRj+ZsZkstlsMm4LFpbq\nbFNvFnezuVUxlfZSigQP1kOhQRGPLl12aUVxRbAWBFdURAQd8CxZKKVFLI216qVCLnqohtaDN6nZ\nllZcD/F/M/My/7zMJLtDw84Lm/n/7//+7/3z5uXNv4A7ykcPOp6Vqm/Dumw2pq9aqSqKisnjd+AP\n7Vba6gLuAav0SdvId/OZVbyetrJO6m09bXVp5Wp95sfyLLp4O03r9Wo9Y7v1bGvf688dGu9NaOew\n23Gn2NY58Tguj7euyfcXvkswwzKa9QRpW08prW+dy5grONlg7oM3S3ZCzS/H+3Ywqa65JKUtJUna\neo7Rxu4kO0WvbX2OAWZ8m6BXv/rGo1evt9S8EyoQ9j8R7rUwRl6mNQBxYCK4+yFtwvxke0V7YpYn\n9u1R7+9JmiFrZ51+gmc8qviqe6EPDGkTnKkWila01FRwZ30pbmht4OvPvrA4RvYviq+6exkQ3yaU\n6sjRJ2oMPiKFVQY+6PV88CP/WqgpLNXV5/pIuE2QCm64CedFmE6fyoxlZkeaezgqVc0RqwxtVaYp\nbYJUoHCmewB2TF2ZRZkfd51qsIhUPc6waPNXCSttglSgsPbtSxWrhJy6R0SmUaP4woWX6Wnxsevg\nCxX/Seg1FpCqVcIYx2dwof0CE+2LGwvaBKkwvXDEjcTs+2ILmMZPc2+6JPml2YUls41KhYBCW6J0\nlap/0ZwehwV9IaNsE/izCPTbl6BN8BWyy3heMBBzTphrwCyetF5xSfJLt/SNbL1gT6wDE4sSpaus\n6wzgcVhMCl3F54R+Sn9B+xLQfIU9a9rRAOyFRpcCuQZg4bZL2dsR4wbZGoq3ALOBDfo3RdDccaDT\nOd3p/CbsdyWHrm5WxyHUE1pByQKa5A+0L4HCpe+fIlL8EHUBdwcIpTngMQfneF1EkutFdQGCowwS\n0jaRW/PqimpffIX/lETVFc8R+U0VRtMh6TreoMN+kQVlXfQcKU6c8BBC+XswW7S1KBLVvvgKd8KJ\nA57Y9x8aXcyHIhPWMzCspoWl+H3vcUJprlB+AyYtpNj3Ue2LX9cpOgpCuYqj15D9t9jNtEL4a2t/\n44RYr3eAh2wWkutFp4DHYTFfiNYrR3U9S5Go9sVXeBqad05wAWbTU9LOz1evM4jMmYVdx1pif90H\nphwWk3XRU/I4LOYL0f4qNYAbIhLRvvgKxjFlStqYh287IskbQ95D3u/xEckUV1nXsPeQ+3vU+K6M\nUuCYZ89Ap2WQ45o0Bq9GTZxfoTfBwz5r2Hu7Ks4v9t4OC0uFMCq8Q8B7AVqsB7ZqVWgbiT4nYvwZ\ngfmQsa8G8D4nnhqKnAWuBMWM6gtj6o5u5oJ5htQdkMLWTQtXnAAa0Uf/EDC5pfyAeUjYheDG1dAw\n/y1rWHTHYtlRp+0OVWau79DEI6Y9PCK+Q2HRo6ZxfIxMsp/LeG8mb8NIY13H9+2/ON47T6Z+s9f7\nJ1nmuLL+B1I3Ba6qslARAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\frac{e^{x_{0}}}{2} \\left(x - x_{0}\\right)^{2} + \\left(x - x_{0}\\right) e^{x_{0}} + e^{x_{0}}$$"
+      ],
+      "text/plain": [
+       "        2  x₀                     \n",
+       "(x - x₀) ⋅ℯ               x₀    x₀\n",
+       "───────────── + (x - x₀)⋅ℯ   + ℯ  \n",
+       "      2                           "
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.series(sy.exp(x), x, x_0, 3).removeO()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise** Find the first 5 terms of the Maclaurin series for (a) $f(x) = \\sin(x)$, (b) $f(x) = J_1(x)$ (the [Bessel function of the first kind](http://mathworld.wolfram.com/BesselFunctionoftheFirstKind.html) of order 1), and (c) $\\text{erf}(x)$ (the [error function](http://mathworld.wolfram.com/Erf.html)).\n",
+    "\n",
+    "**Exercise** Find the two term Taylor series expansion of $(1+x)^a$, known as the *binomial approximation*.  Explore this approximation for different values of $x$ and $a$.  What can you conclude?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Another Meaning for $\\mathcal{O}$\n",
+    "\n",
+    "Previously,  $\\mathcal{O}$ (or big-O) notation was used to define the *order* of an algorithm.  For example, linear search was found to be $\\mathcal{O}(n)$, while binary search was $\\mathcal{O}(\\log n)$.  In that context, order was proportional to the number of operations (or amount of work) as the problem size grew.  \n",
+    "\n",
+    "In Taylor series, the $\\mathcal{O}$ means something different: the term $\\mathcal{O} \\left ( (x-x_0)^3; x\\to x_0 \\right )$ formally represents all terms in the series proportional to $(x-x_0)^p$ for $p \\geq 3$.  Why capture these terms in one generic $\\mathcal{O}$ term?  They all vanish faster than the terms with $p < 3$ as the different $x-x_0$ goes to zero.\n",
+    "\n",
+    "> **Note**:  $\\mathcal{O} \\left ((x-x_0)^n\\right )$ represents any term proportional to $(x-x_0)^p$ for $p \\geq n$, particularly in the limit that $x-x_0$ goes to zero.\n",
+    "\n",
+    "\n",
+    "\n",
+    "In practice, the $\\mathcal{O}$ dictates how well a truncated Taylor series can approximate a function $f(x)$ near $x_0$. The more terms included in the series, the higher is the power of $(x-x_0)$.  As long as $|x-x_0|$ is small (i.e., $x$ is near $x_0$), higher powers of $x-x_0$ become vanishingly small.\n",
+    "\n",
+    "**Exercise**: Approximate $e^x$ using Taylor series approximations with $n = 1, 2, \\ldots 10$ terms about $x_0 = 0$,  evaluate each expression for $x = 0.1$, and compare to the true value.\n",
+    "\n",
+    "*Solution*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "      exact = 1.1051709180756500\n",
+      " 1th approx = 1.0000000000000000\n",
+      " 2th approx = 1.1000000000000001\n",
+      " 3th approx = 1.1050000000000000\n",
+      " 4th approx = 1.1051666666666666\n",
+      " 5th approx = 1.1051708333333332\n",
+      " 6th approx = 1.1051709166666666\n",
+      " 7th approx = 1.1051709180555553\n",
+      " 8th approx = 1.1051709180753966\n",
+      " 9th approx = 1.1051709180756446\n",
+      "10th approx = 1.1051709180756473\n"
+     ]
+    }
+   ],
+   "source": [
+    "f = sy.exp(x)\n",
+    "approx = []\n",
+    "exact = sy.exp(0.1)\n",
+    "print('      exact = {:.16f}'.format(exact))\n",
+    "for n in range(1, 11):\n",
+    "    # both sy.series(expr, x) and expr.series(x) work\n",
+    "    f_n = f.series(x, 0, n).removeO()\n",
+    "    print('{:2}th approx = {:.16f}'.format(n, float(f_n.subs(x, 0.1))))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The exercise shows that by including additional terms in the sequence the approximation is improved.\n",
+    "\n",
+    "**Exercise**:  For $n = 2 \\ldots 4$, plot the $n$-term Taylor series approximation for $e^x$ about the point $x_0 = 1$ for $x \\in [0, 2]$.\n",
+    "\n",
+    "*Solution*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7f33510ede80>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "x_plot = np.linspace(0, 2) # prepare x values for plotting\n",
+    "for n in range(2, 5):\n",
+    "    # lambdify the n-term approximation\n",
+    "    f_n = sy.lambdify(x, f.series(x, 1, n).removeO())\n",
+    "    # evaluate that function at the x points for plotting\n",
+    "    f_n_plot = f_n(x_plot)\n",
+    "    # and plot\n",
+    "    plt.plot(x_plot, f_n_plot, label='{}'.format(n))\n",
+    "# plot the exact function for good measure\n",
+    "f_exact = sy.lambdify(x, sy.exp(x))\n",
+    "f_exact_plot = f_exact(x_plot)\n",
+    "plt.plot(x_plot, f_exact_plot, label='exact')\n",
+    "plt.xlabel('x')\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All of the approximations converge to the right value at $x = 1$ and are good within a small range about the point $x = 1$.  That range grows with $n$.\n",
+    "\n",
+    "**Exercise**: Modify the solution to the last exercise to show the *error*, i.e., $f(x) - f_n(x)$, where $f_n(x)$ is the $n$-term Taylor series approximation.\n",
+    "\n",
+    "**Exercise**: Consider the function $f(x) = \\sin(\\sqrt{x})$.  How many terms are required to ensure that a $n$-term series expansion of this function is accurate to within $10^{-5}$ (i.e., $|f(x)-f_n(x)|$) for all $x \\in [0, 2]$?  Note, there is more than one way to tackle this."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Other Applications\n",
+    "\n",
+    "Taylor (and other) series play a major role in function approximation and in development of numerical methods.  However, there are other applications in which series expansions can make an otherwise difficult (or impossible) problem easy to solve exactly (or approximately)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Nasty Integrals\n",
+    "\n",
+    "Consider the following integral\n",
+    "\n",
+    "$$\n",
+    "  \\int^1_0 \\cos(x^2) dx\n",
+    "$$\n",
+    "\n",
+    "Go ahead: try to evaluate it with pen and paper.  Stuck?  Of course, here's the answer using `sympy.integrate`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\frac{\\sqrt{2} \\sqrt{\\pi} C\\left(\\frac{\\sqrt{2}}{\\sqrt{\\pi}}\\right) \\Gamma{\\left(\\frac{1}{4} \\right)}}{8 \\Gamma{\\left(\\frac{5}{4} \\right)}}$$"
+      ],
+      "text/plain": [
+       "              ⎛√2⎞       \n",
+       "√2⋅√π⋅fresnelc⎜──⎟⋅Γ(1/4)\n",
+       "              ⎝√π⎠       \n",
+       "─────────────────────────\n",
+       "         8⋅Γ(5/4)        "
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.integrate(sy.cos(x**2), (x, 0, 1))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The [gamma function](http://mathworld.wolfram.com/GammaFunction.html) is not so rare, but the [Fresnel integral](http://mathworld.wolfram.com/FresnelIntegrals.html) (the $C$) is pretty exotic.  However, consider the first severak non-vanishing terms of the Taylor series of the integrand $\\cos(x^2)$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$1 - \\frac{x^{4}}{2} + \\frac{x^{8}}{24} - \\frac{x^{12}}{720} + \\frac{x^{16}}{40320} + \\mathcal{O}\\left(x^{20}\\right)$$"
+      ],
+      "text/plain": [
+       "     4    8    12     16          \n",
+       "    x    x    x      x       ⎛ 20⎞\n",
+       "1 - ── + ── - ─── + ───── + O⎝x  ⎠\n",
+       "    2    24   720   40320         "
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.cos(x**2).series(x, 0, 20) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In other words, the $i$th nonzero term is $(-1)^i\\frac{x^{4i}}{2i!}$ for $i = 0, 1, \\ldots$.  Each term can be integrated over the range (recall, the integral of a sum is the sum of the integrals), leading to terms of the form $(-1)^i\\frac{1}{(4i+1)\\cdot 2i!}$ ($i = 0, 1, \\ldots$).  The result is a convergent series that can be evaluated directly using `Sum` and `limit`, similar to what was done in [Lecture 19](ME400_Lecture_19.ipynb).\n",
+    "\n",
+    "**Exercise**: Set up this `Sum` and evaluate the limit.  Is it consistent with what you get upon numerically evaluating the integral above?\n",
+    "\n",
+    "**Exercise**: Repeat the exercise for $\\int^x_0 e^{-z^2} dz$.  What does application of `sympy.simplify` to the final limit yield?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Stability of Nonlinear Systems\n",
+    "\n",
+    "Future work!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "None for now."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

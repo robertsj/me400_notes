@@ -362,32 +362,6 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Running Modules as Scripts\n",
-    "\n",
-    "Because any Python script can be imported as a module, you've already been running modules as scripts!  However, any variables defined in the script (e.g., the errant $pi$ we added above) become accessible upon import, and that's not always desired.  Selective  imports can help, but sometimes the extra code is for quick function testing. As an alternative, a special if-statement can be added to the bottom of scripts to separate the functions (and other things actually desired in the module) and some demonstration code.  Here's an example:\n",
-    "\n",
-    "```python\n",
-    "    if __name__ == \"__main__\" :\n",
-    "        e = [0.1, 0.2, 0.3]\n",
-    "        print(mean_abs_error(e))\n",
-    "        print(rms_error(e))\n",
-    "        print(max_abs_error(e))\n",
-    "```\n",
-    "\n",
-    "Running this leads to \n",
-    "\n",
-    "```PowerShell\n",
-    "    C:\\Users\\robertsj\\Documents\\PythonForEngineers>python error_metrics.py\n",
-    "    0.2\n",
-    "    0.374165738677\n",
-    "    0.3\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
     "Similarly, we can selectively import functions (or attributes like `pi`) and assign them new names via"
    ]
   },
@@ -451,6 +425,9 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "## Running Modules as Scripts\n",
+    "\n",
+    "\n",
     "Because any Python script can be imported as a module, you've already\n",
     "been running modules as scripts!  However, any variables defined\n",
     "in the script (e.g., the errant `pi` we added above) become\n",
@@ -484,8 +461,7 @@
     "> **Exercise**:  Go and put the lines of code above into `error_metrics.py` and see for yourself that they are printed when the file is executed (either via `python error_metrics.py` or in Spyder).  Show also that `import error_metrics` does not lead to the print statements when the `if __name__` line is included.\n",
     "\n",
     "Basically, the special variable `__name__` has the  value `\"__main__\"` only if the script is executed and not if\n",
-    "it is imported. Actually, any (built-in) name in Python that starts and ends with two underscores is usually special and not often needed.  Use of `__name__` here is one of the exceptions to that rule of thumb.\n",
-    "\n"
+    "it is imported. Actually, any (built-in) name in Python that starts and ends with two underscores is usually special and not often needed.  Use of `__name__` here is one of the exceptions to that rule of thumb."
    ]
   },
   {

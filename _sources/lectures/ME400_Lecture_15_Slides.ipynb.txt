@@ -1,0 +1,584 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 15 - Sorting\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lecture and [Lecture 14](ME400_Lecture_14.ipynb), we tackle two of the most important practical problems in computing: *searching* and *sorting*.  In this lecture, we turn to *sorting*, the more challenging problem and one that was a focus of much research in the early years of computing for making searching easier.  We'll flex our knowledge of functions to help write clean and clear sorting programs.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Sort an array of numbers using brute-force, $\\mathcal{O}(n^2)$ schemes like *selection sort*.\n",
+    "- Sort an array of numbers using divide-and-conquer, $\\mathcal{O}(n\\log n)$ schemes like *merge sort*.\n",
+    "- Apply built-in Python functions to sort sequences.\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- selection sort\n",
+    "- stable sorting algorithm\n",
+    "- merge sort\n",
+    "- merge "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Sorting is Hard Work\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "To sort a sequence, leverage what we know: **find the minimum value in a sequence**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The basic idea is simple.  Given a sequence of $n$ numbers to sort in increasing order, we \n",
+    "\n",
+    "1. Find the smallest value (just as we have previously done).\n",
+    "2. Swap it with the first element in the sequence.\n",
+    "3. Repeat steps (1) and (2) this process for the last $n-1$ items in the sequence."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "This is **selection sort**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "'''The selection sort algorithm to sort an array'''\n",
+    "Input: a, n # sequence of numbers and its length\n",
+    "# Loop through each element a[i] \n",
+    "Set i = 0\n",
+    "While i < n do\n",
+    "   # Find the location k of the smallest element after a[i]\n",
+    "   Set j = i + 1\n",
+    "   Set k = i\n",
+    "   While j < n do\n",
+    "       If a[j] < a[k] then\n",
+    "           Set k = j\n",
+    "       Set j = j + 1\n",
+    "   # Switch the values of a[i] and a[k], putting them in order\n",
+    "   Swap a[i] and a[k]\n",
+    "   i = i + 1\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exercise**: What happens to `a[i]` if `a[j]` is never less than `a[k]`?  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exercise**: Apply this algorithm to the sequence [3, $1_0$, 4, $1_1$, 2].  Here, the subscript is used to count the number of times a 1 appears in the sequence.  Does the algorithm produce [$1_0$, $1_1$, 2, 3, 4] or [$1_1$, $1_0$, 2, 3, 4]?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exercise**: Selection sort is $\\mathcal{O}(n^2)$, but what's the quickest it can do a problem of size $n$?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def selection_sort(a):\n",
+    "    \"\"\"Applies the selection sort algorithm to sort the sequence a.\"\"\"\n",
+    "    i = 0\n",
+    "    while i < len(a):\n",
+    "        j = i + 1\n",
+    "        k = i\n",
+    "        while j < len(a):\n",
+    "            if a[j] < a[k]:\n",
+    "                k = j\n",
+    "            j += 1\n",
+    "        a[i], a[k] = a[k], a[i]\n",
+    "        i += 1\n",
+    "    return a"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3]"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "selection_sort([3, 2, 1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3, 4, 5]"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "selection_sort([2, 1, 5, 3, 4])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['X', 'Y', 'Z']"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "selection_sort(['Z', 'Y', 'X'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "'tuple' object does not support item assignment",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-3-acc5244597b7>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mselection_sort\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m<ipython-input-1-922691fc0914>\u001b[0m in \u001b[0;36mselection_sort\u001b[0;34m(a)\u001b[0m\n\u001b[1;32m      9\u001b[0m                 \u001b[0mk\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mj\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     10\u001b[0m             \u001b[0mj\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 11\u001b[0;31m         \u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     12\u001b[0m         \u001b[0mi\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     13\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mTypeError\u001b[0m: 'tuple' object does not support item assignment"
+     ]
+    }
+   ],
+   "source": [
+    "selection_sort((3, 2, 1))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "As implemented, `selection_sort(a)` sorts `a` **in place**, i.e., it *modifies the sequence*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1, 2, 3]\n",
+      "[1, 2, 3]\n"
+     ]
+    }
+   ],
+   "source": [
+    "a = [3, 2, 1]\n",
+    "b = selection_sort(a)\n",
+    "print(b)\n",
+    "print(a)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Better Sorting for Bigger Data\n",
+    "\n",
+    "**Binary search** finds things in $\\mathcal{O}(\\log n)$ operations by **divide and conquer**.\n",
+    "\n",
+    "The best algorithms (sorting and otherwise) use the same principle to turn apparently $\\mathcal{O}(n^2)$ problems into $\\mathcal{O}(n\\log n)$ ones.\n",
+    "\n",
+    "For our purposes, it is sufficient to consider the simplest of the divide and conquer approaches to sorting: [merge sort](https://en.wikipedia.org/wiki/Merge_sort)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Merge Sort\n",
+    "\n",
+    "Merge sort is simplest of $\\mathcal{O}(n\\log n)$ sorting algorithms:\n",
+    "  1. divide a sequence into smaller chunks that can be sorted directly \n",
+    "  2. merge two sorted (sub)sequences. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Merging Sorted Sequences\n",
+    "\n",
+    "Main work of merge sort is to merge *sorted* sequences into one larger, *sorted* sequence.  \n",
+    "\n",
+    "Example: `a = [1, 8]` and `b = [7, 5]` are merged to produce `c = [1, 5, 7, 8]`.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "'''Merge: an algorithm to merge two sorted sequences'''\n",
+    "Input: a, b, m, n\n",
+    "# Initialize the sorted sequence\n",
+    "Set c to be a sequence of length (m+n) \n",
+    "# Initialize the counter for a, b, and c\n",
+    "Set i = 0, j = 0, and k = 0\n",
+    "While k < m + n do\n",
+    "    If i < m and j < n then\n",
+    "        # Both a and b still have elements to merge\n",
+    "        If a[i] <= b[j] then\n",
+    "            Set c[k] = a[i] \n",
+    "            Set i = i + 1\n",
+    "        Otherwise\n",
+    "            Set c[k] = b[k]\n",
+    "            Set j = j + 1\n",
+    "    Otherwise, if i == m then\n",
+    "        # Only b has elements left to merge\n",
+    "        Set c[k] = b[j]\n",
+    "        Set j = j + 1\n",
+    "    Otherwise,\n",
+    "        # Only a has elements left to merge\n",
+    "        Set c[k] = a[i]\n",
+    "        Set i = i + 1\n",
+    "    Set k = k + 1\n",
+    "Output: c\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Divide and Conquer\n",
+    "\n",
+    "Merging is half thee battle: we need to dive down and get the smaller arrays to sort.  \n",
+    "\n",
+    "A natural approach is to use *recursion*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--------> [8, 7, 6, 5, 4, 3, 2, 1]\n",
+      "----> [8, 7, 6, 5]\n",
+      "--> [8, 7]\n",
+      "--> [6, 5]\n",
+      "----> [4, 3, 2, 1]\n",
+      "--> [4, 3]\n",
+      "--> [2, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "def divide_and_print(a):\n",
+    "    print('-'*len(a)+'>', a)\n",
+    "    if len(a) <= 2:\n",
+    "        return\n",
+    "    else:\n",
+    "        divide_and_print(a[:len(a)//2])\n",
+    "        divide_and_print(a[len(a)//2:])\n",
+    "    return\n",
+    "divide_and_print([8,7,6,5,4,3,2,1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "'''Merge Sort: an algorithm to sort the sequence a'''\n",
+    "Input: a\n",
+    "Set n to the length of a\n",
+    "If n == 2 and a[0] > a[1] then\n",
+    "    Swap a[0] and a[1]\n",
+    "Otherwise, if n > 2 then\n",
+    "    Set a_L to be the first half of a \n",
+    "    Set a_R to be the second half of a\n",
+    "    Call Merge Sort to sort a_L and assign \n",
+    "      its output to a_L\n",
+    "    Call Merge Sort to sort a_R and assign\n",
+    "      its output to a_R\n",
+    "    Call Merge to combine a_L and a_R, and assign\n",
+    "      its output to a\n",
+    "# Note, nothing is done when n is 1\n",
+    "Output: a\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Merge sort is $\\mathcal{O}(n \\log n)$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x10c68d4e0>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "n = np.logspace(1, 6, 100)\n",
+    "plt.loglog(n, 0.23*n**2, 'k-', label='$\\mathcal{O}(n^2)$')\n",
+    "plt.loglog(n, n*np.log(n), 'r--', label='$\\mathcal{O}(n\\, \\log \\, n)$')\n",
+    "plt.xlabel('n')\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "##  Built-in Sorting\n",
+    "\n",
+    "Several options:\n",
+    "- `sorted`\n",
+    "- `list.sort`\n",
+    "- `np.sort`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "By now, you should be able to\n",
+    "\n",
+    "- Sort an array of numbers using brute-force, $\\mathcal{O}(n^2)$ schemes like *selection sort*.\n",
+    "- Sort an array of numbers using divide-and-conquer, $\\mathcal{O}(n\\log n)$ schemes like *merge sort*.\n",
+    "- Apply built-in Python functions to sort sequences.\n",
+    "\n",
+    "Office hours today 2:30--4 intermixed with advising.  John should be available for part of that time.\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

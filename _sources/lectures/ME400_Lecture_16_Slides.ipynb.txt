@@ -1,0 +1,897 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 16 - Modules and Packages\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "Python modules offer a unique way to organize your code, especially as it evolves into several functions.  Moreover, any of the  external packages you've already used, like NumPy and Matplotlib, are organized as modules within larger *packages*.  By the end of this lesson, you'll understand how to organize your create and \n",
+    "use your own modules and packages.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Produce a module of functions\n",
+    "- Set appropriate paths in order to import modules you create"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- `module`\n",
+    "- `import`\n",
+    "- `from some_module import`\n",
+    "- `*` (as something to import)\n",
+    "- function\n",
+    "- attribute\n",
+    "- `sys`\n",
+    "- `sys.path`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Creating Modules\n",
+    "\n",
+    "We've been importing modules like NumPy since the beginning:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "module"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy\n",
+    "type(numpy)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Modules are easy to create: they can be as simple as a single Python script. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Consider these possible ways to quantify a vector $\\mathbf{e}$ that represents errors:\n",
+    "\n",
+    "  1. *mean, absolute error*, $\\sum^n_i |e_i|/n$\n",
+    "  2. *root-mean-square error*, $\\sqrt{\\sum^n_i e_i^2/n}$\n",
+    "  3. *maximum, absolute error*, $\\max(|e_i|) \\, \\forall i \\in [1, n]$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "If $\\mathbf{e}$ is a *sequential* type, the following are possible implementations:\n",
+    "```python\n",
+    "def mean_abs_error(e):\n",
+    "    \"\"\"Mean, absolute error.\"\"\"\n",
+    "    v = 0\n",
+    "    for i in range(len(e)) :\n",
+    "        v += abs(e[i])\n",
+    "    return v/len(e)\n",
+    "        \n",
+    "def rms_error(e) :\n",
+    "    \"\"\"Root-mean-square error.\"\"\"\n",
+    "    v = 0\n",
+    "    for i in range(len(e)) :\n",
+    "        v += e[i]**2\n",
+    "    return (v/len(e))**0.5\n",
+    "        \n",
+    "def max_abs_error(e) :\n",
+    "    \"\"\"Maximum, absolute error.\"\"\"\n",
+    "    v = 0\n",
+    "    for i in range(len(e)) :\n",
+    "        if abs(e[i]) > v:\n",
+    "            v = abs(e[i])\n",
+    "    return v\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Functions can be defined almost **anywhere** in **any** Python program."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "This can be very convenient but opens the door to **copy and paste**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Better to **reuse** by **modularizing**:  put common functions in a **separate file** (e.g., say `error_metrics.py`)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```PowerShell\n",
+    "    C:\\Users\\robertsj\\Documents\\PythonForEngineers>dir\n",
+    "     Volume in drive C has no label.\n",
+    "     Volume Serial Number is CP-1\n",
+    "\n",
+    "     Directory of C:\\Users\\robertsj\\Documents\\PythonForEngineers\n",
+    "\n",
+    "    12/02/1942  03:25 PM    <DIR>          .\n",
+    "    12/02/1942  03:25 PM    <DIR>          ..\n",
+    "    12/02/1942  03:25 PM               572 error_metrics.py\n",
+    "                   5 File(s)          3,141 bytes\n",
+    "                   3 Dir(s)   1,123,581,321 bytes free\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "As long as you are executing Python *from within the directory containing* the file, it should be possible to do the following (in Spyder, IPython, or IDLE):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['__builtins__',\n",
+       " '__cached__',\n",
+       " '__doc__',\n",
+       " '__file__',\n",
+       " '__loader__',\n",
+       " '__name__',\n",
+       " '__package__',\n",
+       " '__spec__',\n",
+       " 'max_abs_error',\n",
+       " 'mean_abs_error',\n",
+       " 'pi',\n",
+       " 'rms_error']"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import error_metrics\n",
+    "dir(error_metrics)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.15000000000000002"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "e = [0.1, -0.2, 0.25, -0.05]\n",
+    "error_metrics.mean_abs_error(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "When importing modules directly (e.g., `import error_metrics`), must use the module name to access its functions (e.g., `error_metrics.mean_abs_error`).  \n",
+    "\n",
+    "Alternative: use abbreviation like we do for NumPy:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.15000000000000002"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import error_metrics as em\n",
+    "em.mean_abs_error(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Like other names in Python, moduled can be given new names:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.15000000000000002"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "em2 = em\n",
+    "em2.mean_abs_error(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Living dangerously**: we can simply import everything via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.15000000000000002"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from error_metrics import *\n",
+    "mean_abs_error(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "That's okay, but what about"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.618033988749895\n"
+     ]
+    }
+   ],
+   "source": [
+    "from math import *\n",
+    "from error_metrics import *\n",
+    "print(pi)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "> \"When you use the `*`, careful you must be, for the `*` uses you back.\" - *Said probably not Yoda*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Final alternative: import individial functions or attributes (values like `pi`) via "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.15000000000000002"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from error_metrics import mean_abs_error, rms_error\n",
+    "e = [0.1, -0.2, 0.25, -0.05] # why define again?\n",
+    "mean_abs_error(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Functions (or attributes like `pi`) can be imported selectively via "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.618033988749895\n"
+     ]
+    }
+   ],
+   "source": [
+    "from error_metrics import rms_error as re\n",
+    "from error_metrics import pi as not_the_real_pi\n",
+    "print(not_the_real_pi)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "but a statement like\n",
+    "```python\n",
+    "import error_metrics.rms_error as rms_error\n",
+    "```\n",
+    "will fail."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Running Modules as Scripts\n",
+    "\n",
+    "**Every Python script can be imported as a module** (that includes your homework submissions!)\n",
+    "\n",
+    "Almost all statements in the script are executed:\n",
+    "  - variable assignments (like the errant $pi$)\n",
+    "  - function calls \n",
+    "  - other imports\n",
+    "  - miscellaneous code for showing/testing \n",
+    "\n",
+    "Selective imports can help, but sometimes the extra code is for quick function testing. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "An alternative: place `if __name__ == \"__main__\":` at the bottom of the file:\n",
+    "\n",
+    "```python\n",
+    "    if __name__ == \"__main__\" :\n",
+    "        e = [0.1, 0.2, 0.3]\n",
+    "        print(mean_abs_error(e))\n",
+    "        print(rms_error(e))\n",
+    "        print(max_abs_error(e))\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Running this leads to \n",
+    "\n",
+    "```PowerShell\n",
+    "    C:\\Users\\robertsj\\Documents\\PythonForEngineers>python error_metrics.py\n",
+    "    0.2\n",
+    "    0.374165738677\n",
+    "    0.3\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**:  Go and put the lines of code above into `error_metrics.py` and see for yourself that they are printed when the file is executed (either via `python error_metrics.py` or in Spyder).  Show also that `import error_metrics` does not lead to the print statements when the `if __name__` line is included."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Using Modules on the Moon\n",
+    "\n",
+    "The hard work is done, but how to use your module?  Set `PYTHONPATH`!\n",
+    "\n",
+    "On Windows, that might look like:\n",
+    "```\n",
+    "    C:\\Users\\robertsj>cd Documents\\PythonForEngineers\\BackOnEarth\n",
+    "\n",
+    "    C:\\Users\\robertsj\\Documents\\PythonForEngineers\\BackOnEarth>set PYTHONPATH=%PYTHONPATH%;C:\\Users\\robertsj\\Documents\\PythonForEngineers\\OnTheMoon\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "    C:\\Users\\robertsj\\Documents\\PythonForEngineers\\BackOnEarth>dir\n",
+    "     Volume in drive C has no label.\n",
+    "     Volume Serial Number is CP-1\n",
+    "\n",
+    "     Directory of C:\\Users\\robertsj\\Documents\\PythonForEngineers\\BackOnEarth\n",
+    "\n",
+    "    12/02/1942  03:25 PM    <DIR>          .\n",
+    "    12/02/1942  03:25 PM    <DIR>          ..\n",
+    "                   0 File(s)              0 bytes\n",
+    "                   2 Dir(s)   1,123,581,321 bytes free\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "    C:\\Users\\robertsj\\Documents\\PythonForEngineers\\BackOnEarth>dir ..\\OnTheMoon\n",
+    "     Volume in drive C has no label.\n",
+    "     Volume Serial Number is CP-1\n",
+    "\n",
+    "     Directory of C:\\Users\\robertsj\\Documents\\PythonForEngineers\\OnTheMoon\n",
+    "\n",
+    "    12/02/1942  03:25 PM    <DIR>          .\n",
+    "    12/02/1942  03:25 PM    <DIR>          ..\n",
+    "    12/02/1942  03:25 PM               572 error_metrics.py\n",
+    "                   1 File(s)            572 bytes\n",
+    "                   2 Dir(s)   1,123,581,321 bytes free\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Once set, do\n",
+    "\n",
+    "```python\n",
+    "    >>> import error_metrics as em\n",
+    "    >>> em.rms_error([0.1, -0.2, 0.3])\n",
+    "    0.37416573867739417\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The `PYTHONPATH` can also be changed permanently. \n",
+    "\n",
+    "On Windows machines: *Start* > *Control Panel* > *System and Security* > *System* > *Advanced System Settings* > *Environment Variables*. \n",
+    "\n",
+    "On OS X and Linux machines: put `export PYTHONPATH=$PYTHONPATH:/home/robertsj/Documents/PythonForEngineers\\OnTheMoon` in `.bashrc` or `.bash_profile`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Quick and easy alternative: set the path by changing `sys.path` **before** the custom module is imported:\n",
+    "\n",
+    "```python\n",
+    "import sys\n",
+    "sys.path.append('C:\\Users\\robertsj\\Documents\\PythonForEngineers\\OnTheMoon')\n",
+    "import error_metrics\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Packages\n",
+    "\n",
+    "Modules collect functions, etc.  *Packages* collect modules.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Example: \n",
+    "  1. Make a new directory called  `my_package` and place `error_metrics.py` in it.  \n",
+    "  2. In that same directory, create an empty file named  `__init__.py`. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Once that's done, the following is possible from anywhere:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['__builtins__',\n",
+       " '__cached__',\n",
+       " '__doc__',\n",
+       " '__file__',\n",
+       " '__loader__',\n",
+       " '__name__',\n",
+       " '__package__',\n",
+       " '__path__',\n",
+       " '__spec__']"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import my_module\n",
+    "dir(my_module)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'module'>\n",
+      "<class 'module'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "import my_module.error_metrics\n",
+    "print(type(my_module))\n",
+    "print(type(my_module.error_metrics))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['__builtins__',\n",
+       " '__cached__',\n",
+       " '__doc__',\n",
+       " '__file__',\n",
+       " '__loader__',\n",
+       " '__name__',\n",
+       " '__package__',\n",
+       " '__path__',\n",
+       " '__spec__',\n",
+       " 'error_metrics']"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dir(my_module)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.37416573867739417"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "my_module.error_metrics.rms_error([0.1, -0.2, 0.3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to\n",
+    "\n",
+    "- Produce a module of functions\n",
+    "- Set appropriate paths in order to import modules you create\n",
+    "\n",
+    "**Note**: John is taking my office hours W (I have a student defense)."
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

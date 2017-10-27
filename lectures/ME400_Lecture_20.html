@@ -1,0 +1,606 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 20 - Taylor Series and the Root of Numerical Methods &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Lecture 19 - Symbolic Calculus with SymPy" href="ME400_Lecture_19.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods">
+<h1>Lecture 20 - Taylor Series and the Root of Numerical Methods<a class="headerlink" href="#Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>At this point, the reader is equipped with the basic symbolic tools
+needed to perform algebraic, differential, and integral operations. In
+this lecture, another topic from basic calculus is revisited: <strong>Taylor
+series</strong>. Along the way, we’ll see how truncated series expansions lead
+to useful approximations and how those approximations pave the way for
+numerical methods.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Symbolically compute series expansions of a function</li>
+<li>Explain what is meant by <em>order</em> in the context of series expansions
+(and numerical approximation)</li>
+<li>Numerically demonstrate that a series expansion of a function
+provides a good, <em>local</em> approximation</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Taylor series</li>
+<li>Maclaurin series</li>
+<li><span class="math">\(\mathcal{O}(\Delta^n)\)</span> as <em>order</em> in a different way</li>
+<li>local approximation</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Taylor-Series">
+<h2>Taylor Series<a class="headerlink" href="#Taylor-Series" title="Permalink to this headline">¶</a></h2>
+<p>Recall that the <strong>Taylor series</strong> of a function <span class="math">\(f(x)\)</span> about some
+point <span class="math">\(x_0\)</span> is defined by</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  f(x) &amp;= f(x_0) + \frac{df}{dx} \Big |_{x = x_0} (x-x_0) + \frac{1}{2} \frac{d^2 f}{dx^2} \Big |_{x = x_0} (x-x_0)^2 + \frac{1}{6}\frac{d^3 f}{d x^3} \Big |_{x = x_0} (x-x_0)^3 + \ldots \\
+       &amp;= \sum^{\infty}_{n=0} \frac{1}{n!}\frac{d^n f}{dx^n} \Big |_{x=x_0} (x-x_0)^n
+\end{split}\end{split}\]</div>
+<p>When <span class="math">\(x_0\)</span>, the series is often called the <strong>Maclaurin</strong> series.</p>
+<p>For the Taylor series for <span class="math">\(f(x)\)</span> about <span class="math">\(x_0\)</span> to exist
+requires that each derivative of <span class="math">\(f\)</span> exist at <span class="math">\(x_0\)</span>. In
+other words, <span class="math">\(f(x)\)</span> must be continuously differentiable at
+<span class="math">\(x_0\)</span>. A common phrase in analysis is to say such functions are
+“well behaved.”</p>
+<p><strong>Exercise</strong>: Use the differential tools from <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture
+19</span></a> to define the <span class="math">\(n\)</span>th term of the
+Taylor series of <span class="math">\(e^x\)</span> about <span class="math">\(x_0\)</span>.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">nth_term</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x x_0&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">sy</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x_0</span><span class="p">)</span><span class="o">**</span><span class="n">n</span>
+<span class="n">nth_term</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">nth_term</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nth_term</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left ( e^{x_{0}}, \quad \left(x - x_{0}\right) e^{x_{0}}, \quad \frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2}\right )$$</div></div>
+</div>
+<p>Although one could apply such a solution to construct (partial) series
+representations of a function <span class="math">\(f(x)\)</span>, SymPy can do it all at once
+with the <code class="docutils literal"><span class="pre">series</span></code> function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span><span class="p">,</span> <span class="n">x_0</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x x_0&#39;</span><span class="p">)</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$e^{x_{0}} + \left(x - x_{0}\right) e^{x_{0}} + \frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2} + \mathcal{O}\left(\left(x - x_{0}\right)^{3}; x\rightarrow x_{0}\right)$$</div></div>
+</div>
+<p>The syntax is easy enough: <code class="docutils literal"><span class="pre">sy.series(expr,</span> <span class="pre">x,</span> <span class="pre">x_0,</span> <span class="pre">n)</span></code>, where
+<code class="docutils literal"><span class="pre">expr</span></code> is the symbolic expression to expand in series form, <code class="docutils literal"><span class="pre">x</span></code> is
+the independent variable, and <code class="docutils literal"><span class="pre">x_0</span></code> is the point about which the
+series expansion is defined. In addition, the series will include terms
+with <span class="math">\((x-x_0)^p\)</span> for <span class="math">\(p &lt; n\)</span>.</p>
+<p>The result has the same three terms computed explicitly in the solved
+exercise aboe, but it includes the additional term
+<span class="math">\(\mathcal{O} \left ( (x-x_0)^3; x\to x_0 \right )\)</span>.</p>
+<p>We’ll get to what that means in a bit, but for now, we can remove it via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">removeO</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2} + \left(x - x_{0}\right) e^{x_{0}} + e^{x_{0}}$$</div></div>
+</div>
+<p><strong>Exercise</strong> Find the first 5 terms of the Maclaurin series for (a)
+<span class="math">\(f(x) = \sin(x)\)</span>, (b) <span class="math">\(f(x) = J_1(x)\)</span> (the <a class="reference external" href="http://mathworld.wolfram.com/BesselFunctionoftheFirstKind.html">Bessel function
+of the first
+kind</a>
+of order 1), and (c) <span class="math">\(\text{erf}(x)\)</span> (the <a class="reference external" href="http://mathworld.wolfram.com/Erf.html">error
+function</a>).</p>
+<p><strong>Exercise</strong> Find the two term Taylor series expansion of
+<span class="math">\((1+x)^a\)</span>, known as the <em>binomial approximation</em>. Explore this
+approximation for different values of <span class="math">\(x\)</span> and <span class="math">\(a\)</span>. What can
+you conclude?</p>
+</div>
+<div class="section" id="Another-Meaning-for-">
+<h2>Another Meaning for <span class="math">\(\mathcal{O}\)</span><a class="headerlink" href="#Another-Meaning-for-" title="Permalink to this headline">¶</a></h2>
+<p>Previously, <span class="math">\(\mathcal{O}\)</span> (or big-O) notation was used to define
+the <em>order</em> of an algorithm. For example, linear search was found to be
+<span class="math">\(\mathcal{O}(n)\)</span>, while binary search was
+<span class="math">\(\mathcal{O}(\log n)\)</span>. In that context, order was proportional to
+the number of operations (or amount of work) as the problem size grew.</p>
+<p>In Taylor series, the <span class="math">\(\mathcal{O}\)</span> means something different: the
+term <span class="math">\(\mathcal{O} \left ( (x-x_0)^3; x\to x_0 \right )\)</span> formally
+represents all terms in the series proportional to <span class="math">\((x-x_0)^p\)</span> for
+<span class="math">\(p \geq 3\)</span>. Why capture these terms in one generic
+<span class="math">\(\mathcal{O}\)</span> term? They all vanish faster than the terms with
+<span class="math">\(p &lt; 3\)</span> as the different <span class="math">\(x-x_0\)</span> goes to zero.</p>
+<blockquote>
+<div><strong>Note</strong>: <span class="math">\(\mathcal{O} \left ((x-x_0)^n\right )\)</span> represents
+any term proportional to <span class="math">\((x-x_0)^p\)</span> for <span class="math">\(p \geq n\)</span>,
+particularly in the limit that <span class="math">\(x-x_0\)</span> goes to zero.</div></blockquote>
+<p>In practice, the <span class="math">\(\mathcal{O}\)</span> dictates how well a truncated
+Taylor series can approximate a function <span class="math">\(f(x)\)</span> near <span class="math">\(x_0\)</span>.
+The more terms included in the series, the higher is the power of
+<span class="math">\((x-x_0)\)</span>. As long as <span class="math">\(|x-x_0|\)</span> is small (i.e., <span class="math">\(x\)</span> is
+near <span class="math">\(x_0\)</span>), higher powers of <span class="math">\(x-x_0\)</span> become vanishingly
+small.</p>
+<p><strong>Exercise</strong>: Approximate <span class="math">\(e^x\)</span> using Taylor series approximations
+with <span class="math">\(n = 1, 2, \ldots 10\)</span> terms about <span class="math">\(x_0 = 0\)</span>, evaluate
+each expression for <span class="math">\(x = 0.1\)</span>, and compare to the true value.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">approx</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">exact</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;      exact = {:.16f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exact</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="c1"># both sy.series(expr, x) and expr.series(x) work</span>
+    <span class="n">f_n</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">removeO</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{:2}th approx = {:.16f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">f_n</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+      exact = 1.1051709180756500
+ 1th approx = 1.0000000000000000
+ 2th approx = 1.1000000000000001
+ 3th approx = 1.1050000000000000
+ 4th approx = 1.1051666666666666
+ 5th approx = 1.1051708333333332
+ 6th approx = 1.1051709166666666
+ 7th approx = 1.1051709180555553
+ 8th approx = 1.1051709180753966
+ 9th approx = 1.1051709180756446
+10th approx = 1.1051709180756473
+</pre></div></div>
+</div>
+<p>The exercise shows that by including additional terms in the sequence
+the approximation is improved.</p>
+<p><strong>Exercise</strong>: For <span class="math">\(n = 2 \ldots 4\)</span>, plot the <span class="math">\(n\)</span>-term Taylor
+series approximation for <span class="math">\(e^x\)</span> about the point <span class="math">\(x_0 = 1\)</span> for
+<span class="math">\(x \in [0, 2]\)</span>.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># prepare x values for plotting</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="c1"># lambdify the n-term approximation</span>
+    <span class="n">f_n</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">removeO</span><span class="p">())</span>
+    <span class="c1"># evaluate that function at the x points for plotting</span>
+    <span class="n">f_n_plot</span> <span class="o">=</span> <span class="n">f_n</span><span class="p">(</span><span class="n">x_plot</span><span class="p">)</span>
+    <span class="c1"># and plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">f_n_plot</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="c1"># plot the exact function for good measure</span>
+<span class="n">f_exact</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">f_exact_plot</span> <span class="o">=</span> <span class="n">f_exact</span><span class="p">(</span><span class="n">x_plot</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">f_exact_plot</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_20_12_0.png" src="../_images/lectures_ME400_Lecture_20_12_0.png" />
+</div>
+</div>
+<p>All of the approximations converge to the right value at <span class="math">\(x = 1\)</span>
+and are good within a small range about the point <span class="math">\(x = 1\)</span>. That
+range grows with <span class="math">\(n\)</span>.</p>
+<p><strong>Exercise</strong>: Modify the solution to the last exercise to show the
+<em>error</em>, i.e., <span class="math">\(f(x) - f_n(x)\)</span>, where <span class="math">\(f_n(x)\)</span> is the
+<span class="math">\(n\)</span>-term Taylor series approximation.</p>
+<p><strong>Exercise</strong>: Consider the function <span class="math">\(f(x) = \sin(\sqrt{x})\)</span>. How
+many terms are required to ensure that a <span class="math">\(n\)</span>-term series expansion
+of this function is accurate to within <span class="math">\(10^{-5}\)</span> (i.e.,
+<span class="math">\(|f(x)-f_n(x)|\)</span>) for all <span class="math">\(x \in [0, 2]\)</span>? Note, there is more
+than one way to tackle this.</p>
+</div>
+<div class="section" id="Other-Applications">
+<h2>Other Applications<a class="headerlink" href="#Other-Applications" title="Permalink to this headline">¶</a></h2>
+<p>Taylor (and other) series play a major role in function approximation
+and in development of numerical methods. However, there are other
+applications in which series expansions can make an otherwise difficult
+(or impossible) problem easy to solve exactly (or approximately).</p>
+<div class="section" id="Nasty-Integrals">
+<h3>Nasty Integrals<a class="headerlink" href="#Nasty-Integrals" title="Permalink to this headline">¶</a></h3>
+<p>Consider the following integral</p>
+<div class="math">
+\[\int^1_0 \cos(x^2) dx\]</div>
+<p>Go ahead: try to evaluate it with pen and paper. Stuck? Of course,
+here’s the answer using <code class="docutils literal"><span class="pre">sympy.integrate</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{\sqrt{2} \sqrt{\pi} C\left(\frac{\sqrt{2}}{\sqrt{\pi}}\right) \Gamma{\left(\frac{1}{4} \right)}}{8 \Gamma{\left(\frac{5}{4} \right)}}$$</div></div>
+</div>
+<p>The <a class="reference external" href="http://mathworld.wolfram.com/GammaFunction.html">gamma function</a>
+is not so rare, but the <a class="reference external" href="http://mathworld.wolfram.com/FresnelIntegrals.html">Fresnel
+integral</a> (the
+<span class="math">\(C\)</span>) is pretty exotic. However, consider the first severak
+non-vanishing terms of the Taylor series of the integrand
+<span class="math">\(\cos(x^2)\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$1 - \frac{x^{4}}{2} + \frac{x^{8}}{24} - \frac{x^{12}}{720} + \frac{x^{16}}{40320} + \mathcal{O}\left(x^{20}\right)$$</div></div>
+</div>
+<p>In other words, the <span class="math">\(i\)</span>th nonzero term is
+<span class="math">\((-1)^i\frac{x^{4i}}{2i!}\)</span> for <span class="math">\(i = 0, 1, \ldots\)</span>. Each term
+can be integrated over the range (recall, the integral of a sum is the
+sum of the integrals), leading to terms of the form
+<span class="math">\((-1)^i\frac{1}{(4i+1)\cdot 2i!}\)</span> (<span class="math">\(i = 0, 1, \ldots\)</span>). The
+result is a convergent series that can be evaluated directly using
+<code class="docutils literal"><span class="pre">Sum</span></code> and <code class="docutils literal"><span class="pre">limit</span></code>, similar to what was done in <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture
+19</span></a>.</p>
+<p><strong>Exercise</strong>: Set up this <code class="docutils literal"><span class="pre">Sum</span></code> and evaluate the limit. Is it
+consistent with what you get upon numerically evaluating the integral
+above?</p>
+<p><strong>Exercise</strong>: Repeat the exercise for <span class="math">\(\int^x_0 e^{-z^2} dz\)</span>. What
+does application of <code class="docutils literal"><span class="pre">sympy.simplify</span></code> to the final limit yield?</p>
+</div>
+<div class="section" id="Stability-of-Nonlinear-Systems">
+<h3>Stability of Nonlinear Systems<a class="headerlink" href="#Stability-of-Nonlinear-Systems" title="Permalink to this headline">¶</a></h3>
+<p>Future work!</p>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>None for now.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 20 - Taylor Series and the Root of Numerical Methods</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Taylor-Series">Taylor Series</a></li>
+<li><a class="reference internal" href="#Another-Meaning-for-">Another Meaning for <span class="math">\(\mathcal{O}\)</span></a></li>
+<li><a class="reference internal" href="#Other-Applications">Other Applications</a><ul>
+<li><a class="reference internal" href="#Nasty-Integrals">Nasty Integrals</a></li>
+<li><a class="reference internal" href="#Stability-of-Nonlinear-Systems">Stability of Nonlinear Systems</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_19.html" title="previous chapter">Lecture 19 - Symbolic Calculus with SymPy</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_20.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_20.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
