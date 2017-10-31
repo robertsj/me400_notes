@@ -44,7 +44,7 @@
     "When $x_0$, the series is often called the **Maclaurin** series.\n",
     "\n",
     "\n",
-    "For the Taylor series for $f(x)$ about $x_0$ to exist requires that each derivative of $f$ exist at $x_0$.  In other words, $f(x)$ must be continuously differentiable at $x_0$.  A common phrase in analysis is to say such functions are \"well behaved.\"  "
+    "For the Taylor series for $f(x)$ about $x_0$ to exist requires that each derivative of $f$ exist at $x_0$.  In other words, $f(x)$ must be infinitely differentiable at $x_0$.  A common phrase in analysis is to say such functions are \"well behaved.\"  "
    ]
   },
   {

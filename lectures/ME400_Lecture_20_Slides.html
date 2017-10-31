@@ -1,0 +1,427 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 20 - Taylor Series and the Root of Numerical Methods &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods">
+<h1>Lecture 20 - Taylor Series and the Root of Numerical Methods<a class="headerlink" href="#Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>At this point, the reader is equipped with the basic symbolic tools
+needed to perform algebraic, differential, and integral operations. In
+this lecture, another topic from basic calculus is revisited: <strong>Taylor
+series</strong>. Along the way, we’ll see how truncated series expansions lead
+to useful approximations and how those approximations pave the way for
+numerical methods.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Symbolically compute series expansions of a function</li>
+<li>Explain what is meant by <em>order</em> in the context of series expansions
+(and numerical approximation)</li>
+<li>Numerically demonstrate that a series expansion of a function
+provides a good, <em>local</em> approximation</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Taylor series</li>
+<li>Maclaurin series</li>
+<li><span class="math">\(\mathcal{O}(\Delta^n)\)</span> as <em>order</em> in a different way</li>
+<li>local approximation</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Taylor-Series">
+<h2>Taylor Series<a class="headerlink" href="#Taylor-Series" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Taylor series</strong> of <span class="math">\(f(x)\)</span> about <span class="math">\(x_0\)</span> is</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  f(x) &amp;= f(x_0) + \frac{df}{dx} \Big |_{x = x_0} (x-x_0) + \frac{1}{2} \frac{d^2 f}{dx^2} \Big |_{x = x_0} (x-x_0)^2 + \frac{1}{6}\frac{d^3 f}{d x^3} \Big |_{x = x_0} (x-x_0)^3 + \ldots \\
+       &amp;= \sum^{\infty}_{n=0} \frac{1}{n!}\frac{d^n f}{dx^n} \Big |_{x=x_0} (x-x_0)^n
+\end{split}\end{split}\]</div>
+<p>The series is a <strong>Maclaurin</strong> series if <span class="math">\(x_0 = 0\)</span>.</p>
+<p>The Taylor series exists if <span class="math">\(f(x)\)</span> is infinitely differentiable at
+<span class="math">\(x = x_0\)</span>, i.e., <span class="math">\(f(x)\)</span> is “well behaved.”</p>
+<p><strong>Exercise</strong>: Write a function that returns the <span class="math">\(n\)</span>th term of a
+Taylor series for an function <span class="math">\(f(x)\)</span> about <span class="math">\(x=x_0\)</span>.</p>
+<p>SymPy can compute <em>truncated</em> Taylor series directly via:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a x x_0&#39;</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$e^{a x_{0}} + a \left(x - x_{0}\right) e^{a x_{0}} + \frac{a^{2}}{2} \left(x - x_{0}\right)^{2} e^{a x_{0}} + \frac{a^{3}}{6} \left(x - x_{0}\right)^{3} e^{a x_{0}} + \mathcal{O}\left(\left(x - x_{0}\right)^{4}; x\rightarrow x_{0}\right)$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">removeO</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{a^{3}}{6} \left(x - x_{0}\right)^{3} e^{a x_{0}} + \frac{a^{2}}{2} \left(x - x_{0}\right)^{2} e^{a x_{0}} + a \left(x - x_{0}\right) e^{a x_{0}} + e^{a x_{0}}$$</div></div>
+</div>
+<p><strong>Exercise</strong>: Find the two term Taylor series expansion of
+<span class="math">\((1+x)^a\)</span>, known as the <em>binomial approximation</em>. Explore this
+approximation for different values of <span class="math">\(x\)</span> and <span class="math">\(a\)</span>. What can
+you conclude?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">**</span><span class="n">Exercise</span><span class="o">**</span><span class="p">:</span> <span class="n">Does</span> <span class="n">the</span> <span class="o">**</span><span class="n">Taylor</span><span class="o">**</span> <span class="n">series</span> <span class="n">exist</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Another-Meaning-for-">
+<h2>Another Meaning for <span class="math">\(\mathcal{O}\)</span><a class="headerlink" href="#Another-Meaning-for-" title="Permalink to this headline">¶</a></h2>
+<p>What does <span class="math">\(\mathcal{O}\)</span> mean?</p>
+<p>Previously, <span class="math">\(\mathcal{O}(n^p)\)</span> read <em>number of operations is
+proportional to</em> <span class="math">\(n^p\)</span></p>
+<p>Now, <span class="math">\(\mathcal{O}(\Delta^p)\)</span> reads <em>all terms proportional to</em>
+<span class="math">\(\Delta^n\)</span> <em>for</em> <span class="math">\(n \geq p\)</span> (and specifically, as
+<span class="math">\(\Delta \to 0\)</span>)</p>
+<p><strong>Exercise</strong>: Approximate <span class="math">\(e^x\)</span> using Taylor series approximations
+with <span class="math">\(n = 1, 2, \ldots 10\)</span> terms about <span class="math">\(x_0 = 0\)</span>, evaluate
+each expression for <span class="math">\(x = 0.1\)</span>, and produce a graphic that compares
+these values to the true value.</p>
+</div>
+<div class="section" id="Other-Applications">
+<h2>Other Applications<a class="headerlink" href="#Other-Applications" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Integration</li>
+<li>Linearization (of, e.g., control systems)</li>
+</ul>
+<p><strong>Example</strong>: Consider the following integral</p>
+<div class="math">
+\[\int^1_0 \cos(x^2) dx\]</div>
+<p>Integrate it!</p>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to</p>
+<ul class="simple">
+<li>Symbolically compute series expansions of a function</li>
+<li>Explain what is meant by <em>order</em> in the context of series expansions
+(and numerical approximation)</li>
+<li>Numerically demonstrate that a series expansion of a function
+provides a good, <em>local</em> approximation</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 20 - Taylor Series and the Root of Numerical Methods</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Taylor-Series">Taylor Series</a></li>
+<li><a class="reference internal" href="#Another-Meaning-for-">Another Meaning for <span class="math">\(\mathcal{O}\)</span></a></li>
+<li><a class="reference internal" href="#Other-Applications">Other Applications</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_20_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_20_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
