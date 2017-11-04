@@ -1,0 +1,150 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 23 - Optimization and Root Finding\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 19](ME400_Lecture_19.ipynb), SymPy was applied to perform symbolic differentuation, and in [Lecture 21]( ME400_Lecture_21.ipynb), finite-difference approximations were developed to perform numerical differentiation.  We'll need both techniques as we begin to solve **nonlinear equations** and **optimization problems**.  Both subjects are rich, so we'll touch on only the basics, but you'll have tools at your disposal to tackle such problems in varied applications.\n",
+    " \n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Find one or more roots of a one-dimensional, nonlinear equation $f(x) = 0$ using the bisection and Newton methods.\n",
+    "- Find local extrema of a function $f(x)$ using the bisection and Newton methods.\n",
+    "- Establish the order of an integration scheme using numerical, graphical, or symbolic means.\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- optimization\n",
+    "- critical point\n",
+    "- extremum\n",
+    "- nonlinear equation\n",
+    "- Newton's method\n",
+    "- secant method\n",
+    "- bisection method\n",
+    "- Steffensen's method\n",
+    "- secant method\n",
+    "- order of convergence"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Nonlinear Equations\n",
+    "\n",
+    "Linear equations are characterized by *linear combinations* or the unknowns.  For example, the system of equations for $x$ and $y$\n",
+    "\n",
+    "$$\n",
+    "\\begin{equation}\n",
+    " ax + by &= 1 \\\\\n",
+    " cx + dy &= 2 \n",
+    "\\end{equation}\n",
+    "$$\n",
+    "\n",
+    "is linear because $x$ and $y$ appear only in \n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Finding Extrema\n",
+    "\n",
+    "One of the great applications of differentiation is its ability\n",
+    "to identify the *critical points* of a function $f(x)$, which\n",
+    "include its minima and maxima.  If \n",
+    "$f(x)$ represents some quantity of interest, perhaps the cost \n",
+    "of materials for some component or the signal-to-noise ratio of\n",
+    "some sensor.  If we want to mininimize those costs or maximize those\n",
+    "ratios, we need to use *optimization*.  Although optimization problems\n",
+    "and the techniques to solve them are quite diverse, we will stick to\n",
+    "1-D problems in which the *objective function* to be minimized or \n",
+    "maximized is continuous (as opposed to discrete).\n",
+    "\n",
+    "You've had calculus (and we've reviewed some its topics).  Hence, you might recall that a function $f(x)$ exhibits an **extremum**, i.e., a **minimum** or **maximum**, at any point $x$ for which $f'(x)$ is zero and $f''(x)$ is nonzero.  When $f'(x)$ *and* $f''(x)$ vanish, the point is often called a **saddle point**, though that term is more meaningful in multiple dimensions."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Given some fencing of *fixed* length `L`, what is the largest area that fencing can enclose if arranged in a rectangle  of sides `a` and  `b`?  \n",
+    "\n",
+    "*Solution*:\n",
+    "\n",
+    "Here's the problem.  We want to maximize $A = ab$ where $2a+2b = L$ or $b = L/2 - a$.  We know $L$ and $b$ depends on $a$, so there is just one free parameter (i.e., we're in 1-D where we'll stay throughout).  Note that $a$ (and $b$) can range from 0 to $L/2$.\n",
+    "\n",
+    "Formally, we see a solution to\n",
+    "\n",
+    "$$\n",
+    "  \\max_{a \\in [0,\\, L/2]} a\\left (\\frac{L}{2}-a \\right)\n",
+    "$$\n",
+    "\n",
+    "which reads \"find the value of $a$ in the range $[0, L/2]$ that maximizes the quantity $f(a) = a(L/2-a)$.  Here, $f(a)$ is the **objective function**.\n",
+    "\n",
+    "Differentiation of $f(a)$ gives\n",
+    "\n",
+    "$$\n",
+    "  f'(a) = L/2 - 2a \n",
+    "$$\n",
+    "\n",
+    "which, when set to zero, requires that $a = L/4$.  Consequently, $b = L/2-a = L/4 = a$.  That is to say, our fence must form a square to maximize the area enclosed.\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The Connection To Nonlinear Functions\n",
+    "\n",
+    "\n",
+    "As the fence exercise illustrates, if we can write down the derivative and explicitly find the point at which it vanishes, our problem is solved.  That is rarely the case.  Often, the functions of interest have complicated derivatives that make $f'(x) = 0$ a **nonlinear** equation.  We generally can't solve that problem directly. In many cases, we don't even have $f'(x)$, and at best, we can approximate it numerically using finite differences.  \n",
+    "\n",
+    "Further complicating matters is that even if we can solve  $f'(x)=0$, the result might not be an extremum (consider $f(x)=x^3$ and the  zeros of its derivative $3x^2$), and it might \n",
+    "not be unique. Consider the following example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,0 +1,494 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 21 - Numerical Differentiation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-21---Numerical-Differentiation">
+<h1>Lecture 21 - Numerical Differentiation<a class="headerlink" href="#Lecture-21---Numerical-Differentiation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_20.html"><span class="doc">Lecture 20</span></a>, Taylor series were reviewed,
+and SymPy was used to define and study such series. A key idea
+introduced was that a <em>truncated</em> Taylor series expansion of
+<span class="math">\(f(x)\)</span> about <span class="math">\(x_0\)</span> is (1) accurate near the point
+<span class="math">\(x_0\)</span> and (2) made better by including additional terms of the
+full series. In this lesson, such truncated series are used to define
+<strong>finite difference</strong> approximations for derivatives. Although good for
+some applications by themselves, finite-difference approximations are
+critical for solving differential equations numerically, a topic to be
+covered in several lectures.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Derive finite-difference approximations for first- and second-order
+derivatives using Taylor series.</li>
+<li>Apply SymPy to compute finite-difference approximations of arbitrary
+order for any derivative.</li>
+<li>Numerically/graphically/symbolically demonstrate that the error of an
+<span class="math">\(n\)</span>th-order approximation as <span class="math">\(\Delta \to 0\)</span> exhibits
+the right behavior.</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>finite difference</li>
+<li>forward difference</li>
+<li>backward difference</li>
+<li>central difference</li>
+<li>truncation error</li>
+<li>first-order approximation</li>
+<li>second-order approximation</li>
+<li><span class="math">\(n\)</span>th-order approximation</li>
+</ul>
+</div>
+</div>
+<div class="section" id="If,-in-the-beginning,--didn't-go-to-0...">
+<h2>If, in the beginning, <span class="math">\(h\)</span> didn’t go to 0…<a class="headerlink" href="#If,-in-the-beginning,--didn't-go-to-0..." title="Permalink to this headline">¶</a></h2>
+<p>Recall that the derivative of <span class="math">\(f(x)\)</span> is</p>
+<div class="math">
+\[\frac{df}{dx} = \lim_{\Delta \to 0} \frac{f(x+\Delta)-f(x)}{\Delta} \, .\]</div>
+<p>What if that limit is not taken and, instead, a “small” value of
+<span class="math">\(\Delta\)</span> is used? The result is our first <strong>finite-difference</strong>
+approximation, the <strong>forward difference</strong>:</p>
+<div class="math">
+\[f'(x) \approx  \frac{f(x+\Delta)-f(x)}{\Delta} \, .\]</div>
+<p>An equally valid approximation is the <strong>backward difference</strong>:</p>
+<div class="math">
+\[f'(x) \approx  \frac{f(x)-f(x-\Delta)}{\Delta} \, .\]</div>
+<p><strong>Exercise</strong>: Use the backward-difference approximation to approximate
+the derivative of <span class="math">\(e^x\)</span> at <span class="math">\(x = 1\)</span> for
+<span class="math">\(\Delta = 10^0, 10^{-1}, \ldots, 10^{-7}\)</span> and plot the error as a
+function of <span class="math">\(\Delta\)</span>.</p>
+</div>
+<div class="section" id="Back-to-Order">
+<h2>Back to Order<a class="headerlink" href="#Back-to-Order" title="Permalink to this headline">¶</a></h2>
+<p>The forward-difference (and backward-difference) approximation improves
+with smaller <span class="math">\(\Delta\)</span>, but <em>how much better</em>?</p>
+<p>Revisit the Taylor series for <span class="math">\(f(x+\Delta)\)</span> about the point
+<span class="math">\(x\)</span>!</p>
+<div class="math">
+\[f(x+\Delta) = f(x) + f'(x)\Delta + \frac{1}{2}f''(x)\Delta^2 + \mathcal{O}(\Delta^3) \, .\]</div>
+<div class="math">
+\[\begin{split}\begin{split}
+  f'(x) &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} - \frac{1}{2}f''(x)\Delta + \mathcal{O}(\Delta^2) \\
+        &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} + \mathcal{O}(\Delta) \\
+\end{split}\end{split}\]</div>
+<p>Error is proportional to <em>first power</em> of <span class="math">\(\Delta\)</span> as
+<span class="math">\(\Delta \to 0\)</span>. Hence, <strong>the forward-difference approximation is
+first order</strong> (so, too, is the backward-difference approximation).</p>
+<div class="section" id="Can-we-do-better-than-first-order?">
+<h3>Can we do better than first order?<a class="headerlink" href="#Can-we-do-better-than-first-order?" title="Permalink to this headline">¶</a></h3>
+<p>Yes: look what happens when we expand <span class="math">\(f(x+\Delta)-f(x-\Delta)\)</span>!</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  f'(x) &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} - \frac{1}{2}f''(x)\Delta + \mathcal{O}(\Delta^2) \\
+        &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} + \mathcal{O}(\Delta) \\
+\end{split}\end{split}\]</div>
+</div>
+<div class="section" id="Can-we-approximate-the-second-derivative?">
+<h3>Can we approximate the second derivative?<a class="headerlink" href="#Can-we-approximate-the-second-derivative?" title="Permalink to this headline">¶</a></h3>
+<p>Yes: look what happens when we expand <span class="math">\(f(x+\Delta)+f(x-\Delta)\)</span>!</p>
+<div class="math">
+\[f''(x) = \frac{f(x+\Delta)+-2f(x)+f(x-\Delta)}{\Delta^2} + \mathcal{O}(\Delta^2) \, ,\]</div>
+<p><strong>Exercise</strong>: Apply the <em>central</em> difference to the function
+<span class="math">\(f(x) = \sin(2x - 0.17) + 0.3 \cos(3.4x + 0.1)\)</span> at
+<span class="math">\(x = 0.5\)</span>. Plot the error for
+<span class="math">\(\Delta = 10^{-1}, 10^{-2}, \ldots, 10^{-7}\)</span> and <em>confirm
+graphically</em> that the method is second order.</p>
+</div>
+</div>
+<div class="section" id="Finite-Difference-Approximations-of-Arbitrary-Order">
+<h2>Finite-Difference Approximations of Arbitrary Order<a class="headerlink" href="#Finite-Difference-Approximations-of-Arbitrary-Order" title="Permalink to this headline">¶</a></h2>
+<p>The finite-difference approximations explored were identified pretty
+easily by manipulating the Taylor series of a function. Approximations
+that are higher order or that can be used for higher derivatives are
+somewhat more challenging to develop.</p>
+<p><strong>A Simple Rule</strong>: an <span class="math">\(n\)</span>th-order approximation for the
+<span class="math">\(m\)</span>th derivative at <span class="math">\(x = x_0\)</span> requires that <span class="math">\(f\)</span> be
+evaluated at <span class="math">\(n+m\)</span> evenly-spaced <span class="math">\(x\)</span> values that (should)
+include <span class="math">\(x_0\)</span>.</p>
+<p>(Exception: in <em>some</em> central-difference approxmations, the
+<span class="math">\(f(x_0)\)</span> term vanishes, so only <span class="math">\(n+m-1\)</span> points are needed)</p>
+<p><strong>Exercise</strong>: Do the forward- and backward-difference methods for
+<span class="math">\(f'(x)\)</span> follow this rule? How about the central-difference
+approximation for <span class="math">\(f''(x)\)</span>?</p>
+<div class="section" id="Developing-New-Schemes">
+<h3>Developing New Schemes<a class="headerlink" href="#Developing-New-Schemes" title="Permalink to this headline">¶</a></h3>
+<p>Finite-difference schemes of arbitrary order come from Taylor series but
+can be tedious. Some help comes from Sympy!</p>
+<p>Creating finite differences symbolically with
+<code class="docutils literal"><span class="pre">expr.as_finite_difference</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">Delta</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;f x Delta&#39;</span><span class="p">)</span>
+<span class="n">fp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">fp</span><span class="o">.</span><span class="n">as_finite_difference</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">Delta</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$- \frac{1}{\Delta} f{\left (x \right )} + \frac{1}{\Delta} f{\left (\Delta + x \right )}$$</div></div>
+</div>
+<p>Getting the <em>weights</em> for each term:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">w</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">finite_diff_weights</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x_list</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="n">Delta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">Delta</span><span class="p">],</span> <span class="n">x0</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+<span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># &quot;zeroth&quot; derivative weights using just x-Delta, then both x-Delta and x, and finally all three</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ \left [ 1, \quad 0, \quad 0\right ], \quad \left [ 0, \quad 1, \quad 0\right ], \quad \left [ 0, \quad 1, \quad 0\right ]\right ]$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># f&#39; weights</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ \left [ 0, \quad 0, \quad 0\right ], \quad \left [ - \frac{1}{\Delta}, \quad \frac{1}{\Delta}, \quad 0\right ], \quad \left [ - \frac{1}{2 \Delta}, \quad 0, \quad \frac{1}{2 \Delta}\right ]\right ]$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># f&#39;&#39; weights</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ \left [ 0, \quad 0, \quad 0\right ], \quad \left [ 0, \quad 0, \quad 0\right ], \quad \left [ \frac{1}{\Delta^{2}}, \quad - \frac{2}{\Delta^{2}}, \quad \frac{1}{\Delta^{2}}\right ]\right ]$$</div></div>
+</div>
+<p><strong>Exercise</strong>: Develop a second-order approximation for <span class="math">\(f'(x)\)</span>
+that does <em>not</em> use values less than <span class="math">\(x\)</span>.</p>
+</div>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to</p>
+<ul class="simple">
+<li>Derive finite-difference approximations for first- and second-order
+derivatives using Taylor series.</li>
+<li>Apply SymPy to compute finite-difference approximations of arbitrary
+order for any derivative.</li>
+<li>Numerically/graphically/symbolically demonstrate that the error of an
+<span class="math">\(n\)</span>th-order approximation as <span class="math">\(\Delta \to 0\)</span> exhibits
+the right behavior.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 21 - Numerical Differentiation</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#If,-in-the-beginning,--didn't-go-to-0...">If, in the beginning, <span class="math">\(h\)</span> didn’t go to 0…</a></li>
+<li><a class="reference internal" href="#Back-to-Order">Back to Order</a><ul>
+<li><a class="reference internal" href="#Can-we-do-better-than-first-order?">Can we do better than first order?</a></li>
+<li><a class="reference internal" href="#Can-we-approximate-the-second-derivative?">Can we approximate the second derivative?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Finite-Difference-Approximations-of-Arbitrary-Order">Finite-Difference Approximations of Arbitrary Order</a><ul>
+<li><a class="reference internal" href="#Developing-New-Schemes">Developing New Schemes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_21_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_21_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

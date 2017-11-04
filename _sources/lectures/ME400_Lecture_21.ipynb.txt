@@ -108,10 +108,7 @@
     "**Exercise**: Repeat the previous exercise but use the *backward* difference.  Do you observe any difference?\n",
     "\n",
     "***\n",
-    "\n",
-    "**Exercise**: Apply the *central* difference to the function $f(x) = \\sin(2x - 0.17) + 0.3 \\cos(3.4x + 0.1)$ at $x = 0.5$. Plot the error for $\\Delta = 10^{-1}, 10^{-2}, \\ldots, 10^{-7}$.\n",
-    "\n",
-    "***"
+    "\n"
    ]
   },
   {
@@ -173,6 +170,10 @@
     "***\n",
     "\n",
     "**Exercise**: Consider a function $f(x)$ for which you are given values only at $x = i\\Delta$ for $i = 0, 1, 2, \\ldots$ for small $\\Delta$. Suppose that some application requires that you evaluate $f(x)$ at some middle point $(i+1/2)\\Delta$.   Of course, the natural thing to do is *average* the two adjacent values at $i\\Delta$ and $(i+1)\\Delta$.  What order is this *averaging* approximation? \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Apply the *central* difference to the function $f(x) = \\sin(2x - 0.17) + 0.3 \\cos(3.4x + 0.1)$ at $x = 0.5$. Plot the error for $\\Delta = 10^{-1}, 10^{-2}, \\ldots, 10^{-7}$.\n",
     "\n",
     "***"
    ]

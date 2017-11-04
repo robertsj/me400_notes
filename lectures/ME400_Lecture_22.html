@@ -1,0 +1,659 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 22 - Numerical Integration &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Lecture 21 - Numerical Differentiation" href="ME400_Lecture_21.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-22---Numerical-Integration">
+<h1>Lecture 22 - Numerical Integration<a class="headerlink" href="#Lecture-22---Numerical-Integration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="ME400_Lecture_21.html"><span class="doc">Lecture 21</span></a>, finite-difference
+approximations were developed and used to evaluate derivatives
+numerically. In this lecture, we’ll explore and implement our own
+numerical methods for evaluation of integrals. We’ll also use the SciPy
+module for the first time, which provides its own set of tools for
+numerical integration.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Evaluate definite integrals numerically using left- and right-sided
+Riemann sums, the mid-point rule, and the trapezoid rule.</li>
+<li>Evaluate definite integrals numerically using the built-in functions
+of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
+<li>Establish the order of an integration scheme using numerical,
+graphical, or symbolic means.</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Riemann sum</li>
+<li>left-sided Riemann sum</li>
+<li>right-sided Riemann sum</li>
+<li>mid-point rule</li>
+<li>trapezoid rule</li>
+<li><code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
+<li><code class="docutils literal"><span class="pre">scipy.integrate.quad</span></code></li>
+<li><span class="math">\(n\)</span>th-order approximation</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Riemann-Sums-in-Practice">
+<h2>Riemann Sums in Practice<a class="headerlink" href="#Riemann-Sums-in-Practice" title="Permalink to this headline">¶</a></h2>
+<p>For derivatives, we took a limit of a finite difference for an exact
+answer but stopped that limit for a sufficiently small <span class="math">\(\Delta\)</span> to
+ensure a reasonable estimate. For the first derivative, we saw the
+first-order forward and backward schemes along with the second-order
+central difference scheme. For integrals, we have analogs to these
+choices based on how we define the rectangles of our Riemann sum.</p>
+<p>In <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>, our Riemann sum was</p>
+<div class="math">
+\[S = \frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ i(b-a) }{n} + a \Bigg )\]</div>
+<p>Let’s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
+<span class="math">\(x\in[0, 1]\)</span> with <span class="math">\(n=5\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">riemann_sum_plots</span>
+<span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">right_sided_sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_22_2_0.png" src="../_images/lectures_ME400_Lecture_22_2_0.png" />
+</div>
+</div>
+<p>Notice that the height of a rectangle is equal to the function evaluated
+at the rectangle’s right :math:<code class="docutils literal"><span class="pre">x</span></code> coordinate. We call such a sum a
+<em>right-sided</em> Riemann sum. For this particular function, this
+right-sided sum leads to some significant over estimation.</p>
+<p>If instead we defined our sum to be</p>
+<div class="math">
+\[S =\frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1)(b-a) }{n} + a \Bigg )\]</div>
+<p>the picture becomes</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">left_sided_sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_22_4_0.png" src="../_images/lectures_ME400_Lecture_22_4_0.png" />
+</div>
+</div>
+<p>Here, the rectangle height is based on the function evaluated at its
+left side, making this a <em>left-sided</em> Riemann sum. Just as the
+right-sided sum <em>overestimates</em> the integral, the left-sided sum
+<em>underestimates</em> the integral.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Given the points <span class="math">\(x = [0, 2/3, 4/3, 2]\)</span> and
+corresponding values <span class="math">\(y = [1, 3/5, 3/7, 1/3]\)</span>, estimate
+<span class="math">\(\int^2_0 y(x)dx\)</span> using the right-sided sum and left-sided sum.
+What is the true value (assuming <span class="math">\(y = (x+1)^{-1}\)</span>)?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following two columns of data:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><span class="math">\(x\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.0000</td>
+</tr>
+<tr class="row-odd"><td>0.3333</td>
+</tr>
+<tr class="row-even"><td>1.0000</td>
+</tr>
+<tr class="row-odd"><td>1.5000</td>
+</tr>
+<tr class="row-even"><td>2.0000</td>
+</tr>
+</tbody>
+</table>
+<p>Estimate <span class="math">\(\int^2_0 f(x) dx\)</span> using the right-sided sum and
+left-sided sum. Note that the <span class="math">\(x\)</span> points are not evenly spaced.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Beyond-the-One-Side-Sums">
+<h2>Beyond the One-Side Sums<a class="headerlink" href="#Beyond-the-One-Side-Sums" title="Permalink to this headline">¶</a></h2>
+<p>Can we do better? Remember, I said that the forward, backward, and
+central finite-difference approximations have analogous Riemann sums.
+Here, take the right- and left-sided sums to be like the forward and
+backward differences. If you hadn’t noticed, the central difference is
+nothing but an <em>average</em> of the forward and backward differences:</p>
+<div class="math">
+\[\frac{1}{2} \Bigg ( \frac{f(x+h)-f(x)}{h} + \frac{f(x)-f(x-h)}{h} \Bigg ) = \frac{f(x+h)-f(x-h)}{2h}\]</div>
+<p>so we might expect something similar for the Riemann sums. There are two
+possibilities. First, we can evaluate the rectangle heights at the
+average value of its <span class="math">\(x\)</span> coordinates, i.e.,</p>
+<div class="math">
+\[S = \frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1/2)(b-a) }{n} + a \Bigg )\]</div>
+<p>for which the picture becomes</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">midpoint_sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_22_8_0.png" src="../_images/lectures_ME400_Lecture_22_8_0.png" />
+</div>
+</div>
+<p>This method is often called the <strong>midpoint rule</strong>, and it’s probably my
+favorite integration scheme because it’s pretty accurate and dirt simple
+to implement.</p>
+<p>The alternative is to average the right- and left-sided sums, which
+leads to</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  S &amp;= \frac{b-a}{2n}
+    \Bigg [ \sum^{n}_{i=1} f \Bigg ( \frac{ (i)(b-a) }{n} + a \Bigg )
+         +  \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1)(b-a) }{n} + a \Bigg ) \Bigg ] \\
+    &amp;= \frac{b-a}{2n}
+    \Bigg [ f(a) + f(b) + \sum^{n-1}_{i=1} f \Bigg ( \frac{ i(b-a) }{n} + a \Bigg ) \Bigg ]
+\end{split}\end{split}\]</div>
+<p>If you consider this carefully, the resulting geometric picture turns
+rectangles into trapezoids (because the average of the area of two
+rectangles of heights <span class="math">\(y(x_1)\)</span> and <span class="math">\(y(x_2)\)</span> that share the
+same <span class="math">\(x\)</span> coordinates <span class="math">\(x_1\)</span> and <span class="math">\(x_2\)</span> is equal to the
+area of the trapezoid whose coordinates include <span class="math">\((x_1, y_1)\)</span> and
+<span class="math">\((x_2, y_2)\)</span>), and the method is known as the <strong>trapezoid rule</strong>.
+(It’s those pesky end-point terms <span class="math">\((a)\)</span> and <span class="math">\(f(b)\)</span> that make
+this rule just a hair less convenient to apply in some cases, so I
+always stick to the midpoint rule when I can!)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">trapezoid_rule</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_22_10_0.png" src="../_images/lectures_ME400_Lecture_22_10_0.png" />
+</div>
+</div>
+<p>For a function <span class="math">\(f(x)\)</span> with sufficiently nice properties (beyond
+our scope), it’s not too difficult to estimate the error associated with
+these integrals as <span class="math">\(\Delta = (b-a)/n\)</span> goes to zero (or
+equivalently, <span class="math">\(n \to \infty\)</span>. However, I’ll skip giving away the
+answers and let you determine these properties by numerical experiments
+in the homework!</p>
+<p>Finally, the integration rules just explored represent the simplest
+possible
+<a class="reference external" href="http://mathworld.wolfram.com/Newton-CotesFormulas.html">Newton-Cotes</a>
+formulas. The basic idea of Newton-Cotes integration is that a function
+<span class="math">\(f(x)\)</span> is assumed to be piece-wise polynomial in finite ranges and
+evaluated at evenly-spaced points <span class="math">\(x_i\)</span>. Left-sided sums,
+right-sided sums, and and the midpoint rule take <span class="math">\(f(x)\)</span> to be
+<em>constant</em> between adjacent points <span class="math">\(x_i\)</span> and <span class="math">\(x_{i+1}\)</span>,
+while the trapezoid rule assumes <span class="math">\(f(x)\)</span> is <em>linear</em> between
+adjacent points. If <span class="math">\(f(x)\)</span> is assumed to be quadratic between
+<span class="math">\(x_i\)</span> and <span class="math">\(x_{i+2}\)</span>, the result is <a class="reference external" href="http://mathworld.wolfram.com/SimpsonsRule.html">Simpson’s
+rule</a> (another
+favorite of mine).</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Suppose you accessed your fancy phone’s accelerometer log
+and extracted the following accelerations (in m/s<span class="math">\(^2\)</span>) and times
+(in s):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span>
+<span class="n">t</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>Estimate how far you went in those 8 seconds using the trapezoid rule.
+***</p>
+<p><strong>Exercise</strong>: Recall that the incremental work <span class="math">\(\delta W\)</span> done by
+an expanding gas is given by <span class="math">\(\delta W = p \delta V\)</span>, where
+<span class="math">\(p\)</span> is pressure and <span class="math">\(\delta V\)</span> is the change in volume.
+Consider the following table of measured pressures for several volumes
+during the expansion of the gas within an internal combustion engine.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><span class="math">\(p\)</span> (MPa)</th>
+<th class="head"><span class="math">\(V\)</span> (cm:math:<cite>{}^3</cite>)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>15.6835</td>
+<td>79.8508</td>
+</tr>
+<tr class="row-odd"><td>12.7127</td>
+<td>88.6913</td>
+</tr>
+<tr class="row-even"><td>9.3703</td>
+<td>103.3057</td>
+</tr>
+<tr class="row-odd"><td>6.5612</td>
+<td>123.4549</td>
+</tr>
+<tr class="row-even"><td>4.5031</td>
+<td>149.0202</td>
+</tr>
+<tr class="row-odd"><td>2.0138</td>
+<td>222.8411</td>
+</tr>
+</tbody>
+</table>
+<p>Estimate the work performed by the gas using the trapezoid rule.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Revisit the last exercise by determinging the <span class="math">\(n\)</span>
+that satisfies <span class="math">\(pV^n = c\)</span> for some constant <span class="math">\(c\)</span>. Then, using
+the same measured data, apply the midpoint rule to estimate the work
+done by the gas.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="What-About-Accuracy?">
+<h2>What About Accuracy?<a class="headerlink" href="#What-About-Accuracy?" title="Permalink to this headline">¶</a></h2>
+<p>As was done for the finite-difference methods, it is possible to
+determine the <em>order</em> of various numerical integration rules. The basic
+idea is to observe the (absolute) error between an exact, reference
+value for an integral and the approximation of that integral for various
+step sizes <span class="math">\(\Delta\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Determine whether the right-sided sum is first order or
+second order using the definite integral <span class="math">\(\int^1_0 e^x dx = e - 1\)</span>
+as a test case.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">right_sided_sum</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Approximate the integral of f over [a, b] using</span>
+<span class="sd">       the right-sided sum and n evenly spaced points.&quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># reference integral value</span>
+<span class="n">I_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span>
+<span class="c1"># number of points to use in each sum</span>
+<span class="n">n_vals</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c1"># initialize the approximate integrals</span>
+<span class="n">I_appx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_vals</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_vals</span><span class="p">)):</span>
+    <span class="n">I_appx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_sided_sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_vals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="c1"># absolute error</span>
+<span class="n">I_err</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">I_appx</span><span class="o">-</span><span class="n">I_ref</span><span class="p">)</span>
+<span class="c1"># Delta = (b-a)/(n+1)</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_vals</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Plot the error along with linear and quadratic forms</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Delta</span><span class="p">,</span> <span class="n">I_err</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Delta</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathcal{O}(\Delta)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Delta</span><span class="p">,</span> <span class="mi">10</span><span class="o">*</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\mathcal{O}(\Delta^2)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\Delta$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_22_15_0.png" src="../_images/lectures_ME400_Lecture_22_15_0.png" />
+</div>
+</div>
+<p>Surely, the error is much closer to the <span class="math">\(\mathcal{O}(\Delta)\)</span> term
+and, hence, the right-sided sum is <em>first order</em>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Determine the order of the left-sided sum, midpoint rule,
+and trapezoid rule. You may use the definite integral
+<span class="math">\(\int^1_0 e^x dx = e - 1\)</span> as a test case.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Using-scipy.integrate">
+<h2>Using <code class="docutils literal"><span class="pre">scipy.integrate</span></code><a class="headerlink" href="#Using-scipy.integrate" title="Permalink to this headline">¶</a></h2>
+<p>As alternatives to the simple schemes explored above, several
+integration schemes are provided by <code class="docutils literal"><span class="pre">scipy.integrate</span></code>. SciPy is a
+large collection of open-source, Python tools for numerical and other
+scientific computing. For example, NumPy is a major component of SciPy
+but is often used as a standalone package (as are Matplotlib and SymPy).</p>
+<p>Other schemes exist for multidimensional integration.</p>
+<p>SciPy offers several integrations schemes in its <code class="docutils literal"><span class="pre">scipy.integrate</span></code>
+module. However, the best choice for most problems is the <code class="docutils literal"><span class="pre">quad</span></code>
+function, which is based on a
+<a class="reference external" href="http://mathworld.wolfram.com/Gauss-KronrodQuadrature.html">Gauss-Kronrod</a>
+scheme. Here it is in action:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+<span class="n">quad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[26]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(1.7182818284590453, 1.9076760487502457e-14)
+</pre></div>
+</div>
+</div>
+<p>By default, <code class="docutils literal"><span class="pre">quad</span></code> returns both the approximate integral and the
+estimated absolute error. Here, that error is ridiculously small (close
+to machine precision). For many problems, that’s all that one needs to
+do in order to compute an integral. However, <code class="docutils literal"><span class="pre">quad</span></code> does have a
+variety of optional input parameters, and, as always, you may learn more
+by executing <code class="docutils literal"><span class="pre">help(quad)</span></code>.</p>
+<p>Other functions in <code class="docutils literal"><span class="pre">scipy.integrate</span></code> that are of interest include
+<code class="docutils literal"><span class="pre">trapz</span></code> (the trapezoid rule) and <code class="docutils literal"><span class="pre">simps</span></code> (Simpson’s rule). Use of
+<code class="docutils literal"><span class="pre">help</span></code> on each function is recommended, as examples are provided in
+the documentation.</p>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>None.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 22 - Numerical Integration</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Riemann-Sums-in-Practice">Riemann Sums in Practice</a></li>
+<li><a class="reference internal" href="#Beyond-the-One-Side-Sums">Beyond the One-Side Sums</a></li>
+<li><a class="reference internal" href="#What-About-Accuracy?">What About Accuracy?</a></li>
+<li><a class="reference internal" href="#Using-scipy.integrate">Using <code class="docutils literal"><span class="pre">scipy.integrate</span></code></a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_21.html" title="previous chapter">Lecture 21 - Numerical Differentiation</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_22.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_22.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
