@@ -33,3 +33,4 @@
    Lecture 20 <lectures/ME400_Lecture_20> 
    Lecture 21 <lectures/ME400_Lecture_21>   
    Lecture 22 <lectures/ME400_Lecture_22>   
+   Lecture 23 <lectures/ME400_Lecture_23>   
