@@ -537,9 +537,9 @@ pseudocode:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Newton&#39;s method for finding the root f given x_0&#39;&#39;&#39;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
 <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
-<span class="n">While</span> <span class="o">|</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
+<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
    <span class="c1"># Compute the Newton &quot;step&quot;</span>
-   <span class="n">Set</span> <span class="n">Delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">fp</span><span class="p">(</span><span class="n">x_0</span><span class="p">)</span>
+   <span class="n">Set</span> <span class="n">Delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
    <span class="c1"># Compute the next value of x</span>
    <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">Delta</span>
 <span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
@@ -626,7 +626,7 @@ approximated when needed:</p>
 <span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
 <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
 <span class="n">Set</span> <span class="n">Delta</span> <span class="o">=</span> <span class="mf">1e-8</span>
-<span class="n">While</span> <span class="o">|</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
+<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
    <span class="c1"># Compute the Newton &quot;step&quot;</span>
    <span class="n">Set</span> <span class="n">fp</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">Delta</span><span class="p">)</span><span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">/</span><span class="n">Delta</span>
    <span class="n">Set</span> <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">fp</span>
@@ -843,11 +843,11 @@ might not be unique.</p>
 <img alt="../_images/lectures_ME400_Lecture_23_31_0.png" src="../_images/lectures_ME400_Lecture_23_31_0.png" />
 </div>
 </div>
-<p>Of the three roots, two correspond to minima—but the left one (red
-square) is greater than the right one (green start), so is it really a
+<p>Of the three roots, two correspond to minima—but the left one (blue
+circle) is greater than the right one (red square), so is it really a
 minimum? <em>Yes</em>, if we make the distinction between <em>local</em> and <em>global</em>
 minima. For this problem, the right minimum is the <em>global</em> minimum,
-while the central root (blue circle) represents a local maximum
+while the central root (green star) represents a local maximum
 (<span class="math">\(f(x)\)</span> is <em>unbounded</em>, i.e., there is no value <span class="math">\(M &lt; \infty\)</span>
 such that <span class="math">\(|f(x)| &lt; M\)</span> for all possible values of <span class="math">\(x\)</span>).
 Given the choice, a global optimum is usualy preferred, but for many
