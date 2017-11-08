@@ -1,0 +1,149 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 24 - Data Fitting with Regression \n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "A ubiquitous task in engineering and other technical disciplines is the analysis of data.  Data comes from many sources, including measurements in the laboratory and numerical simulations.  In this lecture and in [Lecture 25](), we'll apply what we've learned so far to produce *models* from data that we can use to explore trends and make conclusions.  Specifically, in this lecture, we'll develop models based on **regression**    \n",
+    "\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Explain (and demonstrate) what is meant by a least-squares fit of a linear model $ax+b$ to a set of measured points $(x_i, y_i),\\, i = 0, 1, \\ldots$.\n",
+    "- Use built-in tools to perform linear, least-squares fitting of data to models\n",
+    "- Use built-in tools to perform nonlinear, least-squares fitting of data to models\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "-"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Noisy Data and $y = ax + b$\n",
+    "\n",
+    "We'll start simple and explore a task with which most students ought to be familiar: running a line through some scattered points of the form $y = ax+b$ through several, scattered points $(x_i, y_i),\\, i = 0, 1, \\ldots$.   To illustrate the problem, suppose a number of measurements $y_i$ were taken at evenly spaced times $t_0, t_1, \\ldots$.  To simulate such measurements, we'll add noise to an otherwise linear function of $t$.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7fb435c7f588>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "np.random.seed(1234)\n",
+    "n = 10\n",
+    "t = np.linspace(0, 10, n)\n",
+    "# measurement at time t with white noise\n",
+    "y = 2*t + 3 + np.random.normal(size=n)\n",
+    "plt.plot(t, y, 'ko')\n",
+    "plt.xlabel('t')\n",
+    "plt.ylabel('y(t)')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, suppose We *assume* that the effect observed is *linear* and hope to find a model $at + b$ that best matches the observed values $y_i$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
