@@ -43,7 +43,6 @@ def extrema():
     x = sympy.Symbol('x')
     f = x*(x-10)*(x+8)**2/1000
     x0, x1, x2 = sympy.solve(sympy.diff(f, x))
-1
     z = np.linspace(-15, 15, 1000)
     fun = sympy.lambdify(x, f)
     plt.figure(3)
