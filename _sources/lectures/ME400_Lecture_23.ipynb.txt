@@ -205,7 +205,7 @@
     "# C is close enough to the root between a and b\n",
     "While |f(C)| > tau \n",
     "    If sign(f(C)) == sign(f(L)) then\n",
-    "        # the root must be between C and L\n",
+    "        # the root must be between C and R\n",
     "        L = C\n",
     "    Otherwise\n",
     "        # the root must be between L and C\n",

@@ -4,12 +4,13 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Lecture 25 - Data Fitting with Interpolation \n",
+    "# Lecture 25 - Data Analysis via Interpolation \n",
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     " \n",
-    "In [Lecture 19](ME400_Lecture_19.ipynb), SymPy was applied to perform symbolic differentuation, and in [Lecture 21]( ME400_Lecture_21.ipynb), finite-difference approximations were developed to perform numerical differentiation.  We'll need both techniques as we begin to solve **nonlinear equations** and **optimization problems**.  Both subjects are rich, so we'll touch on only the basics, but you'll have tools at your disposal to tackle such problems in varied applications.\n",
-    " \n",
+    "In this lecture, we continue the theme of data analysis initiated in [Lecture 24](ME400_Lecture_24.ipynb), focusing now on the process of **interpolation**.  Whereas the fitted models of [Lecture 24](ME400_Lecture_24.ipynb) allow one to produce simple models from noisy (or otherwise complicated) data, interpolation allows one to estimate new values from known discrete points that are assumed to be noise free.\n",
+    "\n",
+    "\n",
     "### Objectives\n",
     "\n",
     "By the end of this lesson, you should be able to\n",
@@ -20,24 +21,129 @@
     "\n",
     "### Key Terms\n",
     "\n",
-    "- nonlinear equation\n",
-    "- transcendental equation\n",
-    "- graphical solution\n",
-    "- bisection method\n",
-    "- Newton's method\n",
-    "- quadratic convergence\n",
-    "- second-order convergence\n",
-    "- order of convergence\n",
-    "- secant method\n",
-    "- Steffensen's method\n",
-    "- nonlinear systems\n",
-    "- Jacobian matrix\n",
-    "- `scipy.optimize.fsolve`\n",
-    "- optimization\n",
-    "- extremum\n",
-    "- critical point\n",
-    "- objective function\n",
-    "- `scipy.optimize.minimize`"
+    "- "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "## Simple Linear Interpolation\n",
+    "\n",
+    "A common task in many thermal engineering courses is to use tabulated physical properties.  Often, the value needed is not in the table, and *linear interpolation* is required to estimate the missing value.  \n",
+    "\n",
+    "Let the quantity of interest be $y(x)$, for which values $y_0, y_1, \\ldots$ are provided at $x_0, x_1, \\ldots$.  Suppose the value of $y$ at $x = \\tilde{x} $ is desired.  The first step is to determine which two values $x_i$ and $x_{i+1}$ contain the point $\\tilde{x} $.  This step is accomplished using the linear or binary search algorithms developed in [Lecture 14](ME400_Lecture_14.ipynb). \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Apply linear search to find $i$ such that $\\tilde{x} \\in [x_i, x_{i+1}]$ for $\\tilde{x}$ = 3.5$ and $x = [0, 1, 2, 3, 4, 5]$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "\n",
+    "**Exercise**: Repeat the exercise using binary search. \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: For the same $\\tilde{x} $ and points $x$, evaluate `np.array(x) < x_tilde` and `sum(np.array(x) < x_tilde)`.  What can you conclude?   \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Use `help` to learn about `np.searchsorted`. Then, for the same $\\tilde{x} $ and points $x$, evaluate `np.searchsorted(x, x_tilde)`.  What can you conclude?\n",
+    "\n",
+    "***\n",
+    "\n",
+    "Once $i$ is determined, $(x_i, y(x_i))$ and $(x_{i+1}, y(x_{i+1}))$ are connected by a line of the form $ax + b$, and $y(\\tilde{x})$ is evaluated from $a\\tilde{x} + b$.  The trick is to determine $a$ and $b$, but that's easy: we have two equations $y_i = ax_i + b$ and $y_{i+1} = a x_{i+1} + b$.  Just solve for $a$ and $b$:\n",
+    "\n",
+    "$$\n",
+    "   a = \\frac{y_{i+1}-y_i}{x_{i+1}-x_i} \\quad \\text{and} \\quad b = y_i - \\frac{y_{i+1}-y_i}{x_{i+1}-x_i} x_i \\, .\n",
+    "$$\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**:  Consider the following table of thermodynamic data for saturated steam (saved as [thermo_data.txt](thermo_data.txt)):\n",
+    "\n",
+    "```\n",
+    "  T [K]   P [MPa]  h_l [kJ/kg] h_v [kJ/kg]\n",
+    " 373.150   0.101    2675.572     419.099\n",
+    " 389.817   0.179    2701.054     489.625\n",
+    " 406.483   0.298    2724.633     560.634\n",
+    " 423.150   0.476    2745.919     632.252\n",
+    " 439.817   0.730    2764.528     704.626\n",
+    " 456.483   1.082    2780.059     777.934\n",
+    " 473.150   1.555    2792.062     852.393\n",
+    " 489.817   2.175    2800.004     928.269\n",
+    " 506.483   2.972    2803.247    1005.893\n",
+    " 523.150   3.976    2801.012    1085.687\n",
+    " 539.817   5.222    2792.314    1168.202\n",
+    " 556.483   6.745    2775.820    1254.194\n",
+    " 573.150   8.588    2749.574    1344.771\n",
+    "```\n",
+    "\n",
+    "Evaluate $h_l$ at 515 K using linear interpolation.\n",
+    "\n",
+    "*Solution*\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2802.1048931421374"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# first load the data\n",
+    "import numpy as np\n",
+    "T, P, h_l, h_v = np.loadtxt('thermo_data.txt', unpack=True, skiprows=1)\n",
+    "# find i such that T[i-1] <= 500 <= T[i]\n",
+    "T_tilde = 515\n",
+    "for i in range(len(T)):\n",
+    "    if T[i] > T_tilde:\n",
+    "        break\n",
+    "# compute slope and intercept\n",
+    "a = (h_l[i]-h_l[i-1])/(T[i]-T[i-1]) \n",
+    "b = h_l[i-1] - a*T[i-1]\n",
+    "# compute approximation\n",
+    "h_l_tilde = a*T_tilde + b\n",
+    "h_l_tilde"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Adapt the solution above to produce a function that returns $h_l$ at *any* temperature *T*.  However, add assertions to ensure the user does not request $h_l$ at temperatures outside the range of the data.  In other words, limit the function to *interpolation* and exclude any *extrapolation*.\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Interpolation In Two Dimensions\n",
+    "\n"
    ]
   },
   {
@@ -48,6 +154,85 @@
    },
    "outputs": [],
    "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Higher-Order Interpolation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "In this lecture, interpolation has been limited to regular grids of points along the $x$ and $y$ axes.  When points are more than one dimension are *not* on such grids, different methods are needed.  [Barycentric interpolation]() is one option.  In 2-D, points can be organized as triangles, and linear interpolation can be applied within a single triangle.  In 3-D, triangles become pyramids, and in higher dimensions, one interpolates over general *n-simplices*."
+   ]
   }
  ],
  "metadata": {

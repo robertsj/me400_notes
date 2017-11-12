@@ -206,7 +206,7 @@ div.nboutput div.output_area.stderr {
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>, SymPy was applied to perform
-symbolic differentuation, and in <a class="reference internal" href="ME400_Lecture_21.html"><span class="doc">Lecture
+symbolic differentiation, and in <a class="reference internal" href="ME400_Lecture_21.html"><span class="doc">Lecture
 21</span></a>, finite-difference approximations were
 developed to perform numerical differentiation. We’ll need both
 techniques as we begin to solve <strong>nonlinear equations</strong> and
@@ -290,7 +290,7 @@ solved. Determine these values graphically by plotting the left-hand and
 right-hand sides of the equation as functions of <span class="math">\(\lambda L\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -342,7 +342,7 @@ secant method.</p>
 <span class="c1"># C is close enough to the root between a and b</span>
 <span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span>
     <span class="n">If</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">))</span> <span class="o">==</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">L</span><span class="p">))</span> <span class="n">then</span>
-        <span class="c1"># the root must be between C and L</span>
+        <span class="c1"># the root must be between C and R</span>
         <span class="n">L</span> <span class="o">=</span> <span class="n">C</span>
     <span class="n">Otherwise</span>
         <span class="c1"># the root must be between L and C</span>
@@ -355,7 +355,7 @@ secant method.</p>
 <span class="math">\(\sin(x) - 2/5\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -382,7 +382,7 @@ method</a>.</p>
 <p>Quick motivation for Newton <em>from the math</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -397,7 +397,7 @@ method</a>.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
+<span></span>Out[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -406,7 +406,7 @@ $$f{\left (x_{0} \right )} + \Delta \left. \frac{d}{d \xi_{1}} f{\left (\xi_{1} 
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -416,7 +416,7 @@ $$f{\left (x_{0} \right )} + \Delta \left. \frac{d}{d \xi_{1}} f{\left (\xi_{1} 
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
+<span></span>Out[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -505,7 +505,7 @@ and <span class="math">\(x^2 + y = -3\)</span> using <code class="docutils liter
 <span class="math">\(y_0=-3\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -523,7 +523,7 @@ and <span class="math">\(x^2 + y = -3\)</span> using <code class="docutils liter
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[23]:
+<span></span>Out[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -542,9 +542,9 @@ $$\left ( 0.61803398875, \quad -3.38196601125\right )$$</div></div>
 Newton methods.</li>
 <li>Use <code class="docutils literal"><span class="pre">fsolve</span></code> to solve nonlinear systems.</li>
 </ul>
-<p><strong>Exam Friday</strong>. Same format (no note, etc.) Covers through finite
+<p><strong>Exam Friday</strong>. Same format (no notes, etc.) Covers through finite
 differences, focuses on material since Exam 1, but should be (like life)
-assumed cumulative.</p>
+assumed cumulative. <strong>Questions?</strong></p>
 </div>
 </div>
 

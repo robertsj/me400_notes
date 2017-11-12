@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 25 - Data Fitting with Interpolation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 25 - Data Analysis via Interpolation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,18 +201,17 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-25---Data-Fitting-with-Interpolation">
-<h1>Lecture 25 - Data Fitting with Interpolation<a class="headerlink" href="#Lecture-25---Data-Fitting-with-Interpolation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Lecture-25---Data-Analysis-via-Interpolation">
+<h1>Lecture 25 - Data Analysis via Interpolation<a class="headerlink" href="#Lecture-25---Data-Analysis-via-Interpolation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>, SymPy was applied to perform
-symbolic differentuation, and in <a class="reference internal" href="ME400_Lecture_21.html"><span class="doc">Lecture
-21</span></a>, finite-difference approximations were
-developed to perform numerical differentiation. We’ll need both
-techniques as we begin to solve <strong>nonlinear equations</strong> and
-<strong>optimization problems</strong>. Both subjects are rich, so we’ll touch on
-only the basics, but you’ll have tools at your disposal to tackle such
-problems in varied applications.</p>
+<p>In this lecture, we continue the theme of data analysis initiated in
+<a class="reference internal" href="ME400_Lecture_24.html"><span class="doc">Lecture 24</span></a>, focusing now on the process of
+<strong>interpolation</strong>. Whereas the fitted models of <a class="reference internal" href="ME400_Lecture_24.html"><span class="doc">Lecture
+24</span></a> allow one to produce simple models from
+noisy (or otherwise complicated) data, interpolation allows one to
+estimate new values from known discrete points that are assumed to be
+noise free.</p>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
@@ -229,25 +228,150 @@ cubine-spline) interpolation</li>
 <div class="section" id="Key-Terms">
 <h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>nonlinear equation</li>
-<li>transcendental equation</li>
-<li>graphical solution</li>
-<li>bisection method</li>
-<li>Newton’s method</li>
-<li>quadratic convergence</li>
-<li>second-order convergence</li>
-<li>order of convergence</li>
-<li>secant method</li>
-<li>Steffensen’s method</li>
-<li>nonlinear systems</li>
-<li>Jacobian matrix</li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></li>
-<li>optimization</li>
-<li>extremum</li>
-<li>critical point</li>
-<li>objective function</li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code></li>
+<li></li>
 </ul>
+</div>
+</div>
+<div class="section" id="Simple-Linear-Interpolation">
+<h2>Simple Linear Interpolation<a class="headerlink" href="#Simple-Linear-Interpolation" title="Permalink to this headline">¶</a></h2>
+<p>A common task in many thermal engineering courses is to use tabulated
+physical properties. Often, the value needed is not in the table, and
+<em>linear interpolation</em> is required to estimate the missing value.</p>
+<p>Let the quantity of interest be <span class="math">\(y(x)\)</span>, for which values
+<span class="math">\(y_0, y_1, \ldots\)</span> are provided at <span class="math">\(x_0, x_1, \ldots\)</span>.
+Suppose the value of <span class="math">\(y\)</span> at $x = <a href="#id1"><span class="problematic" id="id2">:raw-latex:`\tilde{x}`</span></a> $ is
+desired. The first step is to determine which two values <span class="math">\(x_i\)</span> and
+<span class="math">\(x_{i+1}\)</span> contain the point $:raw-latex:<cite>tilde{x}</cite> $. This step
+is accomplished using the linear or binary search algorithms developed
+in <a class="reference internal" href="ME400_Lecture_14.html"><span class="doc">Lecture 14</span></a>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply linear search to find <span class="math">\(i\)</span> such that
+<span class="math">\(\tilde{x} \in [x_i, x_{i+1}]\)</span> for <span class="math">\(\tilde{x}\)</span> = 3.5$ and
+<span class="math">\(x = [0, 1, 2, 3, 4, 5]\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the exercise using binary search.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: For the same $:raw-latex:<cite>tilde{x}</cite> $ and points
+<span class="math">\(x\)</span>, evaluate <code class="docutils literal"><span class="pre">np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde</span></code> and
+<code class="docutils literal"><span class="pre">sum(np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde)</span></code>. What can you conclude?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">help</span></code> to learn about <code class="docutils literal"><span class="pre">np.searchsorted</span></code>. Then, for
+the same $:raw-latex:<cite>tilde{x}</cite> $ and points <span class="math">\(x\)</span>, evaluate
+<code class="docutils literal"><span class="pre">np.searchsorted(x,</span> <span class="pre">x_tilde)</span></code>. What can you conclude?</p>
+<hr class="docutils" />
+<p>Once <span class="math">\(i\)</span> is determined, <span class="math">\((x_i, y(x_i))\)</span> and
+<span class="math">\((x_{i+1}, y(x_{i+1}))\)</span> are connected by a line of the form
+<span class="math">\(ax + b\)</span>, and <span class="math">\(y(\tilde{x})\)</span> is evaluated from
+<span class="math">\(a\tilde{x} + b\)</span>. The trick is to determine <span class="math">\(a\)</span> and
+<span class="math">\(b\)</span>, but that’s easy: we have two equations <span class="math">\(y_i = ax_i + b\)</span>
+and <span class="math">\(y_{i+1} = a x_{i+1} + b\)</span>. Just solve for <span class="math">\(a\)</span> and
+<span class="math">\(b\)</span>:</p>
+<div class="math">
+\[a = \frac{y_{i+1}-y_i}{x_{i+1}-x_i} \quad \text{and} \quad b = y_i - \frac{y_{i+1}-y_i}{x_{i+1}-x_i} x_i \, .\]</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following table of thermodynamic data for
+saturated steam (saved as <a class="reference external" href="thermo_data.txt">thermo_data.txt</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span> <span class="n">T</span> <span class="p">[</span><span class="n">K</span><span class="p">]</span>   <span class="n">P</span> <span class="p">[</span><span class="n">MPa</span><span class="p">]</span>  <span class="n">h_l</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span> <span class="n">h_v</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span>
+<span class="mf">373.150</span>   <span class="mf">0.101</span>    <span class="mf">2675.572</span>     <span class="mf">419.099</span>
+<span class="mf">389.817</span>   <span class="mf">0.179</span>    <span class="mf">2701.054</span>     <span class="mf">489.625</span>
+<span class="mf">406.483</span>   <span class="mf">0.298</span>    <span class="mf">2724.633</span>     <span class="mf">560.634</span>
+<span class="mf">423.150</span>   <span class="mf">0.476</span>    <span class="mf">2745.919</span>     <span class="mf">632.252</span>
+<span class="mf">439.817</span>   <span class="mf">0.730</span>    <span class="mf">2764.528</span>     <span class="mf">704.626</span>
+<span class="mf">456.483</span>   <span class="mf">1.082</span>    <span class="mf">2780.059</span>     <span class="mf">777.934</span>
+<span class="mf">473.150</span>   <span class="mf">1.555</span>    <span class="mf">2792.062</span>     <span class="mf">852.393</span>
+<span class="mf">489.817</span>   <span class="mf">2.175</span>    <span class="mf">2800.004</span>     <span class="mf">928.269</span>
+<span class="mf">506.483</span>   <span class="mf">2.972</span>    <span class="mf">2803.247</span>    <span class="mf">1005.893</span>
+<span class="mf">523.150</span>   <span class="mf">3.976</span>    <span class="mf">2801.012</span>    <span class="mf">1085.687</span>
+<span class="mf">539.817</span>   <span class="mf">5.222</span>    <span class="mf">2792.314</span>    <span class="mf">1168.202</span>
+<span class="mf">556.483</span>   <span class="mf">6.745</span>    <span class="mf">2775.820</span>    <span class="mf">1254.194</span>
+<span class="mf">573.150</span>   <span class="mf">8.588</span>    <span class="mf">2749.574</span>    <span class="mf">1344.771</span>
+</pre></div>
+</div>
+<p>Evaluate <span class="math">\(h_l\)</span> at 515 K using linear interpolation.</p>
+<p><em>Solution</em></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># first load the data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">h_l</span><span class="p">,</span> <span class="n">h_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;thermo_data.txt&#39;</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># find i such that T[i-1] &lt;= 500 &lt;= T[i]</span>
+<span class="n">T_tilde</span> <span class="o">=</span> <span class="mi">515</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">T_tilde</span><span class="p">:</span>
+        <span class="k">break</span>
+<span class="c1"># compute slope and intercept</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">h_l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">h_l</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">h_l</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># compute approximation</span>
+<span class="n">h_l_tilde</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">T_tilde</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">h_l_tilde</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>2802.1048931421374
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Adapt the solution above to produce a function that
+returns <span class="math">\(h_l\)</span> at <em>any</em> temperature <em>T</em>. However, add assertions to
+ensure the user does not request <span class="math">\(h_l\)</span> at temperatures outside the
+range of the data. In other words, limit the function to <em>interpolation</em>
+and exclude any <em>extrapolation</em>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Interpolation-In-Two-Dimensions">
+<h2>Interpolation In Two Dimensions<a class="headerlink" href="#Interpolation-In-Two-Dimensions" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [ ]:
@@ -259,6 +383,48 @@ cubine-spline) interpolation</li>
 </div>
 </div>
 </div>
+<div class="section" id="Higher-Order-Interpolation">
+<h2>Higher-Order Interpolation<a class="headerlink" href="#Higher-Order-Interpolation" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, interpolation has been limited to regular grids of
+points along the <span class="math">\(x\)</span> and <span class="math">\(y\)</span> axes. When points are more than
+one dimension are <em>not</em> on such grids, different methods are needed.
+<a href="#id3"><span class="problematic" id="id4">`Barycentric interpolation &lt;&gt;`__</span></a> is one option. In 2-D, points can be
+organized as triangles, and linear interpolation can be applied within a
+single triangle. In 3-D, triangles become pyramids, and in higher
+dimensions, one interpolates over general <em>n-simplices</em>.</p>
 </div>
 </div>
 
@@ -270,12 +436,16 @@ cubine-spline) interpolation</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 25 - Data Fitting with Interpolation</a><ul>
+<li><a class="reference internal" href="#">Lecture 25 - Data Analysis via Interpolation</a><ul>
 <li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#Simple-Linear-Interpolation">Simple Linear Interpolation</a></li>
+<li><a class="reference internal" href="#Interpolation-In-Two-Dimensions">Interpolation In Two Dimensions</a></li>
+<li><a class="reference internal" href="#Higher-Order-Interpolation">Higher-Order Interpolation</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
 </ul>
 </li>
 </ul>
