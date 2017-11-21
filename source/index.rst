@@ -36,3 +36,5 @@
    Lecture 23 <lectures/ME400_Lecture_23>   
    Lecture 24 <lectures/ME400_Lecture_24>   
    Lecture 25 <lectures/ME400_Lecture_25>   
+   Lecture 26 <lectures/ME400_Lecture_26> 
+   Lecture 27 <lectures/ME400_Lecture_27> 
