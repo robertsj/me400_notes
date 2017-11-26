@@ -1,0 +1,926 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 27 - Solving First-Order IVPs Numerically &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 28 - Numerical Solutions of First-Order Systems" href="ME400_Lecture_28.html" />
+    <link rel="prev" title="Lecture 26 - Solving ODEs Symbolically" href="ME400_Lecture_26.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-27---Solving-First-Order-IVPs-Numerically">
+<h1>Lecture 27 - Solving First-Order IVPs Numerically<a class="headerlink" href="#Lecture-27---Solving-First-Order-IVPs-Numerically" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>The basics of ODEs were reviewed in <a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture
+26</span></a>. There, SymPy was used to provide general
+solutions via <code class="docutils literal"><span class="pre">dsolve</span></code>, leaving application of initial and boundary
+conditions to the user. However, SymPy (and other symbolic tools) cannot
+solve all differential equations. For such equations, we can apply
+numerical techniques. Specifically, we’ll apply the finite-difference
+approximations presented in <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>. For
+now, we’ll consider only single, first-order equations, leaving systems
+for <a class="reference internal" href="ME400_Lecture_28.html"><span class="doc">Lecture 28</span></a>.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Solve first-order IVPs numerically using forward and backward Euler’s
+method</li>
+<li>Explain what is mean by local and global errors</li>
+<li>Explain what is meant by stability and how to achieve it</li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>You should already be able to</p>
+<ul class="simple">
+<li>Solve ODEs based on what you’ve learned in a course like MATH 340 and
+<a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture 26</span></a></li>
+<li>Compute a first-order, finite-difference approximation for
+<span class="math">\(\frac{df}{dx}\)</span></li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Euler’s method</li>
+<li>forward Euler</li>
+<li>backward Euler</li>
+<li>Heun’s (improved Euler’s) method</li>
+<li>local error</li>
+<li>global error</li>
+<li>stable method</li>
+<li><code class="docutils literal"><span class="pre">scipy.integrate.odeint</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="There-Once-was-a-Man-Named-Euler">
+<h2>There Once was a Man Named Euler<a class="headerlink" href="#There-Once-was-a-Man-Named-Euler" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Leonhard_Euler">Leonhard Euler</a> was a
+prolific mathematician, perhaps second only to <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss">Carl
+Gauss</a>. I point
+him out because the simplest (and probably best known) approach for
+solving <span class="math">\(y' + py = q\)</span> has his name. (Point of trivia: he’s buried
+in St. Petersburg, I was quite surprised to learn while strolling
+through an old cemetery).</p>
+<p>The method bearing his name requires the <a class="reference external" href="../../../courses/pythonic_apps_1/module_4/numerical_differentiation.rst">Numerical
+Differentiation</a>
+we learned previously. Specifically, we need one of the first-order,
+finite-difference approximations for <span class="math">\(dy/dt\)</span>. You’ll recall those
+are the <em>forward difference</em></p>
+<div class="math">
+\[\frac{dy}{dt} \approx \frac{y(t+\Delta)-y(t)}{\Delta} \, ,\]</div>
+<p>and the <em>backward difference</em></p>
+<div class="math">
+\[\frac{dy}{dt} \approx \frac{y(t)-y(t-\Delta)}{\Delta} \, .\]</div>
+<p>If we substitute the forward difference into the IVP, we find</p>
+<div class="math">
+\[\frac{y(t+\Delta)-y(t)}{\Delta} + p(t)y(t) = q(t) + \mathcal{O}(\Delta^2) \, ,\]</div>
+<p>and by collecting the terms with <span class="math">\(y(t)\)</span> on the left, we have</p>
+<div class="math">
+\[y(t+\Delta) = [1 - \Delta p(t)]y(t)  + \Delta q(t)  + \mathcal{O}(\Delta)  \, .\]</div>
+<p>Recognize that <span class="math">\(y\)</span> is now evaluated at the points
+<span class="math">\(t_0, t_0+\Delta, t_0+2\Delta, \ldots\)</span>, or</p>
+<div class="math">
+\[t_n = t_0 + n\Delta, \qquad n = 0, 1, 2, \ldots\]</div>
+<p>We could allow for a <span class="math">\(\Delta\)</span> that changes, but we’ll keep it
+fixed for simplicity and leave the fancy stuff to SciPy. Furthermore,
+let <span class="math">\(y(t_{n})\)</span> be written as <span class="math">\(y_n\)</span>. Then, we can rewrite our
+<em>finite-difference</em> equation as</p>
+<div class="math">
+\[y_{n+1} = (1 - \Delta p_n)y_n  + \Delta q_n \, ,\]</div>
+<p>which is the <em>forward Euler method</em>. Use of the backward difference
+leads to the <em>backward Euler method</em></p>
+<div class="math">
+\[y_{n+1}  = (1 + \Delta p_{n+1})^{-1} ( y_n + \Delta q_{n+1}) \, ,\]</div>
+<p>which is a <em>stable</em> time-integration scheme for IVP’s. For both methods,
+the <span class="math">\(\mathcal{O}(\Delta^2)\)</span> error in the derivative leads to a a
+<em>local error</em> of <span class="math">\(\mathcal{O}(\Delta)\)</span> in the solution.</p>
+<p>How high should <span class="math">\(n\)</span> go? It depends on how long into the future
+(taking <span class="math">\(t\)</span> to represent time) we wish to evaluate the solution.
+Let that future time be denoted <span class="math">\(T\)</span>, and let the number of steps
+we wish to take be denoted <span class="math">\(N\)</span>. Consequently,
+<span class="math">\(\Delta = (T-t_0)/N\)</span>. We’ll always start at <span class="math">\(t=0\)</span>, so
+<span class="math">\(\Delta = T/N\)</span>.</p>
+<p>Let’s illustrate by solving</p>
+<div class="math">
+\begin{equation}
+    \frac{dy}{dt} + y(t) = 10, \qquad y(0) = 0, \qquad t \in [0, 10] \, .
+\end{equation}</div><p>using <span class="math">\(N=25\)</span> points.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">t_max</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="c1"># Initialize the unknown (where &quot;fe25&quot; denotes Forward Euler with 15 points)</span>
+<span class="n">y_fe25</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Define the times and right-hand side.  We use N+1</span>
+<span class="c1"># because we want N points beyond the initial value.</span>
+<span class="n">t_fe25</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">t_fe25</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t_fe25</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Compute all successive values</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">y_fe25</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">Delta</span><span class="p">)</span><span class="o">*</span><span class="n">y_fe25</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_fe25</span><span class="p">,</span> <span class="n">y_fe25</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$y(t)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_2_0.png" src="../_images/lectures_ME400_Lecture_27_2_0.png" />
+</div>
+</div>
+<p>Is this reasonable? You should <em>always</em> do any “sanity” check available.
+Here, the solution looks like it levels off, which suggests for long
+times, a <em>steady state</em> is reached. Steady state means no change with
+time, and no change with time means <span class="math">\(dy/dt = 0\)</span>.</p>
+<p>So what happens if we set <span class="math">\(dy/dt=0\)</span> in our IVP? We find that
+<span class="math">\(y(t) = 10\)</span>. That seems consistent with the numerical result, but
+is it correct? This problem is easy to solve directly, but we’ll have
+SymPy produce an analytic result that be evaluated numerically later on:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+<span class="n">y_sy</span><span class="p">,</span> <span class="n">t_sy</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y t&#39;</span><span class="p">)</span> <span class="c1"># use y_sy, t_sy to avoid overwriting other names</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y_sy</span><span class="p">(</span><span class="n">t_sy</span><span class="p">),</span> <span class="n">t_sy</span><span class="p">)</span> <span class="o">+</span> <span class="n">y_sy</span><span class="p">(</span><span class="n">t_sy</span><span class="p">)</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">y_sy</span><span class="p">(</span><span class="n">t_sy</span><span class="p">))</span><span class="o">.</span><span class="n">rhs</span>
+<span class="n">y_exact_sy</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t_sy</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">y_exact_sy</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$10 - 10 e^{- t}$$</div></div>
+</div>
+<p>That certainly goes to 10 as <span class="math">\(t \to \infty\)</span>. Let’s visualize the
+numerical and analytical solutions:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_exact</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t_sy</span><span class="p">,</span> <span class="n">y_exact_sy</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_fe25</span><span class="p">,</span> <span class="n">y_fe25</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">t_fe25</span><span class="p">,</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">t_fe25</span><span class="p">),</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{fe25}}$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{exact}}(t)$&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_6_0.png" src="../_images/lectures_ME400_Lecture_27_6_0.png" />
+</div>
+</div>
+<p>That’s pretty close, but can we do better? Let’s try <span class="math">\(N=100\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Initialize the unknown (where &quot;fe25&quot; denotes Forward Euler with 15 points)</span>
+<span class="n">y_fe100</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Define the times and right-hand side.  We use N+1</span>
+<span class="c1"># because we want N points beyond the initial value.</span>
+<span class="n">t_fe100</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">t_fe100</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t_fe100</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Compute all successive values</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">y_fe100</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">Delta</span><span class="p">)</span><span class="o">*</span><span class="n">y_fe100</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_fe25</span><span class="p">,</span> <span class="n">y_fe25</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">t_fe100</span><span class="p">,</span> <span class="n">y_fe100</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">t_fe100</span><span class="p">,</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">t_fe100</span><span class="p">),</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{fe25}}$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{fe100}}$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{exact}}(t)$&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_8_0.png" src="../_images/lectures_ME400_Lecture_27_8_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Finish the following function definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">forward_euler</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Solves y&#39; + py = q using forward Euler and a fixed time step.</span>
+
+<span class="sd">       Inputs:</span>
+<span class="sd">         N  - number of points (int)</span>
+<span class="sd">         T  - final time (float)</span>
+<span class="sd">         y0 - initial value of y (float)</span>
+<span class="sd">         p  - coefficient value (float)</span>
+<span class="sd">         q  - coefficient value (float)</span>
+
+<span class="sd">       Returns:</span>
+<span class="sd">         y  - values of y at each time step (NumPy array)</span>
+<span class="sd">         t  - times at which y is evaluated (NumPy array)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the last exercise but allow <code class="docutils literal"><span class="pre">p</span></code> and <code class="docutils literal"><span class="pre">q</span></code> to be
+callable functions of <code class="docutils literal"><span class="pre">t</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Implement backward Euler following the exercise above.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply forward Euler <em>by hand</em> to the following IVPs to
+approximate <span class="math">\(y(1)\)</span> using a step size <span class="math">\(\Delta = 0.2\)</span>: 1.
+<span class="math">\(y' = y\)</span> for <span class="math">\(y(0) = 1\)</span>. 2. <span class="math">\(y' = 2ty\)</span> for
+<span class="math">\(y(0) = 1\)</span> 3. <span class="math">\(y' = -y/10 + 1\)</span> for <span class="math">\(y(0) = 0\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the previous exercise but use backward Euler.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = y\)</span>, <span class="math">\(y(0) = 1\)</span>. Of course, the
+solution is <span class="math">\(y(x) = e^x\)</span>. Let <span class="math">\(\Delta = 1/N\)</span> and
+<span class="math">\(x_i = \Delta i\)</span>, where <span class="math">\(N\)</span> is some integer. If <span class="math">\(y_i\)</span>
+is the approximation of <span class="math">\(y(x)\)</span> at <span class="math">\(x = x_i\)</span>, then prove that
+<span class="math">\(\lim_{N\to \infty} y_N = e\)</span> for both forward Euler and backward
+Euler.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the IVP <span class="math">\(y' = f(t, y(t))\)</span> subject to
+<span class="math">\(y(0) = y_0\)</span>. Here, <span class="math">\(f(t, y(t))\)</span> can be any function of
+<span class="math">\(t\)</span> or <span class="math">\(y(t)\)</span>. Examples include <span class="math">\(f(t, y(t)) = ay + bt\)</span>
+and <span class="math">\(f(t, y(t)) = a y(t)^2\)</span>. The latter case leads to a
+<em>nonlinear</em> IVP. Given the initial condition, write down how you would
+determine <span class="math">\(y(\Delta)\)</span> using (a) forward Euler and (b) backward
+Euler.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following twist on Euler’s method for
+<span class="math">\(\frac{dy}{dt} = f(t)\)</span> using fixed time steps <span class="math">\(\Delta\)</span>:</p>
+<div class="math">
+\[\tilde{y}_{n+1} = y_n + \Delta f(t_n)\]</div>
+<p>and</p>
+<div class="math">
+\[y_{n+1} = y_n + \frac{\Delta}{2} [f(t_n) + \tilde{f}(t_{n+1})] \, .\]</div>
+<p>This is an example of a <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_multistep_method">multi-step
+method</a> and
+belongs to the famous
+<a class="reference external" href="http://mathworld.wolfram.com/Runge-KuttaMethod.html">Runge-Kutta</a>
+family of methods. This particular version is sometimes called <a class="reference external" href="https://en.wikipedia.org/wiki/Heun%27s_method">Heun’s
+method</a>.</p>
+<p>Your task is to write a function <code class="docutils literal"><span class="pre">heun_method(N,</span> <span class="pre">T,</span> <span class="pre">y0,</span> <span class="pre">p,</span> <span class="pre">q)</span></code>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="A-Look-at-Errors-and-Stability">
+<h2>A Look at Errors and Stability<a class="headerlink" href="#A-Look-at-Errors-and-Stability" title="Permalink to this headline">¶</a></h2>
+<p>Certainly, the <span class="math">\(N=100\)</span> approximation looks better than the
+<span class="math">\(N=25\)</span> approximation. We can plot the errors for both as a
+function of time:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">error_fe25</span> <span class="o">=</span> <span class="n">y_fe25</span> <span class="o">-</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">t_fe25</span><span class="p">)</span>
+<span class="n">error_fe100</span> <span class="o">=</span> <span class="n">y_fe100</span> <span class="o">-</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">t_fe100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">t_fe25</span><span class="p">,</span> <span class="n">error_fe25</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">t_fe100</span><span class="p">,</span> <span class="n">error_fe100</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$N=25$&#39;</span><span class="p">,</span> <span class="s1">&#39;$N=100$&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_13_0.png" src="../_images/lectures_ME400_Lecture_27_13_0.png" />
+</div>
+</div>
+<p>Clearly, the error for <span class="math">\(N=25\)</span> is larger over the time domain, as
+we might expect. Recall that
+<span class="math">\((y_{n+1}-y_n)/\Delta = -py_n + q_n + \mathcal{O}(\Delta^2)\)</span>, so
+<span class="math">\(y_{n+1} = (1-\Delta p)y_n + \Delta q_n + \mathcal{O}(\Delta)\)</span>.
+This first-order error in <span class="math">\(y_n\)</span> is the <em>local error</em>, i.e., the
+error introduced by a single step in time. On the other hand, the
+<em>global error</em> is the error shown above as a function of time. A key
+question is how that global error at a fixed point in time depends on
+<span class="math">\(\Delta\)</span>. It turns out that if a method is <em>stable</em>, then the
+global error is of the same order as the local error.</p>
+<p>We’ll skip momentarily what it means to be stable for now, but we can
+attack the global error for our simple problem (with a bit of help from
+SymPy). For constant <span class="math">\(q\)</span>, <span class="math">\(p\)</span> and <span class="math">\(\Delta\)</span>, the
+analytic solution is</p>
+<div class="math">
+\begin{equation}
+    y_n = \frac{q}{p} (1 - e^{-p \Delta n})  \, ,
+\end{equation}</div><p>while the forward-Euler solution is</p>
+<div class="math">
+\begin{equation}
+    \begin{aligned}
+     y_n  &amp;= \Delta q \sum^{n-1}_{i=0} (1-\Delta p)^{i} \\
+          &amp;= \Delta q \frac{1 - (1-\Delta p)^{n-1}}{\Delta p } \\
+          &amp;= \frac{q}{p} [ 1 - (1-\Delta p)^{n-1} ] \, .
+    \end{aligned}
+\end{equation}</div><p>For fixed <span class="math">\(t\)</span> and <span class="math">\(\Delta\)</span>, the number of steps is
+<span class="math">\(n = t/\Delta\)</span>, and the global error is therefore</p>
+<div class="math">
+\begin{equation}
+     e(t) = \frac{q}{p} [e^{-p t}-(1-\Delta p)^{\frac{t}{\Delta} - 1} ] \, .
+\end{equation}</div><p>Note first that</p>
+<div class="math">
+\begin{equation}
+     \lim_{\Delta \to 0} (1-\Delta p)^{t/\Delta} = e^{-p t} \, ,
+\end{equation}</div><p>so <span class="math">\(e_n = (q/p)[e^{-pt}-e^{-p/t}/(1-\Delta p)] \to 0\)</span> as
+<span class="math">\(\Delta \to 0\)</span>. However, for fixed <span class="math">\(t\)</span>, how <em>fast</em> does that
+error decrease with <span class="math">\(\Delta\)</span>? And for fixed <span class="math">\(\Delta\)</span>, how
+does the error change with time? Let’s expand the error about
+<span class="math">\(\Delta = 0\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y0</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y0 Delta n p&#39;</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">y0</span><span class="o">*</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">t_sy</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Delta</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">t_sy</span><span class="o">/</span><span class="n">Delta</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\Delta \left(\frac{t y_{0}}{2} p^{2} e^{- p t} - p y_{0} e^{- p t}\right) + \Delta^{2} \left(- \frac{p^{4} y_{0}}{8} t^{2} e^{- p t} + \frac{5 t}{6} p^{3} y_{0} e^{- p t} - p^{2} y_{0} e^{- p t}\right) + \mathcal{O}\left(\Delta^{3}\right)$$</div></div>
+</div>
+<p>Evidently, the global error is of first order, consistent with the local
+error. However, it’s not clear (or easy to determine) exactly how the
+error depends on <span class="math">\(t\)</span> for fixed <span class="math">\(\Delta\)</span>. If we assume
+<span class="math">\(p &gt; 0\)</span> (i.e., radioactive decay and not multiplying pythons),
+then</p>
+<div class="math">
+\begin{equation}
+    |e(t)| &lt; \Big | q/ p \Big | \Big | (1-\Delta p)^{t/\Delta -1} \Big | \, .
+\end{equation}</div><p>However, the right-hand side is bounded (i.e., does not grow with large
+<span class="math">\(t\)</span>) only if <span class="math">\(|1-\Delta p| &lt; 1\)</span>, and that is true only if
+<span class="math">\(\Delta &lt; 2/p\)</span>. To summarize: the global error does not blow up as
+long as <span class="math">\(p &gt; 0\)</span> and <span class="math">\(\Delta &lt; 2/p\)</span>.</p>
+<p>Of course, simply stating such rules is never as exciting as seeing what
+happens when the rules are broken, so we’ll solve our example with
+<span class="math">\(p = 2\)</span>, <span class="math">\(q=10\)</span>, and <span class="math">\(y(0) = 0\)</span> for <span class="math">\(N = 5\)</span>,
+<span class="math">\(N = 10\)</span>, and <span class="math">\(N = 20\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">N</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]:</span>
+    <span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">Delta</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="n">q</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;b-s&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="s1">&#39;r-*&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$N=5$&#39;</span><span class="p">,</span> <span class="s1">&#39;$N=10$&#39;</span><span class="p">,</span>  <span class="s1">&#39;$N=20$&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_17_0.png" src="../_images/lectures_ME400_Lecture_27_17_0.png" />
+</div>
+</div>
+<p>Yikes! The <span class="math">\(N=5\)</span> case clearly does not converge to the
+steady-state value <span class="math">\(y = 5\)</span>! In other words, it <em>diverges</em>. Because
+the forward-Euler approximation converges only for certain values of
+<span class="math">\(\Delta\)</span> and <span class="math">\(p\)</span>, it is called a <em>conditionally stable</em>
+method.</p>
+<p>Conditional stability requires very small <span class="math">\(\Delta\)</span>. For problems
+whose solutions blow up (i.e., <span class="math">\(p &lt; 0\)</span>), all bets are off and an
+<em>unconditionally stable</em> method is the better choice. For example, the
+backward-Euler approximation is unconditionally stable, demonstration of
+which is an exercise left to the student.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the example above (i.e., <span class="math">\(p=2\)</span>, <span class="math">\(q=10\)</span>,
+<span class="math">\(y(0) = 0\)</span>, and <span class="math">\(N = 5, 10, 20\)</span>) to show that backward Euler
+has no stability issues.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use <em>backward Euler</em> to solve <span class="math">\(y' = 2t - 3y + 1\)</span>
+given <span class="math">\(y(1) = 5\)</span> and estimate <span class="math">\(y(1.2)\)</span>. Compare the error in
+this estimate for <span class="math">\(\Delta = 0.1, 0.01, 0.001, 0.0001\)</span>. How does
+this error depend on <span class="math">\(\Delta\)</span>?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the previous exercise using Heun’s method (see
+previous exercise).</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="IVP's-with-SciPy">
+<h2>IVP’s with SciPy<a class="headerlink" href="#IVP's-with-SciPy" title="Permalink to this headline">¶</a></h2>
+<p>SciPy includes a number of schemes for integration (e.g., the
+<code class="docutils literal"><span class="pre">scipy.integrate.quad</span></code> function we have previously used). The
+<code class="docutils literal"><span class="pre">scipy.integrate</span></code> module also has routines for integrating IVP’s. To
+“integrate” a differential equation is to solve for the unknown
+function.</p>
+<p>Specifically, the <code class="docutils literal"><span class="pre">scipy.integrate.odeint</span></code> function is used to solve
+individual, first-order IVP’s or systems of such equations. We’ll focus
+only on the former, leaving systems for next time. Behind the scenes,
+either an
+<a class="reference external" href="https://en.wikipedia.org/wiki/Linear_multistep_method#Adams.E2.80.93Moulton_methods">Adams</a>
+or
+<a class="reference external" href="https://en.wikipedia.org/wiki/Backward_differentiation_formula">BDF</a>
+method is used depending on the behavior of the solution. All of this is
+automatic, and more details can be found <a class="reference external" href="http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint">in the
+documentation</a>.</p>
+<p>Let’s revisit our example, namely <span class="math">\(y' + y(t) = 10\)</span> with
+<span class="math">\(y(0)=0\)</span> for <span class="math">\(t\in [0, 10]\)</span>. The <code class="docutils literal"><span class="pre">odeint</span></code> function
+requires, at a minimum, three inputs: (1) a function that evaluates the
+derivative <span class="math">\(y'(t)\)</span> given the time <span class="math">\(t\)</span> and the value of the
+function <span class="math">\(f(t)\)</span>, (2) the initial condition <span class="math">\(y(0)=y_0\)</span>, and
+(3) the times at which <span class="math">\(y(t)\)</span> is to be evaluated. These times are
+independent of the times and corresponding <span class="math">\(\Delta\)</span>‘s used
+internally; they only are used for the output.</p>
+<p>The derivative function has two arguments: the time <span class="math">\(t\)</span> at which
+<span class="math">\(y'\)</span> is to be evaluated, and the value of <span class="math">\(y\)</span> at that same
+time. That sounds like you need to know <span class="math">\(y(t)\)</span> beforehand—but
+you don’t! This derivative function is only called behind the scenes by
+<code class="docutils literal"><span class="pre">odeint</span></code> itself. Hence, <code class="docutils literal"><span class="pre">odeint</span></code> knows (or has an approximation to)
+<span class="math">\(y\)</span> at the time <span class="math">\(t\)</span>, and your job is to use the two to
+define <span class="math">\(y'\)</span>. For our example, that means we need a function that
+evaluates and returns</p>
+<div class="math">
+\begin{equation}
+    \frac{dy}{dt} = 10 - y(t) \, .
+\end{equation}</div><p>With that, we can implement a complete <code class="docutils literal"><span class="pre">odeint</span></code> solution to our
+example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+
+<span class="c1"># derivative function</span>
+<span class="k">def</span> <span class="nf">y_prime</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">return</span> <span class="mf">10.0</span> <span class="o">-</span> <span class="n">y</span>
+
+<span class="c1"># times at which y(t) is to be evaluated</span>
+<span class="n">t_odeint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># solve with odeint</span>
+<span class="n">y_odeint</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">y_prime</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t_odeint</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">,</span> <span class="n">y_odeint</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">t_odeint</span><span class="p">,</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">),</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{odeint}}$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{exact}}$&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpoints</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_21_0.png" src="../_images/lectures_ME400_Lecture_27_21_0.png" />
+</div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">odeint</span></code> result is very good, with no discernible error (to my
+eyes, anyway). We can plot the errors, but first we need to reshape the
+output from <code class="docutils literal"><span class="pre">odeint</span></code>. Notice that it has an explicit, 2-D shape,
+whereas <code class="docutils literal"><span class="pre">y_exact</span></code> yields a 1-D array (from the 1-D <code class="docutils literal"><span class="pre">t_odeint</span></code>):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="n">y_odeint</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y_exact</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">t_odeint</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(50, 1)
+(50,)
+(50,)
+</pre></div></div>
+</div>
+<p>Normally, this apparent mismatch is no big deal—we plotted both
+against the same <code class="docutils literal"><span class="pre">t_odeint</span></code> array. However, the mismatch does lead to
+strange results when we try to compute the error:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">error</span> <span class="o">=</span> <span class="n">y_odeint</span><span class="o">-</span><span class="n">y_exact</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(50, 50)
+</pre></div></div>
+</div>
+<p>That’s not right—can you figure out why that is happening? The
+solution, however, is to make them the same size, and we can do that,
+e.g., with an explicit reshaping:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_odeint_reshaped</span> <span class="o">=</span> <span class="n">y_odeint</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">),))</span>
+<span class="n">error</span> <span class="o">=</span> <span class="n">y_odeint_reshaped</span> <span class="o">-</span> <span class="n">y_exact</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(50,)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_odeint</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="s1">&#39;r-o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$y_{</span><span class="se">\\</span><span class="s1">mathrm{odeint}}-y_{</span><span class="se">\\</span><span class="s1">mathrm{exact}}$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_27_28_0.png" src="../_images/lectures_ME400_Lecture_27_28_0.png" />
+</div>
+</div>
+<p>Two features of this error warrant discussion. First, the overall
+magnitude is small than the errors we found using <span class="math">\(N=100\)</span> above
+with forward Euler. Second, the error fluctuates more than we found for
+forward Euler and is more uniform in magnitude. The overall magnitude of
+the error is determined by the desired numerical accuracy (defined by
+the optional arguments <code class="docutils literal"><span class="pre">rtol</span></code> and <code class="docutils literal"><span class="pre">atol</span></code>). The time-dependent
+fluctuations are due to use of nonuniform time steps. The details are
+well beyond our scope, but you’ll recall from the Taylor expansion of
+<span class="math">\(y'\)</span> that the errors are related to <span class="math">\(y''\)</span>. If some estimate
+can be made of <span class="math">\(y''\)</span> during the time-stepping procedure, then the
+error can also be estimated. Proper selection of <span class="math">\(\Delta\)</span> (either
+larger or smaller) can yield errors just within the desired tolerance,
+ensuring proper accuracy and avoiding use of too many small steps in
+regions where they are not needed.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the following IVPs using <code class="docutils literal"><span class="pre">odeint</span></code> and plot the
+result for <span class="math">\(t \in [0, 5]\)</span>:</p>
+<ol class="arabic simple">
+<li><span class="math">\(\frac{dy}{dt} = e^{-y}\)</span> for <span class="math">\(y(0) = 0\)</span>.</li>
+<li><span class="math">\(\frac{dy}{dt} = x^2 + y^2\)</span> for <span class="math">\(y(0) = 1\)</span>.</li>
+<li><span class="math">\(\frac{dy}{dt} = y - y^2\)</span> for <span class="math">\(y(0) = 0.5\)</span>.</li>
+</ol>
+</div>
+<hr class="docutils" />
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>See the SciPy documentation on
+<a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/tutorial/integrate.html#ordinary-differential-equations-odeint">odeint</a>.
+This will also be useful for the next lesson in which systems of IVP’s
+(and higher-order IVP’s) are solved. Bennett’s chapter on <a class="reference external" href="https://www.math.ksu.edu/math240/book/chap1/pop.php">population
+growth</a> provides
+a bit more on first-order systems and their use in modeling populations.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 27 - Solving First-Order IVPs Numerically</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#There-Once-was-a-Man-Named-Euler">There Once was a Man Named Euler</a></li>
+<li><a class="reference internal" href="#A-Look-at-Errors-and-Stability">A Look at Errors and Stability</a></li>
+<li><a class="reference internal" href="#IVP's-with-SciPy">IVP’s with SciPy</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_26.html" title="previous chapter">Lecture 26 - Solving ODEs Symbolically</a></li>
+      <li>Next: <a href="ME400_Lecture_28.html" title="next chapter">Lecture 28 - Numerical Solutions of First-Order Systems</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_27.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_27.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

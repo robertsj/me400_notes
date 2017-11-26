@@ -1,0 +1,595 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 24 - Data Analysis via Least-Squares Fitting &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-24---Data-Analysis-via-Least-Squares-Fitting">
+<h1>Lecture 24 - Data Analysis via Least-Squares Fitting<a class="headerlink" href="#Lecture-24---Data-Analysis-via-Least-Squares-Fitting" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>A ubiquitous task in engineering and other technical disciplines is the
+analysis of data. Data comes from many sources, including measurements
+in the laboratory and numerical simulations. In this lecture and in
+<a class="reference internal" href="ME400_Lecture_25.html"><span class="doc">Lecture 25</span></a>, we’ll apply what we’ve learned
+so far to produce <em>models</em> from data that we can use to explore trends
+and make conclusions. Specifically, in this lecture, we’ll develop
+models based on <strong>least-squares</strong> fitting of model parameters to
+existing data. Such fitting may be the right choice when the data in
+contaminated by noise or when the model need only capture the main
+features of the observed phenomenon.</p>
+</div>
+<div class="section" id="Exam-2---Second-Chance">
+<h2>Exam 2 - Second Chance<a class="headerlink" href="#Exam-2---Second-Chance" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>20 minutes</li>
+<li>Notes are okay</li>
+<li>No computer/calculator</li>
+<li>Use your paper, remove frills, and put name and lab time on <em>top
+right</em></li>
+<li>Worth 3 points (15%) on the exam</li>
+</ul>
+<div class="section" id="Problem-1---1-point">
+<h3>Problem 1 - 1 point<a class="headerlink" href="#Problem-1---1-point" title="Permalink to this headline">¶</a></h3>
+<p>Suppose you were given a function named <code class="docutils literal"><span class="pre">foo</span></code> that sorts lists of
+numbers. Not knowing its order, you tested it for several 100-element
+lists and found it took, on average 10 s per sort. You did the same for
+several 1000-element lists, and found it took 1000 s per sort (on
+average). Is the method <span class="math">\(\mathcal{O}(\log n)\)</span>,
+<span class="math">\(\mathcal{O}(n)\)</span>, <span class="math">\(\mathcal{O}(n \log n)\)</span>,
+<span class="math">\(\mathcal{O}(n^2)\)</span>, or something else? <em>Show your work</em> and circle
+you answer.</p>
+</div>
+<div class="section" id="Problem-2---1-point">
+<h3>Problem 2 - 1 point<a class="headerlink" href="#Problem-2---1-point" title="Permalink to this headline">¶</a></h3>
+<p>Consider a rocket in space moving in a straight path. Its position with
+time is <span class="math">\(x(t) = t^3 + 12t\)</span>, where <span class="math">\(x\)</span> is in km and <span class="math">\(t\)</span>
+is in s. What is the rocket’s acceleration at <span class="math">\(t = 10\)</span> s? Circle
+your answer (including units).</p>
+</div>
+<div class="section" id="Problem-3---1-point">
+<h3>Problem 3 - 1 point<a class="headerlink" href="#Problem-3---1-point" title="Permalink to this headline">¶</a></h3>
+<p>Consider a rocket in space moving in a straight path. Its position was
+measured at <span class="math">\(t = 8, 9, 10\)</span> (in s) and found to be
+<span class="math">\(x = 350, 450, 600\)</span> (in km), respectively. What is the rocket’s
+acceleration at <span class="math">\(t = 10\)</span> s? Circle your answer (including units).</p>
+</div>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Explain (and demonstrate) what is meant by a least-squares fit of a
+linear model <span class="math">\(ax+b\)</span> to a set of measured points
+<span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
+<li>Use built-in tools to perform linear, least-squares fitting of data
+to models</li>
+<li>Use built-in tools to perform nonlinear, least-squares fitting of
+data to models</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>error</li>
+<li>least-squares</li>
+<li>normal equation</li>
+<li><code class="docutils literal"><span class="pre">np.linalg.solve</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.polyfit</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.polyval</span></code></li>
+<li><code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="Noisy-Data">
+<h2>Noisy Data<a class="headerlink" href="#Noisy-Data" title="Permalink to this headline">¶</a></h2>
+<p>A familiar task: draw a line of “best fit” through noisy data
+<span class="math">\((x_i, y_i)\)</span></p>
+<p>Alternative description: find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> so that the
+<em>linear model</em> <span class="math">\(y(x) = ax + b\)</span> best matches the data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># connect first and last points</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y_a1</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">b</span>
+<span class="c1"># connect minimum and maximum points</span>
+<span class="n">t_max</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
+<span class="n">t_min</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">t_max</span><span class="o">-</span><span class="n">t_min</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t_min</span>
+<span class="n">y_a2</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_a1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_a2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;$y(t)$&quot;</span><span class="p">,</span> <span class="s2">&quot;approx 1&quot;</span><span class="p">,</span> <span class="s2">&quot;approx 2&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_24_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_7_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="What-&quot;Best&quot;-Means">
+<h2>What “Best” Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
+<p>The error is the difference between the model and data:</p>
+<div class="math">
+\[e_i = y(t_i) - y_i = a t_i + b - y_i \, \quad i = 0, 1, \ldots\]</div>
+<p>A model is the <strong>least-squares, best fit</strong> if it minimizes</p>
+<div class="math">
+\[|| \mathbf{e} ||_2 = \sqrt{ |e_0|^2 + |e_1|^2 + \ldots} = \sqrt{\sum_{i=0} |e_i|^2} \,  ,\]</div>
+<p>the <span class="math">\(L_2\)</span> norm (or euclidean norm) of the error. Similar to other
+error metrics we’ve seen?</p>
+<p><strong>Exercise</strong>: Compute and plot errors from example, and compute their
+L2-norms.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">e_1</span><span class="p">,</span> <span class="n">e_2</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_a1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_a2</span><span class="p">)</span>
+<span class="n">norm_e_1</span><span class="p">,</span> <span class="n">norm_e_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e_1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e_2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;$||e_1||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_1</span><span class="p">),</span>
+            <span class="sa">r</span><span class="s2">&quot;$||e_2||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_2</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_24_Slides_10_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_10_0.png" />
+</div>
+</div>
+<p>Linear least-square solutions are found by solving the normal equations:</p>
+<div class="math">
+\[\mathbf{c} = (\mathbf{M}^T \mathbf{M})^{-1}  \mathbf{M}^T \mathbf{y} \, .\]</div>
+<p>where the model attempts to satisfy <span class="math">\(\mathbf{Mc} = \mathbf{y}\)</span>.</p>
+<p>Here, <span class="math">\(\mathbf{M} = [\mathbf{x}, \mathbf{1}]\)</span> and
+<span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
+</div>
+<div class="section" id="Beyond-Linear-Models">
+<h2>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h2>
+<p>Not all data is intrinsically linear. Alternatives:</p>
+<ul class="simple">
+<li>polynomial models
+<span class="math">\(y(x) = a_n x^n + a_{n-1} x^{n-1} + \ldots + a_0\)</span>.</li>
+<li>problem-specific models, e.g.,
+<span class="math">\(y(x) = a_0 e^x + a_1 e^{-x} + a_2\)</span>.</li>
+</ul>
+<p>The key is that the coefficients <span class="math">\(a_n\)</span> are weights of separate,
+nonparameterized functions of <span class="math">\(x\)</span>. <em>Linear</em> least-squares fitting
+can be used (just like for <span class="math">\(y(x) = ax+b\)</span>).</p>
+<p>For polynomial fits, use <code class="docutils literal"><span class="pre">np.polyfit</span></code> and <code class="docutils literal"><span class="pre">np.polyval</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># fit sin(x)**2 to linear, quadratic, and cubic</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="c1">#                   # a_n, a_{n-1}, ...  #</span>
+<span class="n">y_lin</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">y_quad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">y_cub</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_lin</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">,</span>
+         <span class="n">x</span><span class="p">,</span> <span class="n">y_quad</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_cub</span><span class="p">,</span> <span class="s1">&#39;r:&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;quadratic&#39;</span><span class="p">,</span> <span class="s1">&#39;cubic&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_24_Slides_15_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Beyond-Polynomial-Models">
+<h2>Beyond Polynomial Models<a class="headerlink" href="#Beyond-Polynomial-Models" title="Permalink to this headline">¶</a></h2>
+<p>Linear models are common, and polynomial models can provide necessary
+improvements. For many cases, neither type of model is sufficient.</p>
+<p>Consider data that needs to be fitted to</p>
+<div class="math">
+\[y(t) = a\sin(bt + c) + d\]</div>
+<p>Because <span class="math">\(b\)</span> and <span class="math">\(c\)</span> are <em>inside</em> a nonlinear function,
+<em>linear</em> least-squares fitting is not applicable. Rather, we need
+<em>nonlinear</em> least squares via, e.g., <code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.945</span><span class="p">,</span> <span class="mf">3.964</span><span class="p">,</span> <span class="mf">4.481</span><span class="p">,</span> <span class="mf">5.747</span><span class="p">,</span> <span class="mf">7.523</span><span class="p">,</span> <span class="mf">8.710</span><span class="p">,</span> <span class="mf">10.733</span><span class="p">,</span> <span class="mf">13.910</span><span class="p">,</span> <span class="mf">16.721</span><span class="p">,</span> <span class="mf">19.951</span><span class="p">,</span> <span class="mf">24.610</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$P(t)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_24_Slides_17_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_17_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 3.18684102,  0.2049746 ])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">P_model</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">P_model</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;P(t)&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_24_Slides_20_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_20_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Recap">
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<p>You should now be able to:</p>
+<ul class="simple">
+<li>Explain (and demonstrate) what is meant by a least-squares fit of a
+linear model <span class="math">\(ax+b\)</span> to a set of measured points
+<span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
+<li>Use built-in tools to perform linear, least-squares fitting of data
+to models</li>
+<li>Use built-in tools to perform nonlinear, least-squares fitting of
+data to models</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 24 - Data Analysis via Least-Squares Fitting</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a></li>
+<li><a class="reference internal" href="#Exam-2---Second-Chance">Exam 2 - Second Chance</a><ul>
+<li><a class="reference internal" href="#Problem-1---1-point">Problem 1 - 1 point</a></li>
+<li><a class="reference internal" href="#Problem-2---1-point">Problem 2 - 1 point</a></li>
+<li><a class="reference internal" href="#Problem-3---1-point">Problem 3 - 1 point</a></li>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Noisy-Data">Noisy Data</a></li>
+<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What “Best” Means</a></li>
+<li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
+<li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_24_Slides.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_24_Slides.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

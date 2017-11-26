@@ -1,0 +1,1144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 26 - Solving ODEs Symbolically &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 27 - Solving First-Order IVPs Numerically" href="ME400_Lecture_27.html" />
+    <link rel="prev" title="Lecture 25 - Data Analysis via Interpolation" href="ME400_Lecture_25.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-26---Solving-ODEs-Symbolically">
+<h1>Lecture 26 - Solving ODEs Symbolically<a class="headerlink" href="#Lecture-26---Solving-ODEs-Symbolically" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we revisit the tools provided by SymPy and apply them
+to solution of <em>ordinary differential equations</em> (ODEs). Engineering is
+full of ODEs, since they are fundamental to the language of balance
+relationships found in heat transfer, nuclear reactor physics, control
+systems, and other areas. The goal here is <em>not</em> to present the theory
+of ODEs, nor is it to present the various systematic ways be which one
+can determine solutions to ODEs. Rather, the focus is placed squarely on
+defining ODEs symbolically, solving them symbolically, and,
+<em>importantly</em>, applying initial or boundary conditions to those symbolic
+solutions and solving the resulting <em>algebraic</em> equations for any
+undetermined coefficients. In other words, the focus is on the <em>problem
+solving</em> process.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Define first- and second-order, ordinary differential equations
+symbolically</li>
+<li>Solve first- and second-order, ODEs symbollically</li>
+<li>Apply initial and boundary conditions as is appropriate to determine
+complete solutions to ODEs important in engineering disciplines.</li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>You should already be able to</p>
+<ul class="simple">
+<li>Solve ODEs based on what you’ve learned in a course like MATH 340
+(this is not a strict requirement, but if you have <em>not</em> had MATH
+340, you may wish to set up a time with me or the TAs).</li>
+<li>Set up and solve algebraic systems using SymPy</li>
+<li>Perform subsitution into symbolic values using SymPy</li>
+<li>Define derivatives of arbitrary functions using SymPy</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>differential equation</li>
+<li>ordinary</li>
+<li>linear</li>
+<li>ODE</li>
+<li>initial value problem</li>
+<li>boundary value problem</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Differential-Equations">
+<h2>Differential Equations<a class="headerlink" href="#Differential-Equations" title="Permalink to this headline">¶</a></h2>
+<p>A <em>differential equation</em> is any equation in which an unknown function
+<span class="math">\(f\)</span> appears with one of more of its derivatives. When <span class="math">\(f\)</span> is
+a function of only one variable, the derivatives are <em>ordinary</em> (as
+opposed to <em>partial</em>), and the equation is an <em>ordinary differential
+equation</em> (ODE). In compact notation, such an equation may be written</p>
+<div class="math">
+\begin{equation}
+    \mathcal{L}f(x) = q(x) \, ,
+\end{equation}</div><p>where <span class="math">\(\mathcal{L}\)</span> is a differential operator. If
+<span class="math">\(\mathcal{L}\)</span> contains only <em>linear combinations</em> of <span class="math">\(f(x)\)</span>
+and its derivates, then <span class="math">\(\mathcal{L}\)</span> is a <em>linear operator</em>, and
+the equation is a <em>linear</em> ODE. If <span class="math">\(q(x) = 0\)</span>, the equation is
+<em>homogeneous</em> and is otherwise <em>inhomogeneous</em>. If the highest
+derivative of <span class="math">\(f(x)\)</span> present in <span class="math">\(\mathcal{L}f\)</span> is <span class="math">\(n\)</span>
+(i.e., <span class="math">\(d^n f/dx^n\)</span>), then the equation is called an <em>n</em>th-order
+equation.</p>
+<p>Examples of linear operators include
+<span class="math">\(\mathcal{L}f = \frac{df}{dx}\)</span> and
+<span class="math">\(\mathcal{L}f = a(x) \frac{d^2f}{dx^2} + b(x)\)</span>, where <span class="math">\(a(x)\)</span>
+and <span class="math">\(b(x)\)</span> are arbitrary functions of <span class="math">\(x\)</span> (but not of
+<span class="math">\(f(x)\)</span>). For comparison, a nonlinear example is
+<span class="math">\(\mathcal{L}f = \left ( \frac{df}{dx} \right )^2 - \sqrt{f(x)}\)</span>,
+which includes nonlinear functions of <span class="math">\(f\)</span> and its first
+derivative.</p>
+<p>Our focus in this and the next module is entirely on <em>linear, ordinary
+differential equations</em> and their solution by symbolic and numerical
+techniques.</p>
+</div>
+<div class="section" id="Whence-Comes-?">
+<h2>Whence Comes <span class="math">\(y'+py=q\)</span>?<a class="headerlink" href="#Whence-Comes-?" title="Permalink to this headline">¶</a></h2>
+<p>For now, we’ll keep it simple and consider problems of the form</p>
+<div class="math">
+\begin{equation}
+    \frac{dy}{dt} + p(t)y(t) = q(t) \, , \qquad y(0) = y_0 \, .
+\end{equation}</div><p>This is a <strong>first-order</strong>, <strong>initial-value problem</strong> (IVP). It is first
+order because there is only a first derivative. It is an initial-value
+problem because the unknown (here, <span class="math">\(y(t)\)</span>) is specified at some
+“initial” time.</p>
+<p>A first-order IVP can be used to represent of a number of physical
+phenomena. The first that comes to mind (to me, as a nuclear engineer)
+is <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_decay">radioactive
+decay</a> with external
+production, usually written <span class="math">\(N' = -\lambda N(t) + R(t)\)</span>, where
+<span class="math">\(N(t)\)</span> is the number of radioactive nuclei at time <span class="math">\(t\)</span>,
+<span class="math">\(\lambda\)</span> is the decay constant (with units of inverse seconds),
+and <span class="math">\(R(t)\)</span> is the number of new nuclei born per second. The time
+rate of change of <span class="math">\(N(t)\)</span> is a balance of those new nuclei from
+<span class="math">\(R(t)\)</span> against the number <span class="math">\(-\lambda N(t)\)</span> lost by decay. For
+sufficiently long times, <span class="math">\(dy/dt \to 0\)</span>, and <span class="math">\(y = R/\lambda\)</span>,
+a <em>steady state</em> in which losses are exactly balanced by gains.</p>
+<p>An equally good example is the case of an object of mass <span class="math">\(m\)</span> in
+<a class="reference external" href="http://hyperphysics.phy-astr.gsu.edu/hbase/lindrg.html">free fall through a viscuous
+medium</a>,
+e.g., the atmosphere. If some object is held a distance above the earth
+and dropped, its acceleration at any point in time is related to the net
+forces acting on the body. These forces include the gravitational force
+<span class="math">\(F_g = -m g\)</span> (i.e., downward) and the air resistance <span class="math">\(F_r\)</span>.
+A simple resistance model is <span class="math">\(F_r = cv\)</span>, where <span class="math">\(c\)</span> is a
+(positive) constant and <span class="math">\(v\)</span> is the velocity directed toward Earth.
+Hence, the downward force is</p>
+<div class="math">
+\begin{equation}
+    F(t) = -cv(t) + m g \, .
+\end{equation}</div><p>From Newton’s second law, <span class="math">\(F = ma\)</span>, so we have</p>
+<div class="math">
+\begin{equation}
+    ma(t) = m \frac{dv}{dt} = -cv(t)  + mg \, ,
+\end{equation}</div><p>or</p>
+<div class="math">
+\begin{equation}
+    v' = -\frac{c}{m} v(t) + g \, .
+\end{equation}</div><p>The positive <span class="math">\(c/m\)</span> has the same effect as a positive
+<span class="math">\(\lambda\)</span> in radioactive decay: the larger the velocity <span class="math">\(v\)</span>,
+the larger the retardation force <span class="math">\(cv\)</span> (just like the larger the
+number of nuclei <span class="math">\(N\)</span>, the larger the number <span class="math">\(\lambda N\)</span>
+decaying per unit time). For the free-fall case, the steady-state
+condition <span class="math">\(v'=0\)</span> has a special name: <em>terminal velocity</em>.</p>
+<p>Lots of phenomena have this sort of behavior, this natural <em>negative
+feedback</em>, and such feedback can help us when we solve these problems
+numerically. In those cases where the feedback is <em>positive</em>, we expect
+the number of nuclei to <em>grow</em> more and more (or, equivalent, for a
+falling object to keep accelerating toward earth). The former happens
+when pythons (or neutrons) multiply in nature; thankfully, the <a class="reference external" href="https://en.wikipedia.org/wiki/April_10%E2%80%9311,_2001_tornado_outbreak#Tri-state_hailstorm">hail of
+northeastern
+Kansas</a>
+does reach a terminal velocity. Oh, and I’m not joking about pythons:
+combine the <a class="reference external" href="https://en.wikipedia.org/wiki/Malthusian_growth_model">Malthusian
+model</a> with
+the fact there is an artificial source term due to pet owners releasing
+their larger-than-expected pets into the <a class="reference external" href="https://en.wikipedia.org/wiki/Burmese_pythons_in_Florida">Florida
+Everglades</a>.</p>
+</div>
+<div class="section" id="Symbolic-Solution-of-First-Order-IVPs">
+<h2>Symbolic Solution of First-Order IVPs<a class="headerlink" href="#Symbolic-Solution-of-First-Order-IVPs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="By-&quot;Hand&quot;">
+<h3>By “Hand”<a class="headerlink" href="#By-"Hand"" title="Permalink to this headline">¶</a></h3>
+<p>First, a sanity check <span class="math">\(\frac{dy}{dt} = ay(t)\)</span> with
+<span class="math">\(y(0) = y_0\)</span>. This can be solved, and it depends on only
+integration. Rearrange the equation to be</p>
+<div class="math">
+\[\frac{1}{y}dy = a dt \, ,\]</div>
+<p>and then integrate to obtain</p>
+<div class="math">
+\[\ln(y) = a t + C' \, .\]</div>
+<p>Here, <span class="math">\(C'\)</span> is an arbitrary integration constant. Exponentiation of
+both sides results in</p>
+<div class="math">
+\[y(t) = e^{at + C'} = C e^{at} \, ,\]</div>
+<p>where <span class="math">\(C = e^{C'}\)</span> is still an arbitrary constant.</p>
+<p>So far, this is just <em>integral calculus</em>. To solve the given IVP, we
+need to <em>apply the initial condition</em> (IC). Specifically, we need to
+specify <span class="math">\(C\)</span> that satisfies <span class="math">\(y(0) = C e^{a0} = y_0\)</span>. Clearly,
+<span class="math">\(C = y_0\)</span>.</p>
+</div>
+<div class="section" id="With-SymPy">
+<h3>With SymPy<a class="headerlink" href="#With-SymPy" title="Permalink to this headline">¶</a></h3>
+<p>With this simplest of IVPs solved “by hand,” we turn to SymPy and its
+<code class="docutils literal"><span class="pre">dsolve</span></code> function. First, initialize the symbols:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">y_0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y y_0 a t&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Then, set up the differential equation just like any other equation:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">ivp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span> <span class="n">a</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="n">ivp</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{d}{d t} y{\left (t \right )} = a y{\left (t \right )}$$</div></div>
+</div>
+<p>Finally, produce the general solution via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp</span><span class="p">)</span>
+<span class="n">sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$y{\left (t \right )} = C_{1} e^{a t}$$</div></div>
+</div>
+<p>The solution returned is a SymPy equation (i.e., <code class="docutils literal"><span class="pre">sy.Eq</span></code>) relating
+<span class="math">\(y(t)\)</span> on the left-hand side to <span class="math">\(C_1 e^{at}\)</span> on the
+right-hand side. We want to get the right-hand side and determine
+<span class="math">\(C_1\)</span> given the initial condition. To do so, we can use the
+<code class="docutils literal"><span class="pre">rhs</span></code> attribute of <code class="docutils literal"><span class="pre">sy.Eq</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$C_{1} e^{a t}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">C</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">y_0</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">))</span>
+<span class="n">C</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left [ y_{0}\right ]$$</div></div>
+</div>
+<p>As observed in <a class="reference internal" href="ME400_Lecture_18.html"><span class="doc">Lecture 18</span></a>, the output from
+<code class="docutils literal"><span class="pre">sy.solve</span></code> is a <code class="docutils literal"><span class="pre">list</span></code> that has zero or more solutions (here,
+there’s just one). The final solution to the IVP is defined by
+substituting this solution for <span class="math">\(C_1\)</span> (here, <span class="math">\(y_0\)</span>) into
+<code class="docutils literal"><span class="pre">sol.rhs</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y_sol</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">y_0</span><span class="p">)</span>
+<span class="n">y_sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$y_{0} e^{a t}$$</div></div>
+</div>
+<p>This is the result we’re after.</p>
+<p>By default, SymPy uses <span class="math">\(C_1\)</span>, <span class="math">\(C_2\)</span>, etc. for its constants
+of integration. Symbolically, these are always defined as
+<code class="docutils literal"><span class="pre">Symbol('C1')</span></code>, <code class="docutils literal"><span class="pre">Symbol('C2')</span></code>, etc.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve <span class="math">\(y' + py(t) = q\)</span> subject to <span class="math">\(y(0)\)</span> =
+<span class="math">\(y_0\)</span>. Here, <span class="math">\(p\)</span> and <span class="math">\(q\)</span> are constant coefficients.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y</span><span class="p">,</span> <span class="n">y_0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y y_0 p q t&#39;</span><span class="p">)</span>
+<span class="n">ivp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">p</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">q</span><span class="p">)</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$y{\left (t \right )} = \frac{1}{p} \left(q + e^{p \left(C_{1} - t\right)}\right)$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">C</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">y_0</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y_sol</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">y_sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{1}{p} \left(p y_{0} + q e^{p t} - q\right) e^{- p t}$$</div></div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve <span class="math">\(\frac{dn}{dt} = -\lambda n + s(t)\)</span> where</p>
+<div class="math">
+\[\begin{split}s = \left \{ \begin{array}{cc}
+                10^{6} &amp; t \leq 10 \\
+                0      &amp; t &gt; 10
+             \end{array} \right . \, ,\end{split}\]</div>
+<p><span class="math">\(\lambda = 10^{-3}\)</span>, and <span class="math">\(y(0) = 0\)</span>. Plot your result for
+<span class="math">\(t \in [0, 30]\)</span>.</p>
+<p><em>Solution</em>: This problem is a bit tricky because the forcing function
+<span class="math">\(s(t)\)</span> is discontinuous. Here’s one way to tackle this. First
+solve for <span class="math">\(0 \leq t \leq 10\)</span>. This part is identical to the last
+exercise. Then, with that solution, <span class="math">\(y(10)\)</span> is known, and this can
+be used as the initial value for <span class="math">\(t &gt; 10\)</span>. This part is identical
+the in-text example <span class="math">\(y'=ay\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Define all the symbols needed.  However, be</span>
+<span class="c1"># careful with &quot;lambda&quot;!  Remember, it&#39;s a keyword</span>
+<span class="c1"># in Python.  Here, add an underscore.</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">y_0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">C1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y y_0 t lambda s C1&#39;</span><span class="p">)</span>
+
+<span class="c1"># Devine the IVP in the first region and solve like</span>
+<span class="c1"># the last exercise:</span>
+<span class="c1">#   1. define the ivp for t in [0, 10]</span>
+<span class="n">ivp1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span> <span class="o">-</span><span class="n">lambda_</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+<span class="c1">#   2. solve the ivp</span>
+<span class="n">sol1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp1</span><span class="p">)</span>
+<span class="c1">#   3. solve for the constant of integration by applying</span>
+<span class="c1">#      the initial condition</span>
+<span class="n">ic</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol1</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">y_0</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">ic</span><span class="p">,</span> <span class="n">C1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#   4. subsitute the constant along with s and lambda</span>
+<span class="n">y_sol1</span> <span class="o">=</span> <span class="n">sol1</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">C1</span><span class="p">:</span> <span class="n">C</span><span class="p">,</span> <span class="n">y_0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">:</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">y_sol1</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$10.0 - 10.0 e^{- 0.1 t}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Now, define the IVP in the second region.  We cannot use</span>
+<span class="c1"># the original ivp1 because the two IVPs are different.  One</span>
+<span class="c1"># has s and one does not.</span>
+<span class="c1">#   1. define the ivp for t in [10, oo]</span>
+<span class="n">ivp2</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span> <span class="o">-</span><span class="n">lambda_</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="c1">#   2. solve this ivp</span>
+<span class="n">sol2</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp2</span><span class="p">)</span>
+<span class="c1">#   3. define the initial value y(10) using previous solution</span>
+<span class="n">y_10</span> <span class="o">=</span> <span class="n">y_sol1</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c1">#   4. solve for the constant of integration</span>
+<span class="n">ic</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol2</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">y_10</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">ic</span><span class="p">,</span> <span class="n">C1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#   5. substitute this constant and others into the final result</span>
+<span class="n">y_sol2</span> <span class="o">=</span> <span class="n">sol2</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">C1</span><span class="p">:</span> <span class="n">C</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">:</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">y_sol2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$17.1828182845905 e^{- 0.1 t}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Now, plot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">t_plot1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y_plot1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y_sol1</span><span class="p">)(</span><span class="n">t_plot1</span><span class="p">)</span>
+<span class="n">t_plot2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">y_plot2</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y_sol2</span><span class="p">)(</span><span class="n">t_plot2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_plot1</span><span class="p">,</span> <span class="n">y_plot1</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">t_plot2</span><span class="p">,</span> <span class="n">y_plot2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_26_22_0.png" src="../_images/lectures_ME400_Lecture_26_22_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: My kid <em>hates</em> hot food, so if I make him my (absolute
+delicious grilled-cheese sandwich with 100% real Wisconsin cheese [of
+course]), I’ve got to let it cool down to approximately room temperature
+(say 70 <span class="math">\({}^{\circ}\)</span>F). If immediately after grilling it, the
+sandwich is 150 <span class="math">\({}^{\circ}\)</span>F, and 5 minutes later, it is
+100<span class="math">\({}^{\circ}\)</span>, <strong>how much longer do I have to let it cool?</strong>
+Assume that Newton’s law of cooling, <span class="math">\(T' = k(T-T_m)\)</span>, applies.
+(Hint: you <em>do</em> have enough information to solve this problem.)</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Radio-carbon dating is a technique used to determine how
+old fossils are. The technique is based on the fact that the radioactive
+isotope C-14 is produced in the atmosphere at an approximately constant
+rate. Living, breathing creatures have C-14 at levels consistent with
+the atomosphere. Dead, fossilized creatures have C-14 levels that
+decrease over time. The <em>half life</em> of C-14 is about 5600 years, meaning
+that every 5600 years, the amount of C-14 in the fossil will decrease by
+half. Use this number and the simple model <span class="math">\(N' = -\lambda N(t)\)</span>
+(where <span class="math">\(N\)</span> represents the amount of C-14) to determine
+<span class="math">\(\lambda\)</span>. Then, determine how old a fossil must be if its C-14
+concentration is only 1/100 of that of a living creature.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Try solving the <em>nonlinear</em> logistics equation:
+<span class="math">\(y' = y(t)[a - by(t)]\)</span> with <span class="math">\(y(0) = y_0\)</span>. Can SymPy do this?
+This model extends the exponential growth model <span class="math">\(y'/y = a\)</span> by
+<span class="math">\(y'/y = a - by\)</span>. The <span class="math">\(-by\)</span> term represents some sort of
+inhibitor for unbounded growth. Think about it: unbounded growth would
+require unbounded resources. In the real world, those resources are not
+available, and so there tends to be muted growth as populations become
+very large. This reduction in the grown rate can be modeled as being
+proportional to the population itself, leading to this nonlinear model.
+Plot the solution for <span class="math">\(y(0) = 1\)</span>, <span class="math">\(a = 1\)</span>, and <span class="math">\(b = 0\)</span>
+and <span class="math">\(b = 1\)</span>. Notice a difference?</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="Second-Order-Problems">
+<h2>Second-Order Problems<a class="headerlink" href="#Second-Order-Problems" title="Permalink to this headline">¶</a></h2>
+<p>Many models in engineering involve high-order derivatives. Here, we’ll
+focus only on second-order differential equations.</p>
+<div class="section" id="Second-Order-IVPs">
+<h3>Second-Order IVPs<a class="headerlink" href="#Second-Order-IVPs" title="Permalink to this headline">¶</a></h3>
+<p>A good first application is the spring-mass system. Specifically,
+consider the equation</p>
+<div class="math">
+\[m \frac{d^2 x}{dt^2} = -k x - a \frac{dx}{dt} \, ,\]</div>
+<p>which represents Newton’s second law for a spring-mass system with
+<em>spring constant</em> <span class="math">\(k\)</span> and <em>damping</em> force <span class="math">\(a\)</span>. Here, we’ll
+be solving this equation subject to the ICs <span class="math">\(x(0) = x_0\)</span> and
+<span class="math">\(x'(0) = v_0\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: If <span class="math">\(x\)</span> is in units of m and <span class="math">\(m\)</span> is the mass in
+kg, what are the units for <span class="math">\(k\)</span> and <span class="math">\(a\)</span>?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the spring-mass equation above for
+<span class="math">\(x(0) = x_0\)</span> and <span class="math">\(x'(0) = v_0\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Define all symbols</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x, x_0, v_0, t, m, k, a&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Define the IVP</span>
+<span class="n">ivp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="n">k</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">))</span>
+<span class="n">ivp</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$m \frac{d^{2}}{d t^{2}}  x{\left (t \right )} = - a \frac{d}{d t} x{\left (t \right )} - k x{\left (t \right )}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Solve the IVP</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp</span><span class="p">)</span>
+<span class="n">sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$x{\left (t \right )} = C_{1} e^{\frac{t}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}\right)} + C_{2} e^{\frac{t}{2 m} \left(- a + \sqrt{a^{2} - 4 k m}\right)}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Define the ICs</span>
+<span class="n">ic1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">x_0</span><span class="p">)</span>
+<span class="n">ic2</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">v_0</span><span class="p">)</span>
+<span class="n">ic1</span><span class="p">,</span> <span class="n">ic2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left ( C_{1} + C_{2} = x_{0}, \quad \frac{C_{1}}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}\right) + \frac{C_{2}}{2 m} \left(- a + \sqrt{a^{2} - 4 k m}\right) = v_{0}\right )$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Solve for the undetermined coefficients</span>
+<span class="n">coefs</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">([</span><span class="n">ic1</span><span class="p">,</span> <span class="n">ic2</span><span class="p">],</span> <span class="p">[</span><span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C2&#39;</span><span class="p">)])</span>
+<span class="n">coefs</span> <span class="c1"># remember, it&#39;s a dictionary now</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left \{ C_{1} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(- \frac{a x_{0}}{2} - m v_{0} + \frac{x_{0}}{2} \sqrt{a^{2} - 4 k m}\right), \quad C_{2} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(m v_{0} + \frac{x_{0}}{2} \left(a + \sqrt{a^{2} - 4 k m}\right)\right)\right \}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># Substitute these coefficients back into the solution</span>
+<span class="n">sol_x</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+<span class="n">sol_x</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{e^{- \frac{a t}{m}}}{2 \sqrt{a^{2} - 4 k m}} \left(\left(2 m v_{0} + x_{0} \left(a + \sqrt{a^{2} - 4 k m}\right)\right) e^{\frac{t}{2 m} \left(a + \sqrt{a^{2} - 4 k m}\right)} + \left(- a x_{0} - 2 m v_{0} + x_{0} \sqrt{a^{2} - 4 k m}\right) e^{\frac{t}{2 m} \left(a - \sqrt{a^{2} - 4 k m}\right)}\right)$$</div></div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Let <span class="math">\(m = 1\)</span> and <span class="math">\(k = 1\)</span> in the solution for
+the spring-mass system above. Plot the solution for <span class="math">\(a = 1\)</span>,
+<span class="math">\(a=2\)</span>, and <span class="math">\(a=3\)</span> over the times <span class="math">\(t\in [0, 10]\)</span>
+assuming <span class="math">\(x_0 = 1\)</span> and <span class="math">\(v_0 = 1\)</span>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Second-Order-BVPs">
+<h3>Second-Order BVPs<a class="headerlink" href="#Second-Order-BVPs" title="Permalink to this headline">¶</a></h3>
+<p>Boundary-value problems (BVPs) are of critcal importance for many
+physical models, including those of heat conduction through media and
+neutron diffusion in nuclear reactors. We’ll stick with second-order
+equations with <em>constant</em> coefficients, i.e., equations of the form</p>
+<div class="math">
+\[\frac{d^2 y}{dx^2} + p\frac{dy}{dx} + q y(x) = s(x) \, ,\]</div>
+<p>where <span class="math">\(s(x)\)</span> is an arbitrary forcing function. Boundary conditions
+specify <span class="math">\(y(x)\)</span> or its derivative at two separate points
+<span class="math">\(x = a\)</span> and <span class="math">\(x = b\)</span>. That makes the equation a two-point
+BVP.</p>
+<p>Recall, the equation is <em>homogeneous</em> if <span class="math">\(s(x) = 0\)</span>, and
+<em>inhomogenous</em> otherwise. The general solution to such equations is the
+sum of the homogeneous solution (i.e., the solution when
+<span class="math">\(s(x) = 0\)</span>) and the particular solution. There are a variety of
+tricks for solving such equations, but that’s not our focus; rather,
+we’ll leverage SymPy for the general solution and apply boundary
+conditions (BCs) to develop final solutions.</p>
+<p>More specifically, here’s our approach, and it follows what we’ve done
+for IVPs: 1. Define the BVP 2. Solve the BVP using <code class="docutils literal"><span class="pre">dsolve</span></code> 3. Define
+the BCs 4. Solve the BCs to define the two undetermined constants 5.
+Substitute those constants (and any other values) to the general
+solution 6. Perform any plotting, etc., required by the problem
+statement.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the heat equation <span class="math">\(k\frac{d^2 T}{dx^2} = 0\)</span>
+subject to <span class="math">\(T(0) = 0\)</span> and <span class="math">\(T(a) = 100\)</span>. By the way, this
+equation models the temperature <span class="math">\(T\)</span> through a wall of thickness
+<span class="math">\(a\)</span> whose left and and right surfaces are held at 0 and 100 K,
+respectively.</p>
+<p><em>Solution</em></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 1. Define the BVP</span>
+<span class="n">T</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;T, x, k, a&#39;</span><span class="p">)</span>
+<span class="n">bvp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">bvp</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$k \frac{d^{2}}{d x^{2}}  T{\left (x \right )} = 0$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 2. Solve the BVP using dsolve</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">bvp</span><span class="p">)</span>
+<span class="n">sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$T{\left (x \right )} = C_{1} + C_{2} x$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 3. Define the BCs</span>
+<span class="n">bc_left</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">bc_right</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">bc_left</span><span class="p">,</span> <span class="n">bc_right</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left ( C_{1} = 0, \quad C_{1} + C_{2} a = 100\right )$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 4. Solve the BCs for C1 and C2</span>
+<span class="n">coefs</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">([</span><span class="n">bc_left</span><span class="p">,</span> <span class="n">bc_right</span><span class="p">],</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;C2&#39;</span><span class="p">))</span>
+<span class="n">coefs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\left \{ C_{1} : 0, \quad C_{2} : \frac{100}{a}\right \}$$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># 5. Substitutions</span>
+<span class="n">sol_T</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span>
+<span class="n">sol_T</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+$$\frac{100 x}{a}$$</div></div>
+</div>
+<p>The temperature found is linear, and it varies from 0 (at the left) to
+100 (at the right). Does the solution depend on the conductivity
+<span class="math">\(k\)</span>? (Remember, <span class="math">\(k\)</span> quantifies how readily heat transfers
+through a medium by conduction.)</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the heat equation <span class="math">\(k\frac{d^2 T}{dx^2} = 1\)</span>
+subject to <span class="math">\(T(0) = 0\)</span> and <span class="math">\(T(a) = 100\)</span>. What happens to
+<span class="math">\(T\)</span> within the wall as <span class="math">\(k\)</span> is increased?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the heat equation <span class="math">\(k\frac{d^2 T}{dx^2} = 1\)</span>
+subject to <span class="math">\(T(0) = 0\)</span> and <span class="math">\(T'(a) = 0\)</span>. The condition
+<span class="math">\(T'(a)\)</span> is we specify the right surface of the wall to be
+perfectly insulating. If <span class="math">\(T'\)</span> vanishes, so does the heat flux
+<span class="math">\(kT'\)</span>, and if not heat is passing through, we’re insulated.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the second-order, ordinary differential equation</p>
+<div class="math">
+\[-D \frac{d^2 \phi}{dx^2} + \Sigma \phi(x) = S(x) \, ,\]</div>
+<p>which is one (albeit simplified) model for the diffusion of neutron
+particles in a 1-D system. Two possible applications of this model
+include (1) the transport of energy via radiation (i.e., radiation heat
+transfer) and (2) the diffusion of neutrons in a nuclear reactor.</p>
+<p>Consider the case for which <span class="math">\(\phi(0) = \phi(10) = 0\)</span>,
+<span class="math">\(D = 1/3\)</span>, <span class="math">\(\Sigma = 1/2\)</span>, and</p>
+<div class="math">
+\[\begin{split}s = \left \{ \begin{array}{cc}
+                1      &amp; x \leq 5 \\
+                0      &amp; 0 &gt; 5
+             \end{array} \right . \, .\end{split}\]</div>
+<p>To solve this problem, assume that <span class="math">\(\phi(x)\)</span> and
+<span class="math">\(D \frac{d \phi}{dx}\)</span> must be continuous at <span class="math">\(x = 5\)</span>. For
+heat transfer, this continuity means the temperature and the heat flux
+are continuous. For neutron diffusion, this means the neutron flux and
+its current are continuous. (<em>Hint</em>: Solve the equation separately for
+<span class="math">\(x \leq 5\)</span> and <span class="math">\(x &gt; 5\)</span>. Then, the BCs and the continuity
+conditions provide 4 equations for the four undetermined coefficients.)</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following <em>partial</em> differential equation
+(PDE):</p>
+<div class="math">
+\[\frac{\partial c}{\partial t} = D(x) \frac{\partial^2 c}{\partial x^2} - v(x)\frac{\partial c}{\partial x} + S(x)\]</div>
+<p>which is a simplified, one-dimensional, <em>advection-diffusion equation</em>.
+Here, <span class="math">\(c(x)\)</span> is the concentration of some quantity of interest
+(perhaps a pollutant in a stream), <span class="math">\(D\)</span> is a diffusion coefficient
+(that quantifies how rapidly the species tends to dissipate away from a
+region in space), and <span class="math">\(v(x)\)</span> is the velocity of the surrounding
+field (here, perhaps the stream with the pollutant).</p>
+<p>Like many equations that model physical systems, the
+convection-diffusion equation is a statement of balance. On the left, we
+have <span class="math">\(\frac{\partial c}{\partial t}\)</span>, which is the time rate of
+change of the concentration at any point <span class="math">\(x\)</span>. This change comes
+from three sources:</p>
+<ol class="arabic simple">
+<li>the <em>diffusion</em> of the species away from a point <span class="math">\(x\)</span>, here
+quantified by <span class="math">\(D(x) \frac{\partial^2 c}{\partial x^2}\)</span></li>
+<li>the <em>advection</em> of the species away from a point <span class="math">\(x\)</span> due to the
+flow of the surrounding field (here, again, the stream), here
+quantified by <span class="math">\(-v(x)\frac{\partial c}{\partial x}\)</span></li>
+<li>any external sources of the species, perhaps a leaking canister or a
+chemical reaction, here represented by <span class="math">\(S(x)\)</span></li>
+</ol>
+<p>Now, do the following:</p>
+<ul class="simple">
+<li>Suppose the unit of <span class="math">\(c\)</span> is m<span class="math">\(^{-3}\)</span>. What must be the
+units of <span class="math">\(D\)</span>, <span class="math">\(v\)</span>, and <span class="math">\(S\)</span>?</li>
+<li>Write down the <em>steady-state</em> form of the above convection-diffusion
+equation by setting the time derivative to zeros.</li>
+<li>Solve the steady-state equation for the case <span class="math">\(v = 1\)</span>,
+<span class="math">\(S = 1\)</span>, <span class="math">\(c(0) = 0\)</span> and <span class="math">\(c(10) = 1\)</span>.</li>
+<li>Plot your solution for <span class="math">\(D = 10\)</span>, <span class="math">\(D = 1\)</span>, and
+<span class="math">\(D = 0.1\)</span>. What happens? (The phenomenon you should observe is
+the development of a <em>boundary layer</em>, a term that should become
+familiar in fluid mechanics.)</li>
+</ul>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>You may wish to review your text from a past course on differential
+equations. That text might very well be Prof. Bennett’s online textbook
+called <a class="reference external" href="https://www.math.ksu.edu/math240/book/">Elementary Differential
+Equations</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 26 - Solving ODEs Symbolically</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Differential-Equations">Differential Equations</a></li>
+<li><a class="reference internal" href="#Whence-Comes-?">Whence Comes <span class="math">\(y'+py=q\)</span>?</a></li>
+<li><a class="reference internal" href="#Symbolic-Solution-of-First-Order-IVPs">Symbolic Solution of First-Order IVPs</a><ul>
+<li><a class="reference internal" href="#By-&quot;Hand&quot;">By “Hand”</a></li>
+<li><a class="reference internal" href="#With-SymPy">With SymPy</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Second-Order-Problems">Second-Order Problems</a><ul>
+<li><a class="reference internal" href="#Second-Order-IVPs">Second-Order IVPs</a></li>
+<li><a class="reference internal" href="#Second-Order-BVPs">Second-Order BVPs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_25.html" title="previous chapter">Lecture 25 - Data Analysis via Interpolation</a></li>
+      <li>Next: <a href="ME400_Lecture_27.html" title="next chapter">Lecture 27 - Solving First-Order IVPs Numerically</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_26.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_26.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

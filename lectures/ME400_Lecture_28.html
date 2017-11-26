@@ -1,0 +1,866 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 28 - Numerical Solutions of First-Order Systems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lecture 29 - Numerical Solutions of Two-Point BVPs" href="ME400_Lecture_29.html" />
+    <link rel="prev" title="Lecture 27 - Solving First-Order IVPs Numerically" href="ME400_Lecture_27.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-28---Numerical-Solutions-of-First-Order-Systems">
+<h1>Lecture 28 - Numerical Solutions of First-Order Systems<a class="headerlink" href="#Lecture-28---Numerical-Solutions-of-First-Order-Systems" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>This lesson is a direct extension of <a class="reference internal" href="ME400_Lecture_27.html"><span class="doc">Lecture
+27</span></a>, in which the focus was the numerical
+solution of first-order IVPs. Here, those techniques are extended to
+<em>systems</em> of first-order equations.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Set up and solve simple linear systems <em>numerically</em> using NumPy.</li>
+<li>Solve systems of first-order IVPs numerically using forward and
+backward Euler’s method</li>
+<li>Solve systems of first-order IVPs using <code class="docutils literal"><span class="pre">odeint</span></code></li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>You should already be able to</p>
+<ul class="simple">
+<li>Solve IVPs using Euler’s method based on the material of <a class="reference internal" href="ME400_Lecture_27.html"><span class="doc">Lecture
+27</span></a></li>
+<li>Define one- and two-dimensional arrays using NumPy arrays based on
+the material of <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>.</li>
+<li>Use <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> to solve <span class="math">\(\mathbf{Ax = b}\)</span> based on the
+material of <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>.</li>
+</ul>
+<p>Please review these topics (and resources) as needed.</p>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">odeint</span></code></li>
+<li>first-order system</li>
+</ul>
+</div>
+</div>
+<div class="section" id="A-Coupled-System-and-Its-Numerical-Solution">
+<h2>A Coupled System and Its Numerical Solution<a class="headerlink" href="#A-Coupled-System-and-Its-Numerical-Solution" title="Permalink to this headline">¶</a></h2>
+<p>Let’s motivate the discussion with the familiar <a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">spring-mass
+system</span></a>:</p>
+<div class="math">
+\[m \frac{d^2 x}{dt^2} = -k x - a \frac{dx}{dt} \, ,\]</div>
+<p>subject to subject to the ICs <span class="math">\(x(0) = x_0\)</span> and
+<span class="math">\(x'(0) = v_0\)</span>. This equation can be solved directly as a
+second-order equation using standard techniques or by using SymPy. It
+would also be possible to solve this <em>numerically</em> by applying the
+appropriate <a class="reference internal" href="ME400_Lecture_21.html"><span class="doc">finite-difference
+approximations</span></a> to both <span class="math">\(d^x/dt^2\)</span> and
+<span class="math">\(dx/dt\)</span>. There are a variety of ways to do this (we have more than
+one way to approximate <span class="math">\(y'\)</span> for instance), and each would be
+somewhat more complicated than the Euler methods <a class="reference internal" href="ME400_Lecture_27.html"><span class="doc">previously
+discussed</span></a>.</p>
+<p>Instead, we <em>reduce</em> the second-order problem to a <em>system</em> of two
+first-order problems. Let</p>
+<div class="math">
+\[\frac{dx}{dt} = v(t)\]</div>
+<p>from which we have</p>
+<div class="math">
+\[\frac{dv}{dt} = -\frac{kx(t) + av(t)}{m} \, .\]</div>
+<p>These two equations can be written more compactly in matrix form:</p>
+<div class="math">
+\[\begin{split}\left [ \begin{array}{c}
+  v' \\
+  x'
+\end{array} \right ]
+=
+\left [ \begin{array}{cc}
+  -\frac{a}{m} &amp; -\frac{k}{m} \\
+   1   &amp;  0 \\
+\end{array} \right ]
+\left [ \begin{array}{c}
+  v(t) \\
+  x(t)
+\end{array} \right ]\end{split}\]</div>
+<p>or</p>
+<div class="math">
+\[\mathbf{y}' = \mathbf{A}\mathbf{y}(t) \, ,\]</div>
+<p>where <span class="math">\(\mathbf{y} = [v(t), x(t)]^T\)</span> and <span class="math">\(T\)</span> is the
+transpose.</p>
+<p>By writing the system in this form, it can be observed to follow the
+more general form</p>
+<div class="math">
+\[\mathbf{y}' = \mathbf{f}(t, \mathbf{y}(t)) \, ,\]</div>
+<p>for which the <em>forward Euler method</em> is defined as</p>
+<div class="math">
+\[\mathbf{y}(t_{n+1}) = \mathbf{y}(t_n) + \Delta \mathbf{f}(t, \mathbf{y}(t_n)) \, ,\]</div>
+<p>where <span class="math">\(t_{n+1} = t_{n} + \Delta\)</span>. The simplicity of forward Euler
+is obvious here: no matter how complicated <span class="math">\(\mathbf{f}\)</span> might be,
+all we need to do is evaluate it once using information defined at the
+old time <span class="math">\(t_n\)</span> to determine the solution at the new time
+<span class="math">\(t_{n+1}\)</span>. It’s <em>explicit</em>. We do <em>not</em> need to solve any linear
+or nonlinear systems. For the case of the spring-mass systems, that step
+looks like</p>
+<div class="math">
+\[\mathbf{y}(t_{n+1}) = \mathbf{y}(t_n) + \Delta \mathbf{A} \mathbf{y}(t_n) \, .\]</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the spring-mass system. For <span class="math">\(m = 1\)</span>,
+<span class="math">\(k = 1\)</span>, <span class="math">\(a = 1\)</span>, <span class="math">\(x(0) = 0\)</span>, and <span class="math">\(v(0) = 1\)</span>,
+compute <span class="math">\(x(t)\)</span> at <span class="math">\(t = [0, 0.5, 1.0, \ldots, 10]\)</span> (that’s 21
+times) using forward Euler. Plot these estimates and the actual
+solution.</p>
+<p><em>Solution</em>: First, let’s get the reference solution using SymPy in the
+form of a callable, lambdified function. For completeness, return both
+<span class="math">\(x(t)\)</span> and <span class="math">\(v(t)\)</span>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">spring_mass_reference</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">v_0</span><span class="p">):</span>
+    <span class="c1"># set up symbols</span>
+    <span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x t&#39;</span><span class="p">)</span>
+    <span class="c1"># set up/solve IVP</span>
+    <span class="n">ivp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="n">k</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">))</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp</span><span class="p">)</span>
+    <span class="c1"># set up/solve ICs</span>
+    <span class="n">ic1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">x_0</span><span class="p">)</span>
+    <span class="n">ic2</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">v_0</span><span class="p">)</span>
+    <span class="n">coefs</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">([</span><span class="n">ic1</span><span class="p">,</span> <span class="n">ic2</span><span class="p">],</span> <span class="p">[</span><span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C2&#39;</span><span class="p">)])</span>
+    <span class="c1"># make substitutions and return the lambdified results</span>
+    <span class="n">sol_x</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">rhs</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">coefs</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+    <span class="n">sol_v</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">sol_x</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="n">f_x</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol_x</span><span class="p">)</span>
+    <span class="n">f_v</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol_v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f_v</span><span class="p">,</span> <span class="n">f_x</span>
+</pre></div>
+</div>
+</div>
+<p>Now, apply forward Euler.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="c1"># Define givens</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">v0</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="c1"># Define the times</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+<span class="c1"># Define the solution and set the ICs</span>
+<span class="n">y_fe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">y_fe</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v0</span>
+<span class="n">y_fe</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+<span class="c1"># Define the 2 by 2 matrix A.  Note the spacing</span>
+<span class="c1"># used to enhance readability.</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="n">a</span><span class="o">/</span><span class="n">m</span><span class="p">,</span> <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">m</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">1</span><span class="p">,</span>    <span class="mi">0</span>   <span class="p">]])</span>
+<span class="c1"># Define the time step</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># Now, loop through for each time step</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">y_fe</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_fe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="n">A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y_fe</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="c1"># Extract v and x.</span>
+<span class="n">v_fe</span><span class="p">,</span> <span class="n">x_fe</span> <span class="o">=</span> <span class="n">y_fe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_fe</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="c1"># Get the reference values (as functions)</span>
+<span class="n">v_ref</span><span class="p">,</span> <span class="n">x_ref</span> <span class="o">=</span> <span class="n">spring_mass_reference</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">v0</span><span class="p">)</span>
+<span class="c1"># Plot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x_fe</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_ref</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="s1">&#39;r--o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;x(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;approx&#39;</span><span class="p">,</span> <span class="s1">&#39;actual&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_28_7_0.png" src="../_images/lectures_ME400_Lecture_28_7_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: This numerical solution for the spring-mass equation above
+is qualitatively close to the reference found using SymPy, but it’s
+quantitatively far enough away that I’m suspicious. Compute the absolute
+error in <span class="math">\(x(10)\)</span> as a function of <span class="math">\(\Delta\)</span>. Does it
+converge?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: An important phenomenon in nuclear reactors is the
+production of <span class="math">\({}^{135}\)</span>Xe, a substance that is really good at
+absorbing the neutrons needed to sustain the chain reaction that powers
+such reactors. <span class="math">\({}^{135}\)</span>Xe is produced directly from fission,
+but it is also generated from the decay of <span class="math">\({}^{135}\)</span>I, another
+nuclide produced by fission. Details aside, the concentrations of these
+nuclides is well modeled by the following system of equations:</p>
+<div class="math">
+\[\frac{d N_{I}}{dt} = \gamma_{I} \Sigma_f \phi - \lambda_I N_I(t) \, ,\]</div>
+<p>and</p>
+<div class="math">
+\[\frac{d N_{Xe}}{dt} = \gamma_{Xe} \Sigma_f \phi + \lambda_I N_I(t) - \sigma_a^{Xe} N_{Xe}(t) \phi +  \lambda_{Xe} N_{Xe}(t) \, .\]</div>
+<p>Suppose that <span class="math">\(\sigma_a^{Xe} = 3.5 \times 10^{-18}\)</span> cm<span class="math">\(^2\)</span>,
+<span class="math">\(\gamma_{Xe} = 0.006\)</span>, <span class="math">\(\gamma_I = 0.064\)</span>,
+<span class="math">\(\lambda_{Xe} = 2.95\times 10^{-5}\)</span> 1/s, and
+<span class="math">\(\lambda_{I} = 2.1\times 10^{-5}\)</span> 1/s, and <span class="math">\(\Sigma_f = 0.1\)</span>
+1/cm. s.</p>
+<ol class="arabic simple">
+<li>If <span class="math">\(\phi\)</span> has units of 1/cm<span class="math">\(^2\)</span>, what is the unit of
+<span class="math">\(N_I\)</span> and <span class="math">\(N_{Xe}\)</span>?</li>
+<li>Find the steady-state (i.e., equilibrium) value of <span class="math">\(N_I\)</span> and
+<span class="math">\(N_{Xe}\)</span> when <span class="math">\(\phi = 10^{14}\)</span> 1/cm<span class="math">\(^2\)</span>.
+Remember, steady state means “constant in time.” Hence, set the
+derivatives to zero, and solve for <span class="math">\(N^{SS}_I\)</span> and
+<span class="math">\(N^{SS}_{Xe}\)</span>.</li>
+<li>Use those steady-state values <span class="math">\(N^{SS}_I\)</span> and
+<span class="math">\(N^{SS}_{Xe}\)</span> as the initial condition for the IVP at
+<span class="math">\(t = 0\)</span>. Solve the equations using forward Euler for
+<span class="math">\(\phi = 10^{13}\)</span> 1/cm<span class="math">\(^2\)</span>, <span class="math">\(\phi = 10^{14}\)</span>
+1/cm<span class="math">\(^2\)</span>, and <span class="math">\(\phi = 2\times 10^{14}\)</span> 1/cm<span class="math">\(^2\)</span>
+for times up 24 <em>hours</em>. (Be careful about the step size you use.)</li>
+</ol>
+</div>
+<hr class="docutils" />
+<div class="section" id="When-the-Equations-are-&quot;Stiff&quot;">
+<h2>When the Equations are “Stiff”<a class="headerlink" href="#When-the-Equations-are-"Stiff"" title="Permalink to this headline">¶</a></h2>
+<p>A system of IVPs is considered “stiff” when the underlying time
+constants vary by several orders of magnitude. That means one part of
+the solution (one nuclide, or the position of one mass in a spring-mass
+system) may grow or decay exponentially over periods of seconds, whereas
+some other part of the solution may vary over much smaller time periods,
+e.g., ms or smaller. Forward Euler fails for these systems unless
+<span class="math">\(\Delta\)</span> is very, very small. Sometimes, it must be small enough
+that solving the system becomes impractical.</p>
+<p>An alternative is to use methods that are implicit in time. The chief
+example is backward Euler. Remember, implicit here means the solution at
+<span class="math">\(t_{n+1}\)</span> depends on information at <span class="math">\(t_{n+1}\)</span>, not
+<span class="math">\(t_{n}\)</span>. For systems of IVPs, we need to solve a matrix system to
+make the step. For nonlinear IVPs, we need to solve a nonlinear equation
+(perhaps a system) to make the step.</p>
+<p>Let’s go back to the generic equation</p>
+<div class="math">
+\[\mathbf{y}' = \mathbf{f}(t, \mathbf{y}(t)) \, .\]</div>
+<p>Application of backward Euler gives</p>
+<div class="math">
+\[\mathbf{y}(t_{n+1}) = \mathbf{y}(t_n) + \Delta \mathbf{f}(t_{n+1}, \mathbf{y}(t_{n+1})) \,\]</div>
+<p>where, again, <span class="math">\(t_{n+1} = t_{n} + \Delta\)</span>. For the case of the
+spring-mass systems, this backward-Euler step looks like</p>
+<div class="math">
+\[\mathbf{y}(t_{n+1}) = \mathbf{y}(t_n) + \Delta \mathbf{A} \mathbf{y}(t_{n+1}) \, .\]</div>
+<p>Note that <span class="math">\(\mathbf{y}(t_{n+1})\)</span> is on <em>both</em> sides of the
+equation. To isolate it, we move the right-most term to the left-hand
+side, which leads to</p>
+<div class="math">
+\[(\mathbf{I} - \Delta \mathbf{A}) \mathbf{y}(t_{n+1}) = \mathbf{y}(t_n)  \, .\]</div>
+<p>This is a linear equation of the form <span class="math">\(\mathbf{Mx}=\mathbf{b}\)</span>,
+and we can use <code class="docutils literal"><span class="pre">numpy.linalg.solve</span></code> to solve such systems.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the system <span class="math">\(x + 2y = 3\)</span> and <span class="math">\(2x - y = 2\)</span>
+for <span class="math">\(x\)</span> and <span class="math">\(y\)</span> using <code class="docutils literal"><span class="pre">numpy</span></code>.</p>
+<p><em>Solution</em>: First, recognize this is the same as the matrix equation</p>
+<div class="math">
+\[\begin{split}\left [ \begin{array}{cc}
+   1 &amp; 2 \\
+   2 &amp; -1 \\
+\end{array} \right ]
+\left [ \begin{array}{c}
+  x \\
+  y
+\end{array} \right ] =
+\left [ \begin{array}{c}
+  3 \\
+  2
+\end{array} \right ]\end{split}\]</div>
+<p>Then, set up this matrix and vector using <code class="docutils literal"><span class="pre">numpy</span></code> arrays, and solve
+using <code class="docutils literal"><span class="pre">numpy.linalg.solve</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">v</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(1.3999999999999999, 0.80000000000000004)
+</pre></div>
+</div>
+</div>
+<p>One can also check the answer makes sense. Here, we should get
+<span class="math">\(\mathbf{b}\)</span> from the matrix-vector product <span class="math">\(\mathbf{Mv}\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">M</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 3.,  2.])
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Example</strong> Solve the spring-mass example from above using backward
+Euler.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># We already have all the values set.  We&#39;ll</span>
+<span class="c1"># make a new solution array to compare BE to</span>
+<span class="c1"># FE and the reference.</span>
+
+<span class="c1"># Define the solution and set the ICs</span>
+<span class="n">y_be</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">y_be</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v0</span>
+<span class="n">y_be</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x0</span>
+
+<span class="c1"># Make the 2x2 identity</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Now, loop through for each time step</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">y_be</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Delta</span><span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">y_be</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="c1"># Extract v and x.</span>
+<span class="n">v_be</span><span class="p">,</span> <span class="n">x_be</span> <span class="o">=</span> <span class="n">y_be</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y_be</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x_fe</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_be</span><span class="p">,</span> <span class="s1">&#39;b-^&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_ref</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="s1">&#39;r--o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;x(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="s1">&#39;backward&#39;</span><span class="p">,</span> <span class="s1">&#39;actual&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_28_17_0.png" src="../_images/lectures_ME400_Lecture_28_17_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Example</strong>: For <span class="math">\(\Delta = 0.1\)</span>, compute <span class="math">\(x(10)\)</span> and
+<span class="math">\(y(10)\)</span> by solving the following system using (1) forward Euler
+and (2) backward Euler:</p>
+<div class="math">
+\[\begin{split}\left [ \begin{array}{c}
+  x' \\
+  y'
+\end{array} \right ]
+=
+\left [ \begin{array}{rr}
+  -10   &amp;  0.00 \\
+   10   &amp; -0.01 \\
+\end{array} \right ]
+\left [ \begin{array}{c}
+  x(t) \\
+  y(t)
+\end{array} \right ]
++
+\left [ \begin{array}{c}
+  1 \\
+  0
+\end{array} \right ]\end{split}\]</div>
+<p>for <span class="math">\(x(0) = y(0) = 0\)</span>. How do things change when
+<span class="math">\(\Delta = 0.2\)</span>? <span class="math">\(\Delta = 0.001\)</span>?</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [88]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">z_fe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">z_be</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">10</span><span class="p">,</span>  <span class="o">-</span><span class="mf">0.01</span><span class="p">]])</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">z_fe</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_fe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">z_fe</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">z_be</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Delta</span><span class="o">*</span><span class="n">A</span><span class="p">,</span> <span class="n">z_be</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="n">s</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z_fe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">z_be</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;g--&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;x(t)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z_fe</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">z_be</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y(t)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_28_19_0.png" src="../_images/lectures_ME400_Lecture_28_19_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Back-to-odeint">
+<h2>Back to <code class="docutils literal"><span class="pre">odeint</span></code><a class="headerlink" href="#Back-to-odeint" title="Permalink to this headline">¶</a></h2>
+<p>While the Euler methods are proven and simple techniques for solving
+systems of first-order IVPs, routine analysis is best performed using
+more robust methods like those implemented in <code class="docutils literal"><span class="pre">odeint</span></code>. As was shown
+in <a class="reference internal" href="ME400_Lecture_27.html"><span class="doc">Lecture 27</span></a>, the basic ingredients needed
+to solve an IVP with <code class="docutils literal"><span class="pre">odeint</span></code> are a function that represents
+<span class="math">\(y'\)</span>, the times at which <span class="math">\(y(t)\)</span> is to be evaluated, and the
+initial conditions. The same goes for systems, and the procedure is
+illustrated by the following solved exercise.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve</p>
+<div class="math">
+\[\begin{split}\left [ \begin{array}{c}
+  x' \\
+  y'
+\end{array} \right ]
+=
+\left [ \begin{array}{rr}
+  -10   &amp;  0.00 \\
+   10   &amp; -0.01 \\
+\end{array} \right ]
+\left [ \begin{array}{c}
+  x(t) \\
+  y(t)
+\end{array} \right ]
++
+\left [ \begin{array}{c}
+  1 \\
+  0
+\end{array} \right ]\end{split}\]</div>
+<p>for <span class="math">\(x(0) = y(0) = 0\)</span> and <span class="math">\(t \in [0, 10]\)</span> using <code class="docutils literal"><span class="pre">odeint</span></code>
+fo</p>
+<p><em>Solution</em>: First, import <code class="docutils literal"><span class="pre">odeint</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+</pre></div>
+</div>
+</div>
+<p>Then, define the derivative function. Here, that’s everything on the
+right-hand side of the original IVP.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [90]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">derivative</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Evaluate the right-hand side of the IVP.  Here, t</span>
+<span class="sd">        is the time at which things are evaluated, and</span>
+<span class="sd">        z = [x, y] is the solution at that time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">]])</span>
+    <span class="n">z_prime</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">z_prime</span>
+</pre></div>
+</div>
+</div>
+<p>Define the times and solve the problem:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [91]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ic</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">derivative</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, plot the result.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [93]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span> <span class="c1"># Note z[:, 0], NOT z[0, :]</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;x(t)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y(t)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_28_28_0.png" src="../_images/lectures_ME400_Lecture_28_28_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p>Consider the second-order equation for damped, harmonic motion:</p>
+<div class="math">
+\[y'' + 2y'+2y=\sin(2x)\]</div>
+<p>for <span class="math">\(y(0)=0\)</span> and <span class="math">\(y'(0)=0.5\)</span>. Solve this using <code class="docutils literal"><span class="pre">odeint</span></code>
+for <span class="math">\(t \in [0, 2\pi]\)</span>.</p>
+<p><em>Solution</em>: This is second order, so we need to convert it first into a
+system of first-order equations. Let <span class="math">\(y' = v\)</span>. Then,
+<span class="math">\(v' = \sin(2x) - 2v - 2y\)</span>. Now, implement this as a derivative
+function:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [107]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">derivative</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">z</span>  <span class="c1"># unpacking and computing</span>
+    <span class="n">yp</span> <span class="o">=</span> <span class="n">v</span>    <span class="c1"># y&#39; and v&#39; separately</span>
+    <span class="n">vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">v</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">yp</span><span class="p">,</span> <span class="n">vp</span><span class="p">]</span> <span class="c1"># lists are fine</span>
+</pre></div>
+</div>
+</div>
+<p>Set the times, ICs, and solve:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [108]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ic</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+<span class="c1"># this is another way to get the individual</span>
+<span class="c1"># solution components:</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">derivative</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y(x)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_28_32_0.png" src="../_images/lectures_ME400_Lecture_28_32_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you know how to use <code class="docutils literal"><span class="pre">odeint</span></code> for single equations and
+systems of equations. A good resource to supplement this lesson is the
+documentation and any examples include therein.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 28 - Numerical Solutions of First-Order Systems</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#A-Coupled-System-and-Its-Numerical-Solution">A Coupled System and Its Numerical Solution</a></li>
+<li><a class="reference internal" href="#When-the-Equations-are-&quot;Stiff&quot;">When the Equations are “Stiff”</a></li>
+<li><a class="reference internal" href="#Back-to-odeint">Back to <code class="docutils literal"><span class="pre">odeint</span></code></a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ME400_Lecture_27.html" title="previous chapter">Lecture 27 - Solving First-Order IVPs Numerically</a></li>
+      <li>Next: <a href="ME400_Lecture_29.html" title="next chapter">Lecture 29 - Numerical Solutions of Two-Point BVPs</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/ME400_Lecture_28.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/ME400_Lecture_28.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

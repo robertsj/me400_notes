@@ -1,0 +1,1032 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 26 - Solving ODEs Symbolically\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lecture, we revisit the tools provided by SymPy and apply them to solution of *ordinary differential equations* (ODEs).  Engineering is full of ODEs, since they are fundamental to the language of balance relationships found in heat transfer, nuclear reactor physics, control systems, and other areas.  The goal here is *not* to present the theory of ODEs, nor is it to present the various systematic ways be which one can determine solutions to ODEs.  Rather, the focus is placed squarely on defining ODEs symbolically, solving them symbolically, and, *importantly*, applying initial or boundary conditions to those  symbolic solutions and solving the resulting *algebraic* equations for any undetermined coefficients.  In other words, the focus is on the *problem solving* process.\n",
+    "\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define first- and second-order, ordinary differential equations symbolically\n",
+    "- Solve first- and second-order, ODEs symbollically\n",
+    "- Apply initial and boundary conditions as is appropriate to determine complete solutions to ODEs important in engineering disciplines.\n",
+    "\n",
+    "### Prerequisites\n",
+    "\n",
+    "You should already be able to\n",
+    "\n",
+    "- Solve ODEs based on what you've learned in a course like MATH 340 (this is not a strict requirement, but if you have *not* had MATH 340, you may wish to set up a time with me or the TAs).\n",
+    "- Set up and solve algebraic systems using SymPy\n",
+    "- Perform subsitution into symbolic values using SymPy\n",
+    "- Define derivatives of arbitrary functions using SymPy\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- differential equation\n",
+    "- ordinary\n",
+    "- linear\n",
+    "- ODE\n",
+    "- initial value problem\n",
+    "- boundary value problem\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Differential Equations\n",
+    "\n",
+    "A *differential equation* is any equation in which an unknown function $f$ appears with one of more of its derivatives.  When $f$ is a function of only one variable, the derivatives are *ordinary* (as opposed to *partial*), and the equation is an *ordinary differential equation* (ODE).  In compact notation, such an equation may be written\n",
+    "\\begin{equation}\n",
+    "    \\mathcal{L}f(x) = q(x) \\, ,\n",
+    "\\end{equation}\n",
+    "where $\\mathcal{L}$ is a differential operator.  If $\\mathcal{L}$ contains only *linear combinations* of $f(x)$ and its derivates, then $\\mathcal{L}$ is a *linear operator*, and the equation is a *linear* ODE.  If $q(x) = 0$, the equation is *homogeneous* and is otherwise *inhomogeneous*.  If the highest derivative of $f(x)$ present in $\\mathcal{L}f$ is $n$ (i.e., $d^n f/dx^n$), then the equation is called an *n*th-order equation.\n",
+    "\n",
+    "Examples of linear operators include $\\mathcal{L}f = \\frac{df}{dx}$ and $\\mathcal{L}f = a(x) \\frac{d^2f}{dx^2} + b(x)$, where $a(x)$ and $b(x)$ are arbitrary functions of $x$ (but not of $f(x)$).  For comparison, a nonlinear example is $\\mathcal{L}f = \\left ( \\frac{df}{dx} \\right )^2 - \\sqrt{f(x)}$, which includes nonlinear functions of $f$ and its first derivative.\n",
+    "\n",
+    "Our focus in this and the next module is entirely on *linear, ordinary differential equations* and their solution by symbolic and numerical techniques."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Whence Comes $y'+py=q$?\n",
+    "\n",
+    "For now, we'll keep it simple and consider problems of the form\n",
+    "\\begin{equation}\n",
+    "    \\frac{dy}{dt} + p(t)y(t) = q(t) \\, , \\qquad y(0) = y_0 \\, .\n",
+    "\\end{equation}\n",
+    "This is a **first-order**, **initial-value problem** (IVP). It is first order because there is only a first derivative.  It is an initial-value problem because the unknown (here, $y(t)$) is specified at some \"initial\" time.\n",
+    "\n",
+    "A first-order IVP can be used to represent of a number of physical phenomena.  The first that comes to mind (to me, as a nuclear engineer) is [radioactive decay](https://en.wikipedia.org/wiki/Exponential_decay) with external production, usually written $N' = -\\lambda N(t) + R(t)$, where $N(t)$ is the number of radioactive nuclei at time $t$, $\\lambda$ is the decay constant (with units of inverse seconds), and $R(t)$ is the number of new nuclei born per second.  The time rate of change of $N(t)$ is a balance of those new nuclei from $R(t)$ against the number $-\\lambda N(t)$ lost by decay.  For sufficiently long times, $dy/dt \\to 0$, and $y = R/\\lambda$, a *steady state* in which losses are exactly balanced by gains.\n",
+    "\n",
+    "An equally good example is the case of an object of mass $m$ in [free fall through a viscuous medium](http://hyperphysics.phy-astr.gsu.edu/hbase/lindrg.html), e.g., the atmosphere.  If some object is held a distance above the earth and dropped, its acceleration at any point in time is related to the net forces acting on the body.  These forces include the gravitational force $F_g = -m g$ (i.e., downward) and the air resistance $F_r$.  A simple resistance model is $F_r = cv$, where $c$ is a (positive) constant and $v$ is the velocity directed toward Earth. Hence,\n",
+    "the downward force is \n",
+    "\\begin{equation}\n",
+    "    F(t) = -cv(t) + m g \\, .\n",
+    "\\end{equation}\n",
+    "From Newton's second law, $F = ma$, so we have\n",
+    "\\begin{equation}\n",
+    "    ma(t) = m \\frac{dv}{dt} = -cv(t)  + mg \\, ,\n",
+    "\\end{equation}\n",
+    "or\n",
+    "\\begin{equation}\n",
+    "    v' = -\\frac{c}{m} v(t) + g \\, .\n",
+    "\\end{equation}\n",
+    "The positive $c/m$ has the same effect as a positive $\\lambda$ in radioactive decay: the larger the velocity $v$, the larger the retardation force $cv$ (just like the larger the number of nuclei $N$, the larger the number $\\lambda N$ decaying per unit time).  For the free-fall case, the steady-state condition $v'=0$ has a special name: *terminal velocity*.  \n",
+    "\n",
+    "Lots of phenomena have this sort of behavior, this natural *negative feedback*, and such feedback can help us when we solve these problems numerically.  In those cases where the feedback is *positive*, we expect the number of nuclei to *grow* more and more (or, equivalent, for a falling object to keep accelerating toward earth).  The former happens when pythons (or neutrons) multiply in nature; thankfully, the [hail of northeastern Kansas](https://en.wikipedia.org/wiki/April_10%E2%80%9311,_2001_tornado_outbreak#Tri-state_hailstorm) does reach a terminal velocity.  Oh, and I'm not joking about pythons: combine the  [Malthusian model](https://en.wikipedia.org/wiki/Malthusian_growth_model) with the fact there is an artificial source term due to pet owners releasing their larger-than-expected pets into the [Florida Everglades](https://en.wikipedia.org/wiki/Burmese_pythons_in_Florida)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Symbolic Solution of First-Order IVPs\n",
+    "\n",
+    "\n",
+    "###  By \"Hand\"\n",
+    "\n",
+    "First, a sanity check $\\frac{dy}{dt} = ay(t)$ with $y(0) = y_0$.  This can be solved, and it depends on only integration.  Rearrange the equation to be \n",
+    "\n",
+    "$$\n",
+    "  \\frac{1}{y}dy = a dt \\, ,\n",
+    "$$\n",
+    "\n",
+    "and then integrate to obtain\n",
+    "\n",
+    "$$\n",
+    "   \\ln(y) = a t + C' \\, .\n",
+    "$$\n",
+    "\n",
+    "Here, $C'$ is an arbitrary integration constant.  Exponentiation of both sides results in\n",
+    "\n",
+    "$$\n",
+    "  y(t) = e^{at + C'} = C e^{at} \\, ,\n",
+    "$$\n",
+    "\n",
+    "where $C = e^{C'}$ is still an arbitrary constant. \n",
+    "\n",
+    "So far, this is just *integral calculus*.  To solve the given IVP, we need to *apply the initial condition* (IC).  Specifically, we need to specify $C$ that satisfies $y(0) = C e^{a0} = y_0$.  Clearly, $C = y_0$.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### With SymPy\n",
+    "\n",
+    "With this simplest of IVPs solved \"by hand,\" we turn to SymPy and  its `dsolve` function.  First, initialize the symbols:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import sympy as sy\n",
+    "sy.init_printing()\n",
+    "y, y_0, a, t = sy.symbols('y y_0 a t')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Then, set up the differential equation just like any other equation:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAH4AAAArBAMAAABMTiH/AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAMrvvmVREEIndzSJ2\nZqtw62vAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACMElEQVRIDaWVP2gTURzHv7009y79J3R1aNFR\n0VDcpBA7lSJNHMXBgJNTDrp1aDN0sXToWKiUCOLgoEf/jC0XFKeAGVwUhM7aIRViOhTa3++9XNJ6\nLw9570dy9+Pl87m73L3vO4Br8oHc2W/a9iqbfsfNDzbd/JGCi7+/MVVy8P2HuB86+EtNLDjoKIbY\ncvFnIP46+OIM2ZaL38ZE7ZnDAe7i+3HVwV9p3DwpX/EPuc9GV0Y07WBITEv8t0bqDxmgETpzLsJy\nH9Z0Bugb4c+BINZovSEDtE0QzUeR78GaZjA0ukk4z8d3Gi0Z0kLic4y9cKwAf+7PY2AtgXv7/bVP\noQEK/Dy+wmvSw2uR80N66++53nJPOf0ILSRJHAzXcAu5EkAN8FSN9reU0zkTFGZinCNTpsdXBTBF\n32tFOX2NFHSRVAuVcOgUmTKwSt+0Tzk9hQlawFheXn8FAnhJxwDU//9AXTenOkiSwD14x/L+reNJ\ncv+6P7GvcmqAFlFpIigAiyIG5vuq6lRODdBKoxjBp/mz+5OMN//6KqdGiNdRnppUgo6jrxQ0dLvA\n5ERNroMcDaoB+dFCN0qc2FzTi0n0ItYH5VcLVUJOrN94xGJ3abjDfbq00CuZ2ASWS9O4uopkLLW/\nBlE87N8go/P1tkps6iT/NfAi8joObxAxy3Glj2UNdziuMrFWR8hMc1xlYq381So/e5lYO7+EX9lI\nJtbK9+LxnUAl1soXJ/WjLyqxNv4l4pO6EIKastcAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$\\frac{d}{d t} y{\\left (t \\right )} = a y{\\left (t \\right )}$$"
+      ],
+      "text/plain": [
+       "d                \n",
+       "──(y(t)) = a⋅y(t)\n",
+       "dt               "
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ivp = sy.Eq(sy.diff(y(t), t), a*y(t))\n",
+    "ivp"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, produce the general solution via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAG8AAAAYBAMAAAAGzL4qAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHaZIu+JRFTNuzKr\nZt2Me+fNAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACBUlEQVQ4EZ1Uv0tbURT+bvLyEhN9PprJUvCR\njBX8MVi0qV4QS+lQ7GQXIbSTm/9ATbBjQQMtlOLaqdgilC4iGMSxw3N0EDKVQodGKRQUSs+5v158\nUoccuPd85/vOub/fA/qy7b6qANHts7DQ6aOwPLbtzb3ZtZVezKggbfxfL36WzjDQdPptjY4ckYBb\nO7X4oQuzE6UOhqWL3xIKJEYc4UBmBXhFzViumWnjq40wNEFwC/AjRxkgPodA9rejR2XxOBwT0hA0\nGTBD57xkCOcGnhLMJ3ROHrzElG/1Jwy+U3tnGevnm4RKvCBt+cONB9i/S3NUIyyGVRp19mIKeGET\njPf+MjArE8+r0vC0K1rGOD5RXOhSd8KC/14ZT+OfM0G2R21denXGyh5lW/iIH4QJAJuadX1wqeGX\nOZr3Gcq7TglzEc6xTHFQp+7ACRrkztgLmg0YXKkc98iNsHSpCkfXiE0XBl1Ofa0Kh9uMnc0gs6SW\n2jADuz22KUffYF0XkuuxHRTb6nBWeWB1OD2qx4fjh6qQ9xIlWg2NWN1CTRA7nQgabcUoTBKkPWZa\nKMtEv1OZl0zj8Sl11z5tMfvtHidzRvU0ZuiMnpp6ckSIjmNTgAuv2GBL/IF+5MRff+Q2OX3BCOJi\nROIHnTBi89J+4ddhispX7jNjPmRTn8q5KdS/jiF5U84V7R8c22O7+NkO9AAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$y{\\left (t \\right )} = C_{1} e^{a t}$$"
+      ],
+      "text/plain": [
+       "           a⋅t\n",
+       "y(t) = C₁⋅ℯ   "
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sol = sy.dsolve(ivp)\n",
+    "sol"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The solution returned is a SymPy equation (i.e., `sy.Eq`) relating $y(t)$ on the left-hand side to $C_1 e^{at}$ on the right-hand side.  We want to get the right-hand side and determine $C_1$ given the initial condition.  To do so, we can use the `rhs` attribute of `sy.Eq`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAADAAAAAWBAMAAAB02QKfAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHa7q5lmIonvVN3N\nRDIDNHLqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABA0lEQVQoFWNgwAp4HmAVZmCQxyHOsBqLBGOQ\nz4PSPXGYMtIP3gswnAKJMyq7urE3wFWEMrxmYPgO4momMHBFJsAlZjGoMPBNAHKFNwKJ+AKYBON3\nBjNBJgdxBoaTAkCxmzBxBobpfH8TWBUaGFh/gcSeIiSuaKkm8Dk9YKjfABID6gQBCaVwCANI9itA\nmHwGDAy82xkq4BL7H4CZfKFAnZILGBEemw+ym0GAgRco4ZmkBuaBle4HkVwPwBJfwCJQAuwDDqD5\nQB0/kCXqFYC8RojEDgYGJrgc1zcGhqVAk0E6dBgYEc5lEDVxvQBUBpJgCkuDa4AzQBJYARcOCfbo\nLwooGgAB4DUZJKs7/AAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$C_{1} e^{a t}$$"
+      ],
+      "text/plain": [
+       "    a⋅t\n",
+       "C₁⋅ℯ   "
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sol.rhs"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABsAAAAUBAMAAACOrFuzAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAds0yiUTdEJki71S7\nq2ZrK5MMAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAnUlEQVQYGWMQUmaAAT61AAZXGAdIs1DKZZcQ\nYJhVADIRbBQL6wIGeQYRESh3NocCwxk+B+4LENkCLgGGj2wBDN+h9sYXMH+uN2BYDeU2MTAusJ/A\nkAflnmXguWBfwJAI5fYyxD8Ayi6EcmsF+ycA9X6FchkYmhgQJvMqsH9lYGyA2cv2gEeAgUHEA+oq\nVsFmkIOBAOhmMUTgMKoFAAD7MSjlx5McDQAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\left [ y_{0}\\right ]$$"
+      ],
+      "text/plain": [
+       "[y₀]"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "C = sy.solve(sy.Eq(sol.rhs.subs(t, 0), y_0), sy.Symbol('C1'))\n",
+    "C"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As observed in [Lecture 18](ME400_Lecture_18.ipynb), the output from `sy.solve` is a `list` that has zero or more solutions (here, there's just one).  The final solution to the IVP is defined by substituting this solution for $C_1$ (here, $y_0$) into `sol.rhs`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAACwAAAAXBAMAAACCF7BcAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHaZIu+JRFTNuzKr\nZt2Me+fNAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA/UlEQVQoFWNgwAI4N2ARZGCQxyrK0IchzGh0\ncoPzS2t0cbkN+wUYZqCLMhgz7GNg+IIhHMGgw8AdgC7M+IVhrSDTARF08RDu7xeYFRLQhWs0lC9w\nH9rAwKiswOAqAJYVUzKBq2JjD2DQZ1BTY2Bgf8LgBhf2YJ7AsIo3geMAg2gDI8IbAqwKDJ/4Chg+\nMhy9pAsxDKylXoD7t/wGhgiGP3ATQAxLBqaA/Q4Mbxm+oQivYeA6AAyHRwzPGBiYEDI2DPUXgKqD\nGDQZGBEOZJBRsncAmv2dgcn2LkIx2HSwS1DEeCYwAhUaAN2NAvgucCkwMKglowgCvayE8BpCCgAY\nKzT0gX/cigAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$y_{0} e^{a t}$$"
+      ],
+      "text/plain": [
+       "    a⋅t\n",
+       "y₀⋅ℯ   "
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y_sol = sol.rhs.subs(sy.Symbol('C1'), y_0)\n",
+    "y_sol"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This is the result we're after.\n",
+    "\n",
+    "By default, SymPy uses $C_1$, $C_2$, etc. for its constants of integration.  Symbolically, these are always defined as `Symbol('C1')`, `Symbol('C2')`, etc."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Solve $y' + py(t) = q$ subject to $y(0)$ = $y_0$.  Here, $p$ and $q$ are constant coefficients.\n",
+    "\n",
+    "*Solution*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAANIAAAAuBAMAAACv51oTAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHaZIu+JRFTNuzKr\nZt2Me+fNAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEYUlEQVRYCc1WXYhbRRT+JrnJzX+iUqFQzO32\nwS5uaSylWmv1vlREqLuKD4oIwZ+HgsoiKCji5kEQUdrQFSS0aoT6YFkhFBQEsUHtkyLBpYpCMWIp\ngghpldq6LXrOTO5fMjf3uiyrBzJzzne+M9/MvTNzA/yPLHPfOk1m05Pn10kJxf9Cqdhb1fJEN16Z\nb03T8SrGWM+PIVrAUzJXuzcSXe3Io6CntKEzmosbvxWL6Cl9FcE3dHk5u30VXWoUc5Xyf4ymRuI6\nUFzalbAD8CscFboBLCRwlbIR9IIN4zDEe/5xjiBpU5yPdVJcpVmumWAfAbPzwA8+ihhAbfHDPjDU\nTTjz2R1KUYkvgXPknfDRMn3gDY5Pe+B+djO2Bzhe8tTlvcq/34HG++UzMx30ISd1jZc27ljsYBvH\nvFhloi37L4ahrjNWdKjCvlvJ940+Sm0ZFtydlm0ArzOWqnPLlrWBko2NMtA3xYEeJ9S4tmsMzDbK\ndabkn3CVyjbwAmOFJrdsy/Q7BKQtDvSW7AfwjOULC1ZmzuyiVAdED6UKzONk7+JD4nzMvIQ7zbMU\n0RsXcwzrbfhonGRAKdUp1PJtJNs0WXo47ppmhI0XuSLjnEV6xmrjvMmw3sq1AB5QmrU/rYg+8BvE\n436lHaT7LZflL0FssbCvkqjBvO2vHcBjgdECQdni0Hhq840SdpWun9qJV6duBn6iBX3+KK3HW9Mn\nNwG3MF1cRdqcw3bkerTAASHfy1EOtNgWpe82VeIAz9oF5hHdkh3Ms7gLu9jfqgC/EiNNCV/A3ckm\njqPUAMgBDkpY28yyknjE2UaO0oaG2INfuCI3LMtvv3XocZfhMuAiKikLF5Cap5nUCTjJqN/Kf7Mx\ncrJBTXIgj0a61Xr7oVarS8ipb7ZVklcq5JlqTPL8dp0KfgcWKvkVqVQltXElr0gqpdrOcXfWdMVj\nvOy5nrdZuaS0G4k5+fQWIICXJK7e01GPzp58elULPyrYUboYZIVEgmhLyHXljjiA15wdoaWTCFBt\n4H2VdZTO0bHU8gOgcRW4HQs9pGvkCAtqEwU4biCvmqxVHC7CUZqG2OlyQh06T9g0dacNsw/cc4Z4\nR+gXYqkuJcRnW/9UeUcpsZfrosyUVXQLgW8jMj7nYZZryoxz0TpKYfQgTp/TQlOw3LJKTLph03OS\n49zKohIca3JExaVeziJSzpbMjbLVNxn17U3V9enJKP0HMaf2MEe0JfOYbPUNXV1k6Xd+1qcno+oq\nk5z93BZt6Yc0SyF4HPiQHc167tiJGfVKfP86ostGGLzroqz+dSPdliQ6tau2B6MrjcZRDDd2Qm3z\n6JpxBl14kSZwCenhP76HI9lhhFQvLOPDzfPIDWekPpO+XGx3Og4z3Ue1pojy5MWpGeUYD4wiujhb\nw+mKSohfdYQY2A2NGCSU23n3/dxrx6kY53wwDmmQhWe22A5sdBzvX/ViPhb96VistSAtrsUgccYQ\n9LFcHzt42VoboX8AJd7ht71i3JUAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$y{\\left (t \\right )} = \\frac{1}{p} \\left(q + e^{p \\left(C_{1} - t\\right)}\\right)$$"
+      ],
+      "text/plain": [
+       "            p⋅(C₁ - t)\n",
+       "       q + ℯ          \n",
+       "y(t) = ───────────────\n",
+       "              p       "
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y, y_0, p, q, t = sy.symbols('y y_0 p q t')\n",
+    "ivp = sy.Eq(sy.diff(y(t), t) + p*y(t), q)\n",
+    "sol = sy.dsolve(ivp).simplify()\n",
+    "sol"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAMwAAAAuCAMAAABTcAZJAAAAM1BMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADxgEwMAAAAEHRSTlMAVO8Qq4lmdpnN\nRLsiMt0g4Y70NgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAA7FJREFUaAXtWAlzrCAMRrk8wPL/f+1L\nIoegu8D2tbPulJmuCMlHQk7L2MeNYeQfohMXUrhPUQZsov6UeVPP/LPMmxrmL2be1TCfbxm7/NDd\nz7YNWLeRBaoIe5HNrAhU//nJXSPg0iVBgtXnojn/VE8wbI3KMKlaKYEuwE5idPOUc06dRq4dqyal\ntLDMTNs8NfoZ26oX2gRrzqaqift8Xy3OMotGmYfnlIddPR1eLqdNsLIKc4n9cNFwDRFgMFyceUhV\nbhB9uXh8b4Md268PwYe6UwogGUbGLPw1j+1CjGUNA52wAbbXyxqUGSFQBNgbLMSbbTOtNb0bYFXP\n9cF5dWUMeJfFgIbMImsSxn1dk6MFdpoJb5GrsVoLzrim9GYefJGWyhipNNdYdbnUegJLDDM80S+s\n0JVklpjZcshDASlqipMW2HU3r2QCvVaucJkLXpKGCNZSn662UGYZQXyB0b5sMDNAP514UJarkZhB\nc0iBfkSksEDPFtiZiq8ZGE2UgxkZC5RUINVQ1uZcGT5izRJgXY6JhGNduQrlTKzwkphhxbjQUyWk\nQEjPEtalEek2yszgFQ7TiXRfjI2YsJxmG8In68sZxzbSw+s4UcMygtZiVForjBQHvnoanLj8j7dB\nYgZyHpWJSBnINWxGAoXNl5ndZ1fwMJqB1TkZvszcuWVGdFK6VFeasDjn4jUxBxAiegEpgK9eCIkl\nmztQjbwMkoulmrflvU+ezTjYD/9HAj+uOVLCyQdmWNpPw71+pIDIhM/vZCGFKYzUgx9LHrYVRTKz\nDCffXDEhbrsyBXU85mJyYIbdlM36kSJ4yO8OlLJYl9gEtlqc8ndFARSpyzozg/CKrlKjRhxTc/NI\nzMCS6t0LSOFIfyOLW/YqARIJmIGL7TET49IzZJYh2mEn0dAsFy4ZznjwxIM8M1yh9xCg7UeKB4yU\nEilk4toeN0U223dzZXCNQiax9s0iM5rp+2MvRiGp+aJBl41t+anO8FPexSrz8gjMPJWAl7GAkXrb\nPRgJBtPXul+Tli3fB1hlXh6BWfVn9sszxQAfoi6aGWMndhaXDNminN1ed7PVxpfEvHUc+Qycf8dN\nngF37GHn1DtSb3zkHHwTcFz73blJqaz94NQbZzxD6PGy1V98oS+GzvNSb9zJ+I7kkFV9b3zKr+8o\nbk2m1BvXKG+wn3rjGwhbEzH1xjXKG+yn3vgGwlZEPPTGFcobbBe98Q0kfiJi6o2fEN1k69Ab30Ti\nx2Iee+PHVPfY+QejeRp+TKgQegAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\frac{1}{p} \\left(p y_{0} + q e^{p t} - q\\right) e^{- p t}$$"
+      ],
+      "text/plain": [
+       "⎛          p⋅t    ⎞  -p⋅t\n",
+       "⎝p⋅y₀ + q⋅ℯ    - q⎠⋅ℯ    \n",
+       "─────────────────────────\n",
+       "            p            "
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "C = sy.solve(sy.Eq(sol.rhs.subs(t, 0), y_0), sy.Symbol('C1'))[0]\n",
+    "y_sol = sol.rhs.subs(sy.Symbol('C1'), C).simplify()\n",
+    "y_sol"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**:  Solve $\\frac{dn}{dt} = -\\lambda n + s(t)$ where \n",
+    "\n",
+    "$$\n",
+    "   s = \\left \\{ \\begin{array}{cc}\n",
+    "                   10^{6} & t \\leq 10 \\\\\n",
+    "                   0      & t > 10\n",
+    "                \\end{array} \\right . \\, ,\n",
+    "$$\n",
+    "\n",
+    "$\\lambda = 10^{-3}$, and $y(0) = 0$.  Plot your result for $t \\in [0, 30]$.\n",
+    "\n",
+    "*Solution*:  This problem is a bit tricky because the forcing function $s(t)$ is discontinuous.  Here's one way to tackle this.  First solve for $0 \\leq t \\leq 10$.  This part is identical to the last exercise.  Then, with that solution, $y(10)$ is known, and this can be used as the initial value for $t > 10$.  This part is identical the in-text example $y'=ay$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAJQAAAAVBAMAAABS/tqaAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVO8Qq4lmdpnNMt0i\nu0SES+sfAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB9klEQVQ4Ea2SsWsUQRTGv80kbty93C1iZ5GE\nQIo0LhIhonCHIEIar4gcsToMSesWYq7LFSKizaWLVov/QCLYCCJb2gQD2gbSW0hIJCak8JuZfXO3\n0avW13zvzfvmNztvBygTfquptwd7ZSB27yquatLLHeByWg73GbWYhCpR9XIkdYaRKEddK4cKzhG2\nLerLx1elWMERwsSisCmk1mpqUlFZz3Xs2SOTiebL/KoRQZ1zzZvh+CP1SbdFc6uRKzF45O1MF6Ko\n7jO+cVa1Ay5z7MEUML90BDwGlrnkVOc21L0HMS5NYazHWlSa6P9Bv3GHfaK+A5M83KnzMnkSY6IB\njy6nrt3hu9qN4e1gPGla1DHwM6JB1HmZEFVroHrIVNS1/YddvMsqr4+T4H5qUOo3UQkg6qw6Iare\nRfWEqVXV6mS68XfwgpVfwDZRogUTUV+bCDTK6o+swsv8KzSKX7XNtmjBplFdBDzNqprGQlpwuIIo\nuZgobr3R8dZ4Ll5wdHZ9xW0uJvoPctyTEZdFBx1EcdxePnbvkMWw0Kh9M92+DnqJmtgzT8Zqbcig\nuEejhj9Rc4Y8TaMhUcngWf3cJyqM1BzqPav9lsk2YuA9bqTq1Krfw0J2wWPL8bunL6BaT1OEDatF\n2/PrW23cXF8EPsBqZ61dtPz/6g+bkJnbS/YZcQAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$10.0 - 10.0 e^{- 0.1 t}$$"
+      ],
+      "text/plain": [
+       "             -0.1⋅t\n",
+       "10.0 - 10.0⋅ℯ      "
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Define all the symbols needed.  However, be\n",
+    "# careful with \"lambda\"!  Remember, it's a keyword\n",
+    "# in Python.  Here, add an underscore.\n",
+    "y, y_0, t, lambda_, s, C1 = sy.symbols('y y_0 t lambda s C1') \n",
+    "\n",
+    "# Devine the IVP in the first region and solve like\n",
+    "# the last exercise:\n",
+    "#   1. define the ivp for t in [0, 10]\n",
+    "ivp1 = sy.Eq(sy.diff(y(t), t), -lambda_*y(t) + s)\n",
+    "#   2. solve the ivp\n",
+    "sol1 = sy.dsolve(ivp1)\n",
+    "#   3. solve for the constant of integration by applying\n",
+    "#      the initial condition\n",
+    "ic = sy.Eq(sol1.rhs.subs(t, 0), y_0)\n",
+    "C = sy.solve(ic, C1)[0]\n",
+    "#   4. subsitute the constant along with s and lambda\n",
+    "y_sol1 = sol1.rhs.subs({C1: C, y_0: 0, s: 1, lambda_: 10**-1}).simplify()\n",
+    "y_sol1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAANIAAAAVBAMAAADBWq19AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVO8Qq4lmdpnNMt0i\nRLs6bfngAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADi0lEQVRIDb2UT2hcRRzHP7vv7b7dt5vkIaUU\nFFptEdRqB6k0RaFrwTTiYVfINtGDu6SmvQjuQekqhay00UWtXamKtzz8AwUP2UM9FJQ+FCSg6IIn\n6cFAPKkETaKYmvb5m5m3FJpc1zm8/X2/v5nfZ2Z2ZmCAzZus6Or+0gAZtvQMOzSo3YV8OFDal4wo\nAQwJ6chAQc510kFCunOgJH+TQt2SFq+8OUiUv0ahYUm8m4A+G69WK32oc3qqB6Pv/AqHXj6fuMZ0\n2ishNg2X4AN1KcCZm4hgciYkf8J/rV9E/8qa0n3SpujUXngxjuOSTmqRg8dxStR6tHADuEMl5kEy\nN2xaul6GA/Ff8HC9uJd84HxBOo4ruoicgRVpy/I/jfS06uLvgYMTa/A2uLqHETvhMDlFek+qjtNx\nnigLyZhn4R4bgbcP3j8WwVEYZxqeIT9xRhe51W6dPa/0GGSFJFN51nTQ4jl4lHQXdzOzhNOVFQvJ\nmA9AOTIRfPMelPSYDajxC+xWZrKmTPJpyn36XpHqkmsIQheXFTZMVouflzlOfg33+tBNlalbkjHn\nFeXQRDK5hOTchNloXYYFW0hetcVHUfGt9YZ/LOyThg3IYN14JtCqsEb576cl0Gvqm1eVjbKRkMZO\nydm9T9b04z9CargnmyE4k81IBm3T7JqO24wRtQ0pLUMrZOKLEmgS1hySI2CiQwhpmR96snXMvyD2\nQmNYFW/AtahY0cO3NlPc+cMmtEidv/qgVpdh17XVniUlZqGUpCuaBMNdhhup2l2ypgVd/zecuxkN\ndWprMySvYxNaPI+3quRct8iWmNV3QFRitpMoFVpSTu7JzldrH5vdkxIXIvfe0ye2QoxjSIUlm9VC\nai8E0IS0wv/TkqzptZL0IwjJ7ej7Ja2s1uXsBU/KzvZGStrZthlSPy9Cb6RbJ9XiO/0AjxlSYu6i\n+LVJ72i3V99Id8jJzDR0RfeSs3FBjVS2pWjTkBZaNq/Fftn+iE/hTDqC3+2ajOlX8CKbhn36tSh0\nmFby6pibKzWuUBBSwxa7/evpae2W/JGO3HwRPylOUfy8eq47dJGsjJpVifltdeopm5YhD1FsMR3x\nijpcpxA497NIdj/yj49GtzOMzh3deB2+CmR+JYzwx+WFzctL2OWTOXlhzx34sI4x5+P4XxvJoxGP\nsThxFjJT0seZfCmkODcuc2qerG8L+v/M/wAGjB0AmOh+wwAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$17.1828182845905 e^{- 0.1 t}$$"
+      ],
+      "text/plain": [
+       "                  -0.1⋅t\n",
+       "17.1828182845905⋅ℯ      "
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Now, define the IVP in the second region.  We cannot use\n",
+    "# the original ivp1 because the two IVPs are different.  One\n",
+    "# has s and one does not.\n",
+    "#   1. define the ivp for t in [10, oo]\n",
+    "ivp2 = sy.Eq(sy.diff(y(t), t), -lambda_*y(t))\n",
+    "#   2. solve this ivp\n",
+    "sol2 = sy.dsolve(ivp2)\n",
+    "#   3. define the initial value y(10) using previous solution\n",
+    "y_10 = y_sol1.subs(t, 10)\n",
+    "#   4. solve for the constant of integration\n",
+    "ic = sy.Eq(sol2.rhs.subs(t, 10), y_10)\n",
+    "C = sy.solve(ic, C1)[0]\n",
+    "#   5. substitute this constant and others into the final result\n",
+    "y_sol2 = sol2.rhs.subs({C1: C, lambda_: 10**-1}).simplify()\n",
+    "y_sol2 "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nTkSuQmCC\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7f73f8dc9630>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Now, plot\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "t_plot1 = np.linspace(0, 10)\n",
+    "y_plot1 = sy.lambdify(t, y_sol1)(t_plot1)\n",
+    "t_plot2 = np.linspace(10, 30)\n",
+    "y_plot2 = sy.lambdify(t, y_sol2)(t_plot2)\n",
+    "plt.plot(t_plot1, y_plot1, 'k', t_plot2, y_plot2, 'b')\n",
+    "plt.xlabel('t')\n",
+    "plt.ylabel('y(t)')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: My kid *hates* hot food, so if I make him my (absolute delicious grilled-cheese sandwich with 100% real Wisconsin cheese [of course]), I've got to let it cool down to approximately room temperature (say 70 ${}^{\\circ}$F).  If immediately after grilling it, the sandwich is 150 ${}^{\\circ}$F, and  5 minutes later, it is 100${}^{\\circ}$, **how much longer do I have to let it cool?**  Assume that Newton's law of cooling, $T' = k(T-T_m)$, applies.  (Hint: you *do* have enough information to solve this problem.)\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Radio-carbon dating is a technique used to determine how old fossils are.  The technique is based on the fact that the radioactive isotope C-14 is produced in the atmosphere at an approximately constant rate.  Living, breathing creatures have C-14 at levels consistent with the atomosphere.  Dead, fossilized creatures have C-14 levels that decrease over time.  The *half life* of C-14 is about 5600 years, meaning that every 5600 years, the amount of C-14 in the fossil will decrease by half.  Use this number and the simple model $N' = -\\lambda N(t)$ (where $N$ represents the amount of C-14) to determine $\\lambda$.  Then, determine how old a fossil must be if its C-14 concentration is only 1/100 of that of a living creature.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Try solving the *nonlinear* logistics equation: $y' = y(t)[a - by(t)]$ with $y(0) = y_0$.  Can SymPy do this?  This model extends the exponential growth model $y'/y = a$ by  $y'/y = a - by$.  The $-by$ term represents some sort of inhibitor for unbounded growth.  Think about it: unbounded growth would require unbounded resources.  In the real world, those resources are not available, and so there tends to be muted growth as populations become very large.  This reduction in the grown rate can be modeled as being proportional to the population itself, leading to this nonlinear model.  Plot the solution for $y(0) = 1$, $a = 1$, and $b = 0$ and $b = 1$.  Notice a difference?\n",
+    "\n",
+    "***\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Second-Order Problems\n",
+    "\n",
+    "Many models in engineering involve high-order derivatives.  Here, we'll focus only on second-order differential equations.  \n",
+    "\n",
+    "### Second-Order IVPs\n",
+    "\n",
+    "A good first application is the spring-mass system.  Specifically, consider the equation\n",
+    "\n",
+    "$$\n",
+    "m \\frac{d^2 x}{dt^2} = -k x - a \\frac{dx}{dt} \\, ,\n",
+    "$$\n",
+    "\n",
+    "which represents Newton's second law for a spring-mass system with *spring constant* $k$ and *damping* force $a$.  Here, we'll be solving this equation subject to the ICs $x(0) = x_0$ and $x'(0) = v_0$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: If $x$ is in units of m and $m$ is the mass in kg, what are the units for $k$ and $a$?\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Solve the spring-mass equation above for $x(0) = x_0$ and $x'(0) = v_0$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Define all symbols\n",
+    "x, x_0, v_0, t, m, k, a = sy.symbols('x, x_0, v_0, t, m, k, a')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAQ0AAAAvBAMAAAALL4KyAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMARImrInYyuxBU793N\nZplSrWBsAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEPklEQVRYCcVXT2hURxj/vZfN7lt3k4gHDwrN\nA80pReIhePHwpAUpxbq2RHqyeyiUQiEeGrCC5oEEQQ+7h1JRKNJSsZe2qY2H3t6hF6GEHLxJ66IG\nC60Yi9DkUNZvZnZ23su82TcZxXywb775vt9v5v2ZnW9+gGb+47+02HYE9uPwdkyrzbmE2UgLbkPg\nZxzfuQ3T5kx5Pc4Jvt5Q+WwHuO065yc/ujI13lgbPt2Ko2048nTaeIw/9ahlxFu3BBbDJuGFXrMY\nl4vwF3PDLsFlfHb1SuzCJE6940jcRCs9OLmBn7rdTWHL7nsTs21LaAFsT1Rx/8Led5iPCyawSwc/\nYDSxg+agLq3gn5ywQ2h0HbXQgScoT2PcciZniDtOo+W+pd9E8CwznHOnFeK6Mzn4F9U1Z3aG2Grj\ncDXKhOw7wQaGki/t8QOQlcbIL/6A/ODUHO5NhYMhltlg+uRbJzZjSyssYvGgF2Y+nk6vLhuiDaZ3\nQxd5OxT1uvaNgRicXVRjGDAKoLzfyF1CkKiIpWcipjd/E0afYqQD/j+Y0FODI0YinSykGTESoNpa\nBL7JXlIhO89IpJOFNCNGAlT7Lrm1kEppegmqtNkzEicVJ4Xx9r09M12eOKiS0lv44Mj7DZwC3pg/\n3xhwSCs9WP1ecnhbQFzG14+gYfzKHFoncC0zEusE4cjtWoJz5LJNdiShC/zfuXWYL21PVF+TPmtz\niQoQbAwf+V/HfEpzHQ9xXwF7nh/7616EX6nLymg19W/LYFmRPp2OFBCr6x8GKzompspGOuEQ0M0Y\nAlTY8N/Qj5XRcuaZKRCIV9NkRbqBsT45lyjBxBtlZ/qcweml/w3coORmG2tQhO6Dl1HtPiSaFemm\n7Ih2ILE2PcdQGoZe+i14z4PsUKw326QLfRdvDTG8RRbqrY8p5vcsp0jnECUadLLgclHDfMuedzR5\nRyFx4HxMCyL+CMMxW6d+Um321mkKJF2tSBcQ76PVDnVM6RnbLuthKMeleaOhBBhvz+MYcIC+6NQC\nXVIABSVPK9IFxEMYa4Y6ht73cAfVJ5EavBaVnwMXZhaerAB7gdI5autNBch4WpEuIH6B4dW4AMPV\nLWo76SVJY1svs8uiGXTNqlsbohFDNYjlqko9sFLEzKbOkbpdEmi62hCNGKpBbPOkDaFvn3MvSPoB\no0PqNn1CtSGaMJNi86TF2TdxVKlE/YDRIXWblj82RBNmmW+e8nXxGcXR7a5xdpWodzLyx4aYi2Hq\n1nv83yp2Ybca3dZj6pZXZluCEcfVLX3h8p2rZ4wgU0KoW7a4XtaEuqUvvKPbXdvyYELdUpF4aRPq\ntha6DfSUq9tXIXCFunUVuFzdvhKB2+LqdpzOBg4m1C2vzA7sDEUUzjfxVSZq2RHqlldmS4YRJgrn\nwyC1lxqxeoKrW16Z9dzWIqJwHv1jayyJ5uqWV2YZ2VL7ApTRaDJz7nVpAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$m \\frac{d^{2}}{d t^{2}}  x{\\left (t \\right )} = - a \\frac{d}{d t} x{\\left (t \\right )} - k x{\\left (t \\right )}$$"
+      ],
+      "text/plain": [
+       "    2                              \n",
+       "   d              d                \n",
+       "m⋅───(x(t)) = - a⋅──(x(t)) - k⋅x(t)\n",
+       "    2             dt               \n",
+       "  dt                               "
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Define the IVP\n",
+    "ivp = sy.Eq(m*sy.diff(x(t), t, 2), -k*x(t) - a*sy.diff(x(t), t))\n",
+    "ivp"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAcoAAAAcBAMAAAATouJpAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHarIkSJZt3NuzJU\nme9mZ+xlAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFEUlEQVRYCc1YXWgcVRT+ZrM7s9mZJNMo0hRi\nhqaorY1uiyCilZGi9i0LQhXFdvVBUAhdi1D0aZTii0oWrNbFvykKAbFk6YP0QZtQVHywdClilFoj\nog/FghvS6IsQz5mZe3eS2UlmNxPogdx77vn75sydud9sgI1JttJt/tcdJnaNZNgdIsnw/ULbJpTI\nvLy2NHvsSEo7QwpI97Srm8R2VASdEMrqOVdmyxcv2Dy1E6XazhqxpYA0FCmazKC+FTyoWiMuoWCy\nx9UdGVAA7rLkCng2pMeqaSCpYdRYpDYOJ7Dl7TZOz3TeG6tKUwZcBPIluQJuDenxqhO4NoCk/BZf\nfi2PfNoOxEa5vsdwRIRyBBjxNjiw9IZbFlGr53ikogh1fWUNpHdEaGez0aj4CWNxeVoQMGSLiMwI\n8IRY8Kw2wqsYPR7JDTISIE3EFF/HnL1k+xFTMlC5dF9dLgB6CYdH34eyR9q+HAAm9FFoc2fGMqMU\nq1WlL16JR3KDpARIL8v6Ph11SmJvyvyt9RkzWGRngd1Q3tAXMLylLCLK1OXJb0ZM7VClf0+mCLQe\nMRGy1hxBcik6IdJ3srBPfO1ITNm1795sWQYOSB5sAn9K8xWcFfrBBSgu+hq6g8llJ7BqNnW5WAce\nugMDpb4yoFP+SukIyaXchEgzEoaJ7zjkyy7tdPxXYPxaCRlCKnWZ+4zkFK5hVKh4F2od/bO8YSRP\ncoA5iAHov39O6704h/xsuy6TI/XUaldrJ5EQSXbJxGfQzY2S2LZX6crmbRoCCTO9fI6U65jaIiIO\nm/TFMmIXXjSFBbjw3Pxcxj2XBf7CLozrdHsc32tYQVRnSC5nJUOShx7TUV+1HYl9xJd6iEsGEmb6\n1unzh75UERG9Dfqo6rdnHhcGbx43C9bZDLJN2s1X1NbpI7vsDMnlosmQ5OlzgFLyZUorcXJI+v7j\nxVchS5jpW2f0Y7vHZJe5pSJt1d7zc6EsaNMP9No9dyJXxAnsf4Zuatl3iy47RHI5OxnSj8Dg6MO3\nWRgDnp4+bUVJbNzhajfzANyy/QcaDUf75djlb+ukymeBvS352G7psVovFyARXXaI5HrJiZCI0cra\na/kq+NG7SH9alZOfr7F8yOoRi0c6K1y6c8fxCKlDtrET14wyqTHfXWfIta5sDSJElwJp4rSZBMn1\n0pMgKQ5UU13I2eBj5Gf6i5DYpH/H9SsOvbSzymV4TH+/4vSVKDz+a52c64g46ESXAZJq91STINnr\nlG+5VQsKCi4ZmPhep78Iif1tkhV0dx3gwaO304qZ3jEaeYMdn/LQlfikpdZq712t1YpUIkDK2/r1\ndJGG+PoGLBqoS2WJ5kiXk2SEUfe6XGSdmV4pZko9O3gR/yuavWtJwQ68ci95bdTzpewSUkXydmKm\nTtXpic01gy0T7+XbDDtv00DnPu/lP6Sukq7/T4GXRCXRpUCCsZAqkmbTzTPvRsbk00et0pb5p4+4\nAJrHLRro3Ocu6ZHO0CplEV0KJOSt1JEOz07jUfq1QPxVHGyRmOzE+Je+W+ht5C53QmEmSVlElwKJ\nryVtpJu2D85VPOLLTtEsSKzVyfAn+0q04i4zc8da9tQ00SUCJD63NwdJEp8gsUgP3OXmiOwyKH8Q\nT20OUIv4BIlFcCJEGono1qCYKzL1D74/tcKQ5sInvna/vDyU7E+LVppw8bX6l5eb8d4NenzikyS2\nwWo3arpPfJLEbtTL7O66/gdTvMdEidTYHgAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$x{\\left (t \\right )} = C_{1} e^{\\frac{t}{2 m} \\left(- a - \\sqrt{a^{2} - 4 k m}\\right)} + C_{2} e^{\\frac{t}{2 m} \\left(- a + \\sqrt{a^{2} - 4 k m}\\right)}$$"
+      ],
+      "text/plain": [
+       "             ⎛        ____________⎞         ⎛        ____________⎞\n",
+       "             ⎜       ╱  2         ⎟         ⎜       ╱  2         ⎟\n",
+       "           t⋅⎝-a - ╲╱  a  - 4⋅k⋅m ⎠       t⋅⎝-a + ╲╱  a  - 4⋅k⋅m ⎠\n",
+       "           ────────────────────────       ────────────────────────\n",
+       "                     2⋅m                            2⋅m           \n",
+       "x(t) = C₁⋅ℯ                         + C₂⋅ℯ                        "
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Solve the IVP\n",
+    "sol = sy.dsolve(ivp)\n",
+    "sol"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n9x37dAAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\left ( C_{1} + C_{2} = x_{0}, \\quad \\frac{C_{1}}{2 m} \\left(- a - \\sqrt{a^{2} - 4 k m}\\right) + \\frac{C_{2}}{2 m} \\left(- a + \\sqrt{a^{2} - 4 k m}\\right) = v_{0}\\right )$$"
+      ],
+      "text/plain": [
+       "⎛                 ⎛        ____________⎞      ⎛        ____________⎞     ⎞\n",
+       "⎜                 ⎜       ╱  2         ⎟      ⎜       ╱  2         ⎟     ⎟\n",
+       "⎜              C₁⋅⎝-a - ╲╱  a  - 4⋅k⋅m ⎠   C₂⋅⎝-a + ╲╱  a  - 4⋅k⋅m ⎠     ⎟\n",
+       "⎜C₁ + C₂ = x₀, ───────────────────────── + ───────────────────────── = v₀⎟\n",
+       "⎝                         2⋅m                         2⋅m                ⎠"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Define the ICs\n",
+    "ic1 = sy.Eq(sol.rhs.subs(t, 0), x_0)\n",
+    "ic2 = sy.Eq(sy.diff(sol.rhs, t, 1).subs(t, 0), v_0)\n",
+    "ic1, ic2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nX8c6+oLHAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\left \\{ C_{1} : \\frac{1}{\\sqrt{a^{2} - 4 k m}} \\left(- \\frac{a x_{0}}{2} - m v_{0} + \\frac{x_{0}}{2} \\sqrt{a^{2} - 4 k m}\\right), \\quad C_{2} : \\frac{1}{\\sqrt{a^{2} - 4 k m}} \\left(m v_{0} + \\frac{x_{0}}{2} \\left(a + \\sqrt{a^{2} - 4 k m}\\right)\\right)\\right \\}$$"
+      ],
+      "text/plain": [
+       "⎧                          ____________                ⎛       ____________⎞⎫\n",
+       "⎪                         ╱  2                         ⎜      ╱  2         ⎟⎪\n",
+       "⎪      a⋅x₀          x₀⋅╲╱  a  - 4⋅k⋅m              x₀⋅⎝a + ╲╱  a  - 4⋅k⋅m ⎠⎪\n",
+       "⎪    - ──── - m⋅v₀ + ──────────────────      m⋅v₀ + ────────────────────────⎪\n",
+       "⎨       2                    2                                 2            ⎬\n",
+       "⎪C₁: ──────────────────────────────────, C₂: ───────────────────────────────⎪\n",
+       "⎪                ____________                           ____________        ⎪\n",
+       "⎪               ╱  2                                   ╱  2                 ⎪\n",
+       "⎩             ╲╱  a  - 4⋅k⋅m                         ╲╱  a  - 4⋅k⋅m         ⎭"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Solve for the undetermined coefficients\n",
+    "coefs = sy.solve([ic1, ic2], [sy.Symbol('C1'), sy.Symbol('C2')])\n",
+    "coefs # remember, it's a dictionary now"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\frac{e^{- \\frac{a t}{m}}}{2 \\sqrt{a^{2} - 4 k m}} \\left(\\left(2 m v_{0} + x_{0} \\left(a + \\sqrt{a^{2} - 4 k m}\\right)\\right) e^{\\frac{t}{2 m} \\left(a + \\sqrt{a^{2} - 4 k m}\\right)} + \\left(- a x_{0} - 2 m v_{0} + x_{0} \\sqrt{a^{2} - 4 k m}\\right) e^{\\frac{t}{2 m} \\left(a - \\sqrt{a^{2} - 4 k m}\\right)}\\right)$$"
+      ],
+      "text/plain": [
+       "⎛                                       ⎛       ____________⎞                 \n",
+       "⎜                                       ⎜      ╱  2         ⎟                 \n",
+       "⎜                                     t⋅⎝a + ╲╱  a  - 4⋅k⋅m ⎠                 \n",
+       "⎜⎛            ⎛       ____________⎞⎞  ───────────────────────   ⎛             \n",
+       "⎜⎜            ⎜      ╱  2         ⎟⎟            2⋅m             ⎜             \n",
+       "⎝⎝2⋅m⋅v₀ + x₀⋅⎝a + ╲╱  a  - 4⋅k⋅m ⎠⎠⋅ℯ                        + ⎝-a⋅x₀ - 2⋅m⋅v\n",
+       "──────────────────────────────────────────────────────────────────────────────\n",
+       "                                                               ____________   \n",
+       "                                                              ╱  2            \n",
+       "                                                          2⋅╲╱  a  - 4⋅k⋅m    \n",
+       "\n",
+       "                           ⎛       ____________⎞⎞       \n",
+       "                           ⎜      ╱  2         ⎟⎟       \n",
+       "                         t⋅⎝a - ╲╱  a  - 4⋅k⋅m ⎠⎟  -a⋅t \n",
+       "          ____________⎞  ───────────────────────⎟  ─────\n",
+       "         ╱  2         ⎟            2⋅m          ⎟    m  \n",
+       "₀ + x₀⋅╲╱  a  - 4⋅k⋅m ⎠⋅ℯ                       ⎠⋅ℯ     \n",
+       "────────────────────────────────────────────────────────\n",
+       "                                                        \n",
+       "                                                        \n",
+       "                                                        "
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Substitute these coefficients back into the solution\n",
+    "sol_x = sol.rhs.subs(coefs).simplify()\n",
+    "sol_x"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Let $m = 1$ and $k = 1$ in the solution for the spring-mass system above.  Plot the solution for $a = 1$, $a=2$, and $a=3$ over the times $t\\in [0, 10]$ assuming $x_0 = 1$ and $v_0 = 1$.\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Second-Order BVPs\n",
+    "\n",
+    "Boundary-value problems (BVPs) are of critcal importance for many physical models, including those of heat conduction through media and neutron diffusion in nuclear reactors.  We'll stick with second-order equations with *constant* coefficients, i.e., equations of the form\n",
+    "\n",
+    "$$\n",
+    "  \\frac{d^2 y}{dx^2} + p\\frac{dy}{dx} + q y(x) = s(x) \\, ,\n",
+    "$$\n",
+    "\n",
+    "where $s(x)$ is an arbitrary forcing function.  Boundary conditions specify $y(x)$ or its derivative at two separate points $x = a$ and $x = b$.  That makes the equation a two-point BVP.\n",
+    "\n",
+    "Recall, the equation is *homogeneous* if $s(x) = 0$, and *inhomogenous* otherwise.  The general solution to such equations is the sum of the homogeneous solution (i.e., the solution when $s(x) = 0$) and the particular solution.  There are a variety of tricks for solving such equations, but that's not our focus; rather, we'll leverage SymPy for the general solution and apply boundary conditions (BCs) to develop final solutions.\n",
+    "\n",
+    "More specifically, here's our approach, and it follows what we've done for IVPs:\n",
+    "  1. Define the BVP\n",
+    "  2. Solve the BVP using `dsolve`\n",
+    "  3. Define the BCs\n",
+    "  4. Solve the BCs to define the two undetermined constants\n",
+    "  5. Substitute those constants (and any other values) to the general solution\n",
+    "  6. Perform any plotting, etc., required by the problem statement."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Solve the heat equation $k\\frac{d^2 T}{dx^2} = 0$ subject to $T(0) = 0$ and $T(a) = 100$.  By the way, this equation models the temperature $T$ through a wall of thickness $a$ whose left and and right surfaces are held at 0 and 100 K, respectively.\n",
+    "\n",
+    "*Solution*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAvBAMAAADZWt/DAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAELvv3c2ZVESJZiJ2\nqzKF9OxMAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAC5ElEQVRIDaVVTWgTQRT+tk1NNn9drB6EliiC\nglZaiojgJbcieOhFKwiaiwerYA6CoJccvHjRHCQgqOSg4K05iBQvSS+CUjEInqxavHpoc9BaLcT3\ndnZ2Z2dCmaQPsvve9743OzOZNx+gWe2IpyH9hW4jN9dfhcZONPL/NKi/MFHJ/OmvwmAnOwZkD/w4\nBSRa9nyTuQnUTNQeSXWQLtnTTaZbxH08MHFrZKSUn799yJquE18/WS8Pd7sbOm4bp85galfHeKyO\nq7Yf68m76eFsz4QtOANnV6fY2UJy4P3jSTqbyM3dtZ1uL94knrervRK22MTKz9WKSc7UBZZsmDlG\nnMPFnonmzNfuic9bwF6Z/iKd8O2+f0b+SCkEVOcxcBJYAC5JdL90wvc89tG0RsshoDptZH4DL5Xu\ndFtqnvz0NNw54KGn4X6YryNNl8MyEvQNYc609IL3UBt8fT3SYBHmgRwlK3gVpS9Gru+NtpGij1zA\nnetaRoTDRX6/pd/4h6V3LfOuKpSQ2qbzk136y0zDmiWGjtEfVU2fS9BiX3DsnvetRG6zivw2rWLZ\nqVNk2mKZsVmq8dxOirbilsahL+S3sIcuYvorunHbIOy7x5nTNAMMHWR3nR+KiSUkVicVTHXpGJDR\nADR+i5/6ALSJyU0UKs0KZw3jY0BGS6DSNX7e40ewB21yaV7pDhZRKFc5E5kQaD4GZLSJSe8jsrQe\nfxMjWnCQPmF0LT5AINBDQuJqdNTKU3hDhdeUYt+dxdgajiJ7g0ZXTAj00yu/VhmkeU+sjC/Uyb3M\nsWoHVr6pIQsjW1yglaNc5OxOJhZNDFWgI6lzWzsVU46EMbCYQB+XqNnOMhO8SRgDo42LLLxQwpGi\nXNwLb5Zo1kyQV1q6EafrEQtj0HYDCbQvjKLtBhPoMRZG0XaDCbQvjLLt9OXZxIEwirazKdA4UhhF\n22lJm1AIo2w7mwqd4wujbDs9aRP7wijbzqZAcv4D4aS/AUhpUoQAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$k \\frac{d^{2}}{d x^{2}}  T{\\left (x \\right )} = 0$$"
+      ],
+      "text/plain": [
+       "    2          \n",
+       "   d           \n",
+       "k⋅───(T(x)) = 0\n",
+       "    2          \n",
+       "  dx           "
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# 1. Define the BVP\n",
+    "T, x, k, a = sy.symbols('T, x, k, a')\n",
+    "bvp = sy.Eq(k*sy.diff(T(x), x, 2), 0)\n",
+    "bvp"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAJsAAAAUBAMAAABoqVKyAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIu+7q82J3ZlmRDJU\ndhDTAJzgAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACQ0lEQVQ4EZ1UPWgUQRT+9n727vbuxq1EbWIn\nNhowYBmFpAxJka1dC0v1ItgIwYMIokU8K02Vs7ISAyJolRMLBX9yhYhN4iKi1cmphYIx53vzt7md\nKMQH+/ab933vY2ZndgAb+zV6Yiv/AbxvY9PfJ07FEKO6uxC6Nr2xK629bhnIEn6MXAPlForGRcw4\nffXDwHN6nHCIAjDSRKWN21Z71iINxPEEKH9Ny6/+RuAxsNxBPcGcVX+wSIPiEQLBwbRs7BwCK8B0\nggBew6qLbQsVuNGhd7WpBpyNnUMweYhTvQmI9ZP3aKU+we3h/eCRCNOathsiem8OvO2SxPvJunwL\n+IRb3YtAZYbGfiSjyfA3JY4H6mVnZwh/YREirsyXuLGyyapSBziH88kdoNbgQhqlXwo/umpqenaG\nOI1J+Im/FYQkKGyxKtcGEhxjWO1zTiMnBQK4K2tnouhCFM0SNsQcVkOB/Kik6dgx1eYsl5W1K0n7\nF8aOZGZ2mriEEere02UHPnYUvFhU5bIC9tff7gRBdeJi184SWEuA1RXSymNHmbfidb2PDb0VklLJ\n4zn7iWtnCcyjlrzn0wuMc+LTEWzm+x65lmMubIu1FmqLNFbfjoBeLAxBzfc746BLxJ8czHZJQSsU\nUxvvlggW1awJ6RALE9cZOnaGoB/043rvGk3FRvqTfba1DHDsNB/EQXYG/7oCjOszA74YoN4PXz5N\nhiu0F6Gu7HBBKWbf5alskxofHQwcwl6f1teR7KpA+yLj5q66hsV/AC1mnFeRB4bgAAAAAElFTkSu\nQmCC\n",
+      "text/latex": [
+       "$$T{\\left (x \\right )} = C_{1} + C_{2} x$$"
+      ],
+      "text/plain": [
+       "T(x) = C₁ + C₂⋅x"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# 2. Solve the BVP using dsolve\n",
+    "sol = sy.dsolve(bvp)\n",
+    "sol"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAPcAAAAUBAMAAACjcrZMAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAImYQu82Z3XZU70SJ\nqzJu81j5AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACtElEQVRIDcVWO2gUURQ9u7MfJzOuU2mjZGxs\nXVBICMKuNlZCLFawEAYMKGgwVv4QQwoRBI0g/go3xNIi6QSrtVCsZJtACj9bqK2RICYgxvve3DvM\ne293C5tcmPe559xz9r15M7NAIca2xAPlelg14yem471qYEU498HKqOkg9mAgE9GCutkZUfIkXTsW\ngUd0OXEaY4pjxkD2QCCtf1YHtKBuvEmgmADecUpXfpoWalZcQEgcMxz2E8YdwKjzPn6pp4Ks+h6o\nRkD5BdGCBYOrJ6Uu/HU77bDF3AGsyoN1aEFWnQD2EOPSPDW1xOLSdFcXwaaddthi7gBWJZlrQVYt\nL+M2UPitWB5tgR2NBMGGlXTZbG4AhYvn1XYaQeZakFXDBMeAUPS/am7Y0pHQZLSDmoCiY7EpzeYC\nhFNngddReY2gnBZA5lqQVYuTuEa3/W8q/P2cGEg/mqD2Rybcu2w2F+ANVuAtotK0CrW5EmRVfwYv\ngRF9pjzglU3nDTLSFvttq3W91TpDFAEu40dUWUd11iijibXttTVlXlUbhOd9zOlo+JuWhsuWlbPM\nDYwujzTR6FmFylwLsiqZ07anT3hHzPk+dam21ETRftQsNrHYPAPQrjc6aCvvnJZeuRZk1WBGHbjC\nhqLVxVwVcfR7ybhsNs8AXEVjHit+JDLc08q1IKvSgXtHSDuGTyfUvee0LxM975cp4rDZPJOhZ6g0\nW7wZmmXAfVqfEkwbVDra0Jv6dEExnQOHI3c+A1eoKBcOW8wFOEAvjdV7++7matRweulUnApqVZR7\n+vUqLNdcI75p7rDFnIGgE/SEM6wfSz8sQnksA7N39i+FM/Yhk/7t6cP+v9akgT4sOJrldt9azcb5\nwXh+ko0HsbG0tZWRhgzUJzX9MzGEBMRD0f8FSxFVFmJqtiH2A/8AKdnUDcW2M+UAAAAASUVORK5C\nYII=\n",
+      "text/latex": [
+       "$$\\left ( C_{1} = 0, \\quad C_{1} + C_{2} a = 100\\right )$$"
+      ],
+      "text/plain": [
+       "(C₁ = 0, C₁ + C₂⋅a = 100)"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# 3. Define the BCs\n",
+    "bc_left = sy.Eq(sol.rhs.subs(x, 0), 0)\n",
+    "bc_right = sy.Eq(sol.rhs.subs(x, a), 100)\n",
+    "bc_left, bc_right"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAALoAAAAyBAMAAAAZw9x3AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEImZRO/dMlQiu6vN\nZnZmcXX2AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADUklEQVRYCbWXQWgTQRSG32zSJNs2bajYk5hc\nRAQpUdRDC5qLXtteFMFSBC2WQg14E6ERqYqXBD16SLyI2INVEA+WWvHiRSxKz81B8CDaRkGrldb3\n3uzM7iRLsXT2Qd689+bPt5OZ2dkNAFpPnrxVcx8pXPx0UYX22qUHHqtsa+jO1/0A7ADcsQzj3T82\nRjyNsLfQW5EOidVZxnY0dk4Xz15lID0EzgI7AsZ+MbZ7gZsduuUMtM9CqsGOWMkNJnbLn7BzOoLi\na+yIJX4wMWuLns1DfIMd09ft0qs5nA52kdDzkPxeJRcFPdqZwQVN0aqm1qIYe3sN0g12UdDNu0nY\n3DMreBJcgt1F6XDwNukDo28WoefbCzzOybXS984MLN7lDu36PhR17AchQr9TR+bYu0YAbuAnYJ0l\nMR5IvTBE2CpqmhnxECcu9tvQLQEcNAqUhAlbRFSQq4r3LlrnMLr4EIXaZgDKeE3TwoSmwsvkY2O5\nQOmJErpknkJtePXBks68IEzYrOH8Pfsx8u5P8qJCnmwCP3SGDtYpC1iYMNAdCMuLmDg814486wGu\ncr84h42Lp9FUnXPfKaHTf4iKLPR7g1EHgfcVqJSQzym4cowyaS6OfSqnMq9VwgMw19TTkj4vwJ6n\nXG3jh6sAOOWLQmdGCcdhSk8jwGaTMSQ1Cb38AyGxSoVbBp32VLnEQt8p4QWoFvxqaJScBDhapC65\n03Mm/TEAPoxN08KQzWoqec5jZ6no0qo6iArMDITdTVoIOLItzeGl5B0JuH9SNEmSLrdCoiTOQHbB\nZCihk6f6FntGbuaVAsv6Xx6h1hs77XcQfV+KkDhPoW/CE36UJRb6vYHoCcfyJFDl4MzI2nXVZbTx\nXJwXzCgayV/O8GEbsJuBWIa5lgoVrt2+g6u0hZknsBTeuzzf9A1RbyrIdHRzM7Sui2F03amDtI62\nF/wffXtMX22d7h4+Pqzx1uknK52rkdHFCMRqkdFjDUjUI6O31SDr32G25z2bg7IeutV3MaJmSzCX\nqii+7bG319MTjoKrseMbtx0T85/vf9Io719Z24Ku2Azk/xvgNwObXMnqkm8ZLj6cI7BsTUJX6hHA\nxcWMpKbXvcDmRaZfK9ouW7tGAfEd4x3F/wDOSfq0mtvKIQAAAABJRU5ErkJggg==\n",
+      "text/latex": [
+       "$$\\left \\{ C_{1} : 0, \\quad C_{2} : \\frac{100}{a}\\right \\}$$"
+      ],
+      "text/plain": [
+       "⎧           100⎫\n",
+       "⎨C₁: 0, C₂: ───⎬\n",
+       "⎩            a ⎭"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# 4. Solve the BCs for C1 and C2\n",
+    "coefs = sy.solve([bc_left, bc_right], sy.symbols('C1'), sy.symbols('C2'))\n",
+    "coefs"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAACsAAAAqBAMAAADYL79WAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVO8Qq4lmdpnNMt0i\nu0SES+sfAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABEUlEQVQoFWNgAAPWsigGBjAB4QNJIQMGhokM\n1gcgBFSY2dXfgIFNgYF1ApiAK2bIN2DgdWBg/AwmUIT5HRj4PoIJFGH7Bga+72CCwbzkXGkBSBJo\nyPkABq7vYII5gG079wSYcAMD19fzIILVgPUz3wGoMMIQZgbeCyBBsCFA2xhBVjJ+ZGDgB5sMFgaq\nYPsMJhgY1i8AKwZZifAOo0E9A7sBSKIeSG5kMFoAJt4L3Gc4BhJt0Z+RwGBa7sUAJkzKzdsSQMJD\nFPzHBj4MUc+Q7Wye1nZlLJofHeDEEhTMagwcFzBVc3xm4C7AFGa6wGC/AFPYPoBBHlOUwV6AwZPx\nAIYEbwHbFlYMUQZm96ojdXBhALw8YfqHelFDAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\frac{100 x}{a}$$"
+      ],
+      "text/plain": [
+       "100⋅x\n",
+       "─────\n",
+       "  a  "
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# 5. Substitutions\n",
+    "sol_T = sol.rhs.subs(coefs)\n",
+    "sol_T"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The temperature found is linear, and it varies from 0 (at the left) to 100 (at the right).  Does the solution depend on the conductivity $k$?  (Remember, $k$ quantifies how readily heat transfers through a medium by conduction.)\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Solve the heat equation $k\\frac{d^2 T}{dx^2} = 1$ subject to $T(0) = 0$ and $T(a) = 100$.  What happens to $T$ within the wall as $k$ is increased?\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Solve the heat equation $k\\frac{d^2 T}{dx^2} = 1$ subject to $T(0) = 0$ and $T'(a) = 0$.  The condition $T'(a)$ is we specify the right surface of the wall to be perfectly insulating.  If $T'$ vanishes, so does the heat flux $kT'$, and if not heat is passing through, we're insulated. \n",
+    "\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: Consider the second-order, ordinary differential equation\n",
+    "\n",
+    "$$\n",
+    " -D \\frac{d^2 \\phi}{dx^2} + \\Sigma \\phi(x) = S(x) \\, ,\n",
+    "$$\n",
+    "\n",
+    "which is one (albeit simplified) model for the diffusion of neutron particles in a 1-D system.  Two possible applications of this model include (1) the transport of energy via radiation (i.e., radiation heat transfer) and (2) the diffusion of neutrons in a nuclear reactor.\n",
+    "\n",
+    "Consider the case for which $\\phi(0) = \\phi(10) = 0$, $D = 1/3$, $\\Sigma = 1/2$, and\n",
+    "\n",
+    "$$\n",
+    "   s = \\left \\{ \\begin{array}{cc}\n",
+    "                   1      & x \\leq 5 \\\\\n",
+    "                   0      & 0 > 5\n",
+    "                \\end{array} \\right . \\, .\n",
+    "$$\n",
+    "\n",
+    "To solve this problem, assume that $\\phi(x)$ and $D \\frac{d \\phi}{dx}$ must be continuous at $x = 5$.  For heat transfer, this continuity means the temperature and the heat flux are continuous.  For neutron diffusion, this means the neutron flux and its current are continuous.  (*Hint*: Solve the equation separately for $x \\leq 5$ and $x > 5$.  Then, the BCs and the continuity conditions provide 4 equations for the four undetermined coefficients.)\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: Consider the following *partial* differential equation (PDE):\n",
+    "\n",
+    "$$\n",
+    " \\frac{\\partial c}{\\partial t} = D(x) \\frac{\\partial^2 c}{\\partial x^2} - v(x)\\frac{\\partial c}{\\partial x} + S(x)\n",
+    "$$\n",
+    "\n",
+    "which is a simplified, one-dimensional, *advection-diffusion equation*.  Here, $c(x)$ is the concentration of some quantity of interest (perhaps a pollutant in a stream), $D$ is a diffusion coefficient (that quantifies how rapidly the species tends to dissipate away from a region in space), and $v(x)$ is the velocity of the surrounding field (here, perhaps the stream with the pollutant).  \n",
+    "\n",
+    "Like many equations that model physical systems, the convection-diffusion equation is a statement of balance.  On the left, we have $\\frac{\\partial c}{\\partial t}$, which is  the time rate of change of the concentration at any point $x$.  This change comes from three sources:\n",
+    "\n",
+    "  1. the *diffusion* of the species away from a point $x$, here quantified by $D(x) \\frac{\\partial^2 c}{\\partial x^2}$\n",
+    "  2. the *advection* of the species away from a point $x$ due to the flow of the surrounding field (here, again, the stream), here quantified by  $-v(x)\\frac{\\partial c}{\\partial x}$\n",
+    "  3. any external sources of the species, perhaps a leaking canister or a chemical reaction, here represented by $S(x)$\n",
+    "\n",
+    "Now, do the following:\n",
+    "\n",
+    "  - Suppose the unit of $c$ is m$^{-3}$.  What must be the units of $D$, $v$, and $S$?\n",
+    "  - Write down the *steady-state* form of the above convection-diffusion equation by setting the time derivative to zeros.\n",
+    "  - Solve the steady-state equation  for the case $v = 1$, $S = 1$, $c(0) = 0$ and $c(10) = 1$.\n",
+    "  - Plot your solution for $D = 10$, $D = 1$, and $D = 0.1$.  What happens?  (The phenomenon you should observe is the development of a *boundary layer*, a term that should become familiar in fluid mechanics.)\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "You may wish to review your text from a past course on differential equations.  That text might very well be Prof. Bennett's online textbook called [Elementary Differential Equations](https://www.math.ksu.edu/math240/book/)."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
