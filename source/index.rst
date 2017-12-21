@@ -39,3 +39,4 @@
    Lecture 26 <lectures/ME400_Lecture_26> 
    Lecture 27 <lectures/ME400_Lecture_27> 
    Lecture 28 <lectures/ME400_Lecture_28> 
+   Lecture 29 <lectures/ME400_Lecture_29> 
