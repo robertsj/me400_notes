@@ -233,7 +233,7 @@ So take some time and read this document carefully!
 <div class="section" id="Contact-Information">
 <h2>Contact Information<a class="headerlink" href="#Contact-Information" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><strong>Lecture</strong> MW 1:30–2:20pm, DUE 1073</li>
+<li><strong>Lecture</strong> MW 1:30–2:20pm, DUE 1109</li>
 <li><strong>Instructor</strong>: Jeremy Roberts</li>
 <li><em>Phone</em>: 785-532-7182</li>
 <li><em>Email</em>: <a class="reference external" href="mailto:jaroberts&#37;&#52;&#48;ksu&#46;edu">jaroberts<span>&#64;</span>ksu<span>&#46;</span>edu</a></li>
@@ -260,16 +260,16 @@ floor</a> (Backside of Seaton)</li>
 </ul>
 </li>
 <li><strong>Undergraduate Teaching Assistants</strong></li>
-<li>Cole Hoing<ul>
-<li><em>Email</em>: TBD</li>
-</ul>
-</li>
 <li>Keith Huddleston<ul>
 <li><em>Email</em>: TBD</li>
+<li><em>Office</em>: TBD</li>
+<li><em>Office Hours</em>: TBD</li>
 </ul>
 </li>
 <li>Sam Oxandale<ul>
 <li><em>Email</em>: TBD</li>
+<li><em>Office</em>: TBD</li>
+<li><em>Office Hours</em>: TBD</li>
 </ul>
 </li>
 </ul>
@@ -282,7 +282,7 @@ engineering, including computer programming (abstraction and problem
 solving; algorithms; control structures; input/output; functions; arrays
 and array processing).</p>
 <p><em>My informal description</em>: ME 400 is all about teaching you, the
-student, how to use programming to solve problems. We’ll use the Python
+student, how to use the computer to solve problems. We’ll use the Python
 programming language, which is as easy a language to learn as any I’ve
 encountered. The Python language offers much more with all of the add-on
 packages available, all for free. What you will come out of the class
@@ -290,6 +290,10 @@ with, at the least, is (1) a basic ability to understand, implement, and
 debug computer programs and (2) knowledge of tools (symbolic and
 numerical) within the Python ecosystem that can be used to solve
 engineering problems.</p>
+<p>Note, while the central core of this course is about the basics of
+programming, the course extends this core content to numerical and other
+applications. In other words, do <em>not</em> expect this course to be just
+about “coding.”</p>
 <p><em>Specific objectives</em> (with corresponding ABET outcomes) include:</p>
 <ol class="arabic simple">
 <li>A good understanding of the basics of computer programming [a, e, k]</li>
@@ -336,21 +340,21 @@ ISBN: 9781107686427.</li>
 </div>
 <div class="section" id="Prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h2>
-<p>Prerequisite or concurrent: MATH 551. Eventually, this course will
-replace MATH 551 with MATH 240/340 as a pre/co-requisite. Ordinary
-differential equations are introduced/reviewed as necessary in the last
-segment of the course, and supplementary sessions will be offered to
-help you brush up on the math skills assumed in this course.</p>
+<p>Prerequisite or concurrent: MATH 551.</p>
+<p>Hence, I assume that you can perform matrix-matrix multiplication,
+matrix-vector multiplication, and dot products, and evaluate vector
+norms.</p>
 <p>In addition, this course sits in the middle of the MNE undergraduate
 curriculum. Consequently, I can count on you having had and to be able
 to apply knowledge learned in previous courses. These previous courses
 include but are not limited to basic physics and calculus classes. If
 something we do in this class requires that previously learned material,
-I’ll let you know, but <em>it is your responsibility</em> to review it as
-necessary.</p>
-<p><em>Important</em>: If you are one of our guests from industrial engineering or
-another program that does not require MATH 240, let me know by email
-within the first week of the course.</p>
+<em>it is your responsibility</em> to review it as necessary. Some examples of
+what I expect you to know: - know that acceleration is
+<span class="math">\(a = \frac{d^2 x}{dt^2}\)</span> - know how to balance forces in simple
+trusses via free-body diagrams - know how to differentiate and integrate
+functions - be able to solve <span class="math">\(\frac{dy}{dt} + 2y(t) = t\)</span> subject
+to <span class="math">\(y(0) = 1\)</span>.</p>
 </div>
 <div class="section" id="Related-Courses">
 <h2>Related Courses<a class="headerlink" href="#Related-Courses" title="Permalink to this headline">¶</a></h2>
@@ -364,27 +368,34 @@ scientific computing.</p>
 <h2>Amount of Study Required<a class="headerlink" href="#Amount-of-Study-Required" title="Permalink to this headline">¶</a></h2>
 <p>For the <em>average</em> student (with respect to reading and analytical
 abilities) to earn an <em>average</em> grade will require approximately <strong>6 to
-9 hours per week</strong> of <em>study</em> outside of class. Here, to study implies
-reading, preparation for lecture, solving homework sets, visiting with
-the instructor and GTAs, and anything else that contributes actively to
-the learning process.</p>
+9 hours per week</strong> of <em>study</em> outside of class. This is consistent with
+<a class="reference external" href="https://www.k-state.edu/provost/universityhb/fhsecf.html#F115">university
+policy</a>,
+which suggests 2 outside hours per 1 in-class hour. Here, to study
+implies reading, preparation for lecture, solving homework sets,
+visiting with the instructor and GTAs, and anything else that
+contributes actively to the learning process. For reference, roughly
+half the class earns A’s and B’s, meaning the average grade is near the
+B/C cutoff.</p>
+<p>For the average student, I’d suggest the following breakdown of
+out-of-class work: - 2 hours per week reading, taking notes, and
+executing example code - 1 hour per week on pre-lecture activities -
+3–6 hours per week on homework problems</p>
 </div>
 <div class="section" id="Lectures">
 <h2>Lectures<a class="headerlink" href="#Lectures" title="Permalink to this headline">¶</a></h2>
-<p>Lectures are an important part of the curriculum and, therefore, are
-required. Your job is to <strong>come to lecture prepared</strong> to learn and to
-engage in any in-class activities. Pre-lecture activities will be
-assigned for each lecture and must be completed one hour before the
-lecture. Some lectures may include in-class, formative activities.
-Although not formally assessed, these activities will often give an
-indication of attendance.</p>
+<p>Lectures are an important part of the curriculum. Your job is to <strong>come
+to lecture prepared</strong> to learn and to engage in any discussions and
+other activities. Activities will be assigned for each lecture, often as
+online quizzes to gauge understanding of the reading prior to lecture.
+Some lectures may also include in-class activities.</p>
 <p>The lectures in ME 400 will often be best thought of as hands-on,
 informal tutorials. If you have a laptop, you are encouraged to bring it
-to class to do in-class examples. If you do not have a laptop, I may
-have a couple old ones available for in-class use. Use of laptops should
-be limited to in-class examples and not for surfing and other activities
-unrelated to the lecture. The use of other electronic devices is
-distracting, so turn your phones to vibrate and put them away.</p>
+to class to do in-class examples. If you do not have a laptop, I have
+approximately 5 old ones available for in-class use. Use of laptops
+should be limited to in-class examples and not for surfing and other
+activities unrelated to the lecture. The use of other electronic devices
+is distracting, so turn your phones to vibrate and put them away.</p>
 </div>
 <div class="section" id="Netiquette-and-Discussion-Expectations">
 <h2>Netiquette and Discussion Expectations<a class="headerlink" href="#Netiquette-and-Discussion-Expectations" title="Permalink to this headline">¶</a></h2>
@@ -422,12 +433,13 @@ me, the “business casual” approach is just fine.</p>
 </div>
 <div class="section" id="Laboratories-and-Homework">
 <h2>Laboratories and Homework<a class="headerlink" href="#Laboratories-and-Homework" title="Permalink to this headline">¶</a></h2>
-<p>Attendance in laboratory sessions is mandatory. Laboratories are
+<p>Attendance in laboratory sessions is mandatory (i.e., any credit to be
+earned can be earned only if you are present). Laboratories are
 interactive experiences and will be comprised of a quick review and
 exercises that must be completed within the laboratory session. Any
 remaining time may be used to continue on at-home exercises, which will
 involve more in-depth problems.</p>
-<p>Students <em>will work in pairs</em> as part of their laboratories. In some
+<p>Students <em>will work in pairs</em> as part of some laboratories. In some
 laboratories, formal <em>pair programming</em> will be required as a learning
 activity, with specific instructions to be given as needed.</p>
 <p>However, students should complete homeworks as individual efforts. Let
@@ -440,44 +452,69 @@ of programming, so do yourself a favor and complete the homework on your
 own. (Please also see the discussion below on the Honor Code and
 plagiarism.)</p>
 <p>For homework questions, students should <em>visit office hours</em> or <em>use the
-discussion board</em>. If emailed, the course personnel will direct students
-to the discussion board unless the question is a private matter. The
-discussion board is preferred so that (1) a given question need only be
-asked (and answered) once, and (2) a record of such questions can be
+discussion board</em>. If emailed about homework (and the question is not
+personal), the course personnel may not respond due to time constraints.
+The discussion board is preferred so that (1) a given question need only
+be asked (and answered) once, and (2) a record of such questions can be
 kept for posterity.</p>
 </div>
 <div class="section" id="Assessment">
 <h2>Assessment<a class="headerlink" href="#Assessment" title="Permalink to this headline">¶</a></h2>
-<p>Grading for the course is based on the following breakdown: -
-Pre-Lecture Activities (10%) - Laboratory Exercises (10%) - Homework
+<p>Assessment for the course is based on the following breakdown: -
+Formative Activities (10%) - Laboratory Exercises (10%) - Homework
 Exercises (20%) - Examinations (60%)</p>
 <p>As a starting point, the standard 90/80/70/60 rule will be applied for
 A/B/C/D. These will never be shifted higher, though they may be adjusted
-lower if deemed appropriate.</p>
-<div class="section" id="Pre-Lecture-Activities">
-<h3>Pre-Lecture Activities<a class="headerlink" href="#Pre-Lecture-Activities" title="Permalink to this headline">¶</a></h3>
-<p>Students must complete a short, pre-lecture activity prior to each
-lecture (in this case, due 60 minutes before the start of lecture, which
-gives me a bit of time to look over responses and understand any common
-problems). These activities will most often take the form of an online
-(Canvas-based) quiz with questions that cover the reading assigned for
-the lecture in question. These activities may also include more
-open-ended responses from students. In cases where there is a “right”
-answer, students will be given more than one chance to answer the
-question correctly. The lowest two scores will be dropped from the
-calculuted score.</p>
+lower, if deemed appropriate, at the assignment of final grades. My rule
+of thumb, subject to change, is that each grade boundary is shifted down
+by the average numerical score of the top 5% of the students. Hence, if
+the top five scores are 100, 99, 98, 97, and 96, their average is 98,
+and the B cutoff would be shifted down to 78, a C to 68, etc. This
+policy protects students overall from an exam question or homework sets
+that are particularly challenging (relative to past semesters). This is
+applied to the <em>overall</em> score, i.e., individual exams or other tasks
+are not adjusted.</p>
+<p>The course itself is broken into three <em>phases</em>: - <strong>Phase 1</strong> includes
+all material through the second (of four) exams in the course. This is
+the part of the course that is least “mathematical” and focuses squarely
+on basic programming and algorithms. Upon completion of Phase 1,
+students may lock their homework, exam, and final grades <strong>up to a C</strong>.
+That means that if a student has earned a <em>D</em> or <em>C</em> after taking Exam
+2, she may keep that grade as long as her activity and laboratory scores
+do not decrease to the point of lowering the overall grade. Put another
+way, she may keep the C as long as she still participates in lectures
+and labs. - <strong>Phase 2</strong> includes all material through the third (of
+four) exams in the course. Upon completion of Phase 2, students may lock
+their homework and exam scores <em>up to a B</em>. - <strong>Phase 3</strong> includes the
+entire course and culminates with the fourth, final examination.</p>
+<p>Note, this is a pretty complex scheme. Consequently, Canvas most likely
+can’t handle it. Rather, Canvas will be set up to account for Phase 3
+(i.e., the whole course). Students who want to know their locked-in
+grades must keep track of their scores.</p>
+<div class="section" id="Formative-Activities">
+<h3>Formative Activities<a class="headerlink" href="#Formative-Activities" title="Permalink to this headline">¶</a></h3>
+<p>Before most (if not all) lectures, students will complete a
+“pre-lecture” activity. These activities will most often take the form
+of an online (Canvas-based) quiz with questions that cover the reading
+assigned for the lecture in question. These activities may also include
+more open-ended responses from students. In cases where there is a
+“right” answer, students will be given more than one chance to answer
+the question correctly. Some lectures will also have in-class activities
+(which may be short problems, worksheets, etc.). These in-class
+activities can only be completed if you attend the lecture, and they
+will not be announced. The lowest three scores will be dropped from the
+calculated score, so there are <strong>no make-up activities</strong>.</p>
 </div>
 <div class="section" id="Laboratory-Exercises">
 <h3>Laboratory Exercises<a class="headerlink" href="#Laboratory-Exercises" title="Permalink to this headline">¶</a></h3>
-<div class="line-block">
-<div class="line">The purpose of the laboratories is to review and to put in practice
-the concepts and tools discussed in lecture. Part of this experience
-will be laboratory exercises that must be completed in the alotted
-laboratory time. There are a total of 12 planned laboratories.</div>
-<div class="line">Students may drop their lowest two scores (which can include absences
-of any kind). No makeups will be allowed as laboratory exercise
-solutions will be posted soon after the laboratory session.</div>
-</div>
+<p>The purpose of the laboratories is to review and to put in practice the
+concepts and tools discussed in lecture. Part of this experience will be
+laboratory exercises that must be completed in the alotted laboratory
+time. There are a total of 12 planned laboratories. Students may drop
+their lowest two scores, which accounts for absences of any kind. In
+other words, there is no need to email course personnel about an absence
+ahead of time. No makeups will be allowed as laboratory exercise
+solutions will be posted soon after the laboratory session.</p>
 </div>
 <div class="section" id="Homework">
 <h3>Homework<a class="headerlink" href="#Homework" title="Permalink to this headline">¶</a></h3>
@@ -489,8 +526,8 @@ their lowest two homework scores.</p>
 due date will be the Wednesday before the following laboratory (or, in
 some cases, an exam).</p>
 <p>No late homework is accepted unless a class-wide extension is given.</p>
-<p>Homework solutions will not be posted, but students may visit office
-hours to see the solution.</p>
+<p>Homework solutions will not be posted, but <em>students may visit office
+hours to see the solution</em>.</p>
 <p><strong>Important</strong>: all homework should run without a run-time error. If
 running a submission leads immediately to an error, grading it becomes
 very difficult. In most cases, a homework testing file will be provided
@@ -503,17 +540,19 @@ risk automatic point deductions.</p>
 <p><em>Important</em>: any student with a documented disability who requests more
 time on examinations <em>must inform me two weeks prior to the examination</em>
 or risk forfeiting the accomodation. Make-up examinations will be
-offered for serious personal (e.g., medical) or</p>
+offered only when absolutely necessary, e.g., for serious personal
+issues (e.g., documented illness) or official school business (e.g.,
+documented conference).</p>
 <div class="section" id="Mid-Term-Examinations">
 <h4>Mid-Term Examinations<a class="headerlink" href="#Mid-Term-Examinations" title="Permalink to this headline">¶</a></h4>
-<p>The first two examinations are in-laboratory examinations and will
+<p>The three mid-term examinations are in-laboratory examinations and will
 consist of a written (pen and paper) and coded (Python program, etc.)
-component. The written component is to be completed <em>without notes or
-any other resources</em>. For the coded component, students may use
-resources to be approved prior to the exam. The first exam covers
-roughly the first third of the course. The second exam emphasizes
-material from the middle third of the course but should be considered
-cumulative.</p>
+component. Students may use one 8.5’’ by 11’’ sheet of hand-written
+notes for both components. This note sheet must be submitted with the
+exam (and will be returned with the exam). For the coded component, the
+internet, past homeworks, and any other resources are <em>not</em> to be used.</p>
+<p>Students will be asked to confirm their intent to take the third
+mid-term exam (in order to save paper).</p>
 <p>With multiple laboratory sessions, a number of students will complete an
 examination after their classmates. Although all students should expect
 unique exams, please note that any communication regarding the exam
@@ -523,25 +562,37 @@ this policy will result in an XF in the course</em>.</p>
 <div class="section" id="Final-Examination">
 <h4>Final Examination<a class="headerlink" href="#Final-Examination" title="Permalink to this headline">¶</a></h4>
 <p>The final examination consists of only a written component and will be
-completed in the normal lecture room. The final exam emphasizes the last
-third of the course but should be considered cumulative.</p>
+completed in the normal lecture room. One sheet of hand-written notes
+may be used, but no other resources are allowed. The final exam
+emphasizes the last quarter of the course but should be considered
+cumulative.</p>
+<p>Students will be asked to confirm their intent to take the final exam
+(in order to save paper).</p>
 </div>
 </div>
 <div class="section" id="Contesting-Grades,-etc.">
 <h3>Contesting Grades, etc.<a class="headerlink" href="#Contesting-Grades,-etc." title="Permalink to this headline">¶</a></h3>
 <p>If you wish to request a regrade on any assessed task, you must email
-the instructor and GTAs in one email and (1) describe what the task was,
-(2) what you think was marked incorrectly, and (3) why you think your
-approach was correct. This written request must be made within one week
-of learning your score.</p>
+the appropriate GTA and (1) describe what the task was, (2) what you
+think was marked incorrectly, and (3) why you think your approach was
+correct. This written request must be made within 24 hours of the grades
+being released.</p>
 </div>
 <div class="section" id="Extra-Credit-and-End-of-Semester-Charity">
 <h3>Extra Credit and End-of-Semester Charity<a class="headerlink" href="#Extra-Credit-and-End-of-Semester-Charity" title="Permalink to this headline">¶</a></h3>
-<p>There is no extra credit available in ME 400. The best way to earn
-better scores is to ask for help early and often. The end of the
-semester (e.g., the last week) is <em>not</em> the time to start getting this
-help or to ask for favorable rounding. I repeat: ask for help early and
-often.</p>
+<p>The <em>only</em> extra credit available in ME 400 is for extra problems on
+homeworks and exams. These arise most often when (1) I want to encourage
+a problem to be tackled even though it is a bit open ended or difficult,
+or (2) when an exam is written with one too many problems and I simply
+don’t want to delete one. These problems are never planned, and
+announced only when you see it. In other words, <em>do not plan on extra
+credit</em> – the real world has no analog.</p>
+<p>The best way to earn better scores is to ask for help early and often.
+The end of the semester (e.g., the last week, or after the final) is
+<em>not</em> the time to start getting this help or to ask for favorable
+rounding. I repeat: ask for help early and often. I will only reply to
+post-final, grade-related emails if you catch an error in the books,
+etc.</p>
 </div>
 </div>
 <div class="section" id="Course-Schedule">
@@ -562,245 +613,233 @@ e</th>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>1</td>
-<td>Monday, August 21</td>
+<td>Wednesday,
+January 17</td>
 <td>Administrivia. Overview of Python. Spyder and
 Jupyter. Basic types.</td>
 </tr>
-<tr class="row-odd"><td>2</td>
-<td>Wednesday, August
-23</td>
-<td>Basic operators and common, built-in functions.</td>
-</tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Friday, August 25</td>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, January
+19</td>
 <td>LAB 1</td>
 </tr>
+<tr class="row-even"><td>2</td>
+<td>Monday, January
+22</td>
+<td>Basic operators and common, built-in functions.</td>
+</tr>
 <tr class="row-odd"><td>3</td>
-<td>Monday, August 28</td>
+<td>Wednesday,
+January 24</td>
 <td>Basic data processing with NumPy and Matplotlib.</td>
 </tr>
-<tr class="row-even"><td>4</td>
-<td>Wednesday, August
-30</td>
-<td>More on NumPy arrays. Slicing operations. np.linalg</td>
-</tr>
-<tr class="row-odd"><td>&#160;</td>
-<td>Friday, September
-1</td>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, January
+26</td>
 <td>LAB 2</td>
 </tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Monday, September
-4</td>
-<td>HOLIDAY</td>
+<tr class="row-odd"><td>4</td>
+<td>Monday, January
+29</td>
+<td>More on NumPy arrays. Slicing operations.</td>
 </tr>
-<tr class="row-odd"><td>5</td>
+<tr class="row-even"><td>5</td>
 <td>Wednesday,
-September 6</td>
+January 31</td>
 <td>Algorithms, flowcharts, and pseudocode.</td>
 </tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Friday, September
-8</td>
-<td>LAB 3 - Exercises in explaining steps</td>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, February
+2</td>
+<td>LAB 3</td>
 </tr>
-<tr class="row-odd"><td>6</td>
-<td>Monday, September
-11</td>
+<tr class="row-even"><td>6</td>
+<td>Monday, February
+5</td>
 <td>Conditional statements and the structure of Python
 programs</td>
 </tr>
-<tr class="row-even"><td>7</td>
+<tr class="row-odd"><td>7</td>
 <td>Wednesday,
-September 13</td>
+February 7</td>
 <td>More on conditionals. The graphical debugger.</td>
 </tr>
-<tr class="row-odd"><td>&#160;</td>
-<td>Friday, September
-15</td>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, February
+9</td>
 <td>LAB 4</td>
 </tr>
-<tr class="row-even"><td>8</td>
-<td>Monday, September
-18</td>
+<tr class="row-odd"><td>8</td>
+<td>Monday, February
+12</td>
 <td>For and while loops.</td>
 </tr>
-<tr class="row-odd"><td>9</td>
+<tr class="row-even"><td>9</td>
 <td>Wednesday,
-September 20</td>
+February 14</td>
 <td>More on for and while loops.</td>
 </tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Friday, September
-22</td>
-<td>LAB 5</td>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, February
+16</td>
+<td>EXAM 1 (Lectures 1 – 8, HW 1–4)</td>
 </tr>
-<tr class="row-odd"><td>10</td>
-<td>Monday, September
-25</td>
+<tr class="row-even"><td>10</td>
+<td>Monday, February
+19</td>
 <td>Python container types: lists, tuples, and
 dictionaries.</td>
 </tr>
-<tr class="row-even"><td>11</td>
+<tr class="row-odd"><td>11</td>
 <td>Wednesday,
-September 27</td>
+February 21</td>
 <td>Processing text data.</td>
 </tr>
-<tr class="row-odd"><td>&#160;</td>
-<td>Friday, September
-29</td>
-<td>EXAM 1 (Lectures 1 - 9, Labs 1 - 5)</td>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, February
+23</td>
+<td>LAB 5</td>
 </tr>
-<tr class="row-even"><td>12</td>
-<td>Monday, October 2</td>
+<tr class="row-odd"><td>12</td>
+<td>Monday, February
+26</td>
 <td>Basics of functions.</td>
 </tr>
-<tr class="row-odd"><td>13</td>
+<tr class="row-even"><td>13</td>
 <td>Wednesday,
-October 4</td>
+February 28</td>
 <td>More on functions.</td>
 </tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Friday, October 6</td>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, March 2</td>
 <td>LAB 6</td>
 </tr>
-<tr class="row-odd"><td>14</td>
-<td>Monday, October 9</td>
-<td>Searching; linear, binary, and a first meaning of
+<tr class="row-even"><td>14</td>
+<td>Monday, March 5</td>
+<td>Search algorithms; linear, binary, and meaning of
 order. Built-in magic.</td>
 </tr>
-<tr class="row-even"><td>15</td>
-<td>Wednesday,
-October 11</td>
-<td>Sorting; bubble and merge. Built-in magic.</td>
+<tr class="row-odd"><td>15</td>
+<td>Wednesday, March
+7</td>
+<td>Sorting; selection and merge. Built-in magic.</td>
 </tr>
-<tr class="row-odd"><td>&#160;</td>
-<td>Friday, October
-13</td>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, March 9</td>
 <td>LAB 7</td>
 </tr>
-<tr class="row-even"><td>16</td>
-<td>Monday, October
-16</td>
-<td>Modules and packages.</td>
+<tr class="row-odd"><td>16</td>
+<td>Monday, March 12</td>
+<td>Developing modules and packages. Navigating more
+complex programs.</td>
 </tr>
-<tr class="row-odd"><td>17</td>
-<td>Wednesday,
-October 18</td>
+<tr class="row-even"><td>17</td>
+<td>Wednesday, March
+14</td>
 <td>Unit testing and defensive programming.</td>
 </tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, March 16</td>
+<td>EXAM 2 (Lectures 9–17)</td>
+</tr>
 <tr class="row-even"><td>&#160;</td>
-<td>Friday, October
-20</td>
-<td>LAB 8</td>
+<td>Monday, March 19</td>
+<td>HOLIDAY</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Wednesday, March
+21</td>
+<td>HOLIDAY</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, March 23</td>
+<td>HOLIDAY</td>
 </tr>
 <tr class="row-odd"><td>18</td>
-<td>Monday, October
-23</td>
-<td>SymPy: symbols, expressions, and equations.</td>
+<td>Monday, March 26</td>
+<td>Numerical differentiation</td>
 </tr>
 <tr class="row-even"><td>19</td>
-<td>Wednesday,
-October 25</td>
-<td>Differentiation and Integration with SymPy.
-Lambdify.</td>
-</tr>
-<tr class="row-odd"><td>&#160;</td>
-<td>Friday, October
-27</td>
-<td>LAB 9</td>
-</tr>
-<tr class="row-even"><td>20</td>
-<td>Monday, October
-30</td>
-<td>Taylor series, a second meaning of order, and the
-root of numerical methods</td>
-</tr>
-<tr class="row-odd"><td>21</td>
-<td>Wednesday,
-November 1</td>
-<td>Numerical differentiation. Connection to sympy.</td>
-</tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Friday, November
-3</td>
-<td>LAB 10</td>
-</tr>
-<tr class="row-odd"><td>22</td>
-<td>Monday, November
-6</td>
+<td>Wednesday, March
+28</td>
 <td>Numerical integration</td>
 </tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Friday, March 30</td>
+<td>LAB 8</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>Monday, April 2</td>
+<td>Quick review of <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>.
+Elimination and numpy.linalg.</td>
+</tr>
+<tr class="row-odd"><td>21</td>
+<td>Wednesday, April
+4</td>
+<td>Root finding</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Friday, April 6</td>
+<td>LAB 9</td>
+</tr>
+<tr class="row-odd"><td>22</td>
+<td>Monday, April 9</td>
+<td>Optimization</td>
+</tr>
 <tr class="row-even"><td>23</td>
-<td>Wednesday,
-November 8</td>
-<td>Optimization and root finding.</td>
+<td>Wednesday, April
+11</td>
+<td>Modeling Data with Least-Squares Fits</td>
 </tr>
 <tr class="row-odd"><td>&#160;</td>
-<td>Friday, November
-10</td>
-<td>EXAM 2 (Lecture 10-21, Labs 6-10)</td>
+<td>Friday, April 13</td>
+<td>LAB 10</td>
 </tr>
 <tr class="row-even"><td>24</td>
-<td>Monday, November
-13</td>
-<td>Curve Fitting I - Least-Squares Fits</td>
+<td>Monday, April 16</td>
+<td>Modeling Data with Interpolation</td>
 </tr>
 <tr class="row-odd"><td>25</td>
-<td>Wednesday,
-November 15</td>
-<td>Curve Fitting II - Interpolation</td>
+<td>Wednesday, April
+18</td>
+<td>Brief review of ODEs. Numerical solution of IVPs
+using Euler’s methods.</td>
 </tr>
 <tr class="row-even"><td>&#160;</td>
-<td>Friday, November
-17</td>
+<td>Friday, April 20</td>
 <td>LAB 11</td>
 </tr>
-<tr class="row-odd"><td>&#160;</td>
-<td>Monday, November
-20</td>
-<td>HOLIDAY</td>
-</tr>
-<tr class="row-even"><td>&#160;</td>
-<td>Wednesday,
-November 22</td>
-<td>HOLIDAY</td>
-</tr>
 <tr class="row-odd"><td>26</td>
-<td>Monday, November
-27</td>
-<td>Symbolic solution of ODEs (with a dash of review)</td>
+<td>Monday, April 23</td>
+<td>Systems of IVPs.</td>
 </tr>
 <tr class="row-even"><td>27</td>
-<td>Wednesday,
-November 29</td>
-<td>First-order IVPs and their numerical solution.
-Euler’s methods.</td>
+<td>Wednesday, April
+25</td>
+<td>Numerical solution of BVPs using finite
+differences.</td>
 </tr>
 <tr class="row-odd"><td>&#160;</td>
-<td>Friday, December
-1</td>
-<td>LAB 12</td>
+<td>Friday, April 27</td>
+<td>EXAM 3 (18–24)</td>
 </tr>
 <tr class="row-even"><td>28</td>
-<td>Monday, December
-4</td>
-<td>Numerical solution of systems of IVPs</td>
+<td>Monday, April 30</td>
+<td>Basics of symbolic computing with SymPy: symbols,
+expressions, and equations.</td>
 </tr>
 <tr class="row-odd"><td>29</td>
-<td>Wednesday,
-December 6</td>
-<td>Numerical solution of BVPs</td>
+<td>Wednesday, May 2</td>
+<td>Symbolic solution of differential equations.</td>
 </tr>
 <tr class="row-even"><td>&#160;</td>
-<td>Friday, December
-8</td>
-<td>LAB 13 - Review Session (Optional)</td>
+<td>Friday, May 4</td>
+<td>LAB 12 - Exercises</td>
 </tr>
 <tr class="row-odd"><td>&#160;</td>
-<td>Thursday,
-December 14</td>
-<td>FINAL EXAM - 11:50 am – 1:40 pm</td>
+<td>Wednesday, May 9</td>
+<td>FINAL EXAM - 4:10 PM–6:00 PM - In Normal Lecture
+Room</td>
 </tr>
 </tbody>
 </table>
@@ -850,8 +889,10 @@ which many engineering students are not aware but may be guilty.</p>
 <p>To avoid plagiarizing, the ideas you present in your problem solutions
 and laboratory reports must be your own. When you adapt the ideas of
 another, you need to reference those ideas correctly. If you fail to do
-so, you are committing academic dishonesty, for which the potential
-penalties are described in the statement below.</p>
+so, you are committing academic dishonesty. Typically, plagiarism on a
+homework or similar task will lead to a zero on that assignment and
+submission to the Honor Council. Further instances will results in more
+serious consequences.</p>
 <p>For some basic tips on how to avoid plagiarism in writing, see
 <a class="reference external" href="http://en.writecheck.com/ways-to-avoid-plagiarism">http://en.writecheck.com/ways-to-avoid-plagiarism</a>.</p>
 </div>
@@ -918,7 +959,7 @@ Thanks for reading!
 <li><a class="reference internal" href="#Netiquette-and-Discussion-Expectations">Netiquette and Discussion Expectations</a></li>
 <li><a class="reference internal" href="#Laboratories-and-Homework">Laboratories and Homework</a></li>
 <li><a class="reference internal" href="#Assessment">Assessment</a><ul>
-<li><a class="reference internal" href="#Pre-Lecture-Activities">Pre-Lecture Activities</a></li>
+<li><a class="reference internal" href="#Formative-Activities">Formative Activities</a></li>
 <li><a class="reference internal" href="#Laboratory-Exercises">Laboratory Exercises</a></li>
 <li><a class="reference internal" href="#Homework">Homework</a></li>
 <li><a class="reference internal" href="#Examinations">Examinations</a><ul>
