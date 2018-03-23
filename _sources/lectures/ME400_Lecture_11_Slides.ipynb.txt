@@ -9,8 +9,6 @@
    },
    "source": [
     "# Lecture 11 - Processing Text Data\n",
-    "\n",
-    "## Overview, Objectives, and Key Terms\n",
     " \n",
     "Lectures [5](ME400_Lecture_5.ipynb) through [9](ME400_Lecture_10.ipynb) covered the basic logical structures used in programming and their implementation in Python.  [Lecture 10](ME400_Lecture_10.ipynb) presented Python's built-in container types.  In this lecture, we turn to the practical problem of processing text data.  Often, such data starts life in *files* on our machines.  Ultimately, that data is represented as one (or more) strings that can be processed using a combination of the structures already covered (particularly, loops) and more specialized string functions.  We'll wrap up with ways in which we can output existing data into useful text-based formats."
    ]
@@ -66,79 +64,24 @@
     }
    },
    "source": [
-    "## Reading Text Files"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "We'll start with a case we've seen before: the text file from [Lecture 4](ME400_Lecture_4.ipynb), the contents of which are \n",
+    "## First, a Primer on String Manipulation and Formatting\n",
     "\n",
-    "```\n",
-    "time (s)   vel (m/s)  acc (m/s**2)\n",
-    "0.00000000 1.00000000 0.00000000\n",
-    "0.22222222 1.24884887 0.01097394\n",
-    "0.44444444 1.55962350 0.08779150\n",
-    "0.66666667 1.94773404 0.29629630\n",
-    "0.88888889 2.43242545 0.70233196\n",
-    "1.11111111 3.03773178 1.37174211\n",
-    "1.33333333 3.79366789 2.37037037\n",
-    "1.55555556 4.73771786 3.76406036\n",
-    "1.77777778 5.91669359 5.61865569\n",
-    "2.00000000 7.38905610 8.00000000\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "**Question**: If you had to read this file on the exam, how would you do so?"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "Produce a **file handle** via"
+    "The `str` type is fundamental and *powerful*:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "<_io.TextIOWrapper name='data.txt' mode='r' encoding='UTF-8'>"
-      ]
-     },
-     "execution_count": 1,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
-    "f = open('data.txt', 'r')\n",
-    "f"
+    "# Same thing from last lecture but using something\n",
+    "# called \"list comprehension.\" Optional goodie.\n",
+    "[item for item in dir(str) if not '__' in item]"
    ]
   },
   {
@@ -149,7 +92,7 @@
     }
    },
    "source": [
-    "Basic syntax: `open(file_name, file_mode)`, where `file_name` is the name of the file to open, and `file_mode` is `'r'` for *read* and `w` for *write*."
+    "Go do `help(join)` and similarly for these!"
    ]
   },
   {
@@ -160,79 +103,160 @@
     }
    },
    "source": [
-    "What can we do with `f`?  Use `dir`!  \n",
-    "\n",
-    "The important ones are:\n",
-    "1. `f.read`: returns the contents of the file as `str`\n",
-    "2. `f.readlines()`: returns a list of the lines of the file\n",
-    "3. `f.close()`: closes the handle; no more reading or writing"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "So let's read the file:"
+    "**Example**:  Given `s = \"1 2 3 4 5\"`, produce a `list` with those five numbers.  Then, do the same for `t = \"1, 2, 3, 4, 5\"`."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": null,
    "metadata": {
+    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "'time (s)   vel (m/s)  acc (m/s**2)\\n0.00000000 1.00000000 0.00000000\\n0.22222222 1.24884887 0.01097394\\n0.44444444 1.55962350 0.08779150\\n0.66666667 1.94773404 0.29629630\\n0.88888889 2.43242545 0.70233196\\n1.11111111 3.03773178 1.37174211\\n1.33333333 3.79366789 2.37037037\\n1.55555556 4.73771786 3.76406036\\n1.77777778 5.91669359 5.61865569\\n2.00000000 7.38905610 8.00000000\\n'"
-      ]
-     },
-     "execution_count": 2,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
-    "s = f.read()\n",
-    "s"
+    "s = \"1 2 3 4 5\"\n"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "t = \"1, 2, 3, 4, 5\"\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
    "metadata": {
     "slideshow": {
      "slide_type": "subslide"
     }
    },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "time (s)   vel (m/s)  acc (m/s**2)\n",
-      "0.00000000 1.00000000 0.00000000\n",
-      "0.22222222 1.24884887 0.01097394\n",
-      "0.44444444 1.55962350 0.08779150\n",
-      "0.66666667 1.94773404 0.29629630\n",
-      "0.88888889 2.43242545 0.70233196\n",
-      "1.11111111 3.03773178 1.37174211\n",
-      "1.33333333 3.79366789 2.37037037\n",
-      "1.55555556 4.73771786 3.76406036\n",
-      "1.77777778 5.91669359 5.61865569\n",
-      "2.00000000 7.38905610 8.00000000\n",
-      "\n"
-     ]
-    }
-   ],
    "source": [
+    "Text data can contain *special* characters.  For example, `\"\\n\"` is the newline character:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "s = \"line 1\\nline 2\"\n",
+    "print(s)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "t = \\\n",
+    "\"\"\"line 1\n",
+    "line 2\"\"\"\n",
+    "print(t) # identical to s! "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The `str.split` function defaults to removing *all white space and newlines*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "s.split()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "\"1      2\\n3  4 5\".split() # no white space left!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Other useful functions: `str.find`, `str.replace`, and `str.strip`.  Try them!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "That's all about *parsing* strings (i.e., getting data from them).  How to put data *into* string format?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**:  A common technique for filling out forms is to start from a template and to use substitution to insert values of interest.  Consider a program that accepts a user's first and last name, both `str` values.  Use a template to print, e.g., `\"Hello Bill Gates!\"`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "first, last = 'Bill', 'Gates'\n",
+    "s = \"Hello {} {}!\"\n",
     "print(s)"
    ]
   },
@@ -244,22 +268,19 @@
     }
    },
    "source": [
-    "Always close files once done:"
+    "**Example**: Given `x = np.pi`, produce the string `'3.14159'`."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
    "outputs": [],
-   "source": [
-    "f.close()"
-   ]
+   "source": []
   },
   {
    "cell_type": "markdown",
@@ -269,554 +290,41 @@
     }
    },
    "source": [
-    "**Exercise**: Think back to the first homework, for which you had to compute something like `1111111111 + 2222222222` without explicitly write those numbers or the result `3333333333`.  Suppose someone had submitted `student_x_hw1.py` with the contents\n",
-    "```\n",
-    "from hw1_definitions import *\n",
-    "# do a bunch of stuff\n",
-    "# roberts is the funniest\n",
-    "# yadda yadda yadda\n",
-    "z = 3333333333\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Parsing Strings\n",
-    "\n",
-    "The function `read` produces **a single `str` for `data.txt`**\n",
-    "\n",
-    "The function `readlines` produces **a `list` for each line of `data.txt`**"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 22,
-   "metadata": {
-    "collapsed": true,
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "f = open('data.txt', 'r')\n",
-    "lines = f.readlines() \n",
-    "f.close()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**But what next?**"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "### `split`\n",
-    "\n",
-    "First (numerical) line in `data.txt` (via `lines[1]`):\n",
-    "\n",
-    "```\n",
-    "'0.00000000 1.00000000 0.00000000\\n'\n",
-    "```\n",
-    "\n",
-    "This `str` can be `split` into values, by default, using white space:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 18,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "0.00000000 1.00000000 0.00000000\n"
-     ]
-    }
-   ],
-   "source": [
-    "t, v, a = lines[1].split()\n",
-    "print(t, v, a)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 19,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['1', '2', '3']"
-      ]
-     },
-     "execution_count": 19,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "\"1 2 3\".split()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 20,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['1', '2', '3']"
-      ]
-     },
-     "execution_count": 20,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "\"1,2,3\".split(',')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 21,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['123', '456']"
-      ]
-     },
-     "execution_count": 21,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "\"123abc456\".split('abc')"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Exercise**: Consider a file `stuff.txt` that contains:\n",
-    "```\n",
-    "Parameters \n",
-    "a=1\n",
-    "b=3.1459\n",
-    "c=hello world!\n",
-    "```\n",
-    "Use `readlines` and some logic to produce `{'a': '1', 'b': '3.1459', 'c': 'hello world!'}`."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Beyond `split`\n",
-    "\n",
-    "The `str` type has some other functions helpful for parsing, including `find` and `replace`."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 26,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "3"
-      ]
-     },
-     "execution_count": 26,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "\"01230123\".find('3')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 27,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "'jello'"
-      ]
-     },
-     "execution_count": 27,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "\"hello\".replace(\"h\", \"j\")"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Putting It All Together"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 28,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,\n",
-       "        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])"
-      ]
-     },
-     "execution_count": 28,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "import numpy as np\n",
-    "\n",
-    "# open file, read lines, and close file\n",
-    "f = open('data.txt', 'r')\n",
-    "lines = f.readlines() \n",
-    "f.close()\n",
-    "\n",
-    "# initialize empty lists \n",
-    "t, v, a = [], [], []\n",
-    "for line in lines[1:]: \n",
-    "    vals = line.split()\n",
-    "    t.append(float(vals[0]))\n",
-    "    v.append(float(vals[1])) \n",
-    "    a.append(float(vals[2]))\n",
-    "t = np.array(t)\n",
-    "v = np.array(v)\n",
-    "a = np.array(a)\n",
-    "t"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Writing to File\n",
-    "\n",
-    "For simple data, thing `np.savetxt`.  For other content, use `open` and `write`:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 29,
-   "metadata": {
-    "collapsed": true,
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "f = open('new_data.txt', 'w')\n",
-    "f.write('Here is some sample text!')\n",
-    "f.close() # Always close a file when done."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "### Formatting Numerical Output\n",
-    "\n",
-    "Often, data (numerical or otherwise) should be written in a *format* that is easily read."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 68,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "3.141592653589793\n",
-      "1.25\n",
-      "0.1111111111111111\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(np.pi)\n",
-    "print(1.25)\n",
-    "print(1/9)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "That's 16 digits by default (if not zeros).  **Who has 16 sig figs?**"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "Alternative: use `str.format`:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 69,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "0.3333333333333333\n",
-      "0.3333333333333333 (same as default)\n",
-      "0.3333333333333333 (also same as default)\n",
-      "0.33333333\n",
-      "0.3333 (has four digits)\n",
-      " 0.3333 (has a space at the beginning)\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(str(1/3))\n",
-    "print(\"{} (same as default)\".format(1/3)) \n",
-    "print(\"{:.16f} (also same as default)\".format(1/3)) \n",
-    "print(\"{:.8f}\".format(1/3))\n",
-    "print(\"{:6.4f} (has four digits)\".format(1/3))\n",
-    "print(\"{:7.4f} (has a space at the beginning)\".format(1/3))"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "`\"{:7.4f}\".format(1/3)` yields `\" 0.3333\"` (note the space).\n",
+    "`\"{:7.4f}\".format(np.pi)` yields `\" 3.1416\"` (note the space).\n",
     "\n",
     "Let's dissect `\"{:T.Df}\".format(x)`.  Here,\n",
     "- `{}` indicates substitution \n",
     "- `:` indicates a special format\n",
     "- `f` indicates a float format \n",
     "- `T` is the total number of characters of the formatted number (may yield white-space padding to left)\n",
-    "- `D` is the number of digits after the decimal point.  "
+    "- `D` is the number of digits after the decimal point.   "
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
-     "slide_type": "subslide"
+     "slide_type": "slide"
     }
    },
    "source": [
-    "Other formats: \n",
-    "- `\"{}\"` for substituting the default `str` value\n",
-    "- `\"{:T.De}\"` for scientific notation\n",
-    "- `\"{:Td}\"` for integers (`d` must be digit?)"
+    "## Importing Text (when NumPy Fails)"
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Exercise**:  Given `a = 123`, `b = 3.14159`, and `c = 0.1234567`, produce \n",
-    "\n",
-    "`s = \"  123|3.14|1.234e-01\"`."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Numbered Formats\n",
-    "\n",
-    "Formats can also be numbered:"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 64,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "1 2.00 3.00e+00\n"
-     ]
-    }
-   ],
    "source": [
-    "print(\"{0} {1:.2f} {2:.2e}\".format(1, 2, 3))"
+    "First, some simple data:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 65,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "1 3.00e+00 2.00\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(\"{0} {2:.2e} {1:.2f}\".format(1, 2, 3))"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 66,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "6 was scared of 7 because 7 8 9\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(\"{0} was scared of {1} because {1} {2} {3}\".format(6, 7, 8, 9))"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Writing `t`, `v`, and `a` "
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 67,
+   "execution_count": null,
    "metadata": {
     "collapsed": true,
     "slideshow": {
@@ -825,14 +333,12 @@
    },
    "outputs": [],
    "source": [
-    "f = open('new_data.txt', 'w')\n",
-    "# write the header information (remember the newline \\n!)\n",
-    "f.write('time (s)   vel (m/s)  acc (m/s**2)\\n') \n",
-    "for i in range(len(t)):\n",
-    "    # produce each line of text (again, rememeber \\n!)\n",
-    "    s = \"{:.8f} {:.8f} {:.8f}\\n\".format(t[i], v[i], a[i])\n",
-    "    f.write(s)\n",
-    "f.close()"
+    "import numpy as np\n",
+    "t = np.linspace(0, 10, 5)\n",
+    "x = t + t**3\n",
+    "v = 1 + 3*t**2\n",
+    "a = 6*t\n",
+    "np.savetxt('data.txt', np.array([t, x, v, a]).T, delimiter=',')"
    ]
   },
   {
@@ -843,8 +349,76 @@
     }
    },
    "source": [
-    "**Exercise**:  Write a short program that for any integer `n` will produce a file with `n` lines, and each line must print the value `x = 0.1` with `n` digits to the right of the decimal point.  (Hint: format the format)."
+    "You could read the file via `np.loadtxt`, etc.  But what's the other option?  Open the file and parse the `str` contents."
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Saving to Text\n",
+    "\n",
+    "In principle, easy as `f.write(s)` for some `str` variable `s`.  The challenge is in defining `s`.  Templates help!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**: Write `t` and `x` to file in two columns without using NumPy and using just two decimal places."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## A Challenging Problem"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": []
   },
   {
    "cell_type": "markdown",
@@ -862,17 +436,6 @@
     "- Use string functions to parse data into desired formats.\n",
     "- Convert data into desired string formats.\n",
     "- Write strings to text files"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "**Reminder**: Exam on Friday during normal lab session.  No notes, calculator, internet resources, etc. "
    ]
   }
  ],
@@ -893,7 +456,10 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.1"
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
   }
  },
  "nbformat": 4,

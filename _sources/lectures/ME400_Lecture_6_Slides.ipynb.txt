@@ -12,7 +12,63 @@
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     " \n",
-    "In this lesson, we turn back to Python and begin the development of more complicated programs.  The emphasis here and in [Lecture 7](ME400_Lecture_7.ipynb) is on the logic of *selection* and its implementation via conditional statements in Python.  Effective use of conditional statements requires a thorough understanding of the relational and logical operators defined in [Lesson 2](ME400_Lecture_2.ipynb).  Of course, one must also first be comfortable with the theoretical coverage of selection presented in [Lecture 5](ME400_Lecture_5.ipynb)."
+    "In this lesson, we turn back to Python and begin the development of more complicated programs.  The emphasis here and in [Lecture 7](ME400_Lecture_7.ipynb) is on the logic of *selection* and its implementation via conditional statements in Python.  Effective use of conditional statements requires a thorough understanding of the relational and logical operators defined in [Lesson 2](ME400_Lecture_2.ipynb)  and the theoretical coverage of selection presented in [Lecture 5](ME400_Lecture_5.ipynb)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Quick Recap of Last Week"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "A = np.array([[1, 0, 1, 0, 1, 0],\n",
+    "              [0, 1, 0, 1, 0, 1],\n",
+    "              [1, 0, 1, 0, 1, 0],\n",
+    "              [0, 1, 0, 1, 0, 1],\n",
+    "              [1, 0, 1, 0, 1, 0],\n",
+    "              [0, 1, 0, 1, 0, 1]])\n",
+    "plt.contourf(A)\n",
+    "plt.axis('equal') # makes x and y axes have equal dimensions\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "# Program to sum every other element in an array\n",
+    "# \"a\" of length \"n\"\n",
+    "1. Input: a and n\n",
+    "2. Set s to 0\n",
+    "3. Set counter to 0\n",
+    "4. While counter < n \n",
+    "5.     If counter%2 == 0 then\n",
+    "6.         Set s to s + array[counter]\n",
+    "7.     Set counter to counter + 1\n",
+    "8. Output: sum\n",
+    "```"
    ]
   },
   {
@@ -28,8 +84,8 @@
     "By the end of this lesson, you should be able to\n",
     "\n",
     "- explain the importance of indentation in Python programs\n",
-    "- write a program with conditional statements containing `if`, `else`, and `elif`\n",
-    "- predict the outcome of a Python program with `if`, `else`, and `elif` statements\n"
+    "- write programs with conditional statements \n",
+    "- predict the outcome of programs with `if`, `else`, and `elif` statements"
    ]
   },
   {
@@ -90,40 +146,25 @@
     }
    },
    "source": [
-    "**Example**: Write a program that gets an integer from the user and states if the number is positive."
+    "**Example**: Write a program that gets an integer from the user and states if the number is positive using\n",
+    "\n",
+    "  1. pseudocode\n",
+    "  2. a flowchart\n",
+    "  3. Python"
    ]
   },
   {
-   "cell_type": "markdown",
+   "cell_type": "code",
+   "execution_count": null,
    "metadata": {
+    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
+   "outputs": [],
    "source": [
-    "The pseudocode is straightforward:\n",
-    "```\n",
-    "Input: n\n",
-    "If n > 0 then\n",
-    "    Output \"the number is positive\"\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "The Python code for the same problem is *very similar*:\n",
-    "```python\n",
-    "number = int(input('enter your number '))\n",
-    "if number > 0:\n",
-    "    print('the number is positive')\n",
-    "```\n",
-    "Here, the real difference is in how input and output is implemented."
+    "number = int(input('enter your number '))"
    ]
   },
   {
@@ -143,7 +184,7 @@
     "    # and any other things to be done when condition is True\n",
     "```\n",
     "\n",
-    "1. The `if` statement begins with the keyword `if`. \n",
+    "1. The `if` statement begins with the **keyword** `if`. \n",
     "2. The *condition* is `bool` or can be converted to a `bool`\n",
     "3. The `:` after `condition` is **required**\n",
     "4. The statements to be executed when `condition == True` **must be indented the same amount**"
@@ -157,7 +198,35 @@
     }
    },
    "source": [
-    "**Examples...**"
+    "**Example**: Compute the final letter ME 400 grade given a final percentage."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "'''Algorithm to compute the final grade'''\n",
+    "# Get the final percentage\n",
+    "final_percentage = float(input('Enter final percentage: ')) \n",
+    "# Check if the grade is an A\n",
+    "if final_percentage >= 90\n",
+    "    final_grade = 'A' \n",
+    "# Check if the grade is a B\n",
+    "\n",
+    "# Check if the grade is a C\n",
+    "\n",
+    "# Check if the grade is a D\n",
+    "\n",
+    "# Check if the grade is an F\n",
+    "\n",
+    "# Provide the final grade\n",
+    "print(\"Final grade: \", final_grade)"
    ]
   },
   {
@@ -192,78 +261,23 @@
     }
    },
    "source": [
-    "**Example**: Modify the program above to state when the number is nonpositive."
+    "**Example**: Modify the positive-number program above to state also when the number is nonpositive using (1) only `if` statements and (2) `if` with `else`."
    ]
   },
   {
-   "cell_type": "markdown",
+   "cell_type": "code",
+   "execution_count": null,
    "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "The pseudocode might look like:\n",
-    "```\n",
-    "Input: n\n",
-    "If n > 0 then\n",
-    "    Output \"the number is positive\"\n",
-    "Otherwise\n",
-    "    Output \"the number is nonpositive\"\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "The flowchart might look like:\n",
-    "\n",
-    "![Flowchart for positive/nonpositive](img/pos_nonpos.png)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "The Python solution is \n",
-    "```python\n",
-    "number = int(input('enter your number '))\n",
-    "if number > 0:\n",
-    "    print('the number is positive')\n",
-    "else:\n",
-    "    print('the number is nonpositive')\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Question**:  Can all `if/else` statements be rewritten as basic `if` statements?"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
+    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
+   "outputs": [],
    "source": [
-    "**Examples**..."
+    "number = int(input('enter your number '))\n",
+    "if number > 0:\n",
+    "    print(\"the number is positive\")"
    ]
   },
   {
@@ -334,22 +348,28 @@
    ]
   },
   {
-   "cell_type": "markdown",
+   "cell_type": "code",
+   "execution_count": null,
    "metadata": {
+    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
+   "outputs": [],
    "source": [
-    "```python\n",
     "number = int(input('enter your number '))\n",
     "if number > 0:\n",
     "    print(\"the number is positive\")\n",
-    "elif number < 0:\n",
-    "    print(\"the number is negative\")\n",
-    "else:\n",
-    "    print(\"the number is zero\")\n",
-    "```"
+    "elif number <= 0:\n",
+    "    print(\"the number is nonpositive\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Examples**: *1, 2, 3* and *months*"
    ]
   },
   {
@@ -360,57 +380,7 @@
     }
    },
    "source": [
-    "## The `pass` Clause\n",
-    "\n",
-    "Often, we take a top/down approach when designing programs and are left with partial code like\n",
-    "```python\n",
-    "if condition:\n",
-    "    # I would do something here if I had time but I'm late for class\n",
-    "else:\n",
-    "    # same here\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "**This is not valid Python!**  All blocks under the `if`, `elif`, and `else` clauses must have at least one executable line of code."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "Use `pass` as a placeholder:\n",
-    "\n",
-    "```python\n",
-    "if condition:\n",
-    "    # I would do something here if I had time but I'm late for class\n",
-    "    pass\n",
-    "else:\n",
-    "    # same here\n",
-    "    pass\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "**Examples...**"
+    "**Example in Spyder**"
    ]
   },
   {
@@ -427,13 +397,7 @@
     "\n",
     "- explain the importance of indentation in Python programs\n",
     "- write a program with conditional statements containing `if`, `else`, and `elif`\n",
-    "- predict the outcome of a Python program with `if`, `else`, and `elif` statements\n",
-    "\n",
-    "Friendly reminders:\n",
-    "\n",
-    "- Attendance at labs is mandatory (to earn credit)\n",
-    "- Homework files **must run** when tested (always reset/restart the console)\n",
-    "- There is a discussion board for typos, etc. in the online materials"
+    "- predict the outcome of a Python program with `if`, `else`, and `elif` statements"
    ]
   }
  ],
@@ -454,7 +418,10 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.1"
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
   }
  },
  "nbformat": 4,

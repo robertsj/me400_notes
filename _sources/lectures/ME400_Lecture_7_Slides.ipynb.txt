@@ -19,6 +19,17 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "**Continue Monday's example...**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
      "slide_type": "subslide"
     }
    },
@@ -61,12 +72,12 @@
    "source": [
     "## Nested Conditionals\n",
     "\n",
-    "We've already seen several `if` statements in Python:"
+    "**Example**: Write a program that gets a number from the user, says whether it is odd or even, and if it is odd, whether it is also divisible by 3.  Produce a flowchart."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": null,
    "metadata": {
     "collapsed": true,
     "slideshow": {
@@ -75,76 +86,13 @@
    },
    "outputs": [],
    "source": [
-    "a = 7\n",
-    "if a < 3:\n",
-    "    print('a is less than 3')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 7,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "a is greater than or equal to 3\n"
-     ]
-    }
-   ],
-   "source": [
-    "a = 7\n",
-    "if a < 3:\n",
-    "    print('a is less than 3')\n",
+    "n = int(input('enter a number: '))\n",
+    "if n % 2:\n",
+    "#234 <-- 4 spaces for one indentation level\n",
+    "    print('n is odd')\n",
     "else:\n",
-    "    print('a is greater than or equal to 3')"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "However, for statements like\n",
-    "```python\n",
-    "if condition:\n",
-    "    do something\n",
-    "```\n",
-    "nothing requires that `do something` be limited to a **sequence** of simple statements."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "a is greater than 3\n",
-      "a is also even\n"
-     ]
-    }
-   ],
-   "source": [
-    "a = 12\n",
-    "if a > 3:\n",
-    "    print('a is greater than 3')\n",
-    "    if not a % 2:\n",
-    "        print('a is also even')"
+    "#234\n",
+    "    print('n is even')"
    ]
   },
   {
@@ -166,133 +114,28 @@
     }
    },
    "source": [
-    "This is correct:\n",
-    "```python\n",
-    "a = 12\n",
-    "if a > 3:\n",
-    "#234\n",
-    "    print('a is greater than 3')\n",
-    "    if not a % 2:\n",
-    "#2345678\n",
-    "        print('a is also even')\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "This is valid Python, but does something different:\n",
-    "```python\n",
-    "a = 12\n",
-    "if a > 3:\n",
-    "#234\n",
-    "    print('a is greater than 3')\n",
-    "if not a % 2:\n",
-    "#234 \n",
-    "    print('a is also even')\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "This is **not** valid Python:\n",
-    "```python\n",
-    "a = 12\n",
-    "if a > 3:\n",
-    "    print('a is greater than 3')\n",
-    "  if not a % 2: \n",
-    "      print('a is also even')\n",
-    "```\n",
-    "Possible fixes: \n",
-    " - align the second `if` with the first `print`\n",
-    " - align the second `if` with the first `if`\n",
-    "but different answers.  **Be careful!**"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Examples**"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## But Do We Need Them?\n",
-    "\n",
-    "Short answer: **no**, but they are sometimes easier than the alternative."
+    "**Example**: What's the tax on $75000?  Then rewrite *without* nested if's."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": null,
    "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
+    "collapsed": true
    },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "123  is greater than 10 and odd\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
-    "n = 123\n",
-    "if n > 10:\n",
-    "    if n % 2:\n",
-    "        print(n, \" is greater than 10 and odd\")\n",
-    "    else:\n",
-    "        print(n, \" is greater than 10 and even\")"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "123  is greater than 10 and odd\n"
-     ]
-    }
-   ],
-   "source": [
-    "n = 123\n",
-    "if n > 10 and n % 2:\n",
-    "    print(n, \" is greater than 10 and odd\")\n",
-    "elif n > 10 and not n % 2:\n",
-    "    print(n, \" is greater than 10 and even\")"
+    "income = float(input('enter your income: '))\n",
+    "tax = 0.0\n",
+    "if income > 13860: # poverty line\n",
+    "    if income > 52500: # median income\n",
+    "        if income > 250000: # average KSU college dean\n",
+    "            tax += (income-250000)*.35\n",
+    "            income = 250000.0\n",
+    "        tax += (income-52500)*.25\n",
+    "        income = 52500\n",
+    "    tax += (income-13860)*.15\n",
+    "print('your tax is ', tax)"
    ]
   },
   {
@@ -343,27 +186,18 @@
     }
    },
    "source": [
-    "Logical errors arise when the rules of logic are broken."
+    "Logical errors arise when the rules of logic are broken.  Sometimes, these lead to *runtime errors*."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "subslide"
     }
    },
-   "outputs": [
-    {
-     "ename": "SyntaxError",
-     "evalue": "invalid syntax (<ipython-input-13-1065f57b9b53>, line 1)",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-13-1065f57b9b53>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    if True\u001b[0m\n\u001b[0m           ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "if True\n",
     "    print(\"we forgot our colon!\")"
@@ -371,25 +205,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "subslide"
     }
    },
-   "outputs": [
-    {
-     "ename": "IndexError",
-     "evalue": "index 3 is out of bounds for axis 0 with size 3",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mIndexError\u001b[0m                                Traceback (most recent call last)",
-      "\u001b[0;32m<ipython-input-14-2eba6176732d>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0ma\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0marray\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# define be to be 3 times the third element\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m \u001b[0mb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[0;31mIndexError\u001b[0m: index 3 is out of bounds for axis 0 with size 3"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "import numpy as np\n",
     "# make an array of three numbers\n",
@@ -417,22 +239,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
-     "slide_type": "subslide"
+     "slide_type": "fragment"
     }
    },
-   "outputs": [
-    {
-     "ename": "SyntaxError",
-     "evalue": "invalid syntax (<ipython-input-1-cfa9639ac6fc>, line 1)",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-1-cfa9639ac6fc>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    class = \"ME 400\"\u001b[0m\n\u001b[0m          ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "class = \"ME 400\"\n",
     "instructor = \"Roberts\"\n",
@@ -447,9 +260,20 @@
     }
    },
    "source": [
-    "Does this have a bug(s)?  What kind?\n",
-    "\n",
-    "```\n",
+    "Does this have a bug(s)?  What kind?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
     "food_price = 48.70 # cost of some entrees\n",
     "booze_price = 15.76 # cost of some refreshments\n",
     "total_price = food_price + booze_price # total price before tax\n",
@@ -457,8 +281,7 @@
     "riley = total_price * 0.01 # county's cut\n",
     "manhattan = total_price * 0.01 # city's cut\n",
     "excise = booze_price * 0.1 # kansas gets more?\n",
-    "print('total bill is ', food_price + booze_price + kansas + manhattan + excise)\n",
-    "```"
+    "print('total bill is ', food_price + booze_price + kansas + manhattan + excise)"
    ]
   },
   {
@@ -469,17 +292,28 @@
     }
    },
    "source": [
-    "Does this have a bug(s)?  What kind?\n",
-    "\n",
-    "\n",
-    "```\n",
+    "Does this have a bug(s)?  What kind?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
     "import numpy as np\n",
     "a = np.range(5) # make some numbers\n",
     "b = a           # copy a\n",
     "a = a**2        # change a\n",
     "s = sum(b)      # compute the sum of b\n",
     "print('I'm smart and know that s is 10!')\n",
-    "```"
+    "\"\"\""
    ]
   },
   {
@@ -511,38 +345,9 @@
     "\n",
     " 1. Don't make errors in the first place:\n",
     "    - **Design** your code with flowcharts and pseudocode as applicable\n",
-    "    - **Use defensive programming and unit test** (up ahead in Lecture 17)\n",
+    "    - **Use defensive programming and unit testing** (future topics)\n",
     " 2. Know what your code does before you actually run it by **tracing** it by hand \n",
     " 3. Know what your code does by tracing it via the Spyder graphical **debugger** (or similar tool)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### The Graphical Debugger by Example\n",
-    "\n",
-    "Consider the following problem.  Given integers `a` and `b`, define a new variable `c` equal to the sum of the rounded values of `a` and `b`.  Here, rounding is to the nearest 10, and we round up if the ones digit is 5 or greater and down otherwise.  For instance, given `a = 16` and `b = 21`, we should have `c == 40`.  \n",
-    "\n",
-    "In a mad dash before class, I wrote the following solution:\n",
-    "```python\n",
-    "a = 16\n",
-    "b = 21\n",
-    "if a % 10 > 5:\n",
-    "    a += a % 10 \n",
-    "else:\n",
-    "    a - a % 10\n",
-    "if b % 10 > 5:\n",
-    "    b += b % 10\n",
-    "else:\n",
-    "    b -= b % 10\n",
-    "c = a + b\n",
-    "```\n",
-    "But it fails for `a = 16` and `b = 21`!  "
    ]
   },
   {
@@ -579,7 +384,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.1"
+   "version": "3.6.3"
   }
  },
  "nbformat": 4,

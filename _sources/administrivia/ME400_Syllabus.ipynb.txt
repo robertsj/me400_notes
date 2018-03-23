@@ -201,7 +201,7 @@
     "\n",
     "However, students should complete homeworks as individual efforts.  Let me be more specific.  It is allowed to work informally on assignments, but the final product (usually, \"code\") you submit must be your own.  Do not look at someone else's code, and do not share your own code. A good \"litmus test\" is to ask yourself, \"Can I explain everything I've submitted to the instructor?\"  You'll be tested based on *your* knowledge of programming, so do yourself a favor and complete the homework on your own. (Please also see the discussion below on the Honor Code and plagiarism.)\n",
     "\n",
-    "For homework questions, students should *visit office hours* or *use the discussion board*.  If emailed about homework (and the question is not personal), the course personnel may not respond due to time constraints.  The discussion board is preferred so that (1) a given question need only be asked (and answered) once, and (2) a record of such questions can be kept for posterity."
+    "For homework questions, students should *visit office hours* or *use the discussion board*.  If emailed, the course personnel will direct students to the discussion board unless the question is a private matter.  The discussion board is preferred so that (1) a given question need only be asked (and answered) once, and (2) a record of such questions can be kept for posterity."
    ]
   },
   {
@@ -227,14 +227,14 @@
     "\n",
     "### Formative Activities\n",
     "\n",
-    "Before most (if not all) lectures, students will complete a \"pre-lecture\" activity.  These activities will most often take the form of an online (Canvas-based) quiz with questions that cover the reading assigned for the lecture in question.  These activities may also include more open-ended responses from students.  In cases where there is a \"right\" answer, students will be given more than one chance to answer the question correctly.  Some lectures will also have in-class activities (which may be short problems, worksheets, etc.).  These in-class activities can only be completed if you attend the lecture, and they will not be announced. The lowest three scores will be dropped from the calculated score, so there are **no make-up activities**.\n",
+    "Before most (if not all) lectures, students will complete a \"pre-lecture\" activity.  These activities will most often take the form of an online (Canvas-based) quiz with questions that cover the reading assigned for the lecture in question.  These activities may also include more open-ended responses from students.  In cases where there is a \"right\" answer, students will be given more than one chance to answer the question correctly.  Some lectures will also have in-class activities (which may be short problems, worksheets, etc.).  These in-class activities can only be completed if you attend the lecture, and they will not be announced. The lowest three scores will be dropped from the calculuted score, so there are **no make-up activities**.\n",
     "\n",
     "### Laboratory Exercises\n",
     "\n",
     "The purpose of the laboratories is to review and to put in practice the concepts and tools\n",
     "discussed in lecture.  Part of this experience will be laboratory exercises that must be \n",
-    "completed in the alotted laboratory time.  There are a total of 12 planned laboratories.\n",
-    "Students may drop their lowest two scores, which accounts for absences of any kind.  In other words, there is no need to email course personnel about an absence ahead of time. No makeups \n",
+    "completed in the alotted laboratory time.  There are a total of 12 planned laboratories.  \n",
+    "Students may drop their lowest two scores (which can include absences of any kind).  No makeups \n",
     "will be allowed as laboratory exercise solutions will be posted soon after the laboratory session.\n",
     "\n",
     "### Homework\n",
@@ -258,9 +258,7 @@
     "\n",
     "#### Mid-Term Examinations\n",
     "\n",
-    "The three mid-term examinations are in-laboratory examinations and will consist of a written (pen and paper) and coded (Python program, etc.) component.  Students may use one 8.5'' by 11'' sheet of hand-written notes for both components.  This note sheet must be submitted with the exam (and will be returned with the exam). For the coded component, the internet, past homeworks, and any other resources are *not* to be used.\n",
-    "\n",
-    "Students will be asked to confirm their intent to take the third mid-term exam (in order to save paper).\n",
+    "The three mid-term examinations are in-laboratory examinations and will consist of a written (pen and paper) and coded (Python program, etc.) component.  Students may use one 8.5'' by 11'' sheet of hand-written notes for both components.  For the coded component, the internet, past homeworks, and any other resources are *not* to be used.\n",
     "\n",
     "With multiple laboratory sessions, a number of students will complete an examination after their classmates.  Although all students should expect unique exams, please note that any communication regarding the exam before all exams are submitted is prohibited, and *any violations of this policy will result in an XF in the course*.\n",
     "\n",
@@ -268,18 +266,15 @@
     "\n",
     "The final examination consists of only a written component and will be completed in the normal lecture room.  One sheet of hand-written notes may be used, but no other resources are allowed.  The final exam emphasizes the last quarter of the course but should be considered cumulative.  \n",
     "\n",
-    "Students will be asked to confirm their intent to take the final exam (in order to save paper).\n",
-    "\n",
-    "\n",
     "### Contesting Grades, etc.\n",
     "\n",
-    "If you wish to request a regrade on any assessed task, you must email the appropriate GTA and (1) describe what the task was, (2) what you think was marked incorrectly, and (3) why you think your approach was correct.  This written request must be made within 24 hours of the grades being released.\n",
+    "If you wish to request a regrade on any assessed task, you must email a GTA and (1) describe what the task was, (2) what you think was marked incorrectly, and (3) why you think your approach was correct.  This written request must be made within one week of learning your score.  \n",
     "\n",
     "### Extra Credit and End-of-Semester Charity\n",
     "\n",
     "The *only* extra credit available in ME 400 is for extra problems on homeworks and exams.  These arise most often when (1) I want to encourage a problem to be tackled even though it is a bit open ended or difficult, or (2) when an exam is written with one too many problems and I simply don't want to delete one.  These problems are never planned, and announced only when you see it.  In other words, *do not plan on extra credit* -- the real world has no analog.\n",
     "\n",
-    "The best way to earn better scores is to ask for help early and often. The end of the semester (e.g., the last week, or after the final) is *not* the time to start getting this help or to ask for favorable rounding.  I repeat: ask for help early and often.   I will only reply to post-final, grade-related emails if you catch an error in the books, etc."
+    "The best way to earn better scores is to ask for help early and often. The end of the semester (e.g., the last week, or after the final) is *not* the time to start getting this help or to ask for favorable rounding.  I repeat: ask for help early and often. "
    ]
   },
   {
@@ -372,7 +367,7 @@
     "\n",
     "In the simplest terms, plagiarism is the act of using the work of someone else as part of your own without saying so. Probably the most common form of plagiarism involves the uncredited borrowing of text (or ideas) in written works (like those reports in Writing 101). However, plagiarism is not just using another’s text verbatim in your report: it includes using someone else’s solution for a problem, whether it comes from another student or a solution manual. This is a particular case of which many engineering students are not aware but may be guilty.\n",
     "\n",
-    "To avoid plagiarizing, the ideas you present in your problem solutions and laboratory reports must be your own. When you adapt the ideas of another, you need to reference those ideas correctly. If you fail to do so, you are committing academic dishonesty.  Typically, plagiarism on a homework or similar task will lead to a zero on that assignment and submission to the Honor Council. Further instances will results in more serious consequences.\n",
+    "To avoid plagiarizing, the ideas you present in your problem solutions and laboratory reports must be your own. When you adapt the ideas of another, you need to reference those ideas correctly. If you fail to do so, you are committing academic dishonesty, for which the potential penalties are described in the statement below.\n",
     "\n",
     "For some basic tips on how to avoid plagiarism in writing, see http://en.writecheck.com/ways-to-avoid-plagiarism.\n",
     "\n",

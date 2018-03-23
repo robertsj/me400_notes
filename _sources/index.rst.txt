@@ -27,16 +27,16 @@
    Lecture 14 <lectures/ME400_Lecture_14>  
    Lecture 15 <lectures/ME400_Lecture_15>  
    Lecture 16 <lectures/ME400_Lecture_16>  
-   Lecture 17 <lectures/ME400_Lecture_17>  
-   Lecture 18 <lectures/ME400_Lecture_18>  
-   Lecture 19 <lectures/ME400_Lecture_19> 
-   Lecture 20 <lectures/ME400_Lecture_20> 
-   Lecture 21 <lectures/ME400_Lecture_21>   
-   Lecture 22 <lectures/ME400_Lecture_22>   
-   Lecture 23 <lectures/ME400_Lecture_23>   
-   Lecture 24 <lectures/ME400_Lecture_24>   
-   Lecture 25 <lectures/ME400_Lecture_25>   
-   Lecture 26 <lectures/ME400_Lecture_26> 
-   Lecture 27 <lectures/ME400_Lecture_27> 
-   Lecture 28 <lectures/ME400_Lecture_28> 
-   Lecture 29 <lectures/ME400_Lecture_29> 
+   Lecture 17 <lectures/ME400_Lecture_17>   
+   Lecture 18 - Numerical Differentiation <lectures/Numerical_Differentiation>  
+   Lecture 19 - Numerical Integration <lectures/Numerical_Integration> 
+   Lecture 20 - Linear Systems <lectures/Linear_Systems> 
+   Lecture 21 - Root Finding <lectures/Root_Finding>   
+   Lecture 22 - Optimization <lectures/Optimization>   
+   Lecture 23 - Modeling Data with Least Squares Fitting <lectures/Modeling_Data_With_Least_Squares_Fitting>   
+   Lecture 24 - Modeling Data with Interpolation <lectures/Modeling_Data_With_Interpolation>   
+.. Lecture 25 <lectures/Eulers_Method_for_IVPs>   
+   Lecture 26 <lectures/Systems_of_IVPs> 
+   Lecture 27 <lectures/Numerical_Solution_of_BVPs> 
+   Lecture 28 <lectures/Symbolic_Expressions_and_Equations> 
+   Lecture 29 <lectures/Symbolic_ODEs> 

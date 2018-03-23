@@ -5,12 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Lecture 6 - Conditional Statements and the Structure of Python Code &#8212; ME 400 Course Notes Fall 2017 documentation</title>
-    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -24,7 +21,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -42,7 +39,169 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code">
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code">
 <h1>Lecture 6 - Conditional Statements and the Structure of Python Code<a class="headerlink" href="#Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
@@ -52,18 +211,58 @@ complicated programs. The emphasis here and in <a class="reference internal" hre
 implementation via conditional statements in Python. Effective use of
 conditional statements requires a thorough understanding of the
 relational and logical operators defined in <a class="reference internal" href="ME400_Lecture_2.html"><span class="doc">Lesson
-2</span></a>. Of course, one must also first be
-comfortable with the theoretical coverage of selection presented in
-<a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture 5</span></a>.</p>
+2</span></a> and the theoretical coverage of selection
+presented in <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture 5</span></a>.</p>
+<div class="section" id="Quick-Recap-of-Last-Week">
+<h3>Quick Recap of Last Week<a class="headerlink" href="#Quick-Recap-of-Last-Week" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span> <span class="c1"># makes x and y axes have equal dimensions</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_6_Slides_2_0.png" src="../_images/lectures_ME400_Lecture_6_Slides_2_0.png" />
+</div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Program to sum every other element in an array</span>
+<span class="c1"># &quot;a&quot; of length &quot;n&quot;</span>
+<span class="mf">1.</span> <span class="n">Input</span><span class="p">:</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">n</span>
+<span class="mf">2.</span> <span class="n">Set</span> <span class="n">s</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="mf">3.</span> <span class="n">Set</span> <span class="n">counter</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="mf">4.</span> <span class="n">While</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="n">n</span>
+<span class="mf">5.</span>     <span class="n">If</span> <span class="n">counter</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span>
+<span class="mf">6.</span>         <span class="n">Set</span> <span class="n">s</span> <span class="n">to</span> <span class="n">s</span> <span class="o">+</span> <span class="n">array</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+<span class="mf">7.</span>     <span class="n">Set</span> <span class="n">counter</span> <span class="n">to</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="mf">8.</span> <span class="n">Output</span><span class="p">:</span> <span class="nb">sum</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>explain the importance of indentation in Python programs</li>
-<li>write a program with conditional statements containing <code class="docutils literal"><span class="pre">if</span></code>,
-<code class="docutils literal"><span class="pre">else</span></code>, and <code class="docutils literal"><span class="pre">elif</span></code></li>
-<li>predict the outcome of a Python program with <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">else</span></code>, and
-<code class="docutils literal"><span class="pre">elif</span></code> statements</li>
+<li>write programs with conditional statements</li>
+<li>predict the outcome of programs with <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">else</span></code>, and <code class="docutils literal"><span class="pre">elif</span></code>
+statements</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
@@ -94,20 +293,42 @@ comfortable with the theoretical coverage of selection presented in
 </pre></div>
 </div>
 <p><strong>Example</strong>: Write a program that gets an integer from the user and
-states if the number is positive.</p>
-<p>The pseudocode is straightforward:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span><span class="p">:</span> <span class="n">n</span>
-<span class="n">If</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="n">then</span>
-    <span class="n">Output</span> <span class="s2">&quot;the number is positive&quot;</span>
+states if the number is positive using</p>
+<ol class="arabic simple">
+<li>pseudocode</li>
+<li>a flowchart</li>
+<li>Python</li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
 </pre></div>
 </div>
-<p>The Python code for the same problem is <em>very similar</em>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
-<span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;the number is positive&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Here, the real difference is in how input and output is implemented.</p>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-2-a14c8848fbb1&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>number <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter your number &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    699</span>             raise StdinNotImplementedError(
+<span class="ansi-green-fg">--&gt; 700</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    701</span>             )
+<span class="ansi-green-intense-fg ansi-bold">    702</span>         return self._input_request(str(prompt),
+
+<span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
+</pre></div></div>
+</div>
 <div class="section" id="Rules-of-the-if-statement">
 <h3>Rules of the <code class="docutils literal"><span class="pre">if</span></code> statement<a class="headerlink" href="#Rules-of-the-if-statement" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
@@ -117,13 +338,51 @@ states if the number is positive.</p>
 </pre></div>
 </div>
 <ol class="arabic simple">
-<li>The <code class="docutils literal"><span class="pre">if</span></code> statement begins with the keyword <code class="docutils literal"><span class="pre">if</span></code>.</li>
+<li>The <code class="docutils literal"><span class="pre">if</span></code> statement begins with the <strong>keyword</strong> <code class="docutils literal"><span class="pre">if</span></code>.</li>
 <li>The <em>condition</em> is <code class="docutils literal"><span class="pre">bool</span></code> or can be converted to a <code class="docutils literal"><span class="pre">bool</span></code></li>
 <li>The <code class="docutils literal"><span class="pre">:</span></code> after <code class="docutils literal"><span class="pre">condition</span></code> is <strong>required</strong></li>
 <li>The statements to be executed when <code class="docutils literal"><span class="pre">condition</span> <span class="pre">==</span> <span class="pre">True</span></code> <strong>must be
 indented the same amount</strong></li>
 </ol>
-<p><strong>Examples…</strong></p>
+<p><strong>Example</strong>: Compute the final letter ME 400 grade given a final
+percentage.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Algorithm to compute the final grade&#39;&#39;&#39;</span>
+<span class="c1"># Get the final percentage</span>
+<span class="n">final_percentage</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter final percentage: &#39;</span><span class="p">))</span>
+<span class="c1"># Check if the grade is an A</span>
+<span class="k">if</span> <span class="n">final_percentage</span> <span class="o">&gt;=</span> <span class="mi">90</span>
+    <span class="n">final_grade</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span>
+<span class="c1"># Check if the grade is a B</span>
+
+<span class="c1"># Check if the grade is a C</span>
+
+<span class="c1"># Check if the grade is a D</span>
+
+<span class="c1"># Check if the grade is an F</span>
+
+<span class="c1"># Provide the final grade</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Final grade: &quot;</span><span class="p">,</span> <span class="n">final_grade</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-6a9c7b15ae97&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">5</span>
+<span class="ansi-red-fg">    if final_percentage &gt;= 90</span>
+                             ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
+</div>
 </div>
 </div>
 <div class="section" id="The-else-Clause">
@@ -132,32 +391,43 @@ indented the same amount</strong></li>
 given some condition.</p>
 <p>The <code class="docutils literal"><span class="pre">else</span></code> clause allows us to provide alternate code when the
 condition is not satisfied.</p>
-<p><strong>Example</strong>: Modify the program above to state when the number is
-nonpositive.</p>
-<p>The pseudocode might look like:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span><span class="p">:</span> <span class="n">n</span>
-<span class="n">If</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="n">then</span>
-    <span class="n">Output</span> <span class="s2">&quot;the number is positive&quot;</span>
-<span class="n">Otherwise</span>
-    <span class="n">Output</span> <span class="s2">&quot;the number is nonpositive&quot;</span>
+<p><strong>Example</strong>: Modify the positive-number program above to state also when
+the number is nonpositive using (1) only <code class="docutils literal"><span class="pre">if</span></code> statements and (2)
+<code class="docutils literal"><span class="pre">if</span></code> with <code class="docutils literal"><span class="pre">else</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
 </pre></div>
 </div>
-<p>The flowchart might look like:</p>
-<div class="figure" id="id2">
-<img alt="Flowchart for positive/nonpositive" src="../_images/pos_nonpos.png" />
-<p class="caption"><span class="caption-text">Flowchart for positive/nonpositive</span></p>
-</div>
-<p>The Python solution is</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
 <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;the number is positive&#39;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;the number is nonpositive&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is positive&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Question</strong>: Can all <code class="docutils literal"><span class="pre">if/else</span></code> statements be rewritten as basic
-<code class="docutils literal"><span class="pre">if</span></code> statements?</p>
-<p><strong>Examples</strong>…</p>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-4-4a0802e0e8e6&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>number <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter your number &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">if</span> number <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;the number is positive&#34;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    699</span>             raise StdinNotImplementedError(
+<span class="ansi-green-fg">--&gt; 700</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    701</span>             )
+<span class="ansi-green-intense-fg ansi-bold">    702</span>         return self._input_request(str(prompt),
+
+<span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
+</pre></div></div>
+</div>
 </div>
 <div class="section" id="The-elif-Clause">
 <h2>The <code class="docutils literal"><span class="pre">elif</span></code> Clause<a class="headerlink" href="#The-elif-Clause" title="Permalink to this headline">¶</a></h2>
@@ -174,44 +444,52 @@ condition is not satisfied.</p>
     <span class="n">do</span> <span class="n">something</span> <span class="k">else</span>
 </pre></div>
 </div>
-<div class="figure" id="id3">
+<div class="figure" id="id2">
 <img alt="Flowchart for if/elif/else" src="../_images/if_elif_else.png" />
 <p class="caption"><span class="caption-text">Flowchart for if/elif/else</span></p>
 </div>
 <p><strong>Example</strong>: Modify the positive/nonpositive program for positive,
 negative, and zero.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
 <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is positive&quot;</span><span class="p">)</span>
-<span class="k">elif</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is zero&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">number</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is nonpositive&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="The-pass-Clause">
-<h2>The <code class="docutils literal"><span class="pre">pass</span></code> Clause<a class="headerlink" href="#The-pass-Clause" title="Permalink to this headline">¶</a></h2>
-<p>Often, we take a top/down approach when designing programs and are left
-with partial code like</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
-    <span class="c1"># I would do something here if I had time but I&#39;m late for class</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># same here</span>
-</pre></div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<p><strong>This is not valid Python!</strong> All blocks under the <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">elif</span></code>, and
-<code class="docutils literal"><span class="pre">else</span></code> clauses must have at least one executable line of code.</p>
-<p>Use <code class="docutils literal"><span class="pre">pass</span></code> as a placeholder:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
-    <span class="c1"># I would do something here if I had time but I&#39;m late for class</span>
-    <span class="k">pass</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># same here</span>
-    <span class="k">pass</span>
-</pre></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-bb6a5f2b0431&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>number <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter your number &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">if</span> number <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;the number is positive&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">elif</span> number <span class="ansi-blue-fg">&lt;=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;the number is nonpositive&#34;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    699</span>             raise StdinNotImplementedError(
+<span class="ansi-green-fg">--&gt; 700</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    701</span>             )
+<span class="ansi-green-intense-fg ansi-bold">    702</span>         return self._input_request(str(prompt),
+
+<span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
+</pre></div></div>
 </div>
-<p><strong>Examples…</strong></p>
+<p><strong>Examples</strong>: <em>1, 2, 3</em> and <em>months</em></p>
+<p><strong>Example in Spyder</strong></p>
 </div>
 <div class="section" id="Recap">
 <h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
@@ -222,13 +500,6 @@ with partial code like</p>
 <code class="docutils literal"><span class="pre">else</span></code>, and <code class="docutils literal"><span class="pre">elif</span></code></li>
 <li>predict the outcome of a Python program with <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">else</span></code>, and
 <code class="docutils literal"><span class="pre">elif</span></code> statements</li>
-</ul>
-<p>Friendly reminders:</p>
-<ul class="simple">
-<li>Attendance at labs is mandatory (to earn credit)</li>
-<li>Homework files <strong>must run</strong> when tested (always reset/restart the
-console)</li>
-<li>There is a discussion board for typos, etc. in the online materials</li>
 </ul>
 </div>
 </div>
@@ -243,6 +514,7 @@ console)</li>
   <ul>
 <li><a class="reference internal" href="#">Lecture 6 - Conditional Statements and the Structure of Python Code</a><ul>
 <li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Quick-Recap-of-Last-Week">Quick Recap of Last Week</a></li>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>
@@ -253,7 +525,6 @@ console)</li>
 </li>
 <li><a class="reference internal" href="#The-else-Clause">The <code class="docutils literal"><span class="pre">else</span></code> Clause</a></li>
 <li><a class="reference internal" href="#The-elif-Clause">The <code class="docutils literal"><span class="pre">elif</span></code> Clause</a></li>
-<li><a class="reference internal" href="#The-pass-Clause">The <code class="docutils literal"><span class="pre">pass</span></code> Clause</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
@@ -290,7 +561,7 @@ console)</li>
       &copy;2017, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

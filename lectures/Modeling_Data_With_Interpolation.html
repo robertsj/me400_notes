@@ -1,0 +1,618 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lecture 25 - Data Analysis via Interpolation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Lecture 24 - Data Analysis via Least-Squares Fitting" href="Modeling_Data_With_Least_Squares_Fitting.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-25---Data-Analysis-via-Interpolation">
+<h1>Lecture 25 - Data Analysis via Interpolation<a class="headerlink" href="#Lecture-25---Data-Analysis-via-Interpolation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we continue the theme of data analysis initiated in
+<a class="reference external" href="ME400_Lecture_24.ipynb">Lecture 24</a>, focusing now on the process of
+<strong>interpolation</strong>. Whereas the fitted models of <a class="reference external" href="ME400_Lecture_24.ipynb">Lecture
+24</a> allow one to produce simple models from
+noisy (or otherwise complicated) data, interpolation allows one to
+estimate new values from known discrete points that are assumed to be
+noise free.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Apply linear interpolation to evaluate <span class="math">\(f(x)\)</span> given discrete
+points <span class="math">\((x_i, f(x_i))\)</span> for <span class="math">\(i = 0, 1 \ldots\)</span>.</li>
+<li>Apply linear interpolation to evaluate <span class="math">\(f(x, y)\)</span> given discrete
+points <span class="math">\((x_i, y_j, f(x_i, y_j))\)</span> for
+<span class="math">\(\, i = 0, 1, \ldots\)</span> and <span class="math">\(j = 0, 1,\ldots\)</span>.</li>
+<li>Apply tools from NumPy and SciPy to perform high-order (e.g.,
+cubine-spline) interpolation</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>linear interpolation</li>
+<li><code class="docutils literal"><span class="pre">np.interp</span></code></li>
+<li><code class="docutils literal"><span class="pre">scipy.interpolate</span></code></li>
+<li><code class="docutils literal"><span class="pre">interp1d</span></code></li>
+<li><code class="docutils literal"><span class="pre">interp2d</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="Simple-Linear-Interpolation">
+<h2>Simple Linear Interpolation<a class="headerlink" href="#Simple-Linear-Interpolation" title="Permalink to this headline">¶</a></h2>
+<p>A common task in many thermal engineering courses is to use tabulated
+physical properties. Often, the value needed is not in the table, and
+<em>linear interpolation</em> is required to estimate the missing value.</p>
+<p>Let the quantity of interest be <span class="math">\(y(x)\)</span>, for which values
+<span class="math">\(y_0, y_1, \ldots\)</span> are provided at <span class="math">\(x_0, x_1, \ldots\)</span>.
+Suppose the value of <span class="math">\(y\)</span> at $x = <a href="#id1"><span class="problematic" id="id2">:raw-latex:`\tilde{x}`</span></a> $ is
+desired. The first step is to determine which two values <span class="math">\(x_i\)</span> and
+<span class="math">\(x_{i+1}\)</span> contain the point $:raw-latex:<cite>tilde{x}</cite> $. This step
+is accomplished using the linear or binary search algorithms developed
+in <a class="reference internal" href="ME400_Lecture_14.html"><span class="doc">Lecture 14</span></a>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply linear search to find <span class="math">\(i\)</span> such that
+<span class="math">\(\tilde{x} \in [x_i, x_{i+1}]\)</span> for <span class="math">\(\tilde{x}\)</span> = 3.5$ and
+<span class="math">\(x = [0, 1, 2, 3, 4, 5]\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the exercise using binary search.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: For the same $:raw-latex:<cite>tilde{x}</cite> $ and points
+<span class="math">\(x\)</span>, evaluate <code class="docutils literal"><span class="pre">np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde</span></code> and
+<code class="docutils literal"><span class="pre">sum(np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde)</span></code>. What can you conclude?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">help</span></code> to learn about <code class="docutils literal"><span class="pre">np.searchsorted</span></code>. Then, for
+the same $:raw-latex:<cite>tilde{x}</cite> $ and points <span class="math">\(x\)</span>, evaluate
+<code class="docutils literal"><span class="pre">np.searchsorted(x,</span> <span class="pre">x_tilde)</span></code>. What can you conclude?</p>
+<hr class="docutils" />
+<p>Once <span class="math">\(i\)</span> is determined, <span class="math">\((x_i, y(x_i))\)</span> and
+<span class="math">\((x_{i+1}, y(x_{i+1}))\)</span> are connected by a line of the form
+<span class="math">\(ax + b\)</span>, and <span class="math">\(y(\tilde{x})\)</span> is evaluated from
+<span class="math">\(a\tilde{x} + b\)</span>. The trick is to determine <span class="math">\(a\)</span> and
+<span class="math">\(b\)</span>, but that’s easy: we have two equations <span class="math">\(y_i = ax_i + b\)</span>
+and <span class="math">\(y_{i+1} = a x_{i+1} + b\)</span>. Just solve for <span class="math">\(a\)</span> and
+<span class="math">\(b\)</span>:</p>
+<div class="math">
+\[a = \frac{y_{i+1}-y_i}{x_{i+1}-x_i} \quad \text{and} \quad b = y_i - \frac{y_{i+1}-y_i}{x_{i+1}-x_i} x_i \, .\]</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following table of thermodynamic data for
+saturated steam (saved as <a class="reference external" href="thermo_data.txt">thermo_data.txt</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span> <span class="n">T</span> <span class="p">[</span><span class="n">K</span><span class="p">]</span>   <span class="n">P</span> <span class="p">[</span><span class="n">MPa</span><span class="p">]</span>  <span class="n">h_l</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span> <span class="n">h_v</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span>
+<span class="mf">373.150</span>   <span class="mf">0.101</span>    <span class="mf">2675.572</span>     <span class="mf">419.099</span>
+<span class="mf">389.817</span>   <span class="mf">0.179</span>    <span class="mf">2701.054</span>     <span class="mf">489.625</span>
+<span class="mf">406.483</span>   <span class="mf">0.298</span>    <span class="mf">2724.633</span>     <span class="mf">560.634</span>
+<span class="mf">423.150</span>   <span class="mf">0.476</span>    <span class="mf">2745.919</span>     <span class="mf">632.252</span>
+<span class="mf">439.817</span>   <span class="mf">0.730</span>    <span class="mf">2764.528</span>     <span class="mf">704.626</span>
+<span class="mf">456.483</span>   <span class="mf">1.082</span>    <span class="mf">2780.059</span>     <span class="mf">777.934</span>
+<span class="mf">473.150</span>   <span class="mf">1.555</span>    <span class="mf">2792.062</span>     <span class="mf">852.393</span>
+<span class="mf">489.817</span>   <span class="mf">2.175</span>    <span class="mf">2800.004</span>     <span class="mf">928.269</span>
+<span class="mf">506.483</span>   <span class="mf">2.972</span>    <span class="mf">2803.247</span>    <span class="mf">1005.893</span>
+<span class="mf">523.150</span>   <span class="mf">3.976</span>    <span class="mf">2801.012</span>    <span class="mf">1085.687</span>
+<span class="mf">539.817</span>   <span class="mf">5.222</span>    <span class="mf">2792.314</span>    <span class="mf">1168.202</span>
+<span class="mf">556.483</span>   <span class="mf">6.745</span>    <span class="mf">2775.820</span>    <span class="mf">1254.194</span>
+<span class="mf">573.150</span>   <span class="mf">8.588</span>    <span class="mf">2749.574</span>    <span class="mf">1344.771</span>
+</pre></div>
+</div>
+<p>Evaluate <span class="math">\(h_l\)</span> at 515 K using linear interpolation.</p>
+<p><em>Solution</em></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># first load the data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">h_l</span><span class="p">,</span> <span class="n">h_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;thermo_data.txt&#39;</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># find i such that T[i-1] &lt;= 500 &lt;= T[i]</span>
+<span class="n">T_tilde</span> <span class="o">=</span> <span class="mi">515</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">T_tilde</span><span class="p">:</span>
+        <span class="k">break</span>
+<span class="c1"># compute slope and intercept</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">h_l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">h_l</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">h_l</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># compute approximation</span>
+<span class="n">h_l_tilde</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">T_tilde</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">h_l_tilde</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>2802.1048931421374
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Adapt the solution above to produce a function that
+returns <span class="math">\(h_l\)</span> at <em>any</em> temperature <em>T</em>. However, add assertions to
+ensure the user does not request <span class="math">\(h_l\)</span> at temperatures outside the
+range of the data. In other words, limit the function to <em>interpolation</em>
+and exclude any <em>extrapolation</em>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Suppose <span class="math">\(\tilde{x}\)</span> is beyond <span class="math">\(x_{n-1}\)</span>, the
+last of the <span class="math">\(n\)</span> values of <span class="math">\(x\)</span> in the tabulated data. How
+would one linearly <em>extrapolate</em> the data to obtain
+<span class="math">\(y(\tilde{x})\)</span>?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Execute <code class="docutils literal"><span class="pre">help(np.interp)</span></code>. Use it to interpolate
+<span class="math">\(x = [1, 2, 3]\)</span> and <span class="math">\(y = [2, 8, 18]\)</span> for
+<span class="math">\(\tilde{x} = 1.5\)</span> and <span class="math">\(\tilde{x} = 2.5\)</span>.</p>
+</div>
+<div class="section" id="Interpolation-In-Two-Dimensions">
+<h2>Interpolation In Two Dimensions<a class="headerlink" href="#Interpolation-In-Two-Dimensions" title="Permalink to this headline">¶</a></h2>
+<p>Some applications require interpolation of two-dimensional data
+evaluated at <span class="math">\((x_i, y_j)\)</span> for <span class="math">\(i=0,1,\ldots\)</span> and $
+j=0,1,:raw-latex:<cite>ldots`$. Linear interpolation of such data is based
+on the model :math:`f(x, y) approx ax + by + c</cite> for
+<span class="math">\(x \in [x_i, x_{i+1}]\)</span> and <span class="math">\(y \in [y_j, y_{j+1}]\)</span>.</p>
+<p>The trick now is to find <span class="math">\(i\)</span> and <span class="math">\(j\)</span> for values
+<span class="math">\(\tilde{x}\)</span> and <span class="math">\(\tilde{y}\)</span> for which <span class="math">\(f(x, y)\)</span> is
+desired. However, the <em>same</em> ideas applied for one dimension work for
+this two-dimensional problem. To do so requires an extra step:</p>
+<ol class="arabic simple">
+<li>Again, first assume that <span class="math">\(i\)</span> and <span class="math">\(j\)</span> are found by an
+appropriate search.</li>
+<li>Then, find <span class="math">\(f(\tilde{x}, y_{j})\)</span> and
+<span class="math">\(f(\tilde{x}, y_{j+1})\)</span> via <em>two separate</em> interpolations.</li>
+<li>Finally, find <span class="math">\(f(\tilde{x}, \tilde{y})\)</span> by linearly
+interpolating the two values <span class="math">\(f(\tilde{x}, y_{j})\)</span> and
+<span class="math">\(f(\tilde{x}, y_{j+1})\)</span>.</li>
+</ol>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Given <span class="math">\(f(1, 1) = 6\)</span>, <span class="math">\(f(1, 2) = 9\)</span>,
+<span class="math">\(f(2, 1) = 8\)</span>, and <span class="math">\(f(2, 2) = 11\)</span>, estimate
+<span class="math">\(f(4/3, 7/4)\)</span> by linear interpolation.</p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># define the given data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">]])</span>
+<span class="n">xtilde</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">ytilde</span> <span class="o">=</span> <span class="mi">7</span><span class="o">/</span><span class="mi">4</span>
+<span class="c1"># interpolate to get f(xtilde, 1)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">f_xt_1</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">xtilde</span> <span class="o">+</span> <span class="n">b</span>
+<span class="c1"># interpolate to get f(xtilde, 2)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">f_xt_2</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">xtilde</span> <span class="o">+</span> <span class="n">b</span>
+<span class="c1"># interpolate to get f(xtilde, ytilde)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_xt_2</span> <span class="o">-</span> <span class="n">f_xt_1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">f_xt_1</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">f_xt_yt</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">ytilde</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">f_xt_yt</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>8.9166666666666661
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: It turns out the previous exercise produces a perfect
+value for <span class="math">\(f(4/3, 7/4)\)</span> when <span class="math">\(f(x, y) = 2x + 3y + 1\)</span>. Can
+you recover <span class="math">\(a=2\)</span>, <span class="math">\(b=3\)</span>, and <span class="math">\(c=1\)</span> from your
+interpolation process?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Suppose <span class="math">\(f(1, 1) = 7\)</span>, <span class="math">\(f(1, 2) = 11\)</span>,
+<span class="math">\(f(2, 1)=10\)</span>, and <span class="math">\(f(2, 2)=15\)</span>. Compute <span class="math">\(f(4/3, 7/4)\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following table of water densities
+(<span class="math">\(\rho\)</span>) for different temperatures [K] and pressures [MPa] (from
+<a class="reference external" href="thermodata_2.txt">thermodata_2.txt</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span> <span class="n">T</span> <span class="p">[</span><span class="n">K</span><span class="p">]</span>   <span class="n">P</span> <span class="p">[</span><span class="n">MPa</span><span class="p">]</span>  <span class="n">rho</span> <span class="p">[</span><span class="n">kg</span><span class="o">/</span><span class="n">m</span><span class="o">^</span><span class="mi">3</span><span class="p">]</span>
+<span class="mf">293.150</span>   <span class="mf">2.000</span>    <span class="mf">999.073</span>
+<span class="mf">293.150</span>   <span class="mf">4.000</span>    <span class="mf">999.982</span>
+<span class="mf">293.150</span>   <span class="mf">6.000</span>   <span class="mf">1000.888</span>
+<span class="mf">293.150</span>   <span class="mf">8.000</span>   <span class="mf">1001.791</span>
+<span class="mf">313.150</span>   <span class="mf">2.000</span>    <span class="mf">993.053</span>
+<span class="mf">313.150</span>   <span class="mf">4.000</span>    <span class="mf">993.924</span>
+<span class="mf">313.150</span>   <span class="mf">6.000</span>    <span class="mf">994.790</span>
+<span class="mf">313.150</span>   <span class="mf">8.000</span>    <span class="mf">995.653</span>
+<span class="mf">333.150</span>   <span class="mf">2.000</span>    <span class="mf">984.037</span>
+<span class="mf">333.150</span>   <span class="mf">4.000</span>    <span class="mf">984.903</span>
+<span class="mf">333.150</span>   <span class="mf">6.000</span>    <span class="mf">985.766</span>
+<span class="mf">333.150</span>   <span class="mf">8.000</span>    <span class="mf">986.625</span>
+<span class="mf">353.150</span>   <span class="mf">2.000</span>    <span class="mf">972.650</span>
+<span class="mf">353.150</span>   <span class="mf">4.000</span>    <span class="mf">973.538</span>
+<span class="mf">353.150</span>   <span class="mf">6.000</span>    <span class="mf">974.422</span>
+<span class="mf">353.150</span>   <span class="mf">8.000</span>    <span class="mf">975.301</span>
+<span class="mf">373.150</span>   <span class="mf">2.000</span>    <span class="mf">959.242</span>
+<span class="mf">373.150</span>   <span class="mf">4.000</span>    <span class="mf">960.172</span>
+<span class="mf">373.150</span>   <span class="mf">6.000</span>    <span class="mf">961.097</span>
+<span class="mf">373.150</span>   <span class="mf">8.000</span>    <span class="mf">962.017</span>
+</pre></div>
+</div>
+<p>Use linear interpolation to estimate <span class="math">\(\rho(300, 3)\)</span>,
+<span class="math">\(\rho(330, 5)\)</span>, and <span class="math">\(\rho(360, 7)\)</span>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Higher-Order-Interpolation">
+<h2>Higher-Order Interpolation<a class="headerlink" href="#Higher-Order-Interpolation" title="Permalink to this headline">¶</a></h2>
+<p>Linear interpolation is conceptually straightforward, but it helps to
+use tools like <code class="docutils literal"><span class="pre">np.interp</span></code> (see the exercises above). However,
+interpolation that is <em>better</em> than linear is more challenging to
+implement, and we’ll turn to the <code class="docutils literal"><span class="pre">scipy.interpolate</span></code> module and its
+<code class="docutils literal"><span class="pre">interp1d</span></code> and <code class="docutils literal"><span class="pre">interp2d</span></code> utilities.</p>
+<p>The syntax for <code class="docutils literal"><span class="pre">interp1d</span></code> is quite simple:
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">interp1d(x,</span> <span class="pre">y,</span> <span class="pre">kind)</span></code>, where <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are the points to
+interpolate, and <code class="docutils literal"><span class="pre">kind</span></code> is a <code class="docutils literal"><span class="pre">str</span></code> argument equal to <code class="docutils literal"><span class="pre">'linear'</span></code>
+(default), <code class="docutils literal"><span class="pre">'quadratic'</span></code>, <code class="docutils literal"><span class="pre">'cubic'</span></code>, among other possibilities.
+Here, <code class="docutils literal"><span class="pre">linear</span></code> leads to linear interpolation equivalent to the method
+introduced above. Quadratic and cubic interpolation involve defined
+quadratic curves over sets of three points or cubic functions over sets
+of four points. Of course, if the underlying data were actually
+quadratic or cubic, these higher-order interpolation schemes should be
+expected to do better. The resulting <code class="docutils literal"><span class="pre">f</span></code> is a callable function that
+accepts <span class="math">\(\tilde{x}\)</span>, the point at which the data is to be
+estimated.</p>
+<hr class="docutils" />
+<p><strong>Example</strong>: Interpolate <span class="math">\(x = [1, 2, 3, 4, 5]\)</span> and
+<span class="math">\(y = [1, 4, 9, 16, 25]\)</span> for <span class="math">\(\tilde{x} = 4.5\)</span></p>
+<p><em>Solution</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="n">f_lin</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="n">f_quad</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">25</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;quadratic&#39;</span><span class="p">)</span>
+<span class="n">f_lin</span><span class="p">(</span><span class="mf">4.5</span><span class="p">),</span> <span class="n">f_quad</span><span class="p">(</span><span class="mf">4.5</span><span class="p">),</span> <span class="mf">4.5</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(array(20.5), array(20.25), 20.25)
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p>The syntax for <code class="docutils literal"><span class="pre">interp2d</span></code> is equally simple:
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">interp2d(x,</span> <span class="pre">y,</span> <span class="pre">f,</span> <span class="pre">kind)</span></code>. Here, <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are individual
+arrays, while <code class="docutils literal"><span class="pre">f</span></code> is a 2-D array representing <span class="math">\(f(x_i, y_j)\)</span> for
+<span class="math">\(i = 0, 1, \ldots\)</span> and <span class="math">\(j = 0, 1, \ldots\)</span>. Any easy way to
+evaluate <code class="docutils literal"><span class="pre">f</span></code> is to use <code class="docutils literal"><span class="pre">np.meshgrid</span></code>. Finally, <code class="docutils literal"><span class="pre">kind</span></code> is a <code class="docutils literal"><span class="pre">str</span></code>
+argument that can be <code class="docutils literal"><span class="pre">'linear'</span></code> and<code class="docutils literal"><span class="pre">'cubic'</span></code> (among others, but
+<em>not</em> <code class="docutils literal"><span class="pre">'quadratic'</span></code>).</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">np.linspace(0,</span> <span class="pre">10,</span> <span class="pre">11)</span></code>,
+<code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">np.linspace(0,</span> <span class="pre">10,</span> <span class="pre">11)</span></code>, and
+<code class="docutils literal"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">1</span> <span class="pre">+</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span> <span class="pre">+</span> <span class="pre">x**2</span> <span class="pre">+</span> <span class="pre">y**2</span> <span class="pre">+</span> <span class="pre">x**4*y**4</span></code> (a decidely
+nonlinear function), evaluate <code class="docutils literal"><span class="pre">f(4.5,</span> <span class="pre">6.5)</span></code> using linea and cubic
+interpolation.</p>
+<p><em>Solution</em></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">4</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp2d</span>
+<span class="n">f_lin</span> <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">),</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="n">f_cub</span> <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">),</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">)</span>
+<span class="n">f_lin</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">),</span> <span class="n">f_cub</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">),</span> <span class="n">z</span><span class="p">(</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(array([ 814339.25]), array([ 731923.8169771]), 732061.69140625)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, interpolation has been limited to regular grids of
+points along the <span class="math">\(x\)</span> and <span class="math">\(y\)</span> axes. When points are more than
+one dimension are <em>not</em> on such grids, different methods are needed.
+<a class="reference external" href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system">Barycentric
+interpolation</a>
+is one option. In 2-D, points can be organized as triangles, and linear
+interpolation can be applied within a single triangle. In 3-D, triangles
+become pyramids, and in higher dimensions, one interpolates over general
+<em>n-simplices</em>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 25 - Data Analysis via Interpolation</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Simple-Linear-Interpolation">Simple Linear Interpolation</a></li>
+<li><a class="reference internal" href="#Interpolation-In-Two-Dimensions">Interpolation In Two Dimensions</a></li>
+<li><a class="reference internal" href="#Higher-Order-Interpolation">Higher-Order Interpolation</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Modeling_Data_With_Least_Squares_Fitting.html" title="previous chapter">Lecture 24 - Data Analysis via Least-Squares Fitting</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/Modeling_Data_With_Interpolation.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/Modeling_Data_With_Interpolation.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

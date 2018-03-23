@@ -5,12 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Lecture 3 - Basic Data Processing with NumPy and Matplotlib &#8212; ME 400 Course Notes Fall 2017 documentation</title>
-    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -24,7 +21,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -276,102 +273,682 @@ data.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span> <span class="c1"># very common</span>
+<span class="nb">dir</span><span class="p">(</span><span class="n">np</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;ALLOW_THREADS&#39;,
+ &#39;AxisError&#39;,
+ &#39;BUFSIZE&#39;,
+ &#39;CLIP&#39;,
+ &#39;ComplexWarning&#39;,
+ &#39;DataSource&#39;,
+ &#39;ERR_CALL&#39;,
+ &#39;ERR_DEFAULT&#39;,
+ &#39;ERR_IGNORE&#39;,
+ &#39;ERR_LOG&#39;,
+ &#39;ERR_PRINT&#39;,
+ &#39;ERR_RAISE&#39;,
+ &#39;ERR_WARN&#39;,
+ &#39;FLOATING_POINT_SUPPORT&#39;,
+ &#39;FPE_DIVIDEBYZERO&#39;,
+ &#39;FPE_INVALID&#39;,
+ &#39;FPE_OVERFLOW&#39;,
+ &#39;FPE_UNDERFLOW&#39;,
+ &#39;False_&#39;,
+ &#39;Inf&#39;,
+ &#39;Infinity&#39;,
+ &#39;MAXDIMS&#39;,
+ &#39;MAY_SHARE_BOUNDS&#39;,
+ &#39;MAY_SHARE_EXACT&#39;,
+ &#39;MachAr&#39;,
+ &#39;ModuleDeprecationWarning&#39;,
+ &#39;NAN&#39;,
+ &#39;NINF&#39;,
+ &#39;NZERO&#39;,
+ &#39;NaN&#39;,
+ &#39;PINF&#39;,
+ &#39;PZERO&#39;,
+ &#39;PackageLoader&#39;,
+ &#39;RAISE&#39;,
+ &#39;RankWarning&#39;,
+ &#39;SHIFT_DIVIDEBYZERO&#39;,
+ &#39;SHIFT_INVALID&#39;,
+ &#39;SHIFT_OVERFLOW&#39;,
+ &#39;SHIFT_UNDERFLOW&#39;,
+ &#39;ScalarType&#39;,
+ &#39;Tester&#39;,
+ &#39;TooHardError&#39;,
+ &#39;True_&#39;,
+ &#39;UFUNC_BUFSIZE_DEFAULT&#39;,
+ &#39;UFUNC_PYVALS_NAME&#39;,
+ &#39;VisibleDeprecationWarning&#39;,
+ &#39;WRAP&#39;,
+ &#39;_NoValue&#39;,
+ &#39;__NUMPY_SETUP__&#39;,
+ &#39;__all__&#39;,
+ &#39;__builtins__&#39;,
+ &#39;__cached__&#39;,
+ &#39;__config__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__git_revision__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__path__&#39;,
+ &#39;__spec__&#39;,
+ &#39;__version__&#39;,
+ &#39;_distributor_init&#39;,
+ &#39;_globals&#39;,
+ &#39;_import_tools&#39;,
+ &#39;_mat&#39;,
+ &#39;abs&#39;,
+ &#39;absolute&#39;,
+ &#39;absolute_import&#39;,
+ &#39;add&#39;,
+ &#39;add_docstring&#39;,
+ &#39;add_newdoc&#39;,
+ &#39;add_newdoc_ufunc&#39;,
+ &#39;add_newdocs&#39;,
+ &#39;alen&#39;,
+ &#39;all&#39;,
+ &#39;allclose&#39;,
+ &#39;alltrue&#39;,
+ &#39;amax&#39;,
+ &#39;amin&#39;,
+ &#39;angle&#39;,
+ &#39;any&#39;,
+ &#39;append&#39;,
+ &#39;apply_along_axis&#39;,
+ &#39;apply_over_axes&#39;,
+ &#39;arange&#39;,
+ &#39;arccos&#39;,
+ &#39;arccosh&#39;,
+ &#39;arcsin&#39;,
+ &#39;arcsinh&#39;,
+ &#39;arctan&#39;,
+ &#39;arctan2&#39;,
+ &#39;arctanh&#39;,
+ &#39;argmax&#39;,
+ &#39;argmin&#39;,
+ &#39;argpartition&#39;,
+ &#39;argsort&#39;,
+ &#39;argwhere&#39;,
+ &#39;around&#39;,
+ &#39;array&#39;,
+ &#39;array2string&#39;,
+ &#39;array_equal&#39;,
+ &#39;array_equiv&#39;,
+ &#39;array_repr&#39;,
+ &#39;array_split&#39;,
+ &#39;array_str&#39;,
+ &#39;asanyarray&#39;,
+ &#39;asarray&#39;,
+ &#39;asarray_chkfinite&#39;,
+ &#39;ascontiguousarray&#39;,
+ &#39;asfarray&#39;,
+ &#39;asfortranarray&#39;,
+ &#39;asmatrix&#39;,
+ &#39;asscalar&#39;,
+ &#39;atleast_1d&#39;,
+ &#39;atleast_2d&#39;,
+ &#39;atleast_3d&#39;,
+ &#39;average&#39;,
+ &#39;bartlett&#39;,
+ &#39;base_repr&#39;,
+ &#39;bench&#39;,
+ &#39;binary_repr&#39;,
+ &#39;bincount&#39;,
+ &#39;bitwise_and&#39;,
+ &#39;bitwise_not&#39;,
+ &#39;bitwise_or&#39;,
+ &#39;bitwise_xor&#39;,
+ &#39;blackman&#39;,
+ &#39;block&#39;,
+ &#39;bmat&#39;,
+ &#39;bool&#39;,
+ &#39;bool8&#39;,
+ &#39;bool_&#39;,
+ &#39;broadcast&#39;,
+ &#39;broadcast_arrays&#39;,
+ &#39;broadcast_to&#39;,
+ &#39;busday_count&#39;,
+ &#39;busday_offset&#39;,
+ &#39;busdaycalendar&#39;,
+ &#39;byte&#39;,
+ &#39;byte_bounds&#39;,
+ &#39;bytes0&#39;,
+ &#39;bytes_&#39;,
+ &#39;c_&#39;,
+ &#39;can_cast&#39;,
+ &#39;cast&#39;,
+ &#39;cbrt&#39;,
+ &#39;cdouble&#39;,
+ &#39;ceil&#39;,
+ &#39;cfloat&#39;,
+ &#39;char&#39;,
+ &#39;character&#39;,
+ &#39;chararray&#39;,
+ &#39;choose&#39;,
+ &#39;clip&#39;,
+ &#39;clongdouble&#39;,
+ &#39;clongfloat&#39;,
+ &#39;column_stack&#39;,
+ &#39;common_type&#39;,
+ &#39;compare_chararrays&#39;,
+ &#39;compat&#39;,
+ &#39;complex&#39;,
+ &#39;complex128&#39;,
+ &#39;complex256&#39;,
+ &#39;complex64&#39;,
+ &#39;complex_&#39;,
+ &#39;complexfloating&#39;,
+ &#39;compress&#39;,
+ &#39;concatenate&#39;,
+ &#39;conj&#39;,
+ &#39;conjugate&#39;,
+ &#39;convolve&#39;,
+ &#39;copy&#39;,
+ &#39;copysign&#39;,
+ &#39;copyto&#39;,
+ &#39;core&#39;,
+ &#39;corrcoef&#39;,
+ &#39;correlate&#39;,
+ &#39;cos&#39;,
+ &#39;cosh&#39;,
+ &#39;count_nonzero&#39;,
+ &#39;cov&#39;,
+ &#39;cross&#39;,
+ &#39;csingle&#39;,
+ &#39;ctypeslib&#39;,
+ &#39;cumprod&#39;,
+ &#39;cumproduct&#39;,
+ &#39;cumsum&#39;,
+ &#39;datetime64&#39;,
+ &#39;datetime_as_string&#39;,
+ &#39;datetime_data&#39;,
+ &#39;deg2rad&#39;,
+ &#39;degrees&#39;,
+ &#39;delete&#39;,
+ &#39;deprecate&#39;,
+ &#39;deprecate_with_doc&#39;,
+ &#39;diag&#39;,
+ &#39;diag_indices&#39;,
+ &#39;diag_indices_from&#39;,
+ &#39;diagflat&#39;,
+ &#39;diagonal&#39;,
+ &#39;diff&#39;,
+ &#39;digitize&#39;,
+ &#39;disp&#39;,
+ &#39;divide&#39;,
+ &#39;division&#39;,
+ &#39;divmod&#39;,
+ &#39;dot&#39;,
+ &#39;double&#39;,
+ &#39;dsplit&#39;,
+ &#39;dstack&#39;,
+ &#39;dtype&#39;,
+ &#39;e&#39;,
+ &#39;ediff1d&#39;,
+ &#39;einsum&#39;,
+ &#39;einsum_path&#39;,
+ &#39;emath&#39;,
+ &#39;empty&#39;,
+ &#39;empty_like&#39;,
+ &#39;equal&#39;,
+ &#39;errstate&#39;,
+ &#39;euler_gamma&#39;,
+ &#39;exp&#39;,
+ &#39;exp2&#39;,
+ &#39;expand_dims&#39;,
+ &#39;expm1&#39;,
+ &#39;extract&#39;,
+ &#39;eye&#39;,
+ &#39;fabs&#39;,
+ &#39;fastCopyAndTranspose&#39;,
+ &#39;fft&#39;,
+ &#39;fill_diagonal&#39;,
+ &#39;find_common_type&#39;,
+ &#39;finfo&#39;,
+ &#39;fix&#39;,
+ &#39;flatiter&#39;,
+ &#39;flatnonzero&#39;,
+ &#39;flexible&#39;,
+ &#39;flip&#39;,
+ &#39;fliplr&#39;,
+ &#39;flipud&#39;,
+ &#39;float&#39;,
+ &#39;float128&#39;,
+ &#39;float16&#39;,
+ &#39;float32&#39;,
+ &#39;float64&#39;,
+ &#39;float_&#39;,
+ &#39;float_power&#39;,
+ &#39;floating&#39;,
+ &#39;floor&#39;,
+ &#39;floor_divide&#39;,
+ &#39;fmax&#39;,
+ &#39;fmin&#39;,
+ &#39;fmod&#39;,
+ &#39;format_parser&#39;,
+ &#39;frexp&#39;,
+ &#39;frombuffer&#39;,
+ &#39;fromfile&#39;,
+ &#39;fromfunction&#39;,
+ &#39;fromiter&#39;,
+ &#39;frompyfunc&#39;,
+ &#39;fromregex&#39;,
+ &#39;fromstring&#39;,
+ &#39;full&#39;,
+ &#39;full_like&#39;,
+ &#39;fv&#39;,
+ &#39;generic&#39;,
+ &#39;genfromtxt&#39;,
+ &#39;geomspace&#39;,
+ &#39;get_array_wrap&#39;,
+ &#39;get_include&#39;,
+ &#39;get_printoptions&#39;,
+ &#39;getbufsize&#39;,
+ &#39;geterr&#39;,
+ &#39;geterrcall&#39;,
+ &#39;geterrobj&#39;,
+ &#39;gradient&#39;,
+ &#39;greater&#39;,
+ &#39;greater_equal&#39;,
+ &#39;half&#39;,
+ &#39;hamming&#39;,
+ &#39;hanning&#39;,
+ &#39;heaviside&#39;,
+ &#39;histogram&#39;,
+ &#39;histogram2d&#39;,
+ &#39;histogramdd&#39;,
+ &#39;hsplit&#39;,
+ &#39;hstack&#39;,
+ &#39;hypot&#39;,
+ &#39;i0&#39;,
+ &#39;identity&#39;,
+ &#39;iinfo&#39;,
+ &#39;imag&#39;,
+ &#39;in1d&#39;,
+ &#39;index_exp&#39;,
+ &#39;indices&#39;,
+ &#39;inexact&#39;,
+ &#39;inf&#39;,
+ &#39;info&#39;,
+ &#39;infty&#39;,
+ &#39;inner&#39;,
+ &#39;insert&#39;,
+ &#39;int&#39;,
+ &#39;int0&#39;,
+ &#39;int16&#39;,
+ &#39;int32&#39;,
+ &#39;int64&#39;,
+ &#39;int8&#39;,
+ &#39;int_&#39;,
+ &#39;int_asbuffer&#39;,
+ &#39;intc&#39;,
+ &#39;integer&#39;,
+ &#39;interp&#39;,
+ &#39;intersect1d&#39;,
+ &#39;intp&#39;,
+ &#39;invert&#39;,
+ &#39;ipmt&#39;,
+ &#39;irr&#39;,
+ &#39;is_busday&#39;,
+ &#39;isclose&#39;,
+ &#39;iscomplex&#39;,
+ &#39;iscomplexobj&#39;,
+ &#39;isfinite&#39;,
+ &#39;isfortran&#39;,
+ &#39;isin&#39;,
+ &#39;isinf&#39;,
+ &#39;isnan&#39;,
+ &#39;isnat&#39;,
+ &#39;isneginf&#39;,
+ &#39;isposinf&#39;,
+ &#39;isreal&#39;,
+ &#39;isrealobj&#39;,
+ &#39;isscalar&#39;,
+ &#39;issctype&#39;,
+ &#39;issubclass_&#39;,
+ &#39;issubdtype&#39;,
+ &#39;issubsctype&#39;,
+ &#39;iterable&#39;,
+ &#39;ix_&#39;,
+ &#39;kaiser&#39;,
+ &#39;kron&#39;,
+ &#39;ldexp&#39;,
+ &#39;left_shift&#39;,
+ &#39;less&#39;,
+ &#39;less_equal&#39;,
+ &#39;lexsort&#39;,
+ &#39;lib&#39;,
+ &#39;linalg&#39;,
+ &#39;linspace&#39;,
+ &#39;little_endian&#39;,
+ &#39;load&#39;,
+ &#39;loads&#39;,
+ &#39;loadtxt&#39;,
+ &#39;log&#39;,
+ &#39;log10&#39;,
+ &#39;log1p&#39;,
+ &#39;log2&#39;,
+ &#39;logaddexp&#39;,
+ &#39;logaddexp2&#39;,
+ &#39;logical_and&#39;,
+ &#39;logical_not&#39;,
+ &#39;logical_or&#39;,
+ &#39;logical_xor&#39;,
+ &#39;logspace&#39;,
+ &#39;long&#39;,
+ &#39;longcomplex&#39;,
+ &#39;longdouble&#39;,
+ &#39;longfloat&#39;,
+ &#39;longlong&#39;,
+ &#39;lookfor&#39;,
+ &#39;ma&#39;,
+ &#39;mafromtxt&#39;,
+ &#39;mask_indices&#39;,
+ &#39;mat&#39;,
+ &#39;math&#39;,
+ &#39;matmul&#39;,
+ &#39;matrix&#39;,
+ &#39;matrixlib&#39;,
+ &#39;max&#39;,
+ &#39;maximum&#39;,
+ &#39;maximum_sctype&#39;,
+ &#39;may_share_memory&#39;,
+ &#39;mean&#39;,
+ &#39;median&#39;,
+ &#39;memmap&#39;,
+ &#39;meshgrid&#39;,
+ &#39;mgrid&#39;,
+ &#39;min&#39;,
+ &#39;min_scalar_type&#39;,
+ &#39;minimum&#39;,
+ &#39;mintypecode&#39;,
+ &#39;mirr&#39;,
+ &#39;mod&#39;,
+ &#39;modf&#39;,
+ &#39;moveaxis&#39;,
+ &#39;msort&#39;,
+ &#39;multiply&#39;,
+ &#39;nan&#39;,
+ &#39;nan_to_num&#39;,
+ &#39;nanargmax&#39;,
+ &#39;nanargmin&#39;,
+ &#39;nancumprod&#39;,
+ &#39;nancumsum&#39;,
+ &#39;nanmax&#39;,
+ &#39;nanmean&#39;,
+ &#39;nanmedian&#39;,
+ &#39;nanmin&#39;,
+ &#39;nanpercentile&#39;,
+ &#39;nanprod&#39;,
+ &#39;nanstd&#39;,
+ &#39;nansum&#39;,
+ &#39;nanvar&#39;,
+ &#39;nbytes&#39;,
+ &#39;ndarray&#39;,
+ &#39;ndenumerate&#39;,
+ &#39;ndfromtxt&#39;,
+ &#39;ndim&#39;,
+ &#39;ndindex&#39;,
+ &#39;nditer&#39;,
+ &#39;negative&#39;,
+ &#39;nested_iters&#39;,
+ &#39;newaxis&#39;,
+ &#39;nextafter&#39;,
+ &#39;nonzero&#39;,
+ &#39;not_equal&#39;,
+ &#39;nper&#39;,
+ &#39;npv&#39;,
+ &#39;numarray&#39;,
+ &#39;number&#39;,
+ &#39;obj2sctype&#39;,
+ &#39;object&#39;,
+ &#39;object0&#39;,
+ &#39;object_&#39;,
+ &#39;ogrid&#39;,
+ &#39;oldnumeric&#39;,
+ &#39;ones&#39;,
+ &#39;ones_like&#39;,
+ &#39;outer&#39;,
+ &#39;packbits&#39;,
+ &#39;pad&#39;,
+ &#39;partition&#39;,
+ &#39;percentile&#39;,
+ &#39;pi&#39;,
+ &#39;piecewise&#39;,
+ &#39;pkgload&#39;,
+ &#39;place&#39;,
+ &#39;pmt&#39;,
+ &#39;poly&#39;,
+ &#39;poly1d&#39;,
+ &#39;polyadd&#39;,
+ &#39;polyder&#39;,
+ &#39;polydiv&#39;,
+ &#39;polyfit&#39;,
+ &#39;polyint&#39;,
+ &#39;polymul&#39;,
+ &#39;polynomial&#39;,
+ &#39;polysub&#39;,
+ &#39;polyval&#39;,
+ &#39;positive&#39;,
+ &#39;power&#39;,
+ &#39;ppmt&#39;,
+ &#39;print_function&#39;,
+ &#39;prod&#39;,
+ &#39;product&#39;,
+ &#39;promote_types&#39;,
+ &#39;ptp&#39;,
+ &#39;put&#39;,
+ &#39;putmask&#39;,
+ &#39;pv&#39;,
+ &#39;r_&#39;,
+ &#39;rad2deg&#39;,
+ &#39;radians&#39;,
+ &#39;random&#39;,
+ &#39;rank&#39;,
+ &#39;rate&#39;,
+ &#39;ravel&#39;,
+ &#39;ravel_multi_index&#39;,
+ &#39;real&#39;,
+ &#39;real_if_close&#39;,
+ &#39;rec&#39;,
+ &#39;recarray&#39;,
+ &#39;recfromcsv&#39;,
+ &#39;recfromtxt&#39;,
+ &#39;reciprocal&#39;,
+ &#39;record&#39;,
+ &#39;remainder&#39;,
+ &#39;repeat&#39;,
+ &#39;require&#39;,
+ &#39;reshape&#39;,
+ &#39;resize&#39;,
+ &#39;result_type&#39;,
+ &#39;right_shift&#39;,
+ &#39;rint&#39;,
+ &#39;roll&#39;,
+ &#39;rollaxis&#39;,
+ &#39;roots&#39;,
+ &#39;rot90&#39;,
+ &#39;round&#39;,
+ &#39;round_&#39;,
+ &#39;row_stack&#39;,
+ &#39;s_&#39;,
+ &#39;safe_eval&#39;,
+ &#39;save&#39;,
+ &#39;savetxt&#39;,
+ &#39;savez&#39;,
+ &#39;savez_compressed&#39;,
+ &#39;sctype2char&#39;,
+ &#39;sctypeDict&#39;,
+ &#39;sctypeNA&#39;,
+ &#39;sctypes&#39;,
+ &#39;searchsorted&#39;,
+ &#39;select&#39;,
+ &#39;set_numeric_ops&#39;,
+ &#39;set_printoptions&#39;,
+ &#39;set_string_function&#39;,
+ &#39;setbufsize&#39;,
+ &#39;setdiff1d&#39;,
+ &#39;seterr&#39;,
+ &#39;seterrcall&#39;,
+ &#39;seterrobj&#39;,
+ &#39;setxor1d&#39;,
+ &#39;shape&#39;,
+ &#39;shares_memory&#39;,
+ &#39;short&#39;,
+ &#39;show_config&#39;,
+ &#39;sign&#39;,
+ &#39;signbit&#39;,
+ &#39;signedinteger&#39;,
+ &#39;sin&#39;,
+ &#39;sinc&#39;,
+ &#39;single&#39;,
+ &#39;singlecomplex&#39;,
+ &#39;sinh&#39;,
+ &#39;size&#39;,
+ &#39;sometrue&#39;,
+ &#39;sort&#39;,
+ &#39;sort_complex&#39;,
+ &#39;source&#39;,
+ &#39;spacing&#39;,
+ &#39;split&#39;,
+ &#39;sqrt&#39;,
+ &#39;square&#39;,
+ &#39;squeeze&#39;,
+ &#39;stack&#39;,
+ &#39;std&#39;,
+ &#39;str&#39;,
+ &#39;str0&#39;,
+ &#39;str_&#39;,
+ &#39;string_&#39;,
+ &#39;subtract&#39;,
+ &#39;sum&#39;,
+ &#39;swapaxes&#39;,
+ &#39;sys&#39;,
+ &#39;take&#39;,
+ &#39;tan&#39;,
+ &#39;tanh&#39;,
+ &#39;tensordot&#39;,
+ &#39;test&#39;,
+ &#39;testing&#39;,
+ &#39;tile&#39;,
+ &#39;timedelta64&#39;,
+ &#39;trace&#39;,
+ &#39;tracemalloc_domain&#39;,
+ &#39;transpose&#39;,
+ &#39;trapz&#39;,
+ &#39;tri&#39;,
+ &#39;tril&#39;,
+ &#39;tril_indices&#39;,
+ &#39;tril_indices_from&#39;,
+ &#39;trim_zeros&#39;,
+ &#39;triu&#39;,
+ &#39;triu_indices&#39;,
+ &#39;triu_indices_from&#39;,
+ &#39;true_divide&#39;,
+ &#39;trunc&#39;,
+ &#39;typeDict&#39;,
+ &#39;typeNA&#39;,
+ &#39;typecodes&#39;,
+ &#39;typename&#39;,
+ &#39;ubyte&#39;,
+ &#39;ufunc&#39;,
+ &#39;uint&#39;,
+ &#39;uint0&#39;,
+ &#39;uint16&#39;,
+ &#39;uint32&#39;,
+ &#39;uint64&#39;,
+ &#39;uint8&#39;,
+ &#39;uintc&#39;,
+ &#39;uintp&#39;,
+ &#39;ulonglong&#39;,
+ &#39;unicode&#39;,
+ &#39;unicode_&#39;,
+ &#39;union1d&#39;,
+ &#39;unique&#39;,
+ &#39;unpackbits&#39;,
+ &#39;unravel_index&#39;,
+ &#39;unsignedinteger&#39;,
+ &#39;unwrap&#39;,
+ &#39;ushort&#39;,
+ &#39;vander&#39;,
+ &#39;var&#39;,
+ &#39;vdot&#39;,
+ &#39;vectorize&#39;,
+ &#39;version&#39;,
+ &#39;void&#39;,
+ &#39;void0&#39;,
+ &#39;vsplit&#39;,
+ &#39;vstack&#39;,
+ &#39;warnings&#39;,
+ &#39;where&#39;,
+ &#39;who&#39;,
+ &#39;zeros&#39;,
+ &#39;zeros_like&#39;]
+</pre></div>
+</div>
+</div>
+<div class="section" id="A-Motivating-Example">
+<h3>A Motivating Example<a class="headerlink" href="#A-Motivating-Example" title="Permalink to this headline">¶</a></h3>
+<p>A common task is to evaluate <span class="math">\(f(x)\)</span> at <em>discrete points</em> for
+tabulating or plotting.</p>
+<p><strong>Example</strong>: evaluate <span class="math">\(f(x) = \sin(x)\)</span> at <span class="math">\(x \in [0, 1]\)</span>
+using 10 evenly-spaced points.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>0.8414709848078965
-</pre></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-4-d069113fb511&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">2</span>
+<span class="ansi-red-fg">    f =</span>
+        ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>0.8414709848078965
-</pre></div>
-</div>
-</div>
-<div class="section" id="A-Motivating-Example">
-<h3>A Motivating Example<a class="headerlink" href="#A-Motivating-Example" title="Permalink to this headline">¶</a></h3>
-<p>Common task: evaluate a mathematical function <code class="docutils literal"><span class="pre">f(x)</span></code> at <em>discrete
-points</em>.</p>
-<p>Specific case: evaluate <span class="math">\(f(x) = \sin(x)\)</span> at <span class="math">\(x \in [0, 1]\)</span>
-using 10 evenly-spaced points.</p>
-<p>Easy using the function <code class="docutils literal"><span class="pre">np.linspace</span></code> as follows:</p>
-<div class="nbinput docutils container">
+<p>Why not <code class="docutils literal"><span class="pre">math.sin(x)</span></code>?</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">x</span> <span class="c1"># remember, a variable all by itself as input prints its value as output</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.        ,  0.11111111,  0.22222222,  0.33333333,  0.44444444,
-        0.55555556,  0.66666667,  0.77777778,  0.88888889,  1.        ])
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">y</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.        ,  0.11088263,  0.22039774,  0.3271947 ,  0.42995636,
-        0.52741539,  0.6183698 ,  0.70169788,  0.77637192,  0.84147098])
-</pre></div>
-</div>
-</div>
-<p>Why not <code class="docutils literal"><span class="pre">math.sin(x)</span></code>?</p>
-</div>
-<div class="section" id="Creating-and-Manipulating-1-D-Arrays">
-<h3>Creating and Manipulating 1-D Arrays<a class="headerlink" href="#Creating-and-Manipulating-1-D-Arrays" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Summary-of-Creating-and-Manipulating-1-D-Arrays">
+<h3>Summary of Creating and Manipulating 1-D Arrays<a class="headerlink" href="#Summary-of-Creating-and-Manipulating-1-D-Arrays" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="21%" />
@@ -416,39 +993,101 @@ using 10 evenly-spaced points.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Examples…</strong></p>
-<p>NumPy arrays support <strong>vectorized</strong> operations:</p>
+<p>What’s the difference between <code class="docutils literal"><span class="pre">linspace</span></code> and <code class="docutils literal"><span class="pre">arange</span></code>?</p>
+<p>NumPy arrays support <strong>vectorized</strong> arithmetic operations. For those who
+speak MATLAB®, that means</p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">];</span> <span class="c">% define two arrays</span>
+<span class="n">b</span> <span class="p">=</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">];</span> <span class="c">% with 3 elements</span>
+<span class="n">s</span> <span class="p">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>   <span class="c">% add them</span>
+<span class="n">p</span> <span class="p">=</span> <span class="n">a</span> <span class="o">.*</span> <span class="n">b</span><span class="p">;</span>  <span class="c">% multiple element by element</span>
+<span class="n">q</span> <span class="p">=</span> <span class="n">a</span> <span class="o">./</span> <span class="n">b</span><span class="p">;</span>  <span class="c">% divide ...</span>
+<span class="nb">e</span> <span class="p">=</span> <span class="n">a</span> <span class="o">.^</span> <span class="n">b</span><span class="p">;</span>  <span class="c">% exponentiate ...</span>
+</pre></div>
+</div>
+<p>With NumPy, the same can be done via</p>
 <div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="c1"># define two arrays</span>
+<span class="n">b</span> <span class="o">=</span> <span class="c1"># with 3 elements</span>
+<span class="n">s</span> <span class="o">=</span> <span class="c1"># add them</span>
+<span class="n">p</span> <span class="o">=</span> <span class="c1"># multiple element by element</span>
+<span class="n">q</span> <span class="o">=</span> <span class="c1"># divide ...</span>
+<span class="n">e</span> <span class="o">=</span> <span class="c1"># exponentiate ...</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-4d49e3346d60&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    a = # define two arrays</span>
+                           ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Inspecting-Arrays-and-Their-Elements">
+<h3>Inspecting Arrays and Their Elements<a class="headerlink" href="#Inspecting-Arrays-and-Their-Elements" title="Permalink to this headline">¶</a></h3>
+<p>Access elements of an array (called <em>indexing</em>) using <code class="docutils literal"><span class="pre">[]</span></code> (square
+“brackets).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">44</span><span class="p">])</span>
+<span class="c1"># how to get 33?  44?</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span>
-<span class="n">c</span>
+<span></span><span class="c1"># how to set 33 to 99?</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 2,  6, 12])
-</pre></div>
-</div>
-</div>
+<p>We can also determine an array’s length (or, more generically, size):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span>
-<span class="n">d</span>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">size</span>
+<span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
 </pre></div>
 </div>
 </div>
@@ -458,153 +1097,11 @@ using 10 evenly-spaced points.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([2, 4, 6])
+<span></span>(4,)
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Inspecting-Arrays-and-Their-Elements">
-<h3>Inspecting Arrays and Their Elements<a class="headerlink" href="#Inspecting-Arrays-and-Their-Elements" title="Permalink to this headline">¶</a></h3>
-<p>Access elements of an array (called <em>indexing</em>) using <code class="docutils literal"><span class="pre">[]</span></code>:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>2
-
-
-
-
-
-**Warning**: Numbering starts with zero in Python
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>6
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>6
-
-
-
-
-
-**Note**: Access the :math:`i`\ th to last element of ``array`` via
-``array[-(1+i)]``.
-</pre></div>
-</div>
-</div>
-<p>We can change values, too:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="n">d</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([99,  4,  6])
-</pre></div>
-</div>
-</div>
-<p>We can also determine an array’s length (or, more generically, size):</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="n">d</span><span class="o">.</span><span class="n">size</span>
-<span class="n">d</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>3
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>3
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(3,)
-</pre></div>
-</div>
-</div>
-<p>What else do <code class="docutils literal"><span class="pre">ndarray</span></code> variables have?</p>
+<p>What else do <code class="docutils literal"><span class="pre">ndarray</span></code> (i.e., NumPy array) variables have?</p>
 </div>
 </div>
 <div class="section" id="Diving-into-pyplot">
@@ -612,331 +1109,39 @@ using 10 evenly-spaced points.</p>
 <p>We have an array <code class="docutils literal"><span class="pre">x</span></code> and the array <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">np.sin(x)</span></code>. How to plot?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-
-
-
-
-<span class="o">**</span><span class="n">Note</span><span class="o">**</span><span class="p">:</span> <span class="n">Just</span> <span class="n">like</span> <span class="n">NumPy</span> <span class="ow">is</span> <span class="n">often</span> <span class="n">shorted</span> <span class="n">to</span> <span class="sb">``</span><span class="n">np</span><span class="sb">``</span><span class="p">,</span>
-<span class="sb">``</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="sb">``</span> <span class="ow">is</span> <span class="n">often</span> <span class="n">used</span> <span class="k">as</span> <span class="sb">``</span><span class="n">plt</span><span class="sb">``</span><span class="o">.</span>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span> <span class="c1"># just like np is used for NumPy</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="The-Simplest-Plot">
-<h3>The Simplest Plot<a class="headerlink" href="#The-Simplest-Plot" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># x and y were defined above</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&lt;matplotlib.lines.Line2D at 0x7f954064d278&gt;]
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_3_Slides_35_0.png" src="../_images/lectures_ME400_Lecture_3_Slides_35_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Multiple-Curves-and-Best-Practices">
-<h3>Multiple Curves and Best Practices<a class="headerlink" href="#Multiple-Curves-and-Best-Practices" title="Permalink to this headline">¶</a></h3>
-<p>What about multiple curves? Let’s define a second curved equal to
-<code class="docutils literal"><span class="pre">np.cos</span></code> evaluated at <code class="docutils literal"><span class="pre">x</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="s1">&#39;r--x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;sin(x)&#39;</span><span class="p">,</span> <span class="s1">&#39;cos(x)&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&lt;matplotlib.lines.Line2D at 0x7f9540598278&gt;,
- &lt;matplotlib.lines.Line2D at 0x7f9540598400&gt;]
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x7f95406050b8&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x7f954067cf98&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_3_Slides_38_3.png" src="../_images/lectures_ME400_Lecture_3_Slides_38_3.png" />
-<p><strong>Note</strong>: All plots should include appropriate axis labels and
-legends.</p>
-</div>
-</div>
-</div>
-<div class="section" id="Basic-Matplotlib-Colors">
-<h3>Basic Matplotlib Colors<a class="headerlink" href="#Basic-Matplotlib-Colors" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="48%" />
-<col width="52%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">symbol</th>
-<th class="head">color</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">k</span></code></td>
-<td>black</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">b</span></code></td>
-<td>blue</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">r</span></code></td>
-<td>red</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">g</span></code></td>
-<td>green</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">c</span></code></td>
-<td>cyan</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">m</span></code></td>
-<td>magenta</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="Basic-Matplotlib-Line-Styles">
-<h3>Basic Matplotlib Line Styles<a class="headerlink" href="#Basic-Matplotlib-Line-Styles" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="43%" />
-<col width="57%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">symbol</th>
-<th class="head">style</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">-</span></code></td>
-<td>solid</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">--</span></code></td>
-<td>dash-dash</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">-.</span></code></td>
-<td>dash-dot</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">:</span></code></td>
-<td>dot-dot</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="Basic-Matplotlib-Markers">
-<h3>Basic Matplotlib Markers<a class="headerlink" href="#Basic-Matplotlib-Markers" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="28%" />
-<col width="72%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">symbol</th>
-<th class="head">marker</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">o</span></code></td>
-<td>circle</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">x</span></code></td>
-<td>x</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">^</span></code></td>
-<td>triangle pointed up</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&gt;</span></code></td>
-<td>triangle pointed right</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">s</span></code></td>
-<td>square</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">h</span></code></td>
-<td>hexagon</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p><strong>Good Practice</strong>: All plots should use <strong>axis labels</strong>, <strong>legends</strong>,
+<strong>line styles</strong>, and <strong>line colors</strong> as needed. This is a <strong>rule</strong> for
+all plots you produce in this class.</p>
 </div>
 <div class="section" id="Data-Input-and-Output-via-NumPy">
 <h2>Data Input and Output via NumPy<a class="headerlink" href="#Data-Input-and-Output-via-NumPy" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span>   <span class="n">vel</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="p">)</span>  <span class="n">acc</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="mf">0.00000000</span> <span class="mf">1.00000000</span> <span class="mf">0.00000000</span>
-<span class="mf">0.22222222</span> <span class="mf">1.24884887</span> <span class="mf">0.01097394</span>
-<span class="mf">0.44444444</span> <span class="mf">1.55962350</span> <span class="mf">0.08779150</span>
-<span class="mf">0.66666667</span> <span class="mf">1.94773404</span> <span class="mf">0.29629630</span>
-<span class="mf">0.88888889</span> <span class="mf">2.43242545</span> <span class="mf">0.70233196</span>
-<span class="mf">1.11111111</span> <span class="mf">3.03773178</span> <span class="mf">1.37174211</span>
-<span class="mf">1.33333333</span> <span class="mf">3.79366789</span> <span class="mf">2.37037037</span>
-<span class="mf">1.55555556</span> <span class="mf">4.73771786</span> <span class="mf">3.76406036</span>
-<span class="mf">1.77777778</span> <span class="mf">5.91669359</span> <span class="mf">5.61865569</span>
-<span class="mf">2.00000000</span> <span class="mf">7.38905610</span> <span class="mf">8.00000000</span>
-</pre></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">data</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 0.        ,  1.        ,  0.        ],
-       [ 0.22222222,  1.24884887,  0.01097394],
-       [ 0.44444444,  1.5596235 ,  0.0877915 ],
-       [ 0.66666667,  1.94773404,  0.2962963 ],
-       [ 0.88888889,  2.43242545,  0.70233196],
-       [ 1.11111111,  3.03773178,  1.37174211],
-       [ 1.33333333,  3.79366789,  2.37037037],
-       [ 1.55555556,  4.73771786,  3.76406036],
-       [ 1.77777778,  5.91669359,  5.61865569],
-       [ 2.        ,  7.3890561 ,  8.        ]])
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(10, 3)
-</pre></div>
-</div>
-</div>
-<p>What if we want <code class="docutils literal"><span class="pre">t</span></code>, <code class="docutils literal"><span class="pre">v</span></code>, and <code class="docutils literal"><span class="pre">a</span></code> separately?</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">t</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,
-        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])
-
-
-
-
-
-**Note**: If data is numerical and stored in a simple, collimated
-format, use ``np.loadtxt``
-</pre></div>
-</div>
-</div>
-<p>What about saving data to text files? The simplest way:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;some_data.txt&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<p>The two key functions: - <code class="docutils literal"><span class="pre">np.loadtxt(input_file,</span> <span class="pre">...)</span></code> -
+<code class="docutils literal"><span class="pre">np.loadtxt(output_file,</span> <span class="pre">data,</span> <span class="pre">...)</span></code></p>
+<p>Here, <code class="docutils literal"><span class="pre">input_file</span></code> and <code class="docutils literal"><span class="pre">output_file</span></code> are <code class="docutils literal"><span class="pre">str</span></code> names, and <code class="docutils literal"><span class="pre">data</span></code>
+is the data to write (usually a <code class="docutils literal"><span class="pre">ndarray</span></code>). Both functions have
+<em>optional arguments</em>.</p>
+<p><strong>Pro Tip</strong>: If data is numerical and stored in a simple, collimated
+format, use <code class="docutils literal"><span class="pre">np.loadtxt</span></code> and <code class="docutils literal"><span class="pre">np.savetxt</span></code>.</p>
 </div>
 <div class="section" id="Recap">
 <h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
@@ -966,18 +1171,11 @@ format, use ``np.loadtxt``
 </li>
 <li><a class="reference internal" href="#NumPy-and-One-Dimensional-Arrays">NumPy and One-Dimensional Arrays</a><ul>
 <li><a class="reference internal" href="#A-Motivating-Example">A Motivating Example</a></li>
-<li><a class="reference internal" href="#Creating-and-Manipulating-1-D-Arrays">Creating and Manipulating 1-D Arrays</a></li>
+<li><a class="reference internal" href="#Summary-of-Creating-and-Manipulating-1-D-Arrays">Summary of Creating and Manipulating 1-D Arrays</a></li>
 <li><a class="reference internal" href="#Inspecting-Arrays-and-Their-Elements">Inspecting Arrays and Their Elements</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Diving-into-pyplot">Diving into <code class="docutils literal"><span class="pre">pyplot</span></code></a><ul>
-<li><a class="reference internal" href="#The-Simplest-Plot">The Simplest Plot</a></li>
-<li><a class="reference internal" href="#Multiple-Curves-and-Best-Practices">Multiple Curves and Best Practices</a></li>
-<li><a class="reference internal" href="#Basic-Matplotlib-Colors">Basic Matplotlib Colors</a></li>
-<li><a class="reference internal" href="#Basic-Matplotlib-Line-Styles">Basic Matplotlib Line Styles</a></li>
-<li><a class="reference internal" href="#Basic-Matplotlib-Markers">Basic Matplotlib Markers</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Diving-into-pyplot">Diving into <code class="docutils literal"><span class="pre">pyplot</span></code></a></li>
 <li><a class="reference internal" href="#Data-Input-and-Output-via-NumPy">Data Input and Output via NumPy</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
@@ -1015,7 +1213,7 @@ format, use ``np.loadtxt``
       &copy;2017, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

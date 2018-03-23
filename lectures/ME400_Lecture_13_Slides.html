@@ -5,12 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Lecture 13 - More on Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
-    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -24,7 +21,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -206,8 +203,6 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-13---More-on-Functions">
 <h1>Lecture 13 - More on Functions<a class="headerlink" href="#Lecture-13---More-on-Functions" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference internal" href="ME400_Lecture_12.html"><span class="doc">Lecture 12</span></a>, the basics of defining
 functions were presented. In this lecture, more advanced features of
 function definitions are presented, including the use of the special
@@ -217,22 +212,17 @@ interesting (and possibly suprising) applications of functions are
 considered, which include use of functions as arguments to other
 functions and the use of functions that call themselves (i.e.,
 <em>recursion</em>).</p>
-<p>Note that much of the content of this lecture is focused primarily on
-features of functions specific to Python that provide a lot of
-flexibility. For many students, these features are likely not needed for
-routine programming, but an awareness of these features is useful when
-understanding the code of others.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>Define a function using <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>.</li>
-<li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function.</li>
+<li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function (see the reading)</li>
 <li>Define a recursive function.</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">*args</span></code></li>
 <li><code class="docutils literal"><span class="pre">**kwargs</span></code></li>
@@ -243,142 +233,58 @@ understanding the code of others.</p>
 <li>recursive function</li>
 <li>recursive sequence</li>
 </ul>
-</div>
-</div>
 <div class="section" id="*args-and-**kwargs">
-<h2><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code><a class="headerlink" href="#*args-and-**kwargs" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code><a class="headerlink" href="#*args-and-**kwargs" title="Permalink to this headline">¶</a></h3>
 <p>What on earth are <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>? Before moving along, let’s
 look at a function introduced back in <a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lecture
 3</span></a>: <code class="docutils literal"><span class="pre">plt.plot</span></code>.</p>
-<p>In <a class="reference internal" href="ME400_Lecture_12.html"><span class="doc">Lecture 12</span></a>, functions were defined with
-a pretty specific structure:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some_function</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span> <span class="o">=</span> <span class="n">default2</span><span class="p">,</span> <span class="n">arg3</span> <span class="o">=</span> <span class="n">default3</span><span class="p">):</span>
-    <span class="c1"># do stuff and maybe return a value</span>
-    <span class="c1"># (but don&#39;t have only comments like these!)</span>
-</pre></div>
-</div>
-<p>Such a function has arguments explicitly listed, and sometimes, they are
-given default values.</p>
 <p>Can we learn <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> by example?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">:</span>
+<span></span><span class="k">def</span> <span class="nf">demo_args</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span></span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(1, 2, 3)
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(1,)
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">foo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(1, 2, 3, 4, 5, 6, 7)
-</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">goo</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">demo_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">goo</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-9-9f6a052e5b7f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>goo<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">TypeError</span>: goo() takes 0 positional arguments but 3 were given
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">goo</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-{&#39;a&#39;: 1, &#39;b&#39;: 2}
-</pre></div></div>
 </div>
 <div class="section" id="Some-Conclusions:">
-<h3>Some Conclusions:<a class="headerlink" href="#Some-Conclusions:" title="Permalink to this headline">¶</a></h3>
+<h2>Some Conclusions:<a class="headerlink" href="#Some-Conclusions:" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><code class="docutils literal"><span class="pre">*args</span></code> packages all <strong>positional unnamed) arguments</strong> into a
 <code class="docutils literal"><span class="pre">tuple</span></code></li>
@@ -387,258 +293,28 @@ given default values.</p>
 <li>All positional arguments must come before keyword arguments</li>
 <li><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> help make functions super flexible</li>
 </ol>
-<p>And back to <code class="docutils literal"><span class="pre">plt.plot</span></code>:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>  <span class="s1">&#39;-*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$x^2$&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;--h&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$x^3$&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_13_Slides_15_0.png" src="../_images/lectures_ME400_Lecture_13_Slides_15_0.png" />
-</div>
-</div>
-<p><strong>Exercise</strong>: Define a function <code class="docutils literal"><span class="pre">are_they_bool(*args,</span> <span class="pre">**kwargs)</span></code> that
+<p><strong>Exercise</strong>: Define a function <code class="docutils literal"><span class="pre">true_or_false(*args,</span> <span class="pre">**kwargs)</span></code> that
 returns a <code class="docutils literal"><span class="pre">list</span></code> whose length is equal to the number of positional
 arguments passed and a <code class="docutils literal"><span class="pre">dict</span></code> whose length is equal to the number of
 keyword arguments passed. The <code class="docutils literal"><span class="pre">i</span></code>th element of this <code class="docutils literal"><span class="pre">list</span></code> is
 <code class="docutils literal"><span class="pre">True</span></code> if the <code class="docutils literal"><span class="pre">i</span></code>th argument is (logically equal to) <code class="docutils literal"><span class="pre">True</span></code> and
 is otherwise <code class="docutils literal"><span class="pre">False</span></code>. The <code class="docutils literal"><span class="pre">dict</span></code> should have keys equal to the named
 arguments and similar <code class="docutils literal"><span class="pre">True</span></code>/<code class="docutils literal"><span class="pre">False</span></code> values.</p>
-</div>
-</div>
-<div class="section" id="Anonymous-Functions">
-<h2>Anonymous Functions<a class="headerlink" href="#Anonymous-Functions" title="Permalink to this headline">¶</a></h2>
-<p><strong>Warning</strong> This topic confuses the heck out of some students—pay
-attention and ask questions.</p>
-<p>So far, functions defined using <code class="docutils literal"><span class="pre">def</span></code>, but one can define functions
-with <code class="docutils literal"><span class="pre">lambda</span></code>, too.</p>
-<p>A simple example: squaring a number <code class="docutils literal"><span class="pre">x</span></code></p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">square_it</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
-<span class="n">square_it</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span></span><span class="k">def</span> <span class="nf">true_or_false</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">pass</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>4
-</pre></div>
-</div>
-</div>
-<p>The <code class="docutils literal"><span class="pre">lambda</span></code> approach:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">square_it_lambda</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">square_it_lambda</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>4
-</pre></div>
-</div>
-</div>
-<p>Whence “anonymous?”</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">square_it</span><span class="p">,</span> <span class="n">square_it_lambda</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(&lt;function __main__.square_it&gt;, &lt;function __main__.&lt;lambda&gt;&gt;)
-</pre></div>
-</div>
-</div>
-<p>It <strong>has no name</strong> and can be <strong>defined and used in place</strong></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>4
-</pre></div>
-</div>
-</div>
-<p>Strange syntax, <strong>never essential</strong>, but often the <strong>clearest
-(cleanest?) way to solve a problem</strong>.</p>
-<p><strong>Motivating example</strong>: Understanding trends in grades.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [38]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="n">grades</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;anon_grades.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;number of students = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grades</span><span class="p">)))</span>
-<span class="k">print</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;How&#39;s Student 23 doing?&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Student 23&#39;</span><span class="p">]:</span>
-    <span class="k">if</span> <span class="s1">&#39;Final&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Student 23&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-number of students = 120
-
-How&#39;s Student 23 doing?
-Pre-Lecture Activities Final Score : 100.0
-Homework Final Score : 100.0
-Laboratories Final Score : 97.5
-Examinations Final Score : 93.75
-Final Score : 96.0
-</pre></div></div>
-</div>
-<p>Common question: which students did <strong>better</strong> on the <strong>exam</strong> than on
-<strong>homework</strong>?</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [40]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># Approach 1: A loop to build a list</span>
-<span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">grades</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">grades</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;Examinations Final Score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">grades</span><span class="p">[</span><span class="n">student</span><span class="p">][</span><span class="s1">&#39;Homework Final Score&#39;</span><span class="p">]:</span>
-        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">student</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[&#39;Student 4&#39;, &#39;Student 13&#39;, &#39;Student 19&#39;, &#39;Student 22&#39;, &#39;Student 24&#39;, &#39;Student 25&#39;, &#39;Student 33&#39;, &#39;Student 34&#39;, &#39;Student 45&#39;, &#39;Student 46&#39;, &#39;Student 47&#39;, &#39;Student 55&#39;, &#39;Student 61&#39;, &#39;Student 64&#39;, &#39;Student 70&#39;, &#39;Student 74&#39;, &#39;Student 77&#39;, &#39;Student 78&#39;, &#39;Student 79&#39;, &#39;Student 92&#39;, &#39;Student 95&#39;, &#39;Student 100&#39;, &#39;Student 110&#39;]
-23
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [42]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># Approach 2: the filter function</span>
-<span class="n">L</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">grades</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;Examinations Final Score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">grades</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;Homework Final Score&#39;</span><span class="p">],</span> <span class="n">grades</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[&#39;Student 4&#39;, &#39;Student 13&#39;, &#39;Student 19&#39;, &#39;Student 22&#39;, &#39;Student 24&#39;, &#39;Student 25&#39;, &#39;Student 33&#39;, &#39;Student 34&#39;, &#39;Student 45&#39;, &#39;Student 46&#39;, &#39;Student 47&#39;, &#39;Student 55&#39;, &#39;Student 61&#39;, &#39;Student 64&#39;, &#39;Student 70&#39;, &#39;Student 74&#39;, &#39;Student 77&#39;, &#39;Student 78&#39;, &#39;Student 79&#39;, &#39;Student 92&#39;, &#39;Student 95&#39;, &#39;Student 100&#39;, &#39;Student 110&#39;]
-23
-</pre></div></div>
-</div>
-<p><strong>Look carefully</strong>: <code class="docutils literal"><span class="pre">lambda</span></code> is defined usings <code class="docutils literal"><span class="pre">grades</span></code>!</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [54]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">L</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">grades</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;Examinations Final Score&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.7</span><span class="o">*</span><span class="n">grades</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;Homework Final Score&#39;</span><span class="p">],</span> <span class="n">grades</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
-<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">L</span><span class="p">:</span>
-    <span class="n">hw</span> <span class="o">=</span> <span class="n">grades</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;Homework Final Score&#39;</span><span class="p">]</span>
-    <span class="n">ex</span> <span class="o">=</span> <span class="n">grades</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;Examinations Final Score&#39;</span><span class="p">]</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{:10}  {:6.2f}  {:6.2f}  {:6.2f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">hw</span><span class="o">/</span><span class="n">ex</span> <span class="k">if</span> <span class="n">ex</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Student 1    69.44   45.00    1.54
-Student 3    68.56   32.50    2.11
-Student 10  100.00   68.75    1.45
-Student 39   96.30   65.00    1.48
-Student 57  100.00   42.50    2.35
-Student 67   96.30   57.50    1.67
-Student 73   87.04   42.50    2.05
-Student 80   54.63    0.00     nan
-Student 90  100.00   65.00    1.54
-Student 97  100.00   68.75    1.45
-</pre></div></div>
-</div>
-<p><strong>Nice utility</strong>: given a nasty function <code class="docutils literal"><span class="pre">blah(x,</span> <span class="pre">y,</span> <span class="pre">z)</span></code> for which we
-need only vary <code class="docutils literal"><span class="pre">x</span></code> (with <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">2</span></code>), use lambda via
-<code class="docutils literal"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">blah(x,</span> <span class="pre">1,</span> <span class="pre">2)</span></code>.</p>
-<p>Not obviously a benefit now: just wait to integration, SymPy, <em>et
-cetera</em>!</p>
 </div>
 <div class="section" id="Recursive-Functions">
-<h2>Recursive Functions<a class="headerlink" href="#Recursive-Functions" title="Permalink to this headline">¶</a></h2>
+<h3>Recursive Functions<a class="headerlink" href="#Recursive-Functions" title="Permalink to this headline">¶</a></h3>
 <p>The topic of <strong>recursion</strong> is challenging, and recurssion can often (not
 always) be replaced by loops.</p>
 <p>A <strong>recursive process</strong> gives output (say, a particular value) at one
@@ -649,7 +325,7 @@ with <span class="math">\(a_0 = a_1 = 1\)</span></p>
 <p>The basic recursive function in Python:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [59]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -681,7 +357,7 @@ recursion is ending!
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[59]:
+<span></span>Out[4]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -697,44 +373,47 @@ recursion is ending!
 </div>
 <p>How would this stop? From <span class="math">\(n = 5\)</span>, to <span class="math">\(n = -10\)</span>, to
 <span class="math">\(n = -\infty\)</span>.</p>
+<p><strong>Example</strong>: Trace (by hand) the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="mf">2.</span>     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="mf">3.</span>         <span class="k">return</span> <span class="mi">1</span>
+<span class="mf">4.</span>     <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">foo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="mf">5.</span> <span class="n">foo</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
 <p><strong>Exercise</strong>: Fibonacci (in Python and using recursion).</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [61]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># again, we need a termination criterion.</span>
-        <span class="k">return</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">fibo_recursive</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">pass</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[61]:
+<span></span>In [6]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>8
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
 </pre></div>
 </div>
 </div>
 <p><strong>Exercise</strong>: Sum an array recursively.</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
 <li>Define a function using <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>.</li>
 <li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function.</li>
 <li>Define a recursive function.</li>
 </ul>
-<p>Grab exams in office hours (advising season, so may be a wait)!</p>
+</div>
 </div>
 </div>
 
@@ -747,18 +426,16 @@ recursion is ending!
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 13 - More on Functions</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#*args-and-**kwargs"><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#*args-and-**kwargs"><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code></a><ul>
-<li><a class="reference internal" href="#Some-Conclusions:">Some Conclusions:</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Anonymous-Functions">Anonymous Functions</a></li>
+<li><a class="reference internal" href="#Some-Conclusions:">Some Conclusions:</a><ul>
 <li><a class="reference internal" href="#Recursive-Functions">Recursive Functions</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -794,7 +471,7 @@ recursion is ending!
       &copy;2017, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

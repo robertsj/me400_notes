@@ -5,12 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Lecture 4 - More on NumPy Arrays: Slicing and np.linalg &#8212; ME 400 Course Notes Fall 2017 documentation</title>
-    
+    <title>Lecture 4 - More on NumPy Arrays &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -24,7 +21,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -204,8 +201,8 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-4---More-on-NumPy-Arrays:-Slicing-and-np.linalg">
-<h1>Lecture 4 - More on NumPy Arrays: Slicing and <code class="docutils literal"><span class="pre">np.linalg</span></code><a class="headerlink" href="#Lecture-4---More-on-NumPy-Arrays:-Slicing-and-np.linalg" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Lecture-4---More-on-NumPy-Arrays">
+<h1>Lecture 4 - More on NumPy Arrays<a class="headerlink" href="#Lecture-4---More-on-NumPy-Arrays" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In this lesson, we’ll continue our investigation started in <a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lesson
@@ -252,8 +249,8 @@ access multiple elements via <em>slicing</em>.</p>
 </div>
 </div>
 </div>
-<div class="section" id="Making-Two-Dimensional-Arrays">
-<h2>Making Two-Dimensional Arrays<a class="headerlink" href="#Making-Two-Dimensional-Arrays" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Making-and-Manipulating-Two-Dimensional-Arrays">
+<h2>Making and Manipulating Two-Dimensional Arrays<a class="headerlink" href="#Making-and-Manipulating-Two-Dimensional-Arrays" title="Permalink to this headline">¶</a></h2>
 <p>A lot of data lives in tabulated structures, e.g., the data from <a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lesson
 3</span></a> loaded in via <code class="docutils literal"><span class="pre">np.loadtxt</span></code>.</p>
 <p>We can make such two-dimensional arrays. Two easy ways are <code class="docutils literal"><span class="pre">np.ones</span></code>
@@ -265,676 +262,187 @@ and <code class="docutils literal"><span class="pre">np.zeros</span></code>:</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="c1"># Make a 2 by 2 array of ones</span>
 <span class="n">A</span>
+<span class="c1"># Make a 3 by 2 array of zeros</span>
+<span class="n">B</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[2]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 1.,  1.,  1.],
-       [ 1.,  1.,  1.],
-       [ 1.,  1.,  1.]])
-</pre></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-2-40ee95c977bf&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">import</span> numpy <span class="ansi-green-fg">as</span> np
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg"># Make a 2 by 2 array of ones</span>
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>A
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># Make a 3 by 2 array of zeros</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> B
+
+<span class="ansi-red-fg">NameError</span>: name &#39;A&#39; is not defined
+</pre></div></div>
 </div>
-</div>
+<p>For both, the single argument is the <code class="docutils literal"><span class="pre">shape</span></code> having the form
+<code class="docutils literal"><span class="pre">(number_rows,</span> <span class="pre">number_columns)</span></code>.</p>
+<p>Arrays can also be produced directly from data you enter. <strong>For
+example</strong>, make this array:</p>
+<div class="math">
+\[\begin{split}C = \left [ \begin{array}{cc}
+       1 &amp; 2 \\
+       3 &amp; 4 \\
+    \end{array} \right ] \, .\end{split}\]</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">B</span>
+<span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>   <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 0.,  0.],
-       [ 0.,  0.],
-       [ 0.,  0.]])
-</pre></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-3-fbffd96580fc&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>C <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>   <span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: Required argument &#39;object&#39; (pos 1) not found
+</pre></div></div>
 </div>
-</div>
-<p>For both, the single argument is the <code class="docutils literal"><span class="pre">shape</span></code> having the form
-<code class="docutils literal"><span class="pre">(number_rows,</span> <span class="pre">number_columns)</span></code></p>
-<p>Access and modify individual elements using <em>two</em> indices:</p>
-<div class="nbinput docutils container">
+<p>Elements are accessed and changed by using <em>two indices</em>. <strong>For
+example</strong>, get the 3 from</p>
+<div class="math">
+\[\begin{split}C = \left [ \begin{array}{cc}
+       1 &amp; 2 \\
+       3 &amp; 4 \\
+    \end{array} \right ] \, ,\end{split}\]</div>
+<p>and then change the 2 to a 99.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">B</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="n">B</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[  0.,   0.],
-       [  0.,   0.],
-       [ 99.,   0.]])
+<span></span>
 </pre></div>
 </div>
 </div>
 <p>Always, always, always, <strong>row</strong> then <strong>column</strong>. Often, we use <code class="docutils literal"><span class="pre">i</span></code>
-then <code class="docutils literal"><span class="pre">j</span></code> for <code class="docutils literal"><span class="pre">B[i,</span> <span class="pre">j]</span></code>.</p>
-<p>Two-dimensional arrays can also be made directly from existing data:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-              <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span> <span class="c1"># Splitting this line makes it easier to see.</span>
-<span class="n">C</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[1, 2],
-       [3, 4]])
-</pre></div>
-</div>
-</div>
-<p>but this is valid, too:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span> <span class="c1"># No splitting, so harder to read.</span>
-<span class="n">C</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[1, 2, 3],
-       [2, 5, 6]])
-</pre></div>
-</div>
-</div>
-<p>For reference, <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code> is a Python <code class="docutils literal"><span class="pre">list</span></code>, and therefore,
-<code class="docutils literal"><span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3,</span> <span class="pre">4]]</span></code> is a <code class="docutils literal"><span class="pre">list</span></code> whose elements are of type <code class="docutils literal"><span class="pre">list</span></code>.</p>
+then <code class="docutils literal"><span class="pre">j</span></code> for <code class="docutils literal"><span class="pre">C[i,</span> <span class="pre">j]</span></code>.</p>
 <p>Will the following work?</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="Two-dimensional-Functions">
-<h2>Two-dimensional Functions<a class="headerlink" href="#Two-dimensional-Functions" title="Permalink to this headline">¶</a></h2>
-<p>For 1-D, we have <code class="docutils literal"><span class="pre">np.linspace</span></code>. What about 2-D?</p>
-<p>Example:</p>
+<p>How about whole columns or rows? <strong>For example</strong>, get <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code> and
+<code class="docutils literal"><span class="pre">[99,</span> <span class="pre">4]</span></code> from</p>
 <div class="math">
-\[ \begin{align}\begin{aligned}  f(x, y) = (x + 2y + 7)^2 + (2x + y - 5)^2\\which is Booth's function (see https://www.sfu.ca/~ssurjano/booth.html)\end{aligned}\end{align} \]</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># use xx and yy to avoid overwriting x an y</span>
-<span class="n">xx</span>
-<span class="n">yy</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[-10.,  -5.,   0.,   5.,  10.],
-       [-10.,  -5.,   0.,   5.,  10.],
-       [-10.,  -5.,   0.,   5.,  10.],
-       [-10.,  -5.,   0.,   5.,  10.],
-       [-10.,  -5.,   0.,   5.,  10.]])
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[-10., -10., -10., -10., -10.],
-       [ -5.,  -5.,  -5.,  -5.,  -5.],
-       [  0.,   0.,   0.,   0.,   0.],
-       [  5.,   5.,   5.,   5.,   5.],
-       [ 10.,  10.,  10.,  10.,  10.]])
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">xx</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">yy</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">xx</span> <span class="o">+</span> <span class="n">yy</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">f</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 1754.,   949.,   394.,    89.,    34.],
-       [ 1069.,   464.,   109.,     4.,   149.],
-       [  634.,   229.,    74.,   169.,   514.],
-       [  449.,   244.,   289.,   584.,  1129.],
-       [  514.,   509.,   754.,  1249.,  1994.]])
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Visualizing-2-D-Arrays">
-<h2>Visualizing 2-D Arrays<a class="headerlink" href="#Visualizing-2-D-Arrays" title="Permalink to this headline">¶</a></h2>
-<p>We saw in <a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lesson 3</span></a> how easily one can
-produce a plot of 1-D data (in the form of NumPy arrays) by using
-Matplotlib. We can also visualize 2-D data. First, let’s give ourselves
-a somewhat richer set of data to visualize by increasing the number of
-<span class="math">\(x\)</span> and <span class="math">\(y\)</span> points we use to evaluate <span class="math">\(f(x, y)\)</span>.</p>
+\[\begin{split}C = \left [ \begin{array}{cc}
+       1 &amp; 99 \\
+       3 &amp; 4 \\
+    \end{array} \right ] \, ,\end{split}\]</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="c1"># note how two assignments can be written in one line</span>
-<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">xx</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">yy</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">xx</span> <span class="o">+</span> <span class="n">yy</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span></span>
 </pre></div>
-</div>
-</div>
-<p>Visualize 2-D functions via <strong>contour plots</strong>:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Booth&#39;s function via plt.contour&quot;</span><span class="p">)</span> <span class="c1"># Sometimes, a title is useful if no caption can be provided.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span> <span class="c1"># The colorbar function produces the color legend at the right.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.contour.QuadContourSet at 0x1124ab198&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x10f136cc0&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x10f151588&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x112476ba8&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.colorbar.Colorbar at 0x11252c7f0&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_4_Slides_24_5.png" src="../_images/lectures_ME400_Lecture_4_Slides_24_5.png" />
-</div>
-</div>
-<p>We can <em>fill</em> the contours:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Booth&#39;s function via plt.contourf&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.contour.QuadContourSet at 0x1129d4cf8&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x112a2f470&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x112591a58&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x1129a9358&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.colorbar.Colorbar at 0x112b2de48&gt;
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_4_Slides_26_5.png" src="../_images/lectures_ME400_Lecture_4_Slides_26_5.png" />
 </div>
 </div>
 </div>
 <div class="section" id="Slicing">
 <h2>Slicing<a class="headerlink" href="#Slicing" title="Permalink to this headline">¶</a></h2>
 <p>Slicing lets one access multiple array elements at a time.</p>
-<div class="section" id="Slicing-in-1-D">
-<h3>Slicing in 1-D<a class="headerlink" href="#Slicing-in-1-D" title="Permalink to this headline">¶</a></h3>
-<p>For 1-D, the syntax is:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">:</span><span class="n">stride</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>where</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">start</span></code> is index of the first element sliced (i.e., accessed)</li>
-<li><code class="docutils literal"><span class="pre">end</span></code> is 1 + index of the last element sliced</li>
-<li><code class="docutils literal"><span class="pre">stride</span></code> is the number of elements skipped between the sliced
-elements</li>
-</ul>
-<p><strong>Examples..</strong></p>
-<p>For slicing, remember that:</p>
-<ul class="simple">
-<li>the <code class="docutils literal"><span class="pre">start</span></code> defaults to 0</li>
-<li>the <code class="docutils literal"><span class="pre">end</span></code> defaults to <code class="docutils literal"><span class="pre">len(a)</span></code></li>
-<li>the <code class="docutils literal"><span class="pre">stride</span></code> defaults to 1</li>
-</ul>
-<p>so that, e.g., <code class="docutils literal"><span class="pre">a[:]</span></code> is equivalent to <code class="docutils literal"><span class="pre">a[0:len(a)]</span></code>,
-<code class="docutils literal"><span class="pre">a[:len(a):1]</span></code>, <code class="docutils literal"><span class="pre">a[::]</span></code>, etc.</p>
-</div>
-<div class="section" id="Slicing-in-2-D">
-<h3>Slicing in 2-D<a class="headerlink" href="#Slicing-in-2-D" title="Permalink to this headline">¶</a></h3>
-<p>Slicing applies equally to two-dimensional arrays. Consider the
-following code, in which the 1-D array of numbers <code class="docutils literal"><span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">\ldots</span> <span class="pre">24</span></code>
-is reshaped into a square 2-D array:</p>
+<p>For 1-D arrays, the syntax is <code class="docutils literal"><span class="pre">a[start:end:stride]</span></code>. <strong>Look
+familiar?</strong></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">D</span>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="c1"># get the value 1</span>
+<span class="n">a</span><span class="p">[</span><span class="err">???</span><span class="p">]</span>
+<span class="c1"># get the values 1, 2, and 3</span>
+<span class="n">a</span><span class="p">[</span><span class="err">???</span><span class="p">]</span>
+<span class="c1"># get the values 1, 3, and 5 (how many ways?)</span>
+<span class="n">a</span><span class="p">[</span><span class="err">???</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 0,  1,  2,  3,  4],
-       [ 5,  6,  7,  8,  9],
-       [10, 11, 12, 13, 14],
-       [15, 16, 17, 18, 19],
-       [20, 21, 22, 23, 24]])
-</pre></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-4-227e1afb5243&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">3</span>
+<span class="ansi-red-fg">    a[???]</span>
+      ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
 </div>
-</div>
-<p>Getting an element:</p>
+<p>Slicing applies equally to two-dimensional arrays but is done for each
+direction <em>independently</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">D</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>13
-</pre></div>
-</div>
-</div>
-<p>Getting a row:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
-<span class="n">D</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([5, 6, 7, 8, 9])
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([5, 6, 7, 8, 9])
-</pre></div>
-</div>
-</div>
-<p>Getting a column:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">D</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 2,  7, 12, 17, 22])
-</pre></div>
-</div>
-</div>
-<p>The same syntax used in 1-D, i.e., <code class="docutils literal"><span class="pre">start:end:stride</span></code> works for the
-row and column indices of a 2-D array <em>independently</em>.</p>
-<p><strong>Examples..</strong></p>
-</div>
-</div>
-<div class="section" id="Matrix-Vector-Multiplication">
-<h2>Matrix-Vector Multiplication<a class="headerlink" href="#Matrix-Vector-Multiplication" title="Permalink to this headline">¶</a></h2>
-<div class="math">
-\[\begin{split}\begin{bmatrix}
-  a_{0,0} &amp; a_{0,1} &amp; \cdots &amp; a_{0,n-1} \\
-  a_{1,0} &amp; a_{1,1} &amp; \cdots &amp; a_{1,n-1} \\
-  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\
-  a_{m-1,0} &amp; a_{m,2} &amp; \cdots &amp; a_{m,n}
-\end{bmatrix}
-\times
-\left[ \begin{array}{c}
-   v_0 \\
-   v_1 \\
-   \vdots \\
-   v_{n-1}
-   \end{array} \right] =
-   \left[ \begin{array}{c}
-            \sum_{j=0}^{n-1} A_{0, j} v_j \\
-            \sum_{j=0}^{n-1} A_{1, j} v_j \\
-            \vdots \\
-            \sum_{j=0}^{n-1} A_{m-1, j} v_j \end{array} \right]\end{split}\]</div>
-<div class="math">
-\[\begin{split}\mathbf{A} =
-\begin{bmatrix}
-  2 &amp; -1 &amp; 0 &amp; 0 &amp; 0 \\
-  -1 &amp; 2 &amp; -1 &amp; 0 &amp; 0 \\
-  0 &amp; -1 &amp; 2 &amp; -1 &amp; 0 \\
-  0 &amp; 0 &amp; -1 &amp; 2 &amp; -1 \\
-  0&amp; 0 &amp; 0 &amp; -1 &amp; 2
-\end{bmatrix}\end{split}\]</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">A</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">A</span>
+<span class="c1"># get the value 5</span>
+<span class="n">A</span><span class="p">[</span><span class="err">???</span><span class="p">]</span>
+<span class="c1"># get the values [[1, 2],</span>
+<span class="c1">#                 [4, 5]]</span>
+<span class="n">A</span><span class="p">[</span><span class="err">???</span><span class="p">]</span>
+<span class="c1"># set the values 2, 4, 6, and 8 to 99.</span>
+<span class="n">A</span><span class="p">[</span><span class="err">???</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 2., -1.,  0.,  0.,  0.],
-       [-1.,  2., -1.,  0.,  0.],
-       [ 0., -1.,  2., -1.,  0.],
-       [ 0.,  0., -1.,  2., -1.],
-       [ 0.,  0.,  0., -1.,  2.]])
-</pre></div>
-</div>
-</div>
-<p>Multiply <code class="docutils literal"><span class="pre">A</span></code> by a vector of ones using <code class="docutils literal"><span class="pre">dot</span></code>:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="c1"># equivalent</span>
-</pre></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-a097f4a2b91b&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">4</span>
+<span class="ansi-red-fg">    A[???]</span>
+      ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 1.,  0.,  0.,  0.,  1.])
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 1.,  0.,  0.,  0.,  1.])
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="c1"># not `dot`, but equivalent</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 1.,  0.,  0.,  0.,  1.])
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Linear-Systems">
-<h2>Linear Systems<a class="headerlink" href="#Linear-Systems" title="Permalink to this headline">¶</a></h2>
-<p>Consider the system</p>
-<div class="math">
-\[\begin{split}2 x + 3 y = 1 \\
-3 x +   y = 2 \, .\end{split}\]</div>
-<p>In matrix-vector form, this system can be written as</p>
-<div class="math">
-\[\begin{split}\begin{bmatrix}
-  2 &amp; 3 \\
-  3 &amp; 1
-\end{bmatrix}
-\times
-\left[ \begin{array}{c}
-   x \\
-   y
-   \end{array} \right] =
-\left[ \begin{array}{c}
-   1 \\
-   2
-   \end{array} \right] \, .\end{split}\]</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># define the system matrix</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="c1"># define the right-hand side</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="c1"># solve the system</span>
-<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.71428571, -0.14285714])
-</pre></div>
-</div>
-</div>
+<div class="section" id="Visualizing-2-D-Arrays">
+<h2>Visualizing 2-D Arrays<a class="headerlink" href="#Visualizing-2-D-Arrays" title="Permalink to this headline">¶</a></h2>
+<p>Brief recap of 1-D: <code class="docutils literal"><span class="pre">import</span> <span class="pre">matplotlib.pyplot</span> <span class="pre">as</span> <span class="pre">plt</span></code> and
+<code class="docutils literal"><span class="pre">plt.plot(x,</span> <span class="pre">y)</span></code>. Easy peasy.</p>
 </div>
 <div class="section" id="Recap">
 <h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
 <p>You should now be able to</p>
 <ul class="simple">
-<li><em>define and manipulate two-dimensional NumPy arrays</em> (and that
-includes matrix-vector operators!)</li>
-<li><em>visualize two-dimensional arrays</em></li>
+<li><em>define and manipulate two-dimensional NumPy arrays</em></li>
 <li><em>slicing and other indexing of one- and two-dimensional arrays</em></li>
+<li><em>visualize two-dimensional arrays</em></li>
 </ul>
-<p><strong>Please remember</strong></p>
-<ul class="simple">
-<li>First homework is due tonight</li>
-<li>Homework questions answered in office hours and the discussion board
-(not email)</li>
-</ul>
+<p><strong>Please remember</strong> - Pre-lecture activities (or “quizzes”) are due at
+12:30 pm. I’m flexible for 1 or 2 minutes late, but later submissions
+(including during class!) are not accepted. - Homework questions
+answered in office hours and the discussion board.</p>
 </div>
 </div>
 
@@ -946,22 +454,15 @@ includes matrix-vector operators!)</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 4 - More on NumPy Arrays: Slicing and <code class="docutils literal"><span class="pre">np.linalg</span></code></a><ul>
+<li><a class="reference internal" href="#">Lecture 4 - More on NumPy Arrays</a><ul>
 <li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Making-Two-Dimensional-Arrays">Making Two-Dimensional Arrays</a></li>
-<li><a class="reference internal" href="#Two-dimensional-Functions">Two-dimensional Functions</a></li>
+<li><a class="reference internal" href="#Making-and-Manipulating-Two-Dimensional-Arrays">Making and Manipulating Two-Dimensional Arrays</a></li>
+<li><a class="reference internal" href="#Slicing">Slicing</a></li>
 <li><a class="reference internal" href="#Visualizing-2-D-Arrays">Visualizing 2-D Arrays</a></li>
-<li><a class="reference internal" href="#Slicing">Slicing</a><ul>
-<li><a class="reference internal" href="#Slicing-in-1-D">Slicing in 1-D</a></li>
-<li><a class="reference internal" href="#Slicing-in-2-D">Slicing in 2-D</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Matrix-Vector-Multiplication">Matrix-Vector Multiplication</a></li>
-<li><a class="reference internal" href="#Linear-Systems">Linear Systems</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
@@ -998,7 +499,7 @@ includes matrix-vector operators!)</li>
       &copy;2017, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
