@@ -41,7 +41,169 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="Linear-Systems">
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Linear-Systems">
 <h1>Linear Systems<a class="headerlink" href="#Linear-Systems" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
@@ -73,8 +235,666 @@ inputs.</li>
 <li>Gaussian elimination</li>
 <li><code class="docutils literal"><span class="pre">np.linalg.solve</span></code></li>
 </ul>
-<p>To be completed.</p>
 </div>
+</div>
+<div class="section" id="What-Is-A-Linear-System,-and-When-Can-It-Be-Solved?">
+<h2>What Is A Linear System, and When Can It Be Solved?<a class="headerlink" href="#What-Is-A-Linear-System,-and-When-Can-It-Be-Solved?" title="Permalink to this headline">¶</a></h2>
+<p>From an <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">earlier reading</span></a>, the basic mechanics
+of vectors, matrices, and their products was reviewed using NumPy
+arrays. In addition, a very quick glance at solving small system was
+given. Here, it helps to review some fundamentals in a bit more depth
+before heading on to solving systems by elimination.</p>
+<p>Consider the matrix-vector product <span class="math">\(w=\mathbf{Av}\)</span>. To illustrate,
+let element <span class="math">\((i, j)\)</span> of <span class="math">\(\mathbf{A}\)</span> be <span class="math">\(a_{ij}\)</span> and
+element <span class="math">\(i\)</span> of the vector <span class="math">\(\mathbf{v}\)</span> be <span class="math">\(v_i\)</span>. Then,
+for the <span class="math">\(3\times 3\)</span> case, we have</p>
+<div class="math">
+\[\begin{split}\mathbf{Av} =
+\begin{bmatrix}
+  a_{00} &amp; a_{01} &amp; a_{02} \\
+  a_{10} &amp; a_{11} &amp; a_{12} \\
+  a_{20} &amp; a_{21} &amp; a_{22} \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   v_0 \\
+   v_1 \\
+   v_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   a_{00} v_0 + a_{01} v_1 + a_{02} v_2 \\
+   a_{10} v_0 + a_{11} v_1 + a_{12} v_2 \\
+   a_{20} v_0 + a_{21} v_1 + a_{22} v_2 \\
+   \end{array} \right]
+= \mathbf{w} \, .\end{split}\]</div>
+<p>There are <em>two ways</em> to interpret the matrix-vector product
+<span class="math">\(\mathbf{w}\)</span>. The common way is to note that</p>
+<div class="math">
+\[w_i = a_{i0} v_0 + a_{i1} v_1 + a_{i2} v_2 = \mathbf{a}_{i:}^T \mathbf{v} = \mathbf{a}_{i:}\cdot \mathbf{v} \, .\]</div>
+<p>Here, I’m leveraging the idea of <em>slicing</em>, so that
+<span class="math">\(\mathbf{a}_{i:}\)</span> represents the <span class="math">\(i\)</span>th row of the original
+matrix <span class="math">\(\mathbf{A}\)</span>. Viewed this way, the matrix-vector product is
+actually a series of dot products. Specifically, each element of
+<span class="math">\(\mathbf{w}\)</span> is the dot product of one row of <span class="math">\(\mathbf{A}\)</span>
+with the vector <span class="math">\(\mathbf{v}\)</span>, just like in the <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">previous
+reading</span></a>.</p>
+<p>However, note the following way to represent <span class="math">\(\mathbf{w}\)</span>:</p>
+<div class="math">
+\[\begin{split}  \mathbf{w} =
+v_0 \left[ \begin{array}{c}
+   a_{00} \\
+   a_{10} \\
+   a_{20}
+   \end{array} \right] +
+v_1 \left[ \begin{array}{c}
+   a_{01} \\
+   a_{11} \\
+   a_{21}
+   \end{array} \right] +
+v_2 \left[ \begin{array}{c}
+   a_{02} \\
+   a_{12} \\
+   a_{22}
+   \end{array} \right]
+=  v_0 \mathbf{a}_{:0} + v_1\mathbf{a}_{:1} + v_2\mathbf{a}_{:2} \, .\end{split}\]</div>
+<p>Again, a slicing-like notation is used with which
+<span class="math">\(\mathbf{a}_{:j}\)</span> represents the <span class="math">\(j\)</span>th column of the
+original matrix <span class="math">\(\mathbf{A}\)</span>. With this view of
+<span class="math">\(\mathbf{w}\)</span>, I hope you see that <span class="math">\(\mathbf{w}\)</span> is a <em>linear
+combination of the columns</em> of <span class="math">\(\mathbf{A}\)</span>. All possible linear
+combinations of <span class="math">\(\mathbf{A}\)</span>‘s columns has a special name: the
+<em>column space</em> of <span class="math">\(\mathbf{A}\)</span>.</p>
+<blockquote>
+<div>The <em>column space</em> of a matrix <span class="math">\(\mathbf{A}\)</span> represents all
+possible linear combinations of its columns.</div></blockquote>
+<p>Now, what has the column space to do with linear systems? A lot, it
+turns out. Consider the linear system <span class="math">\(\mathbf{Ax} = \mathbf{b}\)</span>.
+We’ll take <span class="math">\(\mathbf{A}\)</span> to be a square, <span class="math">\(m\times m\)</span> matrix,
+with <span class="math">\(\mathbf{x}\)</span> and <span class="math">\(\mathbf{b}\)</span> each having <span class="math">\(m\)</span>
+elements. That’s <span class="math">\(m\)</span> equations for <span class="math">\(m\)</span> unknowns, and in
+theory, it can be solved. However, let’s view the system explicitly:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+\mathbf{Ax} &amp; =
+\begin{bmatrix}
+  a_{00} &amp; a_{01} &amp; \cdots &amp; a_{0,n-1} \\
+  a_{10} &amp; a_{11} &amp; \cdots &amp; a_{1,n-1} \\
+  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\
+  a_{m-1,0} &amp; a_{m-1,2} &amp; \cdots &amp; a_{m-1,n-1}
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   \vdots \\
+   x_{m-1}
+   \end{array} \right] \\
+&amp; = x_0 \mathbf{a}_{:, 0} + x_1 \mathbf{a}_{:, 1} + \ldots + x_{m-1} \mathbf{a}_{:,m-1}  \\
+&amp; = \mathbf{b}
+\end{split}\end{split}\]</div>
+<p>In other words, the left and right sides can only be equal if
+<span class="math">\(\mathbf{b}\)</span> is a linear combination of the columns of
+<span class="math">\(\mathbf{A}\)</span>. In other words, <span class="math">\(\mathbf{b}\)</span> must be in the
+columns space of <span class="math">\(\mathbf{A}\)</span>.</p>
+<p>If it turns out that <span class="math">\(\mathbf{b}\)</span> is <em>not</em> in the column space of
+<span class="math">\(\mathbf{A}\)</span>, then that column space is <em>not big enough</em> and
+<span class="math">\(\mathbf{A}\)</span> has at least one column that is a linear combination
+of its other columns. That is to say, the columns of such an
+<span class="math">\(\mathbf{A}\)</span> are dependent. Moreover, <span class="math">\(\mathbf{A}\)</span> is <em>not
+invertible</em>, and <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> cannot be solved. Let’s
+hope for good <span class="math">\(\mathbf{A}\)</span>‘s, and we’ll handle cases when that’s
+not true as needed.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Why does</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+  1 &amp; 2 \\
+  1 &amp; 2 \\
+\end{bmatrix}
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1
+\end{array} \right] =
+\left[ \begin{array}{c}
+   1 \\
+   1
+\end{array} \right]\end{split}\]</div>
+<p>have a solution but</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+  1 &amp; 2 \\
+  1 &amp; 2 \\
+\end{bmatrix}
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1
+\end{array} \right] =
+\left[ \begin{array}{c}
+   1 \\
+   0
+\end{array} \right]\end{split}\]</div>
+<p>does not?</p>
+<p><strong>Solution</strong>: In the first, the vector <span class="math">\(\mathbf{b}=[1, 1]^T\)</span>
+(where <span class="math">\(T\)</span> means transpose) is exactly equal to the first column
+of the matrix, so <span class="math">\(x_0\)</span> could be 1 and <span class="math">\(x_1\)</span> could be zero.
+If you look closely, <span class="math">\(x_0 = 0\)</span> and <span class="math">\(x_1 = 1/2\)</span> is also a
+solution, and there are infinitely more. The important thing to note is
+that the second column of <span class="math">\(\mathbf{A}\)</span> is equal to two times its
+first column—they are dependent, and in such cases, there are either
+an infinite number of solutions (as for <span class="math">\(\mathbf{b}=[1, 1]^T\)</span>) or
+no solution (as for <span class="math">\(\mathbf{b}=[1, 0]^T\)</span>). For the latter case,
+no combination of <span class="math">\([1, 1]^T\)</span> and <span class="math">\([2, 2]^T\)</span> can yield
+<span class="math">\([1, 0]^T\)</span>!</p>
+</div>
+<div class="section" id="Solving-Linear-Systems-by-Elimination">
+<h2>Solving Linear Systems by Elimination<a class="headerlink" href="#Solving-Linear-Systems-by-Elimination" title="Permalink to this headline">¶</a></h2>
+<p>Would you agree that solving the following system is straightforward to
+do?</p>
+<div class="math">
+\[\begin{split}\mathbf{Ux} =
+\begin{bmatrix}
+  u_{00} &amp; u_{01} &amp; u_{02} \\
+  0      &amp; u_{11} &amp; u_{12} \\
+  0      &amp; 0      &amp; u_{22} \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   x_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   c_0 \\
+   c_1 \\
+   c_2
+   \end{array} \right]\end{split}\]</div>
+<p>If not, note that we can immediately find <span class="math">\(x_2 = c_2 / u_{22}\)</span>,
+from which</p>
+<div class="math">
+\[x_1 = (c_1 - u_{12} x_2)/u_{11} \, ,\]</div>
+<p>and</p>
+<div class="math">
+\[x_0 = (c_0 - u_{01} x_2 -  u_{02} x_2)/u_{00} \, .\]</div>
+<p>This was all made easy because <span class="math">\(\mathbf{U}\)</span> is an <em>upper
+triangular</em> matrix, i.e., it has zeros below the main diagonal for which
+<span class="math">\(i = j\)</span>. The goal of elimination is to turn <span class="math">\(\mathbf{A}\)</span>
+into <span class="math">\(\mathbf{U}\)</span> by eliminating entries below the main diagonal
+using linear operations.</p>
+<p>Remember, one can modify linear systems by adding multiples of one row
+to another without changing the solution. If that bell is too distant,
+consider the following system,</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+  2 &amp; 4 \\
+  3 &amp; 5 \\
+\end{bmatrix}
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1
+\end{array} \right] =
+\left[ \begin{array}{c}
+   6 \\
+   8
+\end{array} \right]\end{split}\]</div>
+<p>for which the solution is <span class="math">\(\mathbf{x}=[1, 1]^T\)</span>. This is easily
+confirmed by noting <span class="math">\(2\cdot 1 + 4\cdot 1=6\)</span> and
+<span class="math">\(3\cdot 1+5 \cdot 1 = 8\)</span>.</p>
+<p>Now, if we add the first row of the system to the second row (that must
+include the right-hand side of the equation!), we find</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+  2   &amp; 4 \\
+  3+2 &amp; 5+4 \\
+\end{bmatrix}
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1
+\end{array} \right] =
+\left[ \begin{array}{c}
+   6 \\
+   8+6
+\end{array} \right]\end{split}\]</div>
+<p>which has the <em>same</em> solution: <span class="math">\(2\cdot 1 + 4\cdot 1\)</span> is still
+<span class="math">\(6\)</span>, and now <span class="math">\((3+2)\cdot 1 + (5+4)\cdot 1 = 5+9 = 14\)</span>. The
+same <span class="math">\(\mathbf{x}\)</span> works. This is not a proof by any means, but a
+good sanity check. Of course, the <em>right</em> modification would be to
+subtract <span class="math">\(3/2\)</span> times that first row from the second, which leads
+to</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+  2 &amp; 4 \\
+  3+(-3/2)2 &amp; 5+(-3/2)4 \\
+\end{bmatrix}
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1
+\end{array} \right] =
+\left[ \begin{array}{c}
+   6 \\
+   8+(-3/2)6
+\end{array} \right]\end{split}\]</div>
+<p>or</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+  2 &amp; 4 \\
+  0 &amp; -1 \\
+\end{bmatrix}
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1
+\end{array} \right] =
+\left[ \begin{array}{c}
+   6 \\
+   -1
+\end{array} \right]\end{split}\]</div>
+<p>Note that <span class="math">\(\mathbf{A}\)</span> turned into <span class="math">\(\mathbf{U}\)</span>, which is
+called the <a class="reference external" href="https://en.wikipedia.org/wiki/Row_echelon_form">row echelon
+form</a> in fancy linear
+algebra circles. From this form, we find immediately that
+<span class="math">\(x_1 = (-1)/(-1) = 1\)</span>, and that <span class="math">\(x_0 = (6 - 4x_1)/2 = 1\)</span>.
+The key was the multiple of the first row we selected, i.e., -3/2. Why
+-3/2? Here, 3 is the value we want to knock out. Moreover, 2 is the
+value in the same column as the element to be eliminated that lives in
+the row we are adding to others. Often, 2 is called the <em>pivot</em>. More
+generally, the pivot is on the main diagonal, and everything below it in
+the same column is to be eliminated. Things go bad when the pivot is
+zero because anything divided by zero is undefined.</p>
+<p>Let’s formalize this elimination process using (some rather) loose
+pseudocode for a square system of any size. Here, the output will be
+<span class="math">\(\mathbf{U}\)</span> (from <span class="math">\(\mathbf{A})\)</span> and the adjust right-hand
+side vector <span class="math">\(\mathbf{c}\)</span> (from <span class="math">\(\mathbf{b}\)</span>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>&quot;&quot;&quot;Algorithm to turn A into U and b into c by elimination&quot;&quot;&quot;
+ 1. Input: A, b # matrix A and right-hand side b
+ 2. Set U to A
+ 3. Set c to b
+ 4. For all columns j in U
+ 5.     # Set the pivot, below which we want to eliminate all values.
+ 6.     Set pivot to U[j, j]
+ 7.     If pivot is zero then
+ 8.         Scream for help!
+ 9.     # Eliminate/adjust values below and to the right of the pivot.
+10. For all rows i &gt; j in U
+11.     Set multiple to U[i, j]/pivot
+12.     # Knock out the element to be eliminated
+13.     U[i, j] = U[i, j] - U[j, j]*multiple
+14.     # Adjust all the other elements to the right
+15.     Set c[i] = c[i] - c[j]*multiple
+16.     For all columns k &gt; j in U
+17.         U[i, k] = U[i, k] - U[j, k]*multiple
+18. Output: U and c
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Trace the elimination algorithm <em>by hand</em> for the
+following linear systems:</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+ 2 &amp; -1 &amp; 0 \\
+ -1 &amp; 2 &amp; -1 \\
+ 0 &amp; -1 &amp; 2 \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   x_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   1 \\
+   1 \\
+   1 \\
+   \end{array} \right]\end{split}\]</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Trace the elimination algorithm <em>by hand</em> for the
+following linear system:</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+ 1 &amp; 2 &amp; 3 \\
+ 4 &amp; 5 &amp; 6 \\
+ 7 &amp; 8 &amp; 9 \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   x_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   1 \\
+   1 \\
+   1 \\
+   \end{array} \right]\end{split}\]</div>
+<hr class="docutils" />
+<p>In Python, the following function implements the same elimination
+algorithm:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">eliminate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">U</span><span class="p">)):</span>
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">pivot</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;arggggh!&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+            <span class="n">multiple</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">pivot</span>
+            <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">multiple</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+                <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">multiple</span>
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use the function <code class="docutils literal"><span class="pre">eliminate</span></code> to reduce the linear system</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+ 2 &amp; -1 &amp; 0 \\
+ -1 &amp; 2 &amp; -1 \\
+ 0 &amp; -1 &amp; 2 \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   x_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   1 \\
+   1 \\
+   1 \\
+   \end{array} \right]\end{split}\]</div>
+<p><strong>Solution</strong>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">eliminate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">U</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 2.        , -1.        ,  0.        ],
+       [ 0.        ,  1.5       , -1.        ],
+       [ 0.        ,  0.        ,  1.33333333]])
+</pre></div>
+</div>
+</div>
+<p>Is this value for <span class="math">\(\mathbf{U}\)</span> what you found by hand for the
+first exercise above? If not, go back and try it (again).</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Perform a numerical experiment to determine the <em>order</em> of
+the elimination algorithm.</p>
+<p><strong>Solution (Partial)</strong>: Remember, the elapsed time of a function call
+can be computed using, e.g.,</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>      <span class="c1"># initial time</span>
+<span class="n">some_function_call</span><span class="p">()</span>
+<span class="n">te</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span> <span class="c1"># elapsed time (in seconds)</span>
+</pre></div>
+</div>
+<p>Moreover, the algorithm does not care about the values of
+<span class="math">\(\mathbf{A}\)</span> (assuming no zero pivots), just how many there are.
+Hence, a good way to make a matrix of size <span class="math">\(n\)</span> is to use
+<code class="docutils literal"><span class="pre">np.random.rand(n,</span> <span class="pre">n)</span></code>. That should get you moving in the right
+direction.</p>
+<hr class="docutils" />
+<p>Elimination is the hard part, but we do not yet have the solution
+<span class="math">\(\mathbf{x}\)</span>. However, we know from <span class="math">\(\mathbf{U}\)</span> what the
+last element of <span class="math">\(\mathbf{x}\)</span>, and then we work <em>backward</em> by
+<em>substituting</em> each known value into the equation for the next unknown
+value. Here is that approach in pseudcode, where <span class="math">\(\mathbf{U}\)</span> and
+<span class="math">\(\mathbf{c}\)</span> are, e.g., outputs from the elimination process:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for back substitution of an eliminated system&quot;&quot;&quot;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span> <span class="n">c</span>
+<span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="n">the</span> <span class="n">size</span> <span class="n">of</span> <span class="n">c</span>
+<span class="n">Set</span> <span class="n">x</span> <span class="n">to</span> <span class="n">an</span> <span class="n">array</span> <span class="k">with</span> <span class="n">m</span> <span class="n">zeros</span>
+<span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="c1"># Add up all the pieces that go on the right hand side</span>
+    <span class="n">Set</span> <span class="n">rhs</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Set</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">While</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span>
+        <span class="n">Set</span> <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="c1"># Recall that x[j] is known!</span>
+        <span class="n">Set</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">Set</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">/</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="c1"># Solve for the next unknown</span>
+    <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Trace the back-substitution algorithm <em>by hand</em> for the
+following system:</p>
+<div class="math">
+\[\begin{split}\begin{bmatrix}
+ 2 &amp; -1 &amp; 0 \\
+ 0 &amp; 3/2 &amp; -1 \\
+ 0 &amp; 0 &amp; 4/3 \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   x_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   1 \\
+   3/2 \\
+   2 \\
+   \end{array} \right]\end{split}\]</div>
+<p>For your trace, record the values of <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, <code class="docutils literal"><span class="pre">rhs</span></code>, <code class="docutils literal"><span class="pre">x[0]</span></code>,
+<code class="docutils literal"><span class="pre">x[1]</span></code>, and <code class="docutils literal"><span class="pre">x[2]</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Implement the back-substitution algorithm as the Python
+function <code class="docutils literal"><span class="pre">back_substition(U,</span> <span class="pre">c)</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Perform a numerical experiment to determine the <em>order</em> of
+the back-substitution algorithm.</p>
+<hr class="docutils" />
+<p>Together, the <em>elimination</em> and <em>back-subsitution</em> algorithms form what
+is traditionally called <em>Gaussian elimination</em> for the solution of
+<span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>.</p>
+</div>
+<div class="section" id="Elimination-via-NumPy-and-SciPy">
+<h2>Elimination via NumPy and SciPy<a class="headerlink" href="#Elimination-via-NumPy-and-SciPy" title="Permalink to this headline">¶</a></h2>
+<p>NumPy has a built in capability to do elimination directly for solving
+<span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 1.5,  2. ,  1.5])
+</pre></div>
+</div>
+</div>
+<p>Alternatively, we can get the LU factorization of <span class="math">\(\mathbf{A}\)</span> by
+using SciPy. Recall that the LU factorization of <span class="math">\(\mathbf{A}\)</span> is</p>
+<div class="math">
+\[\mathbf{A} = \mathbf{LU} \, ,\]</div>
+<p>where <span class="math">\(\mathbf{U}\)</span> is an upper triangle matrix and
+<span class="math">\(\mathbf{L}\)</span> is a lower triangular matrix with ones on the main
+diagonal. It turns out, <span class="math">\(\mathbf{U}\)</span> is what we’ve computed all
+along during elimination, while the <code class="docutils literal"><span class="pre">multiple</span></code> defined in elimination
+used to adjust element <span class="math">\(u_{ij}\)</span> is actually <span class="math">\(1/l_{ij}\)</span>.
+Hence, we could define <span class="math">\(\mathbf{L}\)</span> as part of the elimination
+algorithm if desired.</p>
+<p>Using SciPy, we find</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
+<span class="n">P</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lu</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[ 1.  0.  0.]
+ [ 0.  1.  0.]
+ [ 0.  0.  1.]]
+[[ 1.          0.          0.        ]
+ [-0.5         1.          0.        ]
+ [ 0.         -0.66666667  1.        ]]
+[[ 2.         -1.          0.        ]
+ [ 0.          1.5        -1.        ]
+ [ 0.          0.          1.33333333]]
+</pre></div></div>
+</div>
+<p>Note, that <span class="math">\(\mathbf{U}\)</span> is identical to what was computed above
+using our own <code class="docutils literal"><span class="pre">eliminate</span></code> function. Moreover, the product
+<span class="math">\(\mathbf{LU}\)</span> gives us back the matrix <span class="math">\(\mathbf{A}\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">L</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 2., -1.,  0.],
+       [-1.,  2., -1.],
+       [ 0., -1.,  2.]])
+</pre></div>
+</div>
+</div>
+<p>What’s that matrix <span class="math">\(\mathbf{P}\)</span>? It’s a permutation matrix. Here,
+it’s just the identity, but watch what happens when we compute the LU
+factorization of this matrix:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">P</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lu</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[ 0.  0.  1.]
+ [ 0.  1.  0.]
+ [ 1.  0.  0.]]
+[[ 1.          0.          0.        ]
+ [-0.5         1.          0.        ]
+ [ 0.         -0.66666667  1.        ]]
+[[ 2.         -1.          0.        ]
+ [ 0.          1.5        -1.        ]
+ [ 0.          0.          1.33333333]]
+</pre></div></div>
+</div>
+<p>Now, <span class="math">\(\mathbf{P}\)</span> is not the identify, but <span class="math">\(\mathbf{L}\)</span> and
+<span class="math">\(\mathbf{U}\)</span> are the same as they were for <span class="math">\(\mathbf{A}\)</span>.
+Hence, we still have <span class="math">\(\mathbf{A}=\mathbf{LU}\)</span>, and then
+<span class="math">\(\mathbf{P}\)</span> reorders the rows of <span class="math">\(\mathbf{A}\)</span> to get
+<span class="math">\(\mathbf{B}\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">P</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0., -1.,  2.],
+       [-1.,  2., -1.],
+       [ 2., -1.,  0.]])
+</pre></div>
+</div>
+</div>
+<p>You’ll see why we needed permutation of <span class="math">\(\mathbf{B}\)</span>. Look at that
+very first element: a zero pivot. (Try it yourself by modifying the code
+from above!). The trick is to find a better row. If there is a nonzero
+element below the zero pivot, then that row can be swapped with the row
+in question. If no such rows can be found, the game is over! No more
+pivots means not invertible.</p>
+<p>Even when a pivot exists, it’s not always the best one possible. Imagine
+a pivot equal to <span class="math">\(10^{-12}\)</span>. That means division by a small
+number, which leads to a big number. Addition of a big number to smaller
+numbers leads to something call <em>round-off error</em>, due to which
+precision of a result is lost. Hence, a different pivot might be better,
+and choosing the one of largest magnitude is the process called <em>partial
+pivoting</em>, which is pretty common in production-level solvers (like
+SciPy’s LU implementation).</p>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>None for now.</p>
 </div>
 </div>
 
@@ -92,6 +912,10 @@ inputs.</li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#What-Is-A-Linear-System,-and-When-Can-It-Be-Solved?">What Is A Linear System, and When Can It Be Solved?</a></li>
+<li><a class="reference internal" href="#Solving-Linear-Systems-by-Elimination">Solving Linear Systems by Elimination</a></li>
+<li><a class="reference internal" href="#Elimination-via-NumPy-and-SciPy">Elimination via NumPy and SciPy</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
 </ul>
 </li>
 </ul>
