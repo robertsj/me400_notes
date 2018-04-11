@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 21 - Numerical Differentiation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 21 - Root Finding &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,221 +201,257 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-21---Numerical-Differentiation">
-<h1>Lecture 21 - Numerical Differentiation<a class="headerlink" href="#Lecture-21---Numerical-Differentiation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference internal" href="ME400_Lecture_20.html"><span class="doc">Lecture 20</span></a>, Taylor series were reviewed,
-and SymPy was used to define and study such series. A key idea
-introduced was that a <em>truncated</em> Taylor series expansion of
-<span class="math">\(f(x)\)</span> about <span class="math">\(x_0\)</span> is (1) accurate near the point
-<span class="math">\(x_0\)</span> and (2) made better by including additional terms of the
-full series. In this lesson, such truncated series are used to define
-<strong>finite difference</strong> approximations for derivatives. Although good for
-some applications by themselves, finite-difference approximations are
-critical for solving differential equations numerically, a topic to be
-covered in several lectures.</p>
+<div class="section" id="Lecture-21---Root-Finding">
+<h1>Lecture 21 - Root Finding<a class="headerlink" href="#Lecture-21---Root-Finding" title="Permalink to this headline">¶</a></h1>
+<p>We’ve now seen finite-difference approximations for derivatives, Riemann
+sums for integration, and elimination for solving
+<span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>. Now, we turn to solving <span class="math">\(f(x) = 0\)</span>
+and <span class="math">\(\mathbf{f(x)} = \mathbf{0}\)</span>, i.e., nonlinear systems.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Derive finite-difference approximations for first- and second-order
-derivatives using Taylor series.</li>
-<li>Apply SymPy to compute finite-difference approximations of arbitrary
-order for any derivative.</li>
-<li>Numerically/graphically/symbolically demonstrate that the error of an
-<span class="math">\(n\)</span>th-order approximation as <span class="math">\(\Delta \to 0\)</span> exhibits
-the right behavior.</li>
+<li>Find one or more roots of a one-dimensional, nonlinear equation
+<span class="math">\(f(x) = 0\)</span> using the bisection and Newton methods.</li>
+<li>Find local extrema of a function <span class="math">\(f(x)\)</span> using the bisection and
+Newton methods.</li>
+<li>Establish the order of an integration scheme using numerical,
+graphical, or symbolic means.</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>finite difference</li>
-<li>forward difference</li>
-<li>backward difference</li>
-<li>central difference</li>
-<li>truncation error</li>
-<li>first-order approximation</li>
-<li>second-order approximation</li>
-<li><span class="math">\(n\)</span>th-order approximation</li>
+<li>nonlinear equation</li>
+<li>transcendental equation</li>
+<li>graphical solution</li>
+<li>bisection method</li>
+<li>Newton’s method</li>
+<li>quadratic convergence</li>
+<li>second-order convergence</li>
+<li>order of convergence</li>
+<li>secant method</li>
+<li>Steffensen’s method</li>
+<li>nonlinear systems</li>
+<li>Jacobian matrix</li>
+<li><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></li>
+<li>optimization</li>
+<li>extremum</li>
+<li>critical point</li>
+<li>objective function</li>
+<li><code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code></li>
 </ul>
-</div>
-</div>
-<div class="section" id="If,-in-the-beginning,--didn't-go-to-0...">
-<h2>If, in the beginning, <span class="math">\(h\)</span> didn’t go to 0…<a class="headerlink" href="#If,-in-the-beginning,--didn't-go-to-0..." title="Permalink to this headline">¶</a></h2>
-<p>Recall that the derivative of <span class="math">\(f(x)\)</span> is</p>
-<div class="math">
-\[\frac{df}{dx} = \lim_{\Delta \to 0} \frac{f(x+\Delta)-f(x)}{\Delta} \, .\]</div>
-<p>What if that limit is not taken and, instead, a “small” value of
-<span class="math">\(\Delta\)</span> is used? The result is our first <strong>finite-difference</strong>
-approximation, the <strong>forward difference</strong>:</p>
-<div class="math">
-\[f'(x) \approx  \frac{f(x+\Delta)-f(x)}{\Delta} \, .\]</div>
-<p>An equally valid approximation is the <strong>backward difference</strong>:</p>
-<div class="math">
-\[f'(x) \approx  \frac{f(x)-f(x-\Delta)}{\Delta} \, .\]</div>
-<p><strong>Exercise</strong>: Use the backward-difference approximation to approximate
-the derivative of <span class="math">\(e^x\)</span> at <span class="math">\(x = 1\)</span> for
-<span class="math">\(\Delta = 10^0, 10^{-1}, \ldots, 10^{-7}\)</span> and plot the error as a
-function of <span class="math">\(\Delta\)</span>.</p>
-</div>
-<div class="section" id="Back-to-Order">
-<h2>Back to Order<a class="headerlink" href="#Back-to-Order" title="Permalink to this headline">¶</a></h2>
-<p>The forward-difference (and backward-difference) approximation improves
-with smaller <span class="math">\(\Delta\)</span>, but <em>how much better</em>?</p>
-<p>Revisit the Taylor series for <span class="math">\(f(x+\Delta)\)</span> about the point
-<span class="math">\(x\)</span>!</p>
-<div class="math">
-\[f(x+\Delta) = f(x) + f'(x)\Delta + \frac{1}{2}f''(x)\Delta^2 + \mathcal{O}(\Delta^3) \, .\]</div>
+<div class="section" id="Nonlinear-Equations">
+<h3>Nonlinear Equations<a class="headerlink" href="#Nonlinear-Equations" title="Permalink to this headline">¶</a></h3>
+<p>Linear equations are characterized by <em>linear combinations</em> or the
+unknowns, e.g.,</p>
 <div class="math">
 \[\begin{split}\begin{split}
-  f'(x) &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} - \frac{1}{2}f''(x)\Delta + \mathcal{O}(\Delta^2) \\
-        &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} + \mathcal{O}(\Delta) \\
+ ax + by &amp;= 1 \\
+ cx + dy &amp;= 2
 \end{split}\end{split}\]</div>
-<p>Error is proportional to <em>first power</em> of <span class="math">\(\Delta\)</span> as
-<span class="math">\(\Delta \to 0\)</span>. Hence, <strong>the forward-difference approximation is
-first order</strong> (so, too, is the backward-difference approximation).</p>
-<div class="section" id="Can-we-do-better-than-first-order?">
-<h3>Can we do better than first order?<a class="headerlink" href="#Can-we-do-better-than-first-order?" title="Permalink to this headline">¶</a></h3>
-<p>Yes: look what happens when we expand <span class="math">\(f(x+\Delta)-f(x-\Delta)\)</span>!</p>
+<p>Any deviation from this pattern results in <strong>nonlinear equations</strong>,
+which we can solve - analytically (or symbolically) - graphically -
+numerically</p>
+</div>
+</div>
+<div class="section" id="Analytic-Solutions">
+<h2>Analytic Solutions<a class="headerlink" href="#Analytic-Solutions" title="Permalink to this headline">¶</a></h2>
+<p>In <em>rare</em> cases, nonlinear equations have closed-form solutions.</p>
+<p><strong>Exercise</strong>: Find all values of <span class="math">\(x\)</span> such that
+<span class="math">\(\sin(ax) - b = 0\)</span>.</p>
+</div>
+<div class="section" id="Graphical-Solutions">
+<h2>Graphical Solutions<a class="headerlink" href="#Graphical-Solutions" title="Permalink to this headline">¶</a></h2>
+<p>Can’t solve it? <strong>Plot it!</strong></p>
+<p>For single equation <span class="math">\(f(x) = g(x)\)</span>: - plot <span class="math">\(f(x)\)</span> and
+<span class="math">\(g(x)\)</span> over the range of interest to identify intersections - plot
+<span class="math">\(f(x)-g(x)\)</span> to identify roots</p>
+<p><strong>Exercise</strong>: The solution of transient heat-conduction problems often
+involves a technique called <em>separation of variables</em>. Application of
+this technique to an infinite slab of thickness <span class="math">\(2L\)</span> subject to
+certain initial and boundary conditions leads to the transcendental
+equation</p>
 <div class="math">
-\[\begin{split}\begin{split}
-  f'(x) &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} - \frac{1}{2}f''(x)\Delta + \mathcal{O}(\Delta^2) \\
-        &amp;= \frac{f(x+\Delta) - f(x)}{\Delta} + \mathcal{O}(\Delta) \\
-\end{split}\end{split}\]</div>
-</div>
-<div class="section" id="Can-we-approximate-the-second-derivative?">
-<h3>Can we approximate the second derivative?<a class="headerlink" href="#Can-we-approximate-the-second-derivative?" title="Permalink to this headline">¶</a></h3>
-<p>Yes: look what happens when we expand <span class="math">\(f(x+\Delta)+f(x-\Delta)\)</span>!</p>
-<div class="math">
-\[f''(x) = \frac{f(x+\Delta)+-2f(x)+f(x-\Delta)}{\Delta^2} + \mathcal{O}(\Delta^2) \, ,\]</div>
-<p><strong>Exercise</strong>: Apply the <em>central</em> difference to the function
-<span class="math">\(f(x) = \sin(2x - 0.17) + 0.3 \cos(3.4x + 0.1)\)</span> at
-<span class="math">\(x = 0.5\)</span>. Plot the error for
-<span class="math">\(\Delta = 10^{-1}, 10^{-2}, \ldots, 10^{-7}\)</span> and <em>confirm
-graphically</em> that the method is second order.</p>
-</div>
-</div>
-<div class="section" id="Finite-Difference-Approximations-of-Arbitrary-Order">
-<h2>Finite-Difference Approximations of Arbitrary Order<a class="headerlink" href="#Finite-Difference-Approximations-of-Arbitrary-Order" title="Permalink to this headline">¶</a></h2>
-<p>The finite-difference approximations explored were identified pretty
-easily by manipulating the Taylor series of a function. Approximations
-that are higher order or that can be used for higher derivatives are
-somewhat more challenging to develop.</p>
-<p><strong>A Simple Rule</strong>: an <span class="math">\(n\)</span>th-order approximation for the
-<span class="math">\(m\)</span>th derivative at <span class="math">\(x = x_0\)</span> requires that <span class="math">\(f\)</span> be
-evaluated at <span class="math">\(n+m\)</span> evenly-spaced <span class="math">\(x\)</span> values that (should)
-include <span class="math">\(x_0\)</span>.</p>
-<p>(Exception: in <em>some</em> central-difference approxmations, the
-<span class="math">\(f(x_0)\)</span> term vanishes, so only <span class="math">\(n+m-1\)</span> points are needed)</p>
-<p><strong>Exercise</strong>: Do the forward- and backward-difference methods for
-<span class="math">\(f'(x)\)</span> follow this rule? How about the central-difference
-approximation for <span class="math">\(f''(x)\)</span>?</p>
-<div class="section" id="Developing-New-Schemes">
-<h3>Developing New Schemes<a class="headerlink" href="#Developing-New-Schemes" title="Permalink to this headline">¶</a></h3>
-<p>Finite-difference schemes of arbitrary order come from Taylor series but
-can be tedious. Some help comes from Sympy!</p>
-<p>Creating finite differences symbolically with
-<code class="docutils literal"><span class="pre">expr.as_finite_difference</span></code>:</p>
-<div class="nbinput docutils container">
+\[\cot \lambda L = \frac{\lambda L}{hL/k} = \frac{\lambda L}{\text{Bi}} \, ,\]</div>
+<p>where <span class="math">\(\lambda\)</span> is a dimensionless, undetermined parameter,
+<span class="math">\(h\)</span> is the heat transfer coefficient, <span class="math">\(k\)</span> is the thermal
+conductivity, and <span class="math">\(\text{Bi}\)</span> is the <em>Biot number</em>. The Biot
+number quantifies how hard it is for heat to flow <em>within</em> a body
+relative to how hard it is to flow <em>through the outer surface</em> of the
+body. Only for certain values of <span class="math">\(\lambda\)</span> can the equation be
+solved. Determine these values graphically by plotting the left-hand and
+right-hand sides of the equation as functions of <span class="math">\(\lambda L\)</span>.
+Assume <span class="math">\(L = 5\)</span> and <span class="math">\(\text{Bi}=0.5\)</span>.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
-<span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">Delta</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;f x Delta&#39;</span><span class="p">)</span>
-<span class="n">fp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">fp</span><span class="o">.</span><span class="n">as_finite_difference</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">Delta</span><span class="p">])</span>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[1]:
+<div class="section" id="Determining-Roots-Numerically">
+<h3>Determining Roots Numerically<a class="headerlink" href="#Determining-Roots-Numerically" title="Permalink to this headline">¶</a></h3>
+<p>The numerical solution of <span class="math">\(f(x) = 0\)</span> can be challenging since it
+requires we know at least a little about the desired solution,
+particularly the range in which the root is contained. We’ll explore
+three basic schemes for solving <span class="math">\(f(x)\)</span>: the <a class="reference external" href="http://mathworld.wolfram.com/Bisection.html">bisection
+method</a>, <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton’s
+method</a>, and the
+secant method.</p>
+</div>
+</div>
+<div class="section" id="Bisection">
+<h2>Bisection<a class="headerlink" href="#Bisection" title="Permalink to this headline">¶</a></h2>
+<p>Just like <strong>binary search</strong>! Now, compare <em>sign</em> rather than <em>magnitude</em>
+(and keep <strong>repeating</strong>).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Bisection method for finding an isolated root of f between a and b&#39;&#39;&#39;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tau</span>
+
+<span class="c1"># Define the left and right boundaries</span>
+<span class="n">Set</span> <span class="n">L</span> <span class="o">=</span> <span class="n">a</span>
+<span class="n">Set</span> <span class="n">R</span> <span class="o">=</span> <span class="n">b</span>
+
+<span class="c1"># Define the central point</span>
+<span class="n">Set</span> <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="c1"># Go until f(C) is close enough to zero (i.e., that</span>
+<span class="c1"># C is close enough to the root between a and b</span>
+<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span>
+    <span class="n">If</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">))</span> <span class="o">==</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">L</span><span class="p">))</span> <span class="n">then</span>
+        <span class="c1"># the root must be between C and R</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">C</span>
+    <span class="n">Otherwise</span>
+        <span class="c1"># the root must be between L and C</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">C</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="n">R</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">Output</span><span class="p">:</span> <span class="n">C</span>
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="math">
-$$- \frac{1}{\Delta} f{\left (x \right )} + \frac{1}{\Delta} f{\left (\Delta + x \right )}$$</div></div>
-</div>
-<p>Getting the <em>weights</em> for each term:</p>
+<p>Graphical display of bisection to find first positive root of
+<span class="math">\(\sin(x) - 2/5\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">w</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">finite_diff_weights</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x_list</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="n">Delta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">Delta</span><span class="p">],</span> <span class="n">x0</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
-<span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># &quot;zeroth&quot; derivative weights using just x-Delta, then both x-Delta and x, and finally all three</span>
+<span></span><span class="kn">import</span> <span class="nn">nonlinear_plots</span>
+<span class="n">nonlinear_plots</span><span class="o">.</span><span class="n">bisection_root</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[2]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_21_Slides_13_0.png" src="../_images/lectures_ME400_Lecture_21_Slides_13_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Newton's-Method">
+<h2>Newton’s Method<a class="headerlink" href="#Newton's-Method" title="Permalink to this headline">¶</a></h2>
+<p>Often, a better way to find roots of <span class="math">\(f(x) = 0\)</span> is <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton’s
+method</a>.</p>
+<p>Like bisection, Newton’s method produces a sequence of approximations.</p>
+<p>Unlike bisection, require an <em>initial guess</em> <span class="math">\(x_0\)</span> for the root
+<span class="math">\(x_r\)</span> (and it should be “close”).</p>
+<p>Quick motivation for Newton <em>from the math</em> by recalling</p>
 <div class="math">
-$$\left [ \left [ 1, \quad 0, \quad 0\right ], \quad \left [ 0, \quad 1, \quad 0\right ], \quad \left [ 0, \quad 1, \quad 0\right ]\right ]$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># f&#39; weights</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
+\[f(x) = f(x_0) + \Delta f'(x_0) + \mathcal{O}(\Delta^2) = 0 \, .\]</div>
+<p>Take a leap of faith: <strong>ignore the</strong> <span class="math">\(\mathcal{O}(\Delta^2)\)</span>
+<strong>term</strong> and set</p>
 <div class="math">
-$$\left [ \left [ 0, \quad 0, \quad 0\right ], \quad \left [ - \frac{1}{\Delta}, \quad \frac{1}{\Delta}, \quad 0\right ], \quad \left [ - \frac{1}{2 \Delta}, \quad 0, \quad \frac{1}{2 \Delta}\right ]\right ]$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+\[x_{\text{true root}} \approx x_1 = x_0 + \Delta = x_0 \overbrace{- f(x_0)/f'(x_0)}^{\Delta} \, ,\]</div>
+<p>and do this for <span class="math">\(x_2\)</span> in terms of <span class="math">\(x_1\)</span>, <span class="math">\(x_3\)</span> in
+terms of <span class="math">\(x_2\)</span>, etc. until <span class="math">\(f(x_i)\)</span> is “small enough”.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Newton&#39;s method for finding the root f given x_0&#39;&#39;&#39;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
+<span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
+<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
+   <span class="c1"># Compute the Newton &quot;step&quot;</span>
+   <span class="n">Set</span> <span class="n">Delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="c1"># Compute the next value of x</span>
+   <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">Delta</span>
+<span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># f&#39;&#39; weights</span>
+<p>Quick motivation of Newton <em>from the geometry</em>…</p>
+<p><strong>Exercise</strong>: Solve <span class="math">\(f(x) = \sin(x)-2/5 = 0\)</span> starting with
+<span class="math">\(x_0 = 0.5\)</span> until <span class="math">\(|f(x)| &lt; 10^{-5}\)</span>.</p>
+</div>
+<div class="section" id="Secant-Method">
+<h2>Secant Method<a class="headerlink" href="#Secant-Method" title="Permalink to this headline">¶</a></h2>
+<p>Actually, just like Newton but without <span class="math">\(f'(x)\)</span>! Use a <em>finite
+difference</em> instead.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>&#39;&#39;&#39;Secant method for finding the root f given x_0&#39;&#39;&#39;
+Input: f, x_0, tau
+Set x = x_0
+Set x_0 = x - tau
+While |f(x)| &gt; tau do
+   # Approximate the derivative
+   Set fp = (f(x)-f(x_0))/(x-x_0)
+   # Compute the Newton &quot;step&quot;
+   Set Delta = -f(x)/fp
+   # Store old x, and compute next value
+   Set x_0 = x
+   Set x = x + Delta
+Output: x
+
+*Pro Tip*: Depending on :math:`f(x)` (and its cost), *may* be better
+to use :math:`x` and :math:`x+\delta` for finite difference where
+:math:`\delta &lt; (x-x_0)`.
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
+<div class="section" id="Solving-Systems-of-Nonlinear-Equations-Numerically">
+<h3>Solving Systems of Nonlinear Equations Numerically<a class="headerlink" href="#Solving-Systems-of-Nonlinear-Equations-Numerically" title="Permalink to this headline">¶</a></h3>
+<p>From <span class="math">\(f(x) = 0\)</span> to <span class="math">\(\mathbf{f}(\mathbf{x}) = \mathbf{0}\)</span>…</p>
+<p>…and from <span class="math">\(f'(x)\)</span> to the <strong>Jacobian</strong> matrix <span class="math">\(\mathbf{J}\)</span>:</p>
 <div class="math">
-$$\left [ \left [ 0, \quad 0, \quad 0\right ], \quad \left [ 0, \quad 0, \quad 0\right ], \quad \left [ \frac{1}{\Delta^{2}}, \quad - \frac{2}{\Delta^{2}}, \quad \frac{1}{\Delta^{2}}\right ]\right ]$$</div></div>
+\[\begin{split}  \mathbf{J}(\mathbf{x}) = \begin{bmatrix}
+    \frac{\partial f_0}{\partial x_0} &amp; \frac{\partial f_0}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_{0}}{\partial x_{n-1}} \\
+    \frac{\partial f_1}{\partial x_0} &amp; \frac{\partial f_1}{\partial x_0} &amp; \ldots &amp; \frac{\partial f_{1}}{\partial x_{n-1}} \\
+         &amp;     &amp;  \ddots &amp;  \\
+    \frac{\partial f_0}{\partial x_{n-1}} &amp; \frac{\partial f_1}{\partial x_{n-1}} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_{n-1}}
+\end{bmatrix}\end{split}\]</div>
+<p>(here, partial derivatives evaluated at <span class="math">\(\mathbf{x}\)</span>)</p>
+<p>Newton’s method leads to the sequence</p>
+<div class="math">
+\[\mathbf{x}_{n+1} = \mathbf{x}_{n} - \mathbf{J}^{-1}(\mathbf{x}_n) \mathbf{f}(\mathbf{x}_n) \, .\]</div>
+<p>But that’s like solving
+<span class="math">\(\overbrace{\mathbf{J}(\mathbf{x}_{n})}^{\mathbf{A}} \times \overbrace{[\mathbf{x}_{n} - \mathbf{x}_{n+1}]}^{\mathbf{x}} = \overbrace{\mathbf{f}(\mathbf{x}_n)}^{\mathbf{b}}\)</span>!</p>
 </div>
-<p><strong>Exercise</strong>: Develop a second-order approximation for <span class="math">\(f'(x)\)</span>
-that does <em>not</em> use values less than <span class="math">\(x\)</span>.</p>
 </div>
+<div class="section" id="scipy.optimize.fsolve">
+<h2><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code><a class="headerlink" href="#scipy.optimize.fsolve" title="Permalink to this headline">¶</a></h2>
+<p>Good to know the equations, but better (usually) to use SciPy and its
+<code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code> function:</p>
+<p>The signature (from <code class="docutils literal"><span class="pre">help(fsolve)</span></code>) is</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fsolve</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">fprime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col_deriv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1.49012e-08</span><span class="p">,</span> <span class="n">maxfev</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">epsfcn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
 </div>
+<p>Here, <code class="docutils literal"><span class="pre">func</span></code> represents the nonlinear system function
+<span class="math">\(\mathbf{f}(\mathbf{x})\)</span>, and <code class="docutils literal"><span class="pre">args</span></code> represents any values
+needed to define what <span class="math">\(\mathbf{f}(\mathbf{x})\)</span> does. The initial
+guess is <code class="docutils literal"><span class="pre">x0</span></code>. If available, <code class="docutils literal"><span class="pre">fprime</span></code> should compute
+<span class="math">\(\mathbf{J}(\mathbf{x})\)</span>; if not provided, <code class="docutils literal"><span class="pre">fsolve</span></code> approximates
+the Jacobian using a forward-difference approximation.</p>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
-<p>You should now be able to</p>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Derive finite-difference approximations for first- and second-order
-derivatives using Taylor series.</li>
-<li>Apply SymPy to compute finite-difference approximations of arbitrary
-order for any derivative.</li>
-<li>Numerically/graphically/symbolically demonstrate that the error of an
-<span class="math">\(n\)</span>th-order approximation as <span class="math">\(\Delta \to 0\)</span> exhibits
-the right behavior.</li>
+<li>Find one or more roots of a one-dimensional, nonlinear equation
+<span class="math">\(f(x) = 0\)</span> using the bisection and Newton methods.</li>
+<li>Find local extrema of a function <span class="math">\(f(x)\)</span> using the bisection and
+Newton methods.</li>
+<li>Use <code class="docutils literal"><span class="pre">fsolve</span></code> to solve nonlinear systems.</li>
 </ul>
+</div>
 </div>
 </div>
 
@@ -427,23 +463,27 @@ the right behavior.</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 21 - Numerical Differentiation</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 21 - Root Finding</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Nonlinear-Equations">Nonlinear Equations</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#If,-in-the-beginning,--didn't-go-to-0...">If, in the beginning, <span class="math">\(h\)</span> didn’t go to 0…</a></li>
-<li><a class="reference internal" href="#Back-to-Order">Back to Order</a><ul>
-<li><a class="reference internal" href="#Can-we-do-better-than-first-order?">Can we do better than first order?</a></li>
-<li><a class="reference internal" href="#Can-we-approximate-the-second-derivative?">Can we approximate the second derivative?</a></li>
+<li><a class="reference internal" href="#Analytic-Solutions">Analytic Solutions</a></li>
+<li><a class="reference internal" href="#Graphical-Solutions">Graphical Solutions</a><ul>
+<li><a class="reference internal" href="#Determining-Roots-Numerically">Determining Roots Numerically</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Finite-Difference-Approximations-of-Arbitrary-Order">Finite-Difference Approximations of Arbitrary Order</a><ul>
-<li><a class="reference internal" href="#Developing-New-Schemes">Developing New Schemes</a></li>
+<li><a class="reference internal" href="#Bisection">Bisection</a></li>
+<li><a class="reference internal" href="#Newton's-Method">Newton’s Method</a></li>
+<li><a class="reference internal" href="#Secant-Method">Secant Method</a><ul>
+<li><a class="reference internal" href="#Solving-Systems-of-Nonlinear-Equations-Numerically">Solving Systems of Nonlinear Equations Numerically</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#scipy.optimize.fsolve"><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></a><ul>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

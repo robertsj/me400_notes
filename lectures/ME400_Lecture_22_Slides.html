@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 22 - Numerical Integration &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 22 - Optimization &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,111 +201,79 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-22---Numerical-Integration">
-<h1>Lecture 22 - Numerical Integration<a class="headerlink" href="#Lecture-22---Numerical-Integration" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference external" href="ME400_Lecture_21.ipynb">Lecture 21</a>, finite-difference
-approximations were developed and used to evaluate derivatives
-numerically. In this lecture, we’ll explore and implement our own
-numerical methods for evaluation of integrals. We’ll also use the SciPy
-module for the first time, which provides its own set of tools for
-numerical integration.</p>
+<div class="section" id="Lecture-22---Optimization">
+<h1>Lecture 22 - Optimization<a class="headerlink" href="#Lecture-22---Optimization" title="Permalink to this headline">¶</a></h1>
+<p>In <a class="reference external" href="ME400_Lecture_21.ipynb">Lecture 21</a>, the basics of solving
+nonlinear problems (i.e., “root finding”) were covered. Here, the
+related problem of minimizing (or maximizing) functions is studied,
+which allows us to find <em>optimal</em> solutions in a variety of
+applications.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Evaluate definite integrals numerically using left- and right-sided
-Riemann sums, the mid-point rule, and the trapezoid rule.</li>
-<li>Evaluate definite integrals numerically using the built-in functions
-of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
-<li>Establish the order of an integration scheme using numerical,
-graphical, or symbolic means.</li>
+<li>Define objective functions and constraints provided sufficient inputs</li>
+<li>Define examples of linear/nonlinear, constrained/unconstrained
+optimization problems</li>
+<li>Use <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> to solve a variety of optimization
+problems of interest</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Riemann sum</li>
-<li>left-sided Riemann sum</li>
-<li>right-sided Riemann sum</li>
-<li>mid-point rule</li>
-<li>trapezoid rule</li>
-<li><code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
-<li><code class="docutils literal"><span class="pre">scipy.integrate.quad</span></code></li>
-<li><span class="math">\(n\)</span>th-order approximation</li>
+<li>objective function</li>
+<li>unconstrained optimization</li>
+<li>constrained optimization</li>
+<li>linear program</li>
+<li>gradient vector</li>
+<li>Hessian matrix</li>
+<li><code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code></li>
 </ul>
+<div class="section" id="When-Have-You-Optimized-Something?">
+<h3>When Have You <em>Optimized</em> Something?<a class="headerlink" href="#When-Have-You-Optimized-Something?" title="Permalink to this headline">¶</a></h3>
+<p>Describe one time when you had to determine an <em>optmimum</em> solution for
+some problem. This could be a problem from any class or from a real-life
+situation. If you can’t think of something, describe a hypothetical
+problem. In all cases, state (1) the feature or features being optimized
+and (2) any constraints that apply.</p>
 </div>
-</div>
-<div class="section" id="An-Aside:-Homework-9">
-<h2>An Aside: Homework 9<a class="headerlink" href="#An-Aside:-Homework-9" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="Problem-1">
-<h3>Problem 1<a class="headerlink" href="#Problem-1" title="Permalink to this headline">¶</a></h3>
-<p>Snippet from my own solution:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Member forces</span>
-<span class="n">F_AB</span><span class="p">,</span> <span class="n">F_AC</span><span class="p">,</span> <span class="n">F_BC</span><span class="p">,</span> <span class="n">F_BD</span><span class="p">,</span> <span class="n">F_CD</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;F_AB, F_AC, F_BC, F_BD, F_CD&#39;</span><span class="p">)</span>
-<span class="c1"># Reaction forces</span>
-<span class="n">A_v</span><span class="p">,</span> <span class="n">D_h</span><span class="p">,</span> <span class="n">D_v</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;A_v, D_h, D_v&#39;</span><span class="p">)</span>
-<span class="c1"># Angles, length, and external force</span>
-<span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">F_B</span><span class="p">,</span> <span class="n">F_C</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;theta, phi, alpha, d, F_B, F_C&#39;</span><span class="p">)</span>
-<span class="c1"># Height</span>
-<span class="n">h</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">d</span>
-<span class="c1"># Moments about A should be zero (following right hand rule)</span>
-<span class="n">eq_M_A</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">F_B</span><span class="o">*</span><span class="n">h</span> <span class="o">+</span> <span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">F_C</span><span class="o">*</span><span class="n">d</span> \
-         <span class="o">+</span> <span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">F_B</span><span class="o">*</span><span class="n">d</span> <span class="o">-</span> <span class="n">D_v</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
-<span class="c1"># .... skipped steps ....</span>
-<span class="c1"># Member forces</span>
-<span class="n">eq_Av</span> <span class="o">=</span> <span class="n">A_v</span> <span class="o">-</span> <span class="n">F_AB</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-<span class="n">eq_Ah</span> <span class="o">=</span> <span class="o">-</span><span class="n">F_AB</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">-</span> <span class="n">F_AC</span>
-<span class="n">eq_Bv</span> <span class="o">=</span> <span class="o">-</span><span class="n">F_B</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">F_BC</span> <span class="o">+</span> <span class="n">F_BD</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">F_AB</span><span class="o">*</span><span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-<span class="c1"># .... more skipped steps ...</span>
-<span class="n">equations</span> <span class="o">=</span> <span class="p">[</span><span class="n">eq_M_A</span><span class="p">,</span> <span class="n">eq_M_D</span><span class="p">,</span> <span class="n">eq_F_h</span><span class="p">,</span> <span class="o">...</span>
-<span class="n">unknowns</span> <span class="o">=</span> <span class="p">[</span><span class="n">F_AB</span><span class="p">,</span> <span class="n">F_AC</span><span class="p">,</span> <span class="o">...</span>
-<span class="k">return</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">equations</span><span class="p">,</span> <span class="n">unknowns</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="Problem-2">
-<h3>Problem 2<a class="headerlink" href="#Problem-2" title="Permalink to this headline">¶</a></h3>
-<p>Find <span class="math">\(dw/dv\)</span> from</p>
+<div class="section" id="Some-Nomenclature">
+<h3>Some Nomenclature<a class="headerlink" href="#Some-Nomenclature" title="Permalink to this headline">¶</a></h3>
+<p>Optimization problems often defined by minimizing an <strong>objective
+function</strong></p>
 <div class="math">
-\[5\sin(v) + 3\sec(w) = w - v^2 + 3\]</div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;v w&#39;</span><span class="p">)</span>
-<span class="n">expr</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sec</span><span class="p">(</span><span class="n">w</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">-</span> <span class="n">w</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="n">v</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">3</span>
-<span class="n">d_expr</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="n">sol</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">d_expr</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">w</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">v</span><span class="p">))</span>
-<span class="c1"># just one solution returned, so</span>
-<span class="n">dwdv</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">w</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">w</span><span class="p">)</span> <span class="c1"># sub that problem statement suggested</span>
-<span class="c1"># help(lambdify)</span>
-</pre></div>
-</div>
-<p>Wait, that’s not the homework problem, it’s the example from Lecture 19.</p>
-</div>
-<div class="section" id="Problem-3">
-<h3>Problem 3<a class="headerlink" href="#Problem-3" title="Permalink to this headline">¶</a></h3>
-<p>Draw pictures, do sanity checks, etc. etc. We’ll revisit this one later.</p>
-</div>
-</div>
-<div class="section" id="Riemann-Sums-in-Practice">
-<h2>Riemann Sums in Practice<a class="headerlink" href="#Riemann-Sums-in-Practice" title="Permalink to this headline">¶</a></h2>
-<p>For <span class="math">\(df/dx\)</span>, choose two or more values of <span class="math">\(f\)</span> (forward,
-backward, etc.) and take <span class="math">\(\Delta\)</span> to some small but finite value.</p>
-<p>For <span class="math">\(\int^b_a f(x) dx\)</span>, we have analogs to these choices based on
-how we define the rectangles (or other shapes).</p>
-<p>In <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>, our Riemann sum was</p>
+\[\begin{split}\min_{x} f(x) \qquad \text{or} \qquad \min_{\mathbf{x}} f(\mathbf{x}) \\\end{split}\]</div>
+<p>subject to the <strong>inequality constraints</strong></p>
 <div class="math">
-\[S = \frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ i(b-a) }{n} + a \Bigg )\]</div>
-<p>for uniformly spaced points.</p>
-<p>Let’s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
-<span class="math">\(x\in[0, 1]\)</span> with <span class="math">\(n=5\)</span>:</p>
+\[\begin{split}g(x) \ge 0 \qquad \text{or} \qquad \mathbf{g(x)}  \ge \mathbf{0} \\\end{split}\]</div>
+<p>and/or the <strong>equality constraints</strong></p>
+<div class="math">
+\[\begin{split}h(x) = 0 \qquad \text{or} \qquad \mathbf{h(x)} = \mathbf{0} \\\end{split}\]</div>
+</div>
+<div class="section" id="Unconstrained-Optimization">
+<h3>Unconstrained Optimization<a class="headerlink" href="#Unconstrained-Optimization" title="Permalink to this headline">¶</a></h3>
+<p>When there are no constraints, the problem <span class="math">\(\min_x f(x)\)</span> becomes
+one of finding <em>extrema</em>. Remember, a function exhibits an extremum
+where its first derivative vanishes.</p>
+<p><strong>Example</strong>: Solve <span class="math">\(\min_x f(x)\)</span> where
+<span class="math">\(f(x) = x^2(x-10)+(x+8)^2/1000\)</span> using (1) Newton’s method and (2)
+<code class="docutils literal"><span class="pre">minimize</span></code>. This is a <em>nonlinear</em> optimization problem.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">riemann_sum_plots</span>
-<span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">right_sided_sum</span><span class="p">()</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">1</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">1000</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;local minimum&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="s1">&#39;local maximum&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;global minimum&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -313,109 +281,47 @@ how we define the rectangles (or other shapes).</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_22_Slides_11_0.png" src="../_images/lectures_ME400_Lecture_22_Slides_11_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_22_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_22_Slides_7_0.png" />
 </div>
 </div>
-<p>If instead we defined our sum to be</p>
-<div class="math">
-\[S =\frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1)(b-a) }{n} + a \Bigg )\]</div>
-<p>the picture becomes</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">left_sided_sum</span><span class="p">()</span>
+<span></span><span class="c1"># For option 1, we need the first and second derivative of f(x), but</span>
+<span class="c1"># I&#39;m to lazy to do it by hand!</span>
+<span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">2e-7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recursively compute any order derivative using central difference</span>
+<span class="sd">       approximation for the first derivative.  Here, `order` is the derivative</span>
+<span class="sd">       order (e.g., 1 for first derivative, 2 for second derivative, etc.) and</span>
+<span class="sd">       `delta` is the finite-difference step size.  Careful: `delta` probably</span>
+<span class="sd">       should not be made smaller or round-off errors may cause issues!&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">delta</span><span class="p">,</span> <span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_22_Slides_13_0.png" src="../_images/lectures_ME400_Lecture_22_Slides_13_0.png" />
-</div>
-</div>
-<p><strong>Exercise</strong>: Both sums are only approximate. Which <em>overestimate</em>,
-which <em>underestimates</em>, and is this always the case?</p>
-<p><strong>Exercise</strong>: Consider the following two columns of data:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="39%" />
-<col width="61%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><span class="math">\(x\)</span></th>
-<th class="head"><span class="math">\(\sqrt{x}\)</span></th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>0.0000</td>
-<td>0.0000</td>
-</tr>
-<tr class="row-odd"><td>0.3333</td>
-<td>0.5774</td>
-</tr>
-<tr class="row-even"><td>1.0000</td>
-<td>1.0000</td>
-</tr>
-<tr class="row-odd"><td>1.5000</td>
-<td>1.2247</td>
-</tr>
-<tr class="row-even"><td>2.0000</td>
-<td>1.4142</td>
-</tr>
-</tbody>
-</table>
-<p>Estimate <span class="math">\(\int^2_0 f(x) dx\)</span> using the right-sided sum and
-left-sided sum. Note that the <span class="math">\(x\)</span> points are <strong>not evenly
-spaced</strong>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3333</span><span class="p">,</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="mf">1.5000</span><span class="p">,</span> <span class="mf">2.0000</span><span class="p">])</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5774</span><span class="p">,</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="mf">1.2247</span><span class="p">,</span> <span class="mf">1.4142</span><span class="p">])</span>
-<span class="n">dx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">-</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">I_rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-<span class="n">I_lss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="n">f</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">I_rss</span><span class="p">,</span> <span class="n">I_lss</span><span class="p">,</span>  <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">)),</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">I_rss</span><span class="o">+</span><span class="n">I_lss</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(2.17859742, 1.4973025799999999, 1.8856180831641267, 1.83795)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Beyond-the-One-Side-Sums">
-<h2>Beyond the One-Side Sums<a class="headerlink" href="#Beyond-the-One-Side-Sums" title="Permalink to this headline">¶</a></h2>
-<p>We can do better. As motivation, note that the central difference is
-nothing but an <em>average</em> of the forward and backward differences:</p>
-<div class="math">
-\[\frac{1}{2} \Bigg ( \frac{f(x+h)-f(x)}{h} + \frac{f(x)-f(x-h)}{h} \Bigg ) = \frac{f(x+h)-f(x-h)}{2h}\]</div>
-<p><strong>Option I</strong>: evaluate <span class="math">\(f\)</span> at the average (middle) <span class="math">\(x\)</span>
-points:</p>
-<div class="math">
-\[S = \frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1/2)(b-a) }{n} + a \Bigg )\]</div>
-<p>for which the picture becomes</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">midpoint_sum</span><span class="p">()</span>
+<span></span><span class="c1"># set initial guess</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;converged at iteration {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">it</span><span class="p">))</span>
+        <span class="k">break</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;minimum is at x = {:.4e}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;minimum value is {:.4e}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -423,88 +329,158 @@ points:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_22_Slides_19_0.png" src="../_images/lectures_ME400_Lecture_22_Slides_19_0.png" />
+<div class="highlight"><pre>
+converged at iteration 6
+minimum is at x = 6.5523e+00
+minimum value is -4.7839e+00
+</pre></div></div>
 </div>
-</div>
-<p><strong>Option II</strong>: Use the same points as one-sides sums, but <em>average</em> the
-<span class="math">\(f\)</span> values:</p>
-<div class="math">
-\[\begin{split}\begin{split}
-  S &amp;= \frac{b-a}{2n}
-    \Bigg [ \sum^{n}_{i=1} f \Bigg ( \frac{ (i)(b-a) }{n} + a \Bigg )
-         +  \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1)(b-a) }{n} + a \Bigg ) \Bigg ] \\
-    &amp;= \frac{b-a}{2n}
-    \Bigg [ f(a) + f(b) + \sum^{n-1}_{i=1} f \Bigg ( \frac{ i(b-a) }{n} + a \Bigg ) \Bigg ]
-\end{split}\end{split}\]</div>
-<p>This is the <strong>trapezoid rule</strong> for uniformly-spaced points.</p>
-</div>
-<div class="section" id="What-About-Accuracy?">
-<h2>What About Accuracy?<a class="headerlink" href="#What-About-Accuracy?" title="Permalink to this headline">¶</a></h2>
-<p>It is possible to determine the <em>order</em> of various numerical integration
-rules. The basic idea is to observe the (absolute) error between an
-exact, reference value for an integral and the approximation of that
-integral for various step sizes <span class="math">\(\Delta\)</span>.</p>
-<p><strong>Exercise</strong>: Determine whether the right-sided and midpoint sums are
-first order or second order using the definite integral
-<span class="math">\(\int^1_0 e^x dx = e - 1\)</span> as a test case.</p>
-</div>
-<div class="section" id="Using-scipy.integrate">
-<h2>Using <code class="docutils literal"><span class="pre">scipy.integrate</span></code><a class="headerlink" href="#Using-scipy.integrate" title="Permalink to this headline">¶</a></h2>
-<p>The module <code class="docutils literal"><span class="pre">scipy.integrate</span></code> provides several integration functions,
-including the powerful <code class="docutils literal"><span class="pre">quad</span></code> function:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>In [99]: help(quad)
-Help on function quad in module scipy.integrate.quadpack:
-
-quad(func, a, b, args=(), full_output=0, epsabs=1.49e-08, epsrel=1.49e-08, limit=50, points=None, weight=None, wvar=None, wopts=None, maxp1=50, limlst=50)
-    Compute a definite integral.
-
-    Integrate func from `a` to `b` (possibly infinite interval) using a
-    technique from the Fortran library QUADPACK.
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
 </pre></div>
 </div>
-<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate <span class="math">\(\int^1_0 e^x dx = e - 1\)</span>.</p>
-<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
-<span class="math">\(\int^1_0 (ax^2 + bx + c)dx\)</span> for <span class="math">\(a=b=c=1\)</span>.</p>
-<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">dblquad</span></code> to evaluate the volume of the tetrahedron
-(i.e., triangular pyramid) that lies in the first octant and is bounded
-by the three coordinate planes (i.e., <span class="math">\(xy\)</span>, <span class="math">\(yz\)</span>, and
-<span class="math">\(zx\)</span> planes) and the plane <span class="math">\(z = 4 - 3x - y\)</span>.</p>
-<div class="nbinput docutils container">
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1">#  Option 2 - scipy&#39;s minimize</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+</pre></div>
+</div>
+</div>
+<p>Note we needed the <em>second derivative</em> of the objective function
+<span class="math">\(f(x)\)</span>. For multi-dimensional problems, compare the following:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  f(x) &amp;\longrightarrow f(\mathbf{x})\\
+  \frac{df}{dx} &amp;\longrightarrow \mathbf{g}(\mathbf{x}) = \left[ \begin{array}{c}
+   \partial f/\partial x_0 \\
+   \partial f/\partial x_1 \\
+   \vdots \\
+   \partial f/\partial x_{n-1}
+   \end{array} \right] = \nabla f(\mathbf{x}) \qquad \text{the gradient vector}  \\
+  \frac{d^2f}{dx^2} &amp;\longrightarrow \mathbf{H}(\mathbf{x})
+       = \begin{bmatrix}
+    \frac{\partial g_0}{\partial x_0} &amp; \frac{\partial g_0}{\partial x_1} &amp; \ldots &amp; \frac{\partial g_{0}}{\partial x_{n-1}} \\
+    \frac{\partial g_1}{\partial x_0} &amp; \frac{\partial g_1}{\partial x_0} &amp; \ldots &amp; \frac{\partial g_{1}}{\partial x_{n-1}} \\
+         &amp;     &amp;  \ddots &amp;  \\
+    \frac{\partial g_{n-1}}{\partial x_{n-1}} &amp; \frac{\partial g_{n-1}}{\partial x_{n-1}} &amp; \ldots &amp; \frac{\partial g_{n-1}}{\partial x_{n-1}}
+\end{bmatrix}  \qquad \text{the Hessian matrix}
+\end{split}\end{split}\]</div>
+<p>Newton applied with <span class="math">\(\mathbf{g}(\mathbf{x})\)</span> in place of the
+residual and <span class="math">\(\mathbf{H}(\mathbf{x})\)</span> in place of the
+Jacobian—otherwise, identical!</p>
+</div>
+<div class="section" id="Constrained-Optimization">
+<h3>Constrained Optimization<a class="headerlink" href="#Constrained-Optimization" title="Permalink to this headline">¶</a></h3>
+<p>Real engineering problems almost always have constraints: maximum
+stresses allowed, limited resources, etc.</p>
+<p><strong>Example</strong>: Consider the following minimization problem:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  \min_{\mathbf{x}} &amp;= x_0^2 - 5 x_1 \\
+   \text{subject to:} &amp; \\
+   x_0 + x_1 &amp; \leq 5 \\
+   x_0 &amp; \leq 10
+\end{split}\end{split}\]</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">dblquad</span>
-<span class="n">dblquad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">4</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">gfun</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hfun</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">4</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(3.555555555555556, 8.84325393432354e-14)
-</pre></div>
-</div>
-</div>
+<p><strong>Example</strong>: Consider a pet food company that makes two products with
+inputs summarize as follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="54%" />
+<col width="23%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Meaties</th>
+<th class="head">Yummies</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Sales prices per package</td>
+<td>$2.80</td>
+<td>$2.00</td>
+</tr>
+<tr class="row-odd"><td>Raw materials per package</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>cereal</td>
+<td>2 lb</td>
+<td>3 lb</td>
+</tr>
+<tr class="row-odd"><td>meat</td>
+<td>3 lb</td>
+<td>1.5 lb</td>
+</tr>
+<tr class="row-even"><td>Variable cost-blending and packaging</td>
+<td>$0.25/package</td>
+<td>$0.20/package</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="72%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Resources</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>maximum Meaties production/month</td>
+<td>90,000</td>
+</tr>
+<tr class="row-odd"><td>cereal/month</td>
+<td>400,000 lb</td>
+</tr>
+<tr class="row-even"><td>cost</td>
+<td>$0.20/lb</td>
+</tr>
+<tr class="row-odd"><td>meat/month</td>
+<td>300,000 lb</td>
+</tr>
+<tr class="row-even"><td>cost</td>
+<td>$0.50/lb</td>
+</tr>
+</tbody>
+</table>
+<p>How should the company allocate its resources each month?</p>
+<p>(From <a class="reference external" href="http://www.uky.edu/~dsianita/300/online/LP.pdf">http://www.uky.edu/~dsianita/300/online/LP.pdf</a>).</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Evaluate definite integrals numerically using left- and right-sided
-Riemann sums, the mid-point rule, and the trapezoid rule.</li>
-<li>Evaluate definite integrals numerically using the built-in functions
-of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
-<li>Establish the order of an integration scheme using numerical,
-graphical, or symbolic means (actually, this isn’t covered, but I’m
-willing to bet you could do it with <code class="docutils literal"><span class="pre">series</span></code>!).</li>
+<li>Define objective functions and constraints provided sufficient inputs</li>
+<li>Define examples of linear/nonlinear, constrained/unconstrained
+optimization problems</li>
+<li>Use <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> to solve a variety of optimization
+problems of interest</li>
 </ul>
-<p><strong>Reminder</strong>: Exam 2 is on Friday. Exam from last year posted. Confirm
-ASAP (email, office hours) for accommodations.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -516,23 +492,16 @@ ASAP (email, office hours) for accommodations.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 22 - Numerical Integration</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 22 - Optimization</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#An-Aside:-Homework-9">An Aside: Homework 9</a><ul>
-<li><a class="reference internal" href="#Problem-1">Problem 1</a></li>
-<li><a class="reference internal" href="#Problem-2">Problem 2</a></li>
-<li><a class="reference internal" href="#Problem-3">Problem 3</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Riemann-Sums-in-Practice">Riemann Sums in Practice</a></li>
-<li><a class="reference internal" href="#Beyond-the-One-Side-Sums">Beyond the One-Side Sums</a></li>
-<li><a class="reference internal" href="#What-About-Accuracy?">What About Accuracy?</a></li>
-<li><a class="reference internal" href="#Using-scipy.integrate">Using <code class="docutils literal"><span class="pre">scipy.integrate</span></code></a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#When-Have-You-Optimized-Something?">When Have You <em>Optimized</em> Something?</a></li>
+<li><a class="reference internal" href="#Some-Nomenclature">Some Nomenclature</a></li>
+<li><a class="reference internal" href="#Unconstrained-Optimization">Unconstrained Optimization</a></li>
+<li><a class="reference internal" href="#Constrained-Optimization">Constrained Optimization</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 20 - Taylor Series and the Root of Numerical Methods &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 20 - Linear Systems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,160 +201,284 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods">
-<h1>Lecture 20 - Taylor Series and the Root of Numerical Methods<a class="headerlink" href="#Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>At this point, the reader is equipped with the basic symbolic tools
-needed to perform algebraic, differential, and integral operations. In
-this lecture, another topic from basic calculus is revisited: <strong>Taylor
-series</strong>. Along the way, we’ll see how truncated series expansions lead
-to useful approximations and how those approximations pave the way for
-numerical methods.</p>
+<div class="section" id="Lecture-20---Linear-Systems">
+<h1>Lecture 20 - Linear Systems<a class="headerlink" href="#Lecture-20---Linear-Systems" title="Permalink to this headline">¶</a></h1>
+<p>In this lecture, we consider the linear system
+<span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>, where <span class="math">\(\mathbf{A}\)</span> is a square
+<span class="math">\(n\times n\)</span> matrix, while both <span class="math">\(\mathbf{x}\)</span> and
+<span class="math">\(\mathbf{b}\)</span> are vectors of <span class="math">\(n\)</span> elements. We’ll examine the
+basic <em>elimination</em> algorithm and review how to set up and solve such
+systems with NumPy.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Symbolically compute series expansions of a function</li>
-<li>Explain what is meant by <em>order</em> in the context of series expansions
-(and numerical approximation)</li>
-<li>Numerically demonstrate that a series expansion of a function
-provides a good, <em>local</em> approximation</li>
+<li>Explain what it means for <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> to have a
+solution.</li>
+<li>Define <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> from engineering or other
+inputs.</li>
+<li>Solve linear systems using basic Gaussian elimination.</li>
+<li>Solve linear systems using NumPy.</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Taylor series</li>
-<li>Maclaurin series</li>
-<li><span class="math">\(\mathcal{O}(\Delta^n)\)</span> as <em>order</em> in a different way</li>
-<li>local approximation</li>
+<li>matrix</li>
+<li>vector</li>
+<li>matrix-vector product</li>
+<li>column space</li>
+<li>Gaussian elimination</li>
+<li>pivot</li>
+<li><code class="docutils literal"><span class="pre">np.linalg.solve</span></code></li>
 </ul>
+<div class="section" id="Matrix-Vector-Products-and-Relation-to-Linear-Systems">
+<h3>Matrix-Vector Products and Relation to Linear Systems<a class="headerlink" href="#Matrix-Vector-Products-and-Relation-to-Linear-Systems" title="Permalink to this headline">¶</a></h3>
+<p>A fundamental operation in linear algebra is the <em>matrix-vector</em> product
+<span class="math">\(\mathbf{Av} \to \mathbf{w}\)</span>.</p>
+<p>Example for <span class="math">\(3\times 3\)</span> system:</p>
+<div class="math">
+\[\begin{split}\mathbf{Av} =
+\begin{bmatrix}
+  a_{00} &amp; a_{01} &amp; a_{02} \\
+  a_{10} &amp; a_{11} &amp; a_{12} \\
+  a_{20} &amp; a_{21} &amp; a_{22} \\
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   v_0 \\
+   v_1 \\
+   v_2
+   \end{array} \right] =
+\left[ \begin{array}{c}
+   a_{00} v_0 + a_{01} v_1 + a_{02} v_2 \\
+   a_{10} v_0 + a_{11} v_1 + a_{12} v_2 \\
+   a_{20} v_0 + a_{21} v_1 + a_{22} v_2 \\
+   \end{array} \right]
+= \mathbf{w} \, .\end{split}\]</div>
+<p>Each element of <span class="math">\(\mathbf{w}\)</span> is a <em>dot product</em> or <em>inner
+product</em>:</p>
+<div class="math">
+\[w_i = \sum_{j=0}^{j=n-1} a_{ij} v_j \, = \mathbf{a}_{i:}^T \mathbf{v} \, .\]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">matrix_vector</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Matrix-vector product for a square matrix A.&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="c1"># or replace 6&amp;7 by w[i] = A[i, :].dot(v)</span>
+    <span class="k">return</span> <span class="n">w</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="Taylor-Series">
-<h2>Taylor Series<a class="headerlink" href="#Taylor-Series" title="Permalink to this headline">¶</a></h2>
-<p>The <strong>Taylor series</strong> of <span class="math">\(f(x)\)</span> about <span class="math">\(x_0\)</span> is</p>
+<p><strong>Exercise</strong>: What <em>order</em> is this matrix-vector algorithm? In other
+words, if we increase <span class="math">\(n\)</span> from <span class="math">\(10\)</span> to <span class="math">\(100\)</span>, by how
+much would the time to execute <code class="docutils literal"><span class="pre">matrix_vector</span></code> increase? Here, the
+unit of work is the product <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]*v[j]</span></code>, which is one
+<em>floating-point operation</em> or <em>FLOP</em>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">A</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">matrix_vector</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">te</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;elapsed time = {:.2e} seconds&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">te</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+elapsed time = 1.55e-04 seconds
+</pre></div></div>
+</div>
+<p>An <em>alternative</em> view of <span class="math">\(\mathbf{Av} \to \mathbf{w}\)</span>:</p>
+<div class="math">
+\[\begin{split}  \mathbf{w} =
+v_0 \left[ \begin{array}{c}
+   a_{00} \\
+   a_{10} \\
+   a_{20}
+   \end{array} \right] +
+v_1 \left[ \begin{array}{c}
+   a_{01} \\
+   a_{11} \\
+   a_{21}
+   \end{array} \right] +
+v_2 \left[ \begin{array}{c}
+   a_{02} \\
+   a_{12} \\
+   a_{22}
+   \end{array} \right]
+=  v_0 \mathbf{a}_{:0} + v_1\mathbf{a}_{:1} + v_2\mathbf{a}_{:2} \, .\end{split}\]</div>
+<p>Hence, <span class="math">\(\mathbf{w}\)</span> is a <em>linear combination of the columns</em> of
+<span class="math">\(\mathbf{A}\)</span>, and all possible linear combinations of
+<span class="math">\(\mathbf{A}\)</span>‘s represents the <em>column space</em> of
+<span class="math">\(\mathbf{A}\)</span>.</p>
+<p>The <em>connection</em>: left and right sides of <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>
+equal if and only if <span class="math">\(\mathbf{b}\)</span> is a linear combination of the
+columns of <span class="math">\(\mathbf{A}\)</span>:</p>
 <div class="math">
 \[\begin{split}\begin{split}
-  f(x) &amp;= f(x_0) + \frac{df}{dx} \Big |_{x = x_0} (x-x_0) + \frac{1}{2} \frac{d^2 f}{dx^2} \Big |_{x = x_0} (x-x_0)^2 + \frac{1}{6}\frac{d^3 f}{d x^3} \Big |_{x = x_0} (x-x_0)^3 + \ldots \\
-       &amp;= \sum^{\infty}_{n=0} \frac{1}{n!}\frac{d^n f}{dx^n} \Big |_{x=x_0} (x-x_0)^n
+\mathbf{Ax} &amp; =
+\begin{bmatrix}
+  a_{00} &amp; a_{01} &amp; \cdots &amp; a_{0,n-1} \\
+  a_{10} &amp; a_{11} &amp; \cdots &amp; a_{1,n-1} \\
+  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\
+  a_{m-1,0} &amp; a_{m-1,2} &amp; \cdots &amp; a_{m-1,n-1}
+\end{bmatrix}
+\times
+\left[ \begin{array}{c}
+   x_0 \\
+   x_1 \\
+   \vdots \\
+   x_{m-1}
+   \end{array} \right] \\
+&amp; = x_0 \mathbf{a}_{:, 0} + x_1 \mathbf{a}_{:, 1} + \ldots + x_{m-1} \mathbf{a}_{:,m-1}  \\
+&amp; = \mathbf{b}
 \end{split}\end{split}\]</div>
-<p>The series is a <strong>Maclaurin</strong> series if <span class="math">\(x_0 = 0\)</span>.</p>
-<p>The Taylor series exists if <span class="math">\(f(x)\)</span> is infinitely differentiable at
-<span class="math">\(x = x_0\)</span>, i.e., <span class="math">\(f(x)\)</span> is “well behaved.”</p>
-<p><strong>Exercise</strong>: Write a function that returns the <span class="math">\(n\)</span>th term of a
-Taylor series for an function <span class="math">\(f(x)\)</span> about <span class="math">\(x=x_0\)</span>.</p>
-<p>SymPy can compute <em>truncated</em> Taylor series directly via:</p>
+</div>
+<div class="section" id="Elimination-and-Substitution-for-Solving-Systems">
+<h3>Elimination and Substitution for Solving Systems<a class="headerlink" href="#Elimination-and-Substitution-for-Solving-Systems" title="Permalink to this headline">¶</a></h3>
+<p>Consider the following (slightly modified from the reading:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">eliminate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">U</span><span class="p">)):</span>
+        <span class="n">pivot</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">pivot</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;pivot is zero!&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+            <span class="n">multiple</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="n">pivot</span>
+            <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">multiple</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)):</span>
+                <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">multiple</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;column = {}, pivot = {:.4f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">pivot</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;U = </span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[[&#39;</span><span class="p">,</span><span class="s1">&#39; [&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]]&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="s1">&#39; |&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">c</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [55]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a x x_0&#39;</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">eliminate</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[2]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="math">
-$$e^{a x_{0}} + a \left(x - x_{0}\right) e^{a x_{0}} + \frac{a^{2}}{2} \left(x - x_{0}\right)^{2} e^{a x_{0}} + \frac{a^{3}}{6} \left(x - x_{0}\right)^{3} e^{a x_{0}} + \mathcal{O}\left(\left(x - x_{0}\right)^{4}; x\rightarrow x_{0}\right)$$</div></div>
+<div class="highlight"><pre>
+column = 0, pivot = 2.0000
+U =
+ | 2.  -1.   0.  |
+ | 0.   1.5 -1.  |
+ | 0.  -1.   2.  |
+column = 1, pivot = 1.5000
+U =
+ | 2.         -1.          0.         |
+ | 0.          1.5        -1.         |
+ | 0.          0.          1.33333333 |
+column = 2, pivot = 1.3333
+U =
+ | 2.         -1.          0.         |
+ | 0.          1.5        -1.         |
+ | 0.          0.          1.33333333 |
+</pre></div></div>
+</div>
+<p><strong>Exercise</strong>: Can you reason out <em>a priori</em> what the order of
+elimination is? Perform a numerical experiment to check your prediction.</p>
+<p>Elimination is the hard part, but we do not yet have the solution
+<span class="math">\(\mathbf{x}\)</span>.</p>
+<p>The <em>solution</em>: use <em>backsubstitution</em> by solving for <span class="math">\(x_{n-1}\)</span>
+first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">back_substitute</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Add up all the pieces that go on the right hand side</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+            <span class="n">rhs</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">-</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="c1"># Recall that x[j] is known!</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhs</span> <span class="o">/</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="c1"># Solve for the next unknown</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [64]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">removeO</span><span class="p">()</span>
+<span></span><span class="n">back_substitute</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
+<span></span>Out[64]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{a^{3}}{6} \left(x - x_{0}\right)^{3} e^{a x_{0}} + \frac{a^{2}}{2} \left(x - x_{0}\right)^{2} e^{a x_{0}} + a \left(x - x_{0}\right) e^{a x_{0}} + e^{a x_{0}}$$</div></div>
-</div>
-<p><strong>Exercise</strong>: Find the two term Taylor series expansion of
-<span class="math">\((1+x)^a\)</span>, known as the <em>binomial approximation</em>. Explore this
-approximation for different values of <span class="math">\(x\)</span> and <span class="math">\(a\)</span>. What can
-you conclude?</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="o">**</span><span class="n">Exercise</span><span class="o">**</span><span class="p">:</span> <span class="n">Does</span> <span class="n">the</span> <span class="o">**</span><span class="n">Taylor</span><span class="o">**</span> <span class="n">series</span> <span class="n">exist</span>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 1.5,  2. ,  1.5])
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Another-Meaning-for-">
-<h2>Another Meaning for <span class="math">\(\mathcal{O}\)</span><a class="headerlink" href="#Another-Meaning-for-" title="Permalink to this headline">¶</a></h2>
-<p>What does <span class="math">\(\mathcal{O}\)</span> mean?</p>
-<p>Previously, <span class="math">\(\mathcal{O}(n^p)\)</span> read <em>number of operations is
-proportional to</em> <span class="math">\(n^p\)</span></p>
-<p>Now, <span class="math">\(\mathcal{O}(\Delta^p)\)</span> reads <em>all terms proportional to</em>
-<span class="math">\(\Delta^n\)</span> <em>for</em> <span class="math">\(n \geq p\)</span> (and specifically, as
-<span class="math">\(\Delta \to 0\)</span>)</p>
-<p><strong>Exercise</strong>: Approximate <span class="math">\(e^x\)</span> using Taylor series approximations
-with <span class="math">\(n = 1, 2, \ldots 10\)</span> terms about <span class="math">\(x_0 = 0\)</span>, evaluate
-each expression for <span class="math">\(x = 0.1\)</span>, and produce a graphic that compares
-these values to the true value.</p>
-</div>
-<div class="section" id="Other-Applications">
-<h2>Other Applications<a class="headerlink" href="#Other-Applications" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Integration</li>
-<li>Linearization (of, e.g., control systems)</li>
-</ul>
-<p><strong>Example</strong>: Consider the following integral</p>
-<div class="math">
-\[\int^1_0 \cos(x^2) dx\]</div>
-<p>Integrate it!</p>
+<div class="section" id="Practical-Use-of-Matrices">
+<h3>Practical Use of Matrices<a class="headerlink" href="#Practical-Use-of-Matrices" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
-<li>Symbolically compute series expansions of a function</li>
-<li>Explain what is meant by <em>order</em> in the context of series expansions
-(and numerical approximation)</li>
-<li>Numerically demonstrate that a series expansion of a function
-provides a good, <em>local</em> approximation</li>
+<li>Explain what it means for <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> to have a
+solution.</li>
+<li>Define <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> from engineering or other
+inputs.</li>
+<li>Solve linear systems using basic Gaussian elimination.</li>
+<li>Solve linear systems using NumPy.</li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -367,16 +491,15 @@ provides a good, <em>local</em> approximation</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 20 - Taylor Series and the Root of Numerical Methods</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 20 - Linear Systems</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Matrix-Vector-Products-and-Relation-to-Linear-Systems">Matrix-Vector Products and Relation to Linear Systems</a></li>
+<li><a class="reference internal" href="#Elimination-and-Substitution-for-Solving-Systems">Elimination and Substitution for Solving Systems</a></li>
+<li><a class="reference internal" href="#Practical-Use-of-Matrices">Practical Use of Matrices</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Taylor-Series">Taylor Series</a></li>
-<li><a class="reference internal" href="#Another-Meaning-for-">Another Meaning for <span class="math">\(\mathcal{O}\)</span></a></li>
-<li><a class="reference internal" href="#Other-Applications">Other Applications</a></li>
-<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
 </ul>

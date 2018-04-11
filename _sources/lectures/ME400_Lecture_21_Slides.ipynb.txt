@@ -8,11 +8,9 @@
     }
    },
    "source": [
-    "# Lecture 21 - Numerical Differentiation\n",
+    "# Lecture 21 - Root Finding\n",
     "\n",
-    "## Overview, Objectives, and Key Terms\n",
-    " \n",
-    "In [Lecture 20](ME400_Lecture_20.ipynb), Taylor series were reviewed, and SymPy was used to define and study such series.  A key idea introduced was that a *truncated* Taylor series expansion of $f(x)$ about $x_0$ is (1) accurate near the point $x_0$ and (2) made better by including additional terms of the full series.  In this lesson, such truncated series are used to define **finite difference** approximations for derivatives.  Although good for some applications by themselves, finite-difference approximations are critical for solving differential equations numerically, a topic to be covered in several lectures."
+    "We've now seen finite-difference approximations for derivatives, Riemann sums for integration, and elimination for solving $\\mathbf{Ax}=\\mathbf{b}$.  Now, we turn to solving $f(x) = 0$ and $\\mathbf{f(x)} = \\mathbf{0}$, i.e., nonlinear systems."
    ]
   },
   {
@@ -23,13 +21,14 @@
     }
    },
    "source": [
+    "\n",
     "### Objectives\n",
     "\n",
     "By the end of this lesson, you should be able to\n",
     "\n",
-    "- Derive finite-difference approximations for first- and second-order derivatives using Taylor series.\n",
-    "- Apply SymPy to compute finite-difference approximations of arbitrary order for any derivative.\n",
-    "- Numerically/graphically/symbolically demonstrate that the error of an $n$th-order approximation as $\\Delta \\to 0$ exhibits the right behavior."
+    "- Find one or more roots of a one-dimensional, nonlinear equation $f(x) = 0$ using the bisection and Newton methods.\n",
+    "- Find local extrema of a function $f(x)$ using the bisection and Newton methods.\n",
+    "- Establish the order of an integration scheme using numerical, graphical, or symbolic means."
    ]
   },
   {
@@ -42,14 +41,24 @@
    "source": [
     "### Key Terms\n",
     "\n",
-    "- finite difference\n",
-    "- forward difference\n",
-    "- backward difference\n",
-    "- central difference\n",
-    "- truncation error\n",
-    "- first-order approximation\n",
-    "- second-order approximation\n",
-    "- $n$th-order approximation"
+    "- nonlinear equation\n",
+    "- transcendental equation\n",
+    "- graphical solution\n",
+    "- bisection method\n",
+    "- Newton's method\n",
+    "- quadratic convergence\n",
+    "- second-order convergence\n",
+    "- order of convergence\n",
+    "- secant method\n",
+    "- Steffensen's method\n",
+    "- nonlinear systems\n",
+    "- Jacobian matrix\n",
+    "- `scipy.optimize.fsolve`\n",
+    "- optimization\n",
+    "- extremum\n",
+    "- critical point\n",
+    "- objective function\n",
+    "- `scipy.optimize.minimize`"
    ]
   },
   {
@@ -60,137 +69,21 @@
     }
    },
    "source": [
-    "## If, in the beginning, $h$ didn't go to 0...\n",
+    "## Nonlinear Equations\n",
     "\n",
-    "Recall that the derivative of $f(x)$ is\n",
+    "Linear equations are characterized by *linear combinations* or the unknowns, e.g.,\n",
     "\n",
-    "$$\n",
-    "  \\frac{df}{dx} = \\lim_{\\Delta \\to 0} \\frac{f(x+\\Delta)-f(x)}{\\Delta} \\, .\n",
-    "$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "What if that limit is not taken and, instead, a \"small\" value of $\\Delta$ is used?  The result is our first **finite-difference** approximation, the **forward difference**:\n",
-    "\n",
-    "$$\n",
-    "  f'(x) \\approx  \\frac{f(x+\\Delta)-f(x)}{\\Delta} \\, .\n",
-    "$$\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "An equally valid approximation is the **backward difference**:\n",
-    "$$\n",
-    "  f'(x) \\approx  \\frac{f(x)-f(x-\\Delta)}{\\Delta} \\, .\n",
-    "$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Exercise**: Use the backward-difference approximation to approximate the derivative of $e^x$ at $x = 1$ for $\\Delta = 10^0, 10^{-1}, \\ldots, 10^{-7}$ and plot the error as a function of $\\Delta$."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Back to Order\n",
-    "\n",
-    "The forward-difference  (and backward-difference) approximation improves with smaller $\\Delta$, but *how much better*?  \n",
-    "\n",
-    "Revisit the Taylor series for $f(x+\\Delta)$ about the point $x$!\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "$$\n",
-    "  f(x+\\Delta) = f(x) + f'(x)\\Delta + \\frac{1}{2}f''(x)\\Delta^2 + \\mathcal{O}(\\Delta^3) \\, .\n",
-    "$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
     "$$\n",
     "\\begin{split}\n",
-    "  f'(x) &= \\frac{f(x+\\Delta) - f(x)}{\\Delta} - \\frac{1}{2}f''(x)\\Delta + \\mathcal{O}(\\Delta^2) \\\\\n",
-    "        &= \\frac{f(x+\\Delta) - f(x)}{\\Delta} + \\mathcal{O}(\\Delta) \\\\\n",
+    " ax + by &= 1 \\\\\n",
+    " cx + dy &= 2 \n",
     "\\end{split}\n",
-    "$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "Error is proportional to *first power* of $\\Delta$ as $\\Delta \\to 0$.  Hence, **the forward-difference approximation is first order** (so, too, is the backward-difference approximation)."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Can we do better than first order?  \n",
-    "\n",
-    "Yes: look what happens when we expand $f(x+\\Delta)-f(x-\\Delta)$!"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
     "$$\n",
-    "\\begin{split}\n",
-    "  f'(x) &= \\frac{f(x+\\Delta) - f(x)}{\\Delta} - \\frac{1}{2}f''(x)\\Delta + \\mathcal{O}(\\Delta^2) \\\\\n",
-    "        &= \\frac{f(x+\\Delta) - f(x)}{\\Delta} + \\mathcal{O}(\\Delta) \\\\\n",
-    "\\end{split}\n",
-    "$$"
+    "\n",
+    "Any deviation from this pattern results in **nonlinear equations**, which we can solve\n",
+    "  - analytically (or symbolically)\n",
+    "  - graphically\n",
+    "  - numerically"
    ]
   },
   {
@@ -201,9 +94,9 @@
     }
    },
    "source": [
-    "### Can we approximate the second derivative?\n",
+    "### Analytic Solutions\n",
     "\n",
-    "Yes: look what happens when we expand $f(x+\\Delta)+f(x-\\Delta)$!"
+    "In *rare* cases, nonlinear equations have closed-form solutions."
    ]
   },
   {
@@ -214,81 +107,41 @@
     }
    },
    "source": [
+    "**Exercise**: Find all values of $x$ such that $\\sin(ax) - b = 0$.  \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Graphical Solutions\n",
+    "\n",
+    "Can't solve it?  **Plot it!**\n",
+    "\n",
+    "For single equation $f(x) = g(x)$:\n",
+    "  - plot $f(x)$ and $g(x)$ over the range of interest to identify intersections\n",
+    "  - plot $f(x)-g(x)$ to identify roots"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: The solution of transient heat-conduction problems often involves a technique called *separation of variables*.  Application of this technique to an infinite slab of thickness $2L$ subject to certain initial and boundary conditions leads to the transcendental equation\n",
+    "\n",
     "$$\n",
-    "f''(x) = \\frac{f(x+\\Delta)+-2f(x)+f(x-\\Delta)}{\\Delta^2} + \\mathcal{O}(\\Delta^2) \\, ,\n",
-    "$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Exercise**: Apply the *central* difference to the function $f(x) = \\sin(2x - 0.17) + 0.3 \\cos(3.4x + 0.1)$ at $x = 0.5$. Plot the error for $\\Delta = 10^{-1}, 10^{-2}, \\ldots, 10^{-7}$ and *confirm graphically* that the method is second order."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Finite-Difference Approximations of Arbitrary Order\n",
+    "  \\cot \\lambda L = \\frac{\\lambda L}{hL/k} = \\frac{\\lambda L}{\\text{Bi}} \\, ,\n",
+    "$$\n",
     "\n",
-    "The finite-difference approximations explored were identified pretty easily by manipulating the Taylor series of a function.  Approximations that are higher order or that can be used for higher derivatives are somewhat more challenging to develop."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "**A Simple Rule**: an $n$th-order approximation for the $m$th derivative at $x = x_0$ requires that $f$ be evaluated at $n+m$ evenly-spaced $x$ values that (should) include $x_0$.  \n",
-    "\n",
-    "(Exception: in *some* central-difference approxmations, the $f(x_0)$ term vanishes, so only $n+m-1$ points are needed)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Exercise**: Do the forward- and backward-difference methods for $f'(x)$ follow this rule?  How about the central-difference approximation for $f''(x)$?"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Developing New Schemes\n",
-    "\n",
-    "Finite-difference schemes of arbitrary order come from Taylor series but can be tedious.  Some help comes from Sympy!"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "Creating finite differences symbolically with `expr.as_finite_difference`:"
+    "where $\\lambda$ is a dimensionless, undetermined parameter, $h$ is the heat transfer coefficient, $k$ is the thermal conductivity, and $\\text{Bi}$ is the *Biot number*.  The Biot number quantifies how hard it is for heat to flow *within* a body relative to how hard it is to flow *through the outer surface* of the body.  Only for certain values of $\\lambda$ can the equation be solved. Determine these values graphically by plotting the left-hand and right-hand sides of the equation as functions of $\\lambda L$.  Assume $L = 5$ and $\\text{Bi}=0.5$."
    ]
   },
   {
@@ -296,33 +149,26 @@
    "execution_count": 1,
    "metadata": {
     "slideshow": {
-     "slide_type": "fragment"
+     "slide_type": "subslide"
     }
    },
-   "outputs": [
-    {
-     "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAM8AAAAqBAMAAADmJhJdAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEM0yVO+riWZ2mUQi\n3btpVqfLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADOUlEQVRYCe2Vv2tUQRDHvy955i53Jh4BI1GU\ncHb+gPwHniBWStROLLxGREgRG0FBPKwUlCSNkjReIwZRsEgjKL5SEPEQGy0klViIXlQQjRBn9r3Z\ntz/eS/JsRMhAdme+85ndy+7eHPAvLDy+/l2LsO6qwxeWXCk3LsL6i5TXvxGKsN5ORYqLsBsbWSew\ncXR/fRz/x9H1F/jCFmGtY6OgcubrvKltbsVRGJlq7GezLR9UypEcHdg+FwG7JD0hTuacsr0/MwGg\nL8pJ4Ox4A9gn2SFxMueUrZyuZRIIRrN1BMs7gHJbsqXp2AuTWXQ1G+zC1KSkHPSi6M4cdkkYiEQN\njsWeU52IKdvepF+Tg26VpZy51CHhZSrujV2nOhZTttoo/5AaB+15JAlrLt991wbmSBu59eL2NHAp\nTjvVSkxZVAB9SYIGsxOP6dxKtF6WbaHF8REIJstvB0aBqzEk1VaJsMACoC9J0G24Of2a7psWybJX\nY6S+oQ9SKy1VI+BoDEm1VSIs0AT0JQl6HldqT4Cwg6E6225gRYyWGeelTtF/hMFFdg/QX6le33+i\nXm9yLOgK+cIibNAn/8VpA63hMyu9XR59u8wSbQSog1EbUSAfkxPaNNvHklxSiqovcd5GH7iGjo7+\nFz5EPOUhZyPNHmJkqs2jgfZ+47Da4dG3kyzRYwhrd9BfW/0xCMtXRJf0m8d0o4P9XczkPoZgmVl6\n088aX/Cc3Hscp9VxFI+aDffcJ3uoLkmj1e+DXe7NlUmzBiCJrdrlkc5reHZkvkUuvRW29OApaLFi\nsAPJC6EDIEvQ4NzM3DUKe8aUKoN039IiK0YL6nCsq5Wfx6qkjZK0M5GTKem+h3taLPhNNYg/raLz\nWJWkL4aBkkTNwbSk+75PfhY+SS7rZyKPlRprDkatEEn3vf4glvUPn97RwPNYA0ndwSj1yTO7Lyf4\nubCVIzVZQx5rQTq4oT3lmN3XzvhREdarNruvl3SEIqxTandfL+kITaNTO6k1w7Ah3XdN1OjUa7Me\n0ceKdF8vawtFWLuSIqv7ellbKMLalRQ1WZHuy/4q1uTcOll3Gbv7ulk7LsLalRTZ3ddLW0IRNin8\nA8qK9z4Qq6tvAAAAAElFTkSuQmCC\n",
-      "text/latex": [
-       "$$- \\frac{1}{\\Delta} f{\\left (x \\right )} + \\frac{1}{\\Delta} f{\\left (\\Delta + x \\right )}$$"
-      ],
-      "text/plain": [
-       "  f(x)   f(Δ + x)\n",
-       "- ──── + ────────\n",
-       "   Δ        Δ    "
-      ]
-     },
-     "execution_count": 1,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
-    "import sympy as sy\n",
-    "sy.init_printing()\n",
-    "f, x, Delta = sy.symbols('f x Delta')\n",
-    "fp = sy.diff(f(x), x)\n",
-    "fp.as_finite_difference([x, x+Delta])"
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Determining Roots Numerically\n",
+    "\n",
+    "The numerical solution of $f(x) = 0$ can be challenging since it requires we know at least a little about the desired solution, particularly the range in which the root is contained. We'll explore three basic schemes for solving $f(x)$: the [bisection method](http://mathworld.wolfram.com/Bisection.html), [Newton's method](http://mathworld.wolfram.com/NewtonsMethod.html), and the secant method."
    ]
   },
   {
@@ -333,7 +179,53 @@
     }
    },
    "source": [
-    "Getting the *weights* for each term:"
+    "### Bisection\n",
+    "\n",
+    "Just like **binary search**!  Now, compare *sign* rather than *magnitude* (and keep **repeating**)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "'''Bisection method for finding an isolated root of f between a and b'''\n",
+    "Input: f, a, b, tau\n",
+    "\n",
+    "# Define the left and right boundaries\n",
+    "Set L = a\n",
+    "Set R = b\n",
+    "\n",
+    "# Define the central point\n",
+    "Set C = (a+b)/2\n",
+    "\n",
+    "# Go until f(C) is close enough to zero (i.e., that\n",
+    "# C is close enough to the root between a and b\n",
+    "While |f(C)| > tau \n",
+    "    If sign(f(C)) == sign(f(L)) then\n",
+    "        # the root must be between C and R\n",
+    "        L = C\n",
+    "    Otherwise\n",
+    "        # the root must be between L and C\n",
+    "        R = C\n",
+    "    C = (L+R)/2\n",
+    "Output: C\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Graphical display of bisection to find first positive root of $\\sin(x) - 2/5$:"
    ]
   },
   {
@@ -347,83 +239,18 @@
    "outputs": [
     {
      "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAX4AAAAUBAMAAAB47EtHAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAds0yiUTdVO8Qq2aZ\nIrveTc3qAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACDUlEQVRIDcWWvUoDQRSFT0xMWGL8SWGhhaKF\njUXewERJY+UbCEIUCyGlVgpWVkYQERsFLewMYmGntTa+gdYWgiEgEQsnO9mQuXNmQRlxiw175uTc\nL3dnMoP8dGKqgJ9c1xXb/U8ZCqWM1JLN01ZKN/bvSo0vQH3FutoZzG8ZleAzo9zhz+xZlfqqwYYl\nzuDoycFP/dis/WlGh/9ksWWVuQXmpZjdQWrSwc/8wcWVxe81I+p/1uZ/BbZl8cEzZFoOfuYH7mQE\nvGbE8H8Cy1XxAobO0P/h4Gd+xu81w80ffCn+YcF/eo/+d85P/Yzfa4abP9cE5iT/cxFJBz/1M36v\nGTH8qv9zRdH/53skm7z/Oean/D4z3Px0Pnh996I3ah+iNVkPuhxufqj1uE3WbyZm/Vp+VlutX38Z\nMfxvpPjgC9Q/Ld9/mZ9EwGtGDD/bj3669zB+rxkRf6IFnE4aMzJdDXalhjUcF8L+C7M6/1A/JmoI\nGkau14wO/8Bl4xHpdaNOUBorSA2HI+f6/CbMip/6H/Zn61itGcE+M6L+hwW2jDL6gWnh/DcHumdY\nU9YZGZM/FD1lGPxFXc64My2sbQ50+U1ZR6X0h3H3lNHLH8jdVhVkWjj/xUDEL2SNfGCQ64c2vzD/\nJqOXP0vKMC3kFwNRbSHrxDoJbvML828yyhidTqwUSAG3lK/YY/+Uka98AwD79VOuJUm4AAAAAElF\nTkSuQmCC\n",
-      "text/latex": [
-       "$$\\left [ \\left [ 1, \\quad 0, \\quad 0\\right ], \\quad \\left [ 0, \\quad 1, \\quad 0\\right ], \\quad \\left [ 0, \\quad 1, \\quad 0\\right ]\\right ]$$"
-      ],
+      "image/png": "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\nYTH/ByA72Ioh3QslAAAAAElFTkSuQmCC\n",
       "text/plain": [
-       "[[1, 0, 0], [0, 1, 0], [0, 1, 0]]"
+       "<matplotlib.figure.Figure at 0x7f57346a4a20>"
       ]
      },
-     "execution_count": 2,
      "metadata": {},
-     "output_type": "execute_result"
+     "output_type": "display_data"
     }
    ],
    "source": [
-    "w = sy.finite_diff_weights(order=2, x_list=[x-Delta, x, x+Delta], x0=x)\n",
-    "w[0] # \"zeroth\" derivative weights using just x-Delta, then both x-Delta and x, and finally all three"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAfwAAAAyBAMAAABL6XRQAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMA74lUIhAyds1E3Wa7\nq5muuWSNAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFRUlEQVRoBe1bS4tURxQ+3T13ZrrHaUckLrKZ\nxkWMi8QWFQQhNqSzcWNHAgkBYyd/QBcBRfEBgrhSYX6Ag0kWBsKMrtyNK1cKYxYuspmbRTZJHPIy\nMYF4c+px+1adenQ1t2uT6VoMVeec+s733XNuTc1FYTH7DcYyKlnWKgtUzbIFK8Y4wBVgkWdf9ivs\n7L6n2EtMKwe7vRLb+dak+65D/hjAFXIizwfd/bBLsZaaVvqltsvN0w75YwFXCIo8n8aTX3tNyaZN\n3R6AcPn7R+81JXFs+SffeqFpLhZuD8aEyk++3RhZvpo4tnyYc8n3eMLlA6yNLF9NPJGPvRbx3Z9U\nv3jftZn7wUyaP/gX3+Td13oqYKG03eTow+c1OfoCmiYohF56lU4j+92e/9HRN+O89rg9o8i/PPq1\nR0msvvvnrpH6+JcP7tr8pPrNpy9/soUBuD0YL2gZGwk4+p8v3lg1wvwGNbEqfy/Anvt9Y2/1wht2\nG8abw2RoxngtnEKwfDeUjbYRrcufbSdfGiFX4eMONXJbFPmCwhjk22hTGbLLxMm/F+4BvElD5hag\neoUYhS2KfEGhvHwbbaICl3r1nwAcpUfJtnWo0eNL2KLIFxTKy7fRHib/X4DbbRK0fR3qv1ttUeQL\nCuXl22gTFbjUqp+8QvlnSNCpFOp/WW0x5EsK5eXbaBMVVP4Ufu09TeUfb8E0lS9sMeRLCuXl22gP\nk4/VP90iQcdTmKYfwYUtinxBYQzyLbSJMlxGaf6PrrNxDbZncvxiJM49GfEMb/4cHAYQfEJwwNr8\nA0J8C7LS5AOeO0fbBAjPkJrl6ENbjOpLCuWrb6NNlOFSl//Y8ulw20P126BAELYo8gWF8vJttIfJ\n3+LXnkY72QWnruhP6Qt4v5+8NG28+akDHHd+ClrAEQ+nIJsyFJyD0WAb7SKrnOnNn+y52IfGV3rU\nibPPAL7uaUZu481PHIb8ObGPgjLrKncRD6cg5dOsBrjAFjg02EZbxONPyYq8+8J9aBBVTGq6fO7g\n8qmDVj+/R5ig+W3C9ORHEvjBP/n5EeOR49Bg5qO2ZPNxn9lzVnr1mQegxX/qP6r6kq+4fOqg8r+X\nfy+0DIDmonikpmcg3wuerMO+W4ia49BglpDaTkL1b2bPWVnkJ2dYABkfkjVbcvnUQeTXj4grkwV0\naa3FUCyegXwveLMHlQUEkDhAgxk4tf0AsAPNOStb8+fvBds+GKuDWTHh8qmDyG+CqLEFNK3wxrB4\nBvK94JVlmP8D2UgceZQU9NiMArwOsNHBhpGsNPnnR/vYde6unkqsiPwlEDU2Q+vtOXqXLoJEUxZr\nOdPAZ1/A/J9YSR8ORbjZg40+NkzOSuSJ96E7BVFjyoNVIC+B6ZNVMRyafPQ2sH+8OAYCwEoPGyZn\nFVl+vQ2uGi/hDbNlocdNIdXHwNsI4MUx8evYcgWryPLnMb884CmTdchLQD24DpT/DYZ6cUzoBsYX\nrCLLP4D511KTBP5GbuPl45XNw2xh8pvpMBwTfxNNBavI8vFRO2rMKuBqjFD5lxDCj8OSaGMmxWXB\nKq58VmJHjVkFHI2BjqDq11Lo8kq6cVgSbbwDUx2FVVz5vDSw2NEYiAWrAFTY723bCJL/GcDn4Meh\n2NMtmOkorOLKP7zJxkpKWeAre4N5fnS9/CHyp+7sfr48BIcmPrb77e9AYRVX/or4ICWv/SqXhvxU\n1VONxTxE/ixCLA/BKRDF7GaW/QMKq7jyafbgdYj8YDBP4EQ+Ppx4l17Pk/e5JtW3PR1657fFjGTL\nm3+L/4P2rf3fGf4DxGrymMtEEsIAAAAASUVORK5CYII=\n",
-      "text/latex": [
-       "$$\\left [ \\left [ 0, \\quad 0, \\quad 0\\right ], \\quad \\left [ - \\frac{1}{\\Delta}, \\quad \\frac{1}{\\Delta}, \\quad 0\\right ], \\quad \\left [ - \\frac{1}{2 \\Delta}, \\quad 0, \\quad \\frac{1}{2 \\Delta}\\right ]\\right ]$$"
-      ],
-      "text/plain": [
-       "⎡           ⎡-1   1   ⎤  ⎡-1       1 ⎤⎤\n",
-       "⎢[0, 0, 0], ⎢───, ─, 0⎥, ⎢───, 0, ───⎥⎥\n",
-       "⎣           ⎣ Δ   Δ   ⎦  ⎣2⋅Δ     2⋅Δ⎦⎦"
-      ]
-     },
-     "execution_count": 3,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "w[1] # f' weights"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 4,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAd0AAAAyBAMAAADrdhy+AAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMA74lUIhAyds1E3Wa7\nq5muuWSNAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEiUlEQVRoBe2ay2sTQRzHf0m6sUlsWhC9Joio\nPaiRKggKDRjPjSIoglo9eWsPgqL4AEHEQykWvLb4QBTE6h9gvehJpXoQb64HL77w/TjoOjObnd3M\nfGc3alzX1Bw2s9/9zjfzyW92M7uESs47Sswr5TjlPzKYVc5borTj9NGC2qY/8gm/FJpaU6v/Useo\nTltrq4ms2sY+WhRljfN4avgnP23Xyzst9tjDfdnk8q5updDWLK0aDwHOLJQHk81rPXzSCm+xTqk+\niaQ1dq74KLVk8xLNtMKbmqKeDxJJbxQ6jLf7I/V80jGl0mm8DCzvl1BiykYH8k6WJZ3e6EDeqzql\nr3Qeb9H26fRW5/Ee1SEDSsfxZmyqBfjUZsfx7iXar0IG9v8h3mOtrDe6zi1+NRXgU5vz/B+r4Prq\n4EnVGLpfOD2uH29HBvn3C69KY9P6h6hKt+M4U6ro7xcffHnh7QV5+9m94eGl3hH5jjRadmOY0oC3\nHRkBXjmIdjUU3hO0o6pGI627Yl0w8SI/0owZ8fEW+ih9XOFFGl0nWm7gRX6kmTPi450/Sxn/3HbB\nkUb3iAbreD4jP9LMGfHx9s5S7r1SX6TRN6LJCuZFfqSZM+Lj3W1T7rPCizTrO+MdxbzIjzRzRny8\nQ2XKqrxI62IPM0cMvMiPNHNGjLw2ZdXnskNA62L1HSnj+iI/0swZ8fGieYc081zsJ+RHmjnD5WVr\nCP/1RjnJaPsp/mILJN/DWpqtt+kwC2n+/WXXlQy4Xmkav9YMmq9Xmh/lmjPiq+/8WxRYW7vfKdLo\nLn+Shucz8iPNnBEfL1oXIM28Vugn5EeaOUPhTb98ps5mtB9hW3m/zns1z2c6T5uHrS/NcUjLV6xF\nYn2lmtn6GfmRZsxQeJfQYzag3cebR6XthdvS1R4RoPBuOfCI6Ir4JmQg0qxlRxr3C4qZ8SI/0owZ\nPu80H8QFGqmyB5AX5YC0RritwP35alY8oVZ4RVSmmdeoifNXMTNeo1+xCh/KkLzuWuAyDY0z71o3\nGGwjbCOjrE9+vOsr74p40yATanwYygGPV5FFItRAhuQtluqi4yB/K4sm2kTYnrp3BO6NAeLdBkKR\nJmqjHPB4FVkkIg1lSN6JmbLoeIltrVHRRJtwW269u4LKiwDEOw1CkSbGqhzweBVZJCINZUheOyVK\nk7ZZd3EWgoExKdxWJHeWrBSdg7yHfu55zjz0PKcdGR5vrlIQpbmJMT01wjZBYpYUbI3XC/jr76lh\nMYQiidLkyjl33zCuCJtNYpacobO8f7C+hrz45QbvBFvElYn2DWyoh40h3JarEJ8l2RMDt3lIknln\nSZSm5DhhuBRu62F92QnM/gLzJuG8mQq7Sn0PReUHI2wDzDJjc6N4Jbi+vDKNa6s7VryNsLHquyew\n2zvBvLwywdK4A9a24TZe/eAsSTAvrwylwv6XIdjDbaL6VKoKK9sklzcz9pq9nkedwBG2dTzk9TU7\n+bz5xqOYujdU/B5hu+amyIfqya0vxvtd9T/v736DbejfWF+1IUmLmKv1nWv/B55j//f+AdMl0lhR\nXLxmAAAAAElFTkSuQmCC\n",
-      "text/latex": [
-       "$$\\left [ \\left [ 0, \\quad 0, \\quad 0\\right ], \\quad \\left [ 0, \\quad 0, \\quad 0\\right ], \\quad \\left [ \\frac{1}{\\Delta^{2}}, \\quad - \\frac{2}{\\Delta^{2}}, \\quad \\frac{1}{\\Delta^{2}}\\right ]\\right ]$$"
-      ],
-      "text/plain": [
-       "⎡                      ⎡1   -2   1 ⎤⎤\n",
-       "⎢[0, 0, 0], [0, 0, 0], ⎢──, ───, ──⎥⎥\n",
-       "⎢                      ⎢ 2    2   2⎥⎥\n",
-       "⎣                      ⎣Δ    Δ   Δ ⎦⎦"
-      ]
-     },
-     "execution_count": 4,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "w[2] # f'' weights"
+    "import nonlinear_plots\n",
+    "nonlinear_plots.bisection_root()"
    ]
   },
   {
@@ -434,7 +261,192 @@
     }
    },
    "source": [
-    "**Exercise**: Develop a second-order approximation for $f'(x)$ that does *not* use values less than $x$."
+    "### Newton's Method\n",
+    "\n",
+    "Often, a better way to find roots of $f(x) = 0$ is [Newton's method](http://mathworld.wolfram.com/NewtonsMethod.html).\n",
+    "\n",
+    "Like bisection,  Newton's method produces a sequence of approximations.\n",
+    "\n",
+    "Unlike bisection, require an *initial guess* $x_0$ for the root $x_r$ (and it should be \"close\")."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Quick motivation for Newton *from the math* by recalling\n",
+    "\n",
+    "$$\n",
+    "  f(x) = f(x_0) + \\Delta f'(x_0) + \\mathcal{O}(\\Delta^2) = 0 \\, .\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Take a leap of faith: **ignore the** $\\mathcal{O}(\\Delta^2)$ **term** and set \n",
+    "\n",
+    "$$\n",
+    "  x_{\\text{true root}} \\approx x_1 = x_0 + \\Delta = x_0 \\overbrace{- f(x_0)/f'(x_0)}^{\\Delta} \\, ,\n",
+    "$$\n",
+    "\n",
+    "and do this for $x_2$ in terms of $x_1$, $x_3$ in terms of $x_2$, etc. until $f(x_i)$ is \"small enough\"."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "'''Newton's method for finding the root f given x_0'''\n",
+    "Input: f, fp, x_0, tau\n",
+    "Set x = x_0\n",
+    "While |f(x)| > tau do\n",
+    "   # Compute the Newton \"step\" \n",
+    "   Set Delta = -f(x)/fp(x)\n",
+    "   # Compute the next value of x\n",
+    "   Set x = x + Delta\n",
+    "Output: x\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Quick motivation of Newton *from the geometry*..."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Solve $f(x) = \\sin(x)-2/5 = 0$ starting with $x_0 = 0.5$ until $|f(x)| < 10^{-5}$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Secant Method\n",
+    "\n",
+    "Actually, just like Newton but without $f'(x)$!  Use a *finite difference* instead."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "'''Secant method for finding the root f given x_0'''\n",
+    "Input: f, x_0, tau\n",
+    "Set x = x_0\n",
+    "Set x_0 = x - tau\n",
+    "While |f(x)| > tau do\n",
+    "   # Approximate the derivative\n",
+    "   Set fp = (f(x)-f(x_0))/(x-x_0)\n",
+    "   # Compute the Newton \"step\"\n",
+    "   Set Delta = -f(x)/fp\n",
+    "   # Store old x, and compute next value\n",
+    "   Set x_0 = x\n",
+    "   Set x = x + Delta\n",
+    "Output: x\n",
+    "```\n",
+    "\n",
+    "> *Pro Tip*: Depending on $f(x)$ (and its cost), *may* be better to use $x$ and $x+\\delta$ for finite difference where $\\delta < (x-x_0)$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Solving Systems of Nonlinear Equations Numerically\n",
+    "\n",
+    "From $f(x) = 0$ to $\\mathbf{f}(\\mathbf{x}) = \\mathbf{0}$...\n",
+    "\n",
+    "\n",
+    "...and from $f'(x)$ to the **Jacobian** matrix $\\mathbf{J}$:\n",
+    "\n",
+    "$$\n",
+    "  \\mathbf{J}(\\mathbf{x}) = \\begin{bmatrix}\n",
+    "    \\frac{\\partial f_0}{\\partial x_0} & \\frac{\\partial f_0}{\\partial x_1} & \\ldots & \\frac{\\partial f_{0}}{\\partial x_{n-1}} \\\\\n",
+    "    \\frac{\\partial f_1}{\\partial x_0} & \\frac{\\partial f_1}{\\partial x_0} & \\ldots & \\frac{\\partial f_{1}}{\\partial x_{n-1}} \\\\\n",
+    "         &     &  \\ddots &  \\\\\n",
+    "    \\frac{\\partial f_0}{\\partial x_{n-1}} & \\frac{\\partial f_1}{\\partial x_{n-1}} & \\ldots & \\frac{\\partial f_{n-1}}{\\partial x_{n-1}} \n",
+    "\\end{bmatrix}\n",
+    "$$\n",
+    "\n",
+    "(here, partial derivatives evaluated at $\\mathbf{x}$)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Newton's method leads to the sequence\n",
+    "\n",
+    "$$ \n",
+    "  \\mathbf{x}_{n+1} = \\mathbf{x}_{n} - \\mathbf{J}^{-1}(\\mathbf{x}_n) \\mathbf{f}(\\mathbf{x}_n) \\, .\n",
+    "$$\n",
+    "\n",
+    "But that's like solving $\\overbrace{\\mathbf{J}(\\mathbf{x}_{n})}^{\\mathbf{A}} \\times \\overbrace{[\\mathbf{x}_{n} - \\mathbf{x}_{n+1}]}^{\\mathbf{x}} = \\overbrace{\\mathbf{f}(\\mathbf{x}_n)}^{\\mathbf{b}}$!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### `scipy.optimize.fsolve`\n",
+    "\n",
+    "Good to know the equations, but better (usually) to use SciPy and its `scipy.optimize.fsolve` function:\n",
+    "\n",
+    "The signature (from `help(fsolve)`) is\n",
+    "```python\n",
+    "fsolve(func, x0, args=(), fprime=None, full_output=0, col_deriv=0, xtol=1.49012e-08, maxfev=0, band=None, epsfcn=None, factor=100, diag=None)\n",
+    "```\n",
+    "\n",
+    "Here, `func` represents the nonlinear system function $\\mathbf{f}(\\mathbf{x})$, and `args` represents any values needed to define what $\\mathbf{f}(\\mathbf{x})$ does.  The initial guess is `x0`.  If available, `fprime` should compute $\\mathbf{J}(\\mathbf{x})$; if not provided, `fsolve` approximates the Jacobian using a forward-difference approximation."
    ]
   },
   {
@@ -447,11 +459,11 @@
    "source": [
     "## Recap\n",
     "\n",
-    "You should now be able to \n",
+    "By the end of this lesson, you should be able to\n",
     "\n",
-    "- Derive finite-difference approximations for first- and second-order derivatives using Taylor series.\n",
-    "- Apply SymPy to compute finite-difference approximations of arbitrary order for any derivative.\n",
-    "- Numerically/graphically/symbolically demonstrate that the error of an $n$th-order approximation as $\\Delta \\to 0$ exhibits the right behavior."
+    "- Find one or more roots of a one-dimensional, nonlinear equation $f(x) = 0$ using the bisection and Newton methods.\n",
+    "- Find local extrema of a function $f(x)$ using the bisection and Newton methods.\n",
+    "- Use `fsolve` to solve nonlinear systems."
    ]
   }
  ],
@@ -472,7 +484,10 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.2"
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
   }
  },
  "nbformat": 4,

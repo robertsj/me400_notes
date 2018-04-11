@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 19 - Symbolic Calculus with SymPy &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 19 - Numerical Integration &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,309 +201,69 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-19---Symbolic-Calculus-with-SymPy">
-<h1>Lecture 19 - Symbolic Calculus with SymPy<a class="headerlink" href="#Lecture-19---Symbolic-Calculus-with-SymPy" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>Symbolic computing using SymPy was introduced in <a class="reference external" href="ME400_Lecture_18.ipynb">Lecture
-18</a>. The basics of symbols, symbolic
-expressions, and solving symbolic equations were introduced. In this
-lesson, additional features of SymPy related to calculus will be
-demonstrated.</p>
+<div class="section" id="Lecture-19---Numerical-Integration">
+<h1>Lecture 19 - Numerical Integration<a class="headerlink" href="#Lecture-19---Numerical-Integration" title="Permalink to this headline">¶</a></h1>
+<p>Last time, finite-difference approximations were developed and used to
+evaluate derivatives numerically. In this lecture, we’ll explore and
+implement our own numerical methods for evaluation of integrals. We’ll
+also use the SciPy module for the first time, which provides its own set
+of tools for numerical integration.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Evaluate limits using SymPy</li>
-<li>Evaluate derivatives using SymPy</li>
-<li>Evaluate integrals using SymPy</li>
+<li>Evaluate definite integrals numerically using left- and right-sided
+Riemann sums, the mid-point rule, and the trapezoid rule.</li>
+<li>Evaluate definite integrals numerically using the built-in functions
+of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
+<li>Establish the order of an integration scheme using graphical means</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">sympy.limit</span></code></li>
-<li><code class="docutils literal"><span class="pre">sympy.diff</span></code></li>
-<li><code class="docutils literal"><span class="pre">sympy.Derivative</span></code></li>
-<li><code class="docutils literal"><span class="pre">sympy.integrate</span></code></li>
-<li><code class="docutils literal"><span class="pre">sympy.Integral</span></code></li>
+<li>Riemann sum</li>
+<li>left-sided Riemann sum</li>
+<li>right-sided Riemann sum</li>
+<li>mid-point rule</li>
+<li>trapezoid rule</li>
+<li><code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
+<li><code class="docutils literal"><span class="pre">scipy.integrate.quad</span></code></li>
+<li><span class="math">\(n\)</span>th-order approximation</li>
 </ul>
-</div>
-</div>
-<div class="section" id="In-the-Beginning-There-Were-Limits">
-<h2>In the Beginning There Were Limits<a class="headerlink" href="#In-the-Beginning-There-Were-Limits" title="Permalink to this headline">¶</a></h2>
-<p>Classical definition for the derivative of a function <span class="math">\(f(x)\)</span> is</p>
+<div class="section" id="Riemann-Sums-in-Practice">
+<h3>Riemann Sums in Practice<a class="headerlink" href="#Riemann-Sums-in-Practice" title="Permalink to this headline">¶</a></h3>
+<p>For <span class="math">\(df/dx\)</span>, choose two or more values of <span class="math">\(f\)</span> (forward,
+backward, etc.) and take <span class="math">\(\Delta\)</span> to some small but finite value.</p>
+<p>For <span class="math">\(\int^b_a f(x) dx\)</span>, we have analogs to these choices based on
+how we define the rectangles (or other shapes).</p>
+<p>Recall the formal definition for a definite integral:</p>
 <div class="math">
-\[\lim_{h \to 0} \frac{f(x+h)-f(x)}{h} \, .\]</div>
-<p><strong>3-minute Exercise</strong>: Determine <span class="math">\(df/dx\)</span> for
-<span class="math">\(f(x) = ax^2 + bx + c\)</span> using this definition.</p>
-<p>SymPy can handle limits:</p>
-<div class="nbinput nblast docutils container">
+\[\int^b_a f(x) dx =
+   \lim_{n \to \infty} \sum^{n}_{i=1} f \left ( \overbrace{i \frac{b-a}{n} + a}^{x_i} \right )
+   \overbrace{\frac{b-a}{n}}^{\Delta}\]</div>
+<p>for uniformly spaced points
+<span class="math">\(x_i = a + \Delta, a + 2\Delta, \ldots, b - \Delta\)</span>.</p>
+<p>If we <em>don’t take the limit</em>, we have the <strong>right-sided Riemann sum</strong>
+approximation</p>
+<div class="math">
+\[\int^b_a f(x) dx \approx \Delta \sum^{n}_{i=1} f \left ( i \Delta + a \right )\]</div>
+<p>where</p>
+<div class="math">
+\[\Delta = \frac{b-a}{n} \, .\]</div>
+<p>and <span class="math">\(n\)</span> is the number of rectangles.</p>
+<p><em>Note</em>: the formula is for <em>constant</em> step <span class="math">\(\Delta\)</span>! Put
+<span class="math">\(\Delta_i\)</span> inside the sum if not constant.</p>
+<p>Let’s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
+<span class="math">\(x\in[0, 1]\)</span> with <span class="math">\(n=5\)</span>:</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sp</span>
-<span class="n">sp</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
-<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a b c x h&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">c</span>
-<span class="n">f_plus</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">h</span><span class="p">})</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">limit</span><span class="p">((</span><span class="n">f_plus</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$2 a x + b$$</div></div>
-</div>
-<p>Limits don’t need to be evaluated:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">Limit</span><span class="p">((</span><span class="n">f_plus</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\lim_{h \to 0^+}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">Limit</span><span class="p">((</span><span class="n">f_plus</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$2 a x + b$$</div></div>
-</div>
-<p><strong>Exercise</strong>: Is <span class="math">\(\lim_{h \to 0} \frac{f(x)-f(x-h)}{h}\)</span> just as
-good for <span class="math">\(df/dx\)</span>?</p>
-</div>
-<div class="section" id="Derivatives">
-<h2>Derivatives<a class="headerlink" href="#Derivatives" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$2 a x + b$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$2 a$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$0$$</div></div>
-</div>
-<p>Symbolic “functions” can also be differentiated:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
-<span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{d}{d x} g{\left (x \right )}$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{d^{2}}{d x^{2}}  g{\left (x \right )}$$</div></div>
-</div>
-<p>Derivatives can be defined and not evaluated:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{\partial}{\partial x}\left(a x^{2} + b x + c\right)$$</div></div>
-</div>
-<p>That’s a <em>partial derivative</em>, e.g.,:</p>
-<div class="math">
-\[\frac{\partial f}{\partial x} = \lim_{h\to 0} \frac{ f(x+h,y)-f(x, y) }{h}\]</div>
-</div>
-<div class="section" id="And-Then-There-Were-More-Limits">
-<h2>And Then There Were More Limits<a class="headerlink" href="#And-Then-There-Were-More-Limits" title="Permalink to this headline">¶</a></h2>
-<p>For <em>definite</em> integrals, you may remember the following formal
-definition:</p>
-<div class="math">
-\[\int^b_a f(x) dx =
-   \lim_{n \to \infty} \sum^{n}_{i=1} f(i (b-a)/n + a) (b-a)/n\]</div>
-<p>The right-hand side is called a <em>Riemann sum</em>.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x i n a b&#39;</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">sp</span><span class="o">.</span><span class="n">Sum</span><span class="p">(((</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="o">+</span><span class="n">a</span><span class="p">}),</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\sum_{i=1}^{n} \frac{1}{n} \left(- a + b\right) \left(a + \frac{i}{n} \left(- a + b\right)\right)^{2}$$</div></div>
-</div>
-<p><strong>Example</strong> Evaluate <span class="math">\(\int^b_a f(x) dx\)</span> for <span class="math">\(f(x) = x^2\)</span>,
-<span class="math">\(a=0\)</span>, and <span class="math">\(b=1\)</span> using the formal limit.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">S</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Sum</span><span class="p">(((</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">f</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="o">+</span><span class="n">a</span><span class="p">}),</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">a</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
-<span class="n">S</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">]:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">n</span><span class="p">:</span><span class="n">m</span><span class="p">})</span><span class="o">.</span><span class="n">evalf</span><span class="p">())</span>
+<span></span><span class="kn">import</span> <span class="nn">riemann_sum_plots</span>
+<span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">right_sided_sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -511,187 +271,216 @@ $$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$</div></div>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-0.385000000000000
-0.338350000000000
-0.333833500000000
-0.333383335000000
-0.333338333350000
-</pre></div></div>
+<img alt="../_images/lectures_ME400_Lecture_19_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_19_Slides_7_0.png" />
 </div>
-<p>Can the limit be taken formally?</p>
+</div>
+<p>If instead we defined our sum to be</p>
+<div class="math">
+\[S =\frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1)(b-a) }{n} + a \Bigg )\]</div>
+<p>the picture becomes</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">S</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">n</span><span class="p">:</span><span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">})</span><span class="o">.</span><span class="n">evalf</span><span class="p">()</span>
+<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">left_sided_sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="math">
-$$0$$</div></div>
+<img alt="../_images/lectures_ME400_Lecture_19_Slides_9_0.png" src="../_images/lectures_ME400_Lecture_19_Slides_9_0.png" />
 </div>
-<div class="nbinput docutils container">
+</div>
+<p><strong>Exercise</strong>: Use the left-sided sum to estimate <span class="math">\(\int^2_0 e^x dx\)</span>
+for 10, 100, and 1000 evenly-spaced points. What is the <em>absolute</em> error
+for each?</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">oo</span><span class="p">)</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">I_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span>
+<span class="n">I_10</span><span class="p">,</span> <span class="n">I_100</span><span class="p">,</span> <span class="n">I_1000</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+
+</pre></div>
+</div>
+</div>
+<p><strong>Exercise</strong>: Consider the following two columns of data:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><span class="math">\(x\)</span></th>
+<th class="head"><span class="math">\(\sqrt{x}\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.0000</td>
+<td>0.0000</td>
+</tr>
+<tr class="row-odd"><td>0.3333</td>
+<td>0.5774</td>
+</tr>
+<tr class="row-even"><td>1.0000</td>
+<td>1.0000</td>
+</tr>
+<tr class="row-odd"><td>1.5000</td>
+<td>1.2247</td>
+</tr>
+<tr class="row-even"><td>2.0000</td>
+<td>1.4142</td>
+</tr>
+</tbody>
+</table>
+<p>Estimate <span class="math">\(\int^2_0 f(x) dx\)</span> using the right-sided sum and
+left-sided sum. Note that the <span class="math">\(x\)</span> points are <strong>not evenly
+spaced</strong>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3333</span><span class="p">,</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="mf">1.5000</span><span class="p">,</span> <span class="mf">2.0000</span><span class="p">])</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5774</span><span class="p">,</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="mf">1.2247</span><span class="p">,</span> <span class="mf">1.4142</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Beyond-the-One-Side-Sums">
+<h3>Beyond the One-Side Sums<a class="headerlink" href="#Beyond-the-One-Side-Sums" title="Permalink to this headline">¶</a></h3>
+<p>We can do better. As motivation, note that the central difference is
+nothing but an <em>average</em> of the forward and backward differences:</p>
+<div class="math">
+\[\frac{1}{2} \Bigg ( \frac{f(x+h)-f(x)}{h} + \frac{f(x)-f(x-h)}{h} \Bigg ) = \frac{f(x+h)-f(x-h)}{2h}\]</div>
+<p><strong>Option I</strong>: evaluate <span class="math">\(f\)</span> at the average (middle) <span class="math">\(x\)</span>
+points:</p>
+<div class="math">
+\[S = \frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1/2)(b-a) }{n} + a \Bigg )\]</div>
+<p>for which the picture becomes</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">midpoint_sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_19_Slides_16_0.png" src="../_images/lectures_ME400_Lecture_19_Slides_16_0.png" />
+</div>
+</div>
+<p>This is the <strong>midpoint rule</strong>. It is great if <em>you</em> get to choose your
+points, but hard to apply to tabulated data.</p>
+<p><strong>Option II</strong>: Use the same points as one-sides sums, but <em>average</em> the
+<span class="math">\(f\)</span> values:</p>
 <div class="math">
-$$\frac{1}{3}$$</div></div>
+\[\begin{split}\begin{split}
+  S &amp;= \frac{b-a}{2n}
+    \Bigg [ \sum^{n}_{i=1} f \Bigg ( \frac{ (i)(b-a) }{n} + a \Bigg )
+         +  \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1)(b-a) }{n} + a \Bigg ) \Bigg ] \\
+    &amp;= \frac{b-a}{2n}
+    \Bigg [ f(a) + f(b) + \sum^{n-1}_{i=1} f \Bigg ( \frac{ i(b-a) }{n} + a \Bigg ) \Bigg ]
+\end{split}\end{split}\]</div>
+<p>This is the <strong>trapezoid rule</strong> for uniformly-spaced points.</p>
 </div>
+<div class="section" id="What-About-Accuracy?">
+<h3>What About Accuracy?<a class="headerlink" href="#What-About-Accuracy?" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to determine the <em>order</em> of various numerical integration
+rules. The basic idea is to observe the (absolute) error between an
+exact, reference value for an integral and the approximation of that
+integral for various step sizes <span class="math">\(\Delta\)</span>.</p>
+<ul class="simple">
+<li>The left- and right-sided sums are <em>first order</em></li>
+<li>The midpoint and trapezoid rules are <em>second order</em></li>
+</ul>
 </div>
-<div class="section" id="Symbolic-Integration">
-<h2>Symbolic Integration<a class="headerlink" href="#Symbolic-Integration" title="Permalink to this headline">¶</a></h2>
-<p>Improper:</p>
-<div class="nbinput docutils container">
+<div class="section" id="Using-scipy.integrate">
+<h3>Using <code class="docutils literal"><span class="pre">scipy.integrate</span></code><a class="headerlink" href="#Using-scipy.integrate" title="Permalink to this headline">¶</a></h3>
+<p>The module <code class="docutils literal"><span class="pre">scipy.integrate</span></code> provides several integration functions,
+including the powerful <code class="docutils literal"><span class="pre">quad</span></code> function:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>In [99]: help(quad)
+Help on function quad in module scipy.integrate.quadpack:
+
+quad(func, a, b, args=(), full_output=0, epsabs=1.49e-08, epsrel=1.49e-08, limit=50, points=None, weight=None, wvar=None, wopts=None, maxp1=50, limlst=50)
+    Compute a definite integral.
+
+    Integrate func from `a` to `b` (possibly infinite interval) using a
+    technique from the Fortran library QUADPACK.
+</pre></div>
+</div>
+<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
+<span class="math">\(\int^2_0 e^x dx = e^2 - 1\)</span>.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
+<span class="math">\(\int^1_0 (ax^2 + bx + c)dx\)</span> for <span class="math">\(a=b=c=1\)</span>.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{x^{3}}{3}$$</div></div>
-</div>
-<p>Definite:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
+<p><strong>Exercise</strong>: The entropy change of an ideal gas from <span class="math">\((T_1, p_1)\)</span>
+to <span class="math">\((T_2, p_2)\)</span> is</p>
 <div class="math">
-$$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$</div></div>
-</div>
-<p>Define with evaluation (like for limits and derivatives):</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">I</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Integral</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-<span class="n">I</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
+\[s(T_2, p_2) - s(T_1, p1) = \int^{T_2}_{T_1} \frac{c_p(T)}{T} dT - R \ln \frac{p_2}{p_1}\]</div>
+<p>where <span class="math">\(s\)</span> is entropy (kJ/kg-K), <span class="math">\(p\)</span> is pressure (kPa),
+<span class="math">\(T\)</span> is temperature (K), <span class="math">\(c_p\)</span> is the specific heat at
+constant pressure (kJ/kg-K), and <span class="math">\(R\)</span> is the gas constant
+(kJ/kg-K). For a particular gas, <span class="math">\(R = 0.18\)</span>, and</p>
 <div class="math">
-$$\int_{a}^{b} x^{2}\, dx$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">I</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[20]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$</div></div>
-</div>
-<p>Multiple integrals:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">r</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;r R phi theta&#39;</span><span class="p">)</span>
-<span class="n">V</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Integral</span><span class="p">(</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="p">),</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
-<span class="n">V</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\int_{0}^{2 \pi}\int_{0}^{\pi}\int_{0}^{R} r^{2} \sin{\left (\theta \right )}\, dr\, d\theta\, d\phi$$</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">V</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="math">
-$$\frac{4 \pi}{3} R^{3}$$</div></div>
-</div>
+\[c_p = R(2.5 + 8.7\cdot 10^{-3} T - 6.7\cdot 10^{-4}T^2  + 2.0 \cdot 10^{-5} T^3 + 1.1 \cdot 10^{-7} T^4 \, .\]</div>
+<p>Determine the entropy change from <span class="math">\(T_1 = 400\)</span> K and
+<span class="math">\(p_1 = 1\)</span> atm to <span class="math">\(T_2 = 900\)</span>K and <span class="math">\(p_2 = 10\)</span> atm.</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
-<p>By now, you should be able to</p>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Evaluate limits using SymPy</li>
-<li>Evaluate derivatives using SymPy</li>
-<li>Evaluate integrals using SymPy</li>
+<li>Evaluate definite integrals numerically using left- and right-sided
+Riemann sums, the mid-point rule, and the trapezoid rule.</li>
+<li>Evaluate definite integrals numerically using the built-in functions
+of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
+<li>Establish the order of an integration scheme using graphical means</li>
 </ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -703,17 +492,16 @@ $$\frac{4 \pi}{3} R^{3}$$</div></div>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 19 - Symbolic Calculus with SymPy</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 19 - Numerical Integration</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Riemann-Sums-in-Practice">Riemann Sums in Practice</a></li>
+<li><a class="reference internal" href="#Beyond-the-One-Side-Sums">Beyond the One-Side Sums</a></li>
+<li><a class="reference internal" href="#What-About-Accuracy?">What About Accuracy?</a></li>
+<li><a class="reference internal" href="#Using-scipy.integrate">Using <code class="docutils literal"><span class="pre">scipy.integrate</span></code></a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#In-the-Beginning-There-Were-Limits">In the Beginning There Were Limits</a></li>
-<li><a class="reference internal" href="#Derivatives">Derivatives</a></li>
-<li><a class="reference internal" href="#And-Then-There-Were-More-Limits">And Then There Were More Limits</a></li>
-<li><a class="reference internal" href="#Symbolic-Integration">Symbolic Integration</a></li>
-<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
 </ul>
