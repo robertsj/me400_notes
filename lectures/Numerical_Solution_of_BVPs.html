@@ -1,0 +1,740 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Numerical Solutions of Two-Point BVPs &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Numerical Solutions of First-Order Systems" href="Systems_Of_IVPs.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Numerical-Solutions-of-Two-Point-BVPs">
+<h1>Numerical Solutions of Two-Point BVPs<a class="headerlink" href="#Numerical-Solutions-of-Two-Point-BVPs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>This lesson is all about solving two-point boundary-value problems
+numerically. We’ll apply finite-difference approximations to convert
+BVPs into matrix systems. Both inhomogeneous cases (e.g., heat
+conduction with a driving source) and homogeneous (a critical nuclear
+reactor) will be considered.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Solve two-point, heterogeneous BVPs.</li>
+<li>Solve two-point, homogeneous BVPs.</li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>You should already be able to</p>
+<ul class="simple">
+<li>Solve systems of IVPs using Euler’s method</li>
+<li>Define one- and two-dimensional arrays using NumPy arrays</li>
+<li>Use <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> to solve <span class="math">\(\mathbf{Ax = b}\)</span></li>
+</ul>
+<p>Please review these topics (and resources) as needed.</p>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Dirichlet boundary condition</li>
+<li>Neumann boundary condition</li>
+<li>Robin (or mixed) boundary condition</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Chopping-Up-the-BVP">
+<h2>Chopping Up the BVP<a class="headerlink" href="#Chopping-Up-the-BVP" title="Permalink to this headline">¶</a></h2>
+<p>Our focus is again on the second-order BVP</p>
+<div class="math">
+\[\frac{d^2 y}{dx^2} + p(x) \frac{dy}{dx} + q(x) y(x) = f(x), \qquad y(a) = y_a, \qquad y(b) = y_b \, .\]</div>
+<p>The goal is to apply numerical differentiation to this equation, leading
+to a linear system.</p>
+<p>Observe that there are two derivatives in the BVP, one second order, and
+one first order. There are numerous ways to approximate these by finite
+differences, but we’ll opt for a method with second-order errors. For
+the first derivative, we already analyzed the central difference:</p>
+<div class="math">
+\[\frac{dy}{dx} = \frac{y(x+\Delta)-y(x-\Delta)}{2\Delta} + \mathcal{O}(\Delta^2) \, .\]</div>
+<p>For the second derivative, we saw (but did not analyze) another central
+difference:</p>
+<div class="math">
+\[\frac{d^2y}{dx^2} = \frac{y(x+\Delta)-2y(x)+y(x-h)}{\Delta^2} + \mathcal{O}(\Delta^2) \, .\]</div>
+<p>Given these differencing schemes, let us chop the domain
+<span class="math">\(x\in [a, b]\)</span> into discrete points
+<span class="math">\(x_i = a + \Delta i,\, i = 0, 1, \ldots, n\)</span>, where
+<span class="math">\(\Delta = (b-a)/n\)</span>. For all but <span class="math">\(i=0\)</span> and <span class="math">\(i=n\)</span>, we
+have</p>
+<div class="math">
+\[\frac{y_{i+1} - 2y_i + y_{i-1}}{\Delta^2}
+  + p_i \frac{y_{i+1}-y_{i-1}}{2 \Delta}
+    + q_i y_i
+      = f_i\]</div>
+<p>where, for example, <span class="math">\(y_i = y(x_i)\)</span>.</p>
+<p>At the boundaries, we need to be more careful. For the given boundary
+conditions, our equations are as simple as</p>
+<div class="math">
+\[y_0 = y_a\]</div>
+<p>and</p>
+<div class="math">
+\[y_n = y_b \, .\]</div>
+<p>The boundary conditions used here are known as <em>Dirichlet</em> boundary
+conditions, in which the unknown function itself is defined at the
+boundary. <em>Neumann</em> boundary conditions specify a value of the
+<em>derivative</em> of the function, e.g., <span class="math">\(y'(a) = \alpha\)</span>. <em>Robin</em> or
+<em>mixed</em> boundary conditions specify a value of some linear combination
+of the function and its derivative, e.g.,
+<span class="math">\(\gamma y'(a) + \beta y(a) = \alpha\)</span>. <em>Dirichlet</em> and <em>Neumann</em>
+conditions can be defined in terms of the <em>Robin</em> condition using
+appropriate values of <span class="math">\(\gamma\)</span>, <span class="math">\(\beta\)</span>, and <span class="math">\(\alpha\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Develop an equation to represent the Neumann condition
+<span class="math">\(y'(a) = \alpha\)</span> based on finite differences. Here, <span class="math">\(x=a\)</span> is
+the left boundary.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Develop an equation to represent the Neumann condition
+<span class="math">\(y'(b) = \alpha\)</span> based on finite differences. Here, <span class="math">\(x=b\)</span> is
+the right boundary.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Develop an equation to represent the Robin condition
+<span class="math">\(\gamma y'(a) + \beta y(a) = \alpha\)</span> based on finite differences.
+Here, <span class="math">\(x=a\)</span> is the left boundary.</p>
+<p><em>Solution</em>: Let <span class="math">\(y_0 = y(a)\)</span> and <span class="math">\(y_1 = y(a+\Delta)\)</span>. Then
+approximate <span class="math">\(y'(a)\)</span> as <span class="math">\([y_1 - y_0]/\Delta\)</span> from which the
+boundary condition becomes</p>
+<div class="math">
+\[\frac{\gamma}{\Delta} y_1 + \left ( \beta - \frac{\gamma}{\Delta} \right ) y_0 = \alpha \, .\]</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Develop an equation to represent the Robin condition
+<span class="math">\(\gamma y'(b) + \beta y(b) = \alpha\)</span> based on finite differences.
+Here, <span class="math">\(x=b\)</span> is the right boundary.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="A-Simple-Example">
+<h2>A Simple Example<a class="headerlink" href="#A-Simple-Example" title="Permalink to this headline">¶</a></h2>
+<p>To illustrate the approach just described, let us consider our previous
+example for which <span class="math">\(p(x)=0\)</span>, <span class="math">\(q(x)=f(x)=-1\)</span>, and
+<span class="math">\(y(0) = y(10) = 0\)</span>. The analytic solution is
+<span class="math">\(y(x) = 1 - e^{10-x}/(1+e^{10}) - e^{x}/(1+e^{10})\)</span>. We’ll keep it
+simple and let <span class="math">\(n = 4\)</span>, which gives us five equations:</p>
+<div class="math">
+\[\begin{split}\begin{aligned}
+y_0  &amp;= 0 \\
+\frac{y_2 - 2y_1 + y_0}{\Delta^2} - y_1 &amp;= -1 \\
+\frac{y_3 - 2y_2 + y_1}{\Delta^2} - y_1 &amp;= -1 \\
+\frac{y_4 - 2y_3 + y_2}{\Delta^2} - y_1 &amp;= -1 \\
+y_4  &amp;= 0
+\end{aligned} \, .\end{split}\]</div>
+<p>In matrix form, these become</p>
+<div class="math">
+\[\begin{split}\left [
+  \begin{matrix}
+     1          &amp; 0           &amp; 0           &amp; 0           &amp; 0 \\
+     1/\Delta^2 &amp; -2/\Delta^2 -1 &amp; 1/\Delta^2  &amp; 0           &amp; 0 \\
+     0          &amp; 1/\Delta^2  &amp; -2/\Delta^2 -1 &amp; 1/\Delta^2  &amp; 0 \\
+     0          &amp; 0           &amp; 1/\Delta^2  &amp; -2/\Delta^2 -1 &amp; 1/\Delta^2  \\
+     0          &amp; 0           &amp; 0           &amp; 0           &amp; 1 \\
+  \end{matrix}
+\right ]
+\left [
+  \begin{matrix}
+     y_0 \\
+     y_1 \\
+     y_2 \\
+     y_3 \\
+     y_4 \\
+  \end{matrix}
+\right ]
+=
+\left [
+  \begin{matrix}
+     0 \\
+    -1 \\
+    -1 \\
+    -1 \\
+     0 \\
+  \end{matrix}
+\right ] \, .\end{split}\]</div>
+<p>In fact, we can simplify this system somewhat. Because we <em>already know</em>
+the values <span class="math">\(y_0\)</span> and <span class="math">\(y_4\)</span> from the boundary conditions, we
+can subsitute them into the equations for <span class="math">\(y_1\)</span> and <span class="math">\(y_3\)</span>,
+which leads to</p>
+<div class="math">
+\[\begin{split}\left [
+  \begin{matrix}
+     -2/\Delta^2 -1 &amp; 1/\Delta^2  &amp; 0          \\
+     1/\Delta^2  &amp; -2/\Delta^2 -1 &amp; 1/\Delta^2   \\
+     0           &amp; 1/\Delta^2  &amp; -2/\Delta^2 -1  \\
+  \end{matrix}
+\right ]
+\left [
+  \begin{matrix}
+     y_1 \\
+     y_2 \\
+     y_3 \\
+\end{matrix}
+\right ]
+=
+\left [
+  \begin{matrix}
+    -1 \\
+    -1 \\
+    -1 \\
+  \end{matrix}
+\right ] \, .\end{split}\]</div>
+<p>Personally, I like introducing the first version first since it puts all
+the equations together in a very transparent form. The second approach,
+however, leads to a somewhat simpler system. Note, though, this second
+approach is only applicable when the boundary condition is a Dirichlet
+condition.</p>
+<p>Let’s solve this numerically:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">y_numerical</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y_exact</span> <span class="o">=</span>  <span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">10</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_exact</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">y_numerical</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="s1">&#39;numerical&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_Numerical_Solution_of_BVPs_3_0.png" src="../_images/lectures_Numerical_Solution_of_BVPs_3_0.png" />
+</div>
+</div>
+<p>The approximation is not perfect, but then again, we used only five
+points!</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply the approach outlined above to solve
+<span class="math">\(y'' + y(x) = 1\)</span>, subject to <span class="math">\(y(0) = y(10) = 0\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve the convection-diffusion problem from <a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture
+26</span></a> using finite differences.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply the approach outlined above to solve
+<span class="math">\(y'' + y(x) = 1\)</span>, subject to <span class="math">\(y'(0) = y(10) = 0\)</span>. Note,
+that’s a Neumann condition at the left boundary.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use the finite-difference method to solve
+<span class="math">\(y'' + y(x) = x\)</span>, subject to <span class="math">\(y'(0) = y(10) = 0\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Implement the following function for solving arbitrary,
+second-order BVPs of the form <span class="math">\(y'' + p(x)y' + q(x)y(x) = s(x)\)</span>
+subject to <span class="math">\(\gamma_a y(a) + \beta_a y'(a) = \alpha_a\)</span> and
+<span class="math">\(\gamma_b y(b) + \beta_b y'(b) = \alpha_b\)</span>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bvp2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">bc_a</span><span class="p">,</span> <span class="n">bc_r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="s2">&quot;&quot;&quot; Solve y&#39;&#39; + p(x)y&#39; + q(x)y(x) = s(x).</span>
+
+<span class="s2">    Inputs:</span>
+<span class="s2">        a - left boundary (float)</span>
+<span class="s2">        b - right boundary (float)</span>
+<span class="s2">        n - number of evenly spaced points (int)</span>
+<span class="s2">        bc_a - tuple of three values</span>
+<span class="s2">               (alpha, beta, gamma) for left condition</span>
+<span class="s2">        bc_b - tuple of three values</span>
+<span class="s2">               (alpha, beta, gamma) for right condition</span>
+<span class="s2">        p - callable function for p(x)</span>
+<span class="s2">        q - callable function for q(x)</span>
+<span class="s2">        s - callable function for s(x)</span>
+<span class="s2">    Returns:</span>
+<span class="s2">        y - approximate function</span>
+<span class="s2">        x - points at which y(x) is evaluated</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="Eigenvalue-Problems">
+<h2>Eigenvalue Problems<a class="headerlink" href="#Eigenvalue-Problems" title="Permalink to this headline">¶</a></h2>
+<p>You may previously have studied the discrete, matrix eigenvalue problem:</p>
+<div class="math">
+\[\mathbf{Ax}=\lambda\mathbf{x} \, .\]</div>
+<p>The eigenvalues <span class="math">\(\lambda\)</span> are the roots of
+<span class="math">\(|\mathbf{A} - \lambda \mathbf{I}|\)</span>, where <span class="math">\(|\cdot|\)</span> is the
+determinant. Here, that determinant leads to a polynomial equation for
+<span class="math">\(\lambda\)</span>. As long as <span class="math">\(\mathbf{A}\)</span> is 4 by 4 or smaller,
+<span class="math">\(\lambda\)</span> can be found directly. For larger matrices, we need
+numerical techniques (as was discussed in <a class="reference external" href="ME400_Lecture_23.ipynb">Lecture
+23</a>.</p>
+<p>Eigenvalue problems are not limited to discrete systems, however. For
+example, consider the following BVP:</p>
+<div class="math">
+\begin{equation}
+   - \frac{d^2 y}{dx^2} = \lambda y(x), \qquad y(0)=y(10)=0 \, .
+\end{equation}</div><p>This is really the homogeneous equation <span class="math">\(y'' - \lambda y = 0\)</span>, for
+which <span class="math">\(y(x) = a \cos(\sqrt{\lambda}x) + b \sin(\sqrt{\lambda}x)\)</span>.
+The left boundary condition <span class="math">\(y(0)=0\)</span> gives <span class="math">\(a = 0\)</span>. However,
+the right condition leaves us with a somewhat strange situation:</p>
+<div class="math">
+\begin{equation}
+    b \sin(\sqrt{\lambda}10) = 0 \, .
+\end{equation}</div><p>Why is this strange? All it says about <span class="math">\(b\)</span> is that <span class="math">\(b=0\)</span>,
+the trivial solution. But if <span class="math">\(b\ne 0\)</span>, then it can be divided from
+both sides, leaving</p>
+<div class="math">
+\begin{equation}
+    \sin(\sqrt{\lambda}10) = 0 \, .
+\end{equation}</div><p>Perhaps now our situation is a bit more obvious: the left boundary is
+not able to determine <span class="math">\(b\)</span>, but it is able to determine those
+values of <span class="math">\(\lambda\)</span> for which the BVP and its boundary conditions
+are satisfied. Here, those values are</p>
+<div class="math">
+\begin{equation}
+    \lambda = \frac{n^2 \pi^2}{100} \, .
+\end{equation}</div><p>Now, to solve such an equation, we can employ the same discretization
+used above, which leads to the following matrix eigenvalue problem:</p>
+<div class="math">
+\begin{equation}
+ \left [
+   \begin{matrix}
+      1          &amp; 0           &amp; 0           &amp; 0           &amp; 0 \\
+      -1/\Delta^2 &amp; 2/\Delta^2 &amp; -1/\Delta^2  &amp; 0           &amp; 0 \\
+      0          &amp; -1/\Delta^2  &amp; 2/\Delta^2 &amp; -1/\Delta^2  &amp; 0 \\
+      0          &amp; 0           &amp; -1/\Delta^2  &amp; 2/\Delta^2 &amp; -1/\Delta^2  \\
+      0          &amp; 0           &amp; 0           &amp; 0           &amp; 1 \\
+   \end{matrix}
+ \right ]
+ \left [
+   \begin{matrix}
+      y_0 \\
+      y_1 \\
+      y_2 \\
+      y_3 \\
+      y_4 \\
+   \end{matrix}
+ \right ]
+ =
+ \lambda
+ \left [
+   \begin{matrix}
+      y_0 \\
+      y_1 \\
+      y_2 \\
+      y_3 \\
+      y_4 \\
+   \end{matrix}
+ \right ] \, .
+\end{equation}</div><p>We can solve this numerically via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[ 0.54627417  0.32        0.09372583  1.          1.        ]
+</pre></div></div>
+</div>
+<p>The smallest eigenvalue of the original equation comes with <span class="math">\(n=1\)</span>
+(<span class="math">\(n=0\)</span> is the trivial solution):
+<span class="math">\(\lambda_1 = \pi^2/100 \approx 0.0986960\)</span>, and the corresponding
+<em>eigenfunction</em> is <span class="math">\(y_1(x) = \sin(\pi x/10)\)</span>. Just as eigenvectors
+are defined only to within a multiplicative constant, so too are
+eigenfunctions.</p>
+<p>The smallest eigenvalue found numerically is <span class="math">\(0.09372583\)</span>, which
+is pretty close to <span class="math">\(\pi^2/100\)</span>. Let’s look at the corresponding
+eigenvector compared to the analytic solution. We can make sure to pick
+out the correct eigenvector by finding the index of the lowest
+eigenvalue:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">index_lowest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">index_lowest</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2
+</pre></div></div>
+</div>
+<p>With that index, we can get the eigenvector and plot it with the
+analytic one (scaled so both have a maximum of one):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">10.</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y_numerical</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">index_lowest</span><span class="p">]</span>
+<span class="n">y_numerical</span> <span class="o">=</span> <span class="n">y_numerical</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y_numerical</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_exact</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">y_numerical</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="s1">&#39;numerical&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_Numerical_Solution_of_BVPs_11_0.png" src="../_images/lectures_Numerical_Solution_of_BVPs_11_0.png" />
+</div>
+</div>
+<p>For the other eigenvalues and eigenvectors, the numerical results are
+less impressive. For example, the next four eigenvalues are</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.3947841760435743
+0.8882643960980423
+1.5791367041742972
+2.4674011002723395
+</pre></div></div>
+</div>
+<p>and the list keeps going because <span class="math">\(n\)</span> has no upper limit. The only
+way we can capture these <em>higher modes</em> is to have more points in our
+numerical solution. If the eigenvalues are viewed as frequencies, and
+the eigenfunctions as waves, it becomes obvious that too few points will
+prevent us from observing all the oscillations. However, usually our
+interest is in <span class="math">\(\lambda_1\)</span> and <span class="math">\(y_1(x)\)</span>, for these
+correspond (in physical systems) to the <em>fundamental</em> or <em>fundamental
+mode</em>. That could be the critical spatial distribution of neutrons in a
+reactor, or the natural frequency of a cantileaver beam. Engineers (of
+one type of another) must analyze such systems, and numerical
+eigenvalues often play a role.</p>
+</div>
+<div class="section" id="Comment-on-FDM-and-Alternatives">
+<h2>Comment on FDM and Alternatives<a class="headerlink" href="#Comment-on-FDM-and-Alternatives" title="Permalink to this headline">¶</a></h2>
+<p>The finite-difference method is easy to understand, often simple to
+implement, and useful for a variety of real-world applications. However,
+it isn’t the only option and it’s often not the best option.
+<a class="reference external" href="https://en.wikipedia.org/wiki/Finite_volume_method">Finite-volume
+methods</a> (FVM’s)
+integrate the differential equation first, and the resulting
+<span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> represents a discretetized conservation
+law. <a class="reference external" href="https://en.wikipedia.org/wiki/Finite_element_method">Finite-element
+methods</a> (FEM’s)
+also integrate the differential equation first (albeit in a slightly
+different form). Then, the solutions are assumed to take simple
+piece-wise continuous form (lines, parabolas, or even cubics), and the
+integral balance over the whole domain becomes a linear system. Lots of
+details, but powerfully successful results.</p>
+<p>These are two examples. Others include spectral methods,
+discontinuous-Galerkin methods, and boundary-element methods. There is a
+whole world to explore that goes well beyond the present scope (which,
+of course, is to solve problems).</p>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>Make sure to review the numerical differentiation and linear solver
+material previously covered.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Numerical Solutions of Two-Point BVPs</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Chopping-Up-the-BVP">Chopping Up the BVP</a></li>
+<li><a class="reference internal" href="#A-Simple-Example">A Simple Example</a></li>
+<li><a class="reference internal" href="#Eigenvalue-Problems">Eigenvalue Problems</a></li>
+<li><a class="reference internal" href="#Comment-on-FDM-and-Alternatives">Comment on FDM and Alternatives</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Systems_Of_IVPs.html" title="previous chapter">Numerical Solutions of First-Order Systems</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/Numerical_Solution_of_BVPs.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/Numerical_Solution_of_BVPs.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

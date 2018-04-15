@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 23 - Root Finding and Optimization &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 23 - Data Analysis via Least-Squares Fitting &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,107 +201,83 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-23---Root-Finding-and-Optimization">
-<h1>Lecture 23 - Root Finding and Optimization<a class="headerlink" href="#Lecture-23---Root-Finding-and-Optimization" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>, SymPy was applied to perform
-symbolic differentiation, and in <a class="reference external" href="ME400_Lecture_21.ipynb">Lecture
-21</a>, finite-difference approximations were
-developed to perform numerical differentiation. We’ll need both
-techniques as we begin to solve <strong>nonlinear equations</strong> and
-<strong>optimization problems</strong>. Both subjects are rich, so we’ll touch on
-only the basics, but you’ll have tools at your disposal to tackle such
-problems in varied applications.</p>
+<div class="section" id="Lecture-23---Data-Analysis-via-Least-Squares-Fitting">
+<h1>Lecture 23 - Data Analysis via Least-Squares Fitting<a class="headerlink" href="#Lecture-23---Data-Analysis-via-Least-Squares-Fitting" title="Permalink to this headline">¶</a></h1>
+<p>A ubiquitous task in engineering and other technical disciplines is the
+analysis of data. Data comes from many sources, including measurements
+in the laboratory and numerical simulations. In this lecture and the
+next, we’ll apply what we’ve learned so far to produce <em>models</em> from
+data that we can use to explore trends and make conclusions.
+Specifically, in this lecture, we’ll develop models based on
+<strong>least-squares</strong> fitting of model parameters to existing data. Such
+fitting may be the right choice when the data in contaminated by noise
+or when the model need only capture the main features of the observed
+phenomenon.</p>
+</div>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h1>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h1>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Find one or more roots of a one-dimensional, nonlinear equation
-<span class="math">\(f(x) = 0\)</span> using the bisection and Newton methods.</li>
-<li>Find local extrema of a function <span class="math">\(f(x)\)</span> using the bisection and
-Newton methods.</li>
-<li>Establish the order of an integration scheme using numerical,
-graphical, or symbolic means.</li>
+<li>Explain (and demonstrate) what is meant by a least-squares fit of a
+linear model <span class="math">\(ax+b\)</span> to a set of measured points
+<span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
+<li>Use built-in tools to perform linear, least-squares fitting of data
+to models</li>
+<li>Use built-in tools to perform nonlinear, least-squares fitting of
+data to models</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h1>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li>nonlinear equation</li>
-<li>transcendental equation</li>
-<li>graphical solution</li>
-<li>bisection method</li>
-<li>Newton’s method</li>
-<li>quadratic convergence</li>
-<li>second-order convergence</li>
-<li>order of convergence</li>
-<li>secant method</li>
-<li>Steffensen’s method</li>
-<li>nonlinear systems</li>
-<li>Jacobian matrix</li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></li>
-<li>optimization</li>
-<li>extremum</li>
-<li>critical point</li>
-<li>objective function</li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code></li>
+<li>error</li>
+<li>least-squares</li>
+<li>normal equation</li>
+<li><code class="docutils literal"><span class="pre">np.linalg.solve</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.polyfit</span></code></li>
+<li><code class="docutils literal"><span class="pre">np.polyval</span></code></li>
+<li><code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code></li>
 </ul>
-</div>
-</div>
-<div class="section" id="Nonlinear-Equations">
-<h2>Nonlinear Equations<a class="headerlink" href="#Nonlinear-Equations" title="Permalink to this headline">¶</a></h2>
-<p>Linear equations are characterized by <em>linear combinations</em> or the
-unknowns, e.g.,</p>
-<div class="math">
-\[\begin{split}\begin{split}
- ax + by &amp;= 1 \\
- cx + dy &amp;= 2
-\end{split}\end{split}\]</div>
-<p>Any deviation from this pattern results in <strong>nonlinear equations</strong>,
-which we can solve - analytically (or symbolically) - graphically -
-numerically</p>
-<div class="section" id="Analytic-Solutions">
-<h3>Analytic Solutions<a class="headerlink" href="#Analytic-Solutions" title="Permalink to this headline">¶</a></h3>
-<p>In <em>rare</em> cases, nonlinear equations have closed-form solutions.</p>
-<p><strong>Exercise</strong>: Find all values of <span class="math">\(x\)</span> such that
-<span class="math">\(\sin(ax) - b = 0\)</span>.</p>
-</div>
-<div class="section" id="Graphical-Solutions">
-<h3>Graphical Solutions<a class="headerlink" href="#Graphical-Solutions" title="Permalink to this headline">¶</a></h3>
-<p>Can’t solve it? <strong>Plot it!</strong></p>
-<p>For single equation <span class="math">\(f(x) = g(x)\)</span>: - plot <span class="math">\(f(x)\)</span> and
-<span class="math">\(g(x)\)</span> over the range of interest to identify intersections - plot
-<span class="math">\(f(x)-g(x)\)</span> to identify roots</p>
-<p><strong>Exercise</strong>: The solution of transient heat-conduction problems often
-involves a technique called <em>separation of variables</em>. Application of
-this technique to an infinite slab of thickness <span class="math">\(2L\)</span> subject to
-certain initial and boundary conditions leads to the transcendental
-equation</p>
-<div class="math">
-\[\cot \lambda L = \frac{\lambda L}{hL/k} = \frac{\lambda L}{\text{Bi}} \, ,\]</div>
-<p>where <span class="math">\(\lambda\)</span> is a dimensionless, undetermined parameter,
-<span class="math">\(h\)</span> is the heat transfer coefficient, <span class="math">\(k\)</span> is the thermal
-conductivity, and <span class="math">\(\text{Bi}\)</span> is the <em>Biot number</em>. The Biot
-number quantifies how hard it is for heat to flow <em>within</em> a body
-relative to how hard it is to flow <em>through the outer surface</em> of the
-body. Only for certain values of <span class="math">\(\lambda\)</span> can the equation be
-solved. Determine these values graphically by plotting the left-hand and
-right-hand sides of the equation as functions of <span class="math">\(\lambda L\)</span>.</p>
-<div class="nbinput docutils container">
+<div class="section" id="Noisy-Data">
+<h2>Noisy Data<a class="headerlink" href="#Noisy-Data" title="Permalink to this headline">¶</a></h2>
+<p>A familiar task: draw a line of “best fit” through noisy data
+<span class="math">\((x_i, y_i)\)</span></p>
+<p>Alternative description: find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> so that the
+<em>linear model</em> <span class="math">\(y(x) = ax + b\)</span> best matches the data.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">L</span> <span class="o">=</span> <span class="mf">5.0</span> <span class="c1"># this would be a problem given</span>
-<span class="n">Bi</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># this would also be given</span>
-<span class="n">lambda_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span> <span class="c1"># lambda defined implicitly</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambda_L</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">lambda_L</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
-         <span class="n">lambda_L</span><span class="p">,</span> <span class="n">lambda_L</span><span class="o">/</span><span class="n">Bi</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># connect first and last points</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y_a1</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">b</span>
+<span class="c1"># connect minimum and maximum points</span>
+<span class="n">t_max</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span> <span class="c1"># np.where(y==max(y)) is one way</span>
+<span class="n">t_min</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span> <span class="c1"># to find the location of the max</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">t_max</span><span class="o">-</span><span class="n">t_min</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t_min</span>
+<span class="n">y_a2</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_a1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_a2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;$y(t)$&quot;</span><span class="p">,</span> <span class="s2">&quot;approx 1&quot;</span><span class="p">,</span> <span class="s2">&quot;approx 2&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -310,57 +286,37 @@ right-hand sides of the equation as functions of <span class="math">\(\lambda L\
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_23_Slides_8_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_8_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_23_Slides_5_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_5_0.png" />
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="Determining-Roots-Numerically">
-<h2>Determining Roots Numerically<a class="headerlink" href="#Determining-Roots-Numerically" title="Permalink to this headline">¶</a></h2>
-<p>The numerical solution of <span class="math">\(f(x) = 0\)</span> can be challenging since it
-requires we know at least a little about the desired solution,
-particularly the range in which the root is contained. We’ll explore
-three basic schemes for solving <span class="math">\(f(x)\)</span>: the <a class="reference external" href="http://mathworld.wolfram.com/Bisection.html">bisection
-method</a>, <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton’s
-method</a>, and the
-secant method.</p>
-<div class="section" id="Bisection">
-<h3>Bisection<a class="headerlink" href="#Bisection" title="Permalink to this headline">¶</a></h3>
-<p>Just like <strong>binary search</strong>! Now, compare <em>sign</em> rather than <em>magnitude</em>
-(and keep <strong>repeating</strong>).</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Bisection method for finding an isolated root of f between a and b&#39;&#39;&#39;</span>
-<span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tau</span>
-
-<span class="c1"># Define the left and right boundaries</span>
-<span class="n">Set</span> <span class="n">L</span> <span class="o">=</span> <span class="n">a</span>
-<span class="n">Set</span> <span class="n">R</span> <span class="o">=</span> <span class="n">b</span>
-
-<span class="c1"># Define the central point</span>
-<span class="n">Set</span> <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-
-<span class="c1"># Go until f(C) is close enough to zero (i.e., that</span>
-<span class="c1"># C is close enough to the root between a and b</span>
-<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span>
-    <span class="n">If</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">))</span> <span class="o">==</span> <span class="n">sign</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">L</span><span class="p">))</span> <span class="n">then</span>
-        <span class="c1"># the root must be between C and R</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="n">C</span>
-    <span class="n">Otherwise</span>
-        <span class="c1"># the root must be between L and C</span>
-        <span class="n">R</span> <span class="o">=</span> <span class="n">C</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="n">R</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-<span class="n">Output</span><span class="p">:</span> <span class="n">C</span>
-</pre></div>
-</div>
-<p>Graphical display of bisection to find first positive root of
-<span class="math">\(\sin(x) - 2/5\)</span>:</p>
+<div class="section" id="What-&quot;Best&quot;-Means">
+<h2>What “Best” Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
+<p>The error is the difference between the model and data:</p>
+<div class="math">
+\[e_i = y(t_i) - y_i = a t_i + b - y_i \, \quad i = 0, 1, \ldots\]</div>
+<p>A model is the <strong>least-squares, best fit</strong> if it minimizes</p>
+<div class="math">
+\[|| \mathbf{e} ||_2 = \sqrt{ |e_0|^2 + |e_1|^2 + \ldots} = \sqrt{\sum_{i=0} |e_i|^2} \,  ,\]</div>
+<p>the <span class="math">\(L_2\)</span> norm (or euclidean norm) of the error. Similar to other
+error metrics we’ve seen?</p>
+<p><strong>Exercise</strong>: Compute and plot the errors from example, and compute
+their L2-norms.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">nonlinear_plots</span>
-<span class="n">nonlinear_plots</span><span class="o">.</span><span class="n">bisection_root</span><span class="p">()</span>
+<span></span><span class="n">e_1</span> <span class="o">=</span>
+<span class="n">e_2</span> <span class="o">=</span>
+<span class="n">norm_e_1</span> <span class="o">=</span>
+<span class="n">norm_e_2</span> <span class="o">=</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e_1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e_2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;$||e_1||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_1</span><span class="p">),</span>
+            <span class="sa">r</span><span class="s2">&quot;$||e_2||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_2</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -368,183 +324,170 @@ secant method.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_23_Slides_13_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_13_0.png" />
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-05a1610cbc18&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    e_1 =</span>
+         ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Newton's-Method">
-<h3>Newton’s Method<a class="headerlink" href="#Newton's-Method" title="Permalink to this headline">¶</a></h3>
-<p>Often, a better way to find roots of <span class="math">\(f(x) = 0\)</span> is <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton’s
-method</a>.</p>
-<p>Like bisection, Newton’s method produces a sequence of approximations.</p>
-<p>Unlike bisection, require an <em>initial guess</em> <span class="math">\(x_0\)</span> for the root
-<span class="math">\(x_r\)</span> (and it should be “close”).</p>
-<p>Quick motivation for Newton <em>from the math</em>:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
-<span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">Delta</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;f x_0 Delta&#39;</span><span class="p">)</span>
-<span class="n">x_r</span> <span class="o">=</span> <span class="n">x_0</span> <span class="o">+</span> <span class="n">Delta</span>
-<span class="n">eq</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x_r</span><span class="p">),</span> <span class="n">Delta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">eq</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
+<p>Linear least-square solutions are found by solving the normal equations:</p>
 <div class="math">
-$$f{\left (x_{0} \right )} + \Delta \left. \frac{d}{d \xi_{1}} f{\left (\xi_{1} \right )} \right|_{\substack{ \xi_{1}=x_{0} }} + \mathcal{O}\left(\Delta^{2}\right) = 0$$</div></div>
-</div>
-<div class="nbinput docutils container">
+\[\mathbf{c} = (\mathbf{M}^T \mathbf{M})^{-1}  \mathbf{M}^T \mathbf{y} \, .\]</div>
+<p>where the model attempts to satisfy <span class="math">\(\mathbf{Mc} = \mathbf{y}\)</span>.</p>
+<p>For <span class="math">\(y(x) \approx at + b\)</span>,
+<span class="math">\(\mathbf{M} = [\mathbf{x}, \mathbf{1}]\)</span> and
+<span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
+<p><strong>Exercise</strong>: Determine the best-fit parameters <span class="math">\(a\)</span> and <span class="math">\(b\)</span>
+for the example data above.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">eq</span><span class="p">,</span> <span class="n">Delta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+</div>
+<div class="section" id="Beyond-Linear-Models">
+<h2>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h2>
+<p>Not all data is intrinsically linear. Alternatives:</p>
+<ul class="simple">
+<li>polynomial models
+<span class="math">\(y(x) = a_n x^n + a_{n-1} x^{n-1} + \ldots + a_0\)</span>.</li>
+<li>problem-specific models, e.g.,
+<span class="math">\(y(x) = a_0 e^x + a_1 e^{-x} + a_2\)</span>.</li>
+</ul>
+<p>The key is that the coefficients <span class="math">\(a_n\)</span> are weights of separate,
+nonparameterized functions of <span class="math">\(x\)</span>. <em>Linear</em> least-squares fitting
+can be used (just like for <span class="math">\(y(x) = ax+b\)</span>). For a quadratic fit
+<span class="math">\(y(x)=ax^2+bx+c\)</span>, <span class="math">\(\mathbf{M}\)</span> becomes
+<span class="math">\([\mathbf{x}^2, \mathbf{x}^1, \mathbf{x}^0]\)</span> and
+<span class="math">\(\mathbf{c}\)</span> becomes <span class="math">\(\mathbf{c} = [a, b, c]^T\)</span>.</p>
+<p>For such polynomial fits, use <code class="docutils literal"><span class="pre">np.polyfit</span></code> and <code class="docutils literal"><span class="pre">np.polyval</span></code>.</p>
+<p><strong>Example</strong>: Use <code class="docutils literal"><span class="pre">np.polyfit</span></code> and <code class="docutils literal"><span class="pre">np.polyval</span></code> to approximate
+<span class="math">\(\sin^2(x)\)</span> as a linear, quadratic, and cubic polynomial for
+<span class="math">\(x\in [0, 2]\)</span>, and plot the approximations.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
+<span></span>In [4]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="math">
-$$- \frac{f{\left (x_{0} \right )} + \mathcal{O}\left(\Delta^{2}\right)}{\left. \frac{d}{d \xi_{1}} f{\left (\xi_{1} \right )} \right|_{\substack{ \xi_{1}=x_{0} }}}$$</div></div>
-</div>
-<p>Take a leap of faith: <strong>ignore the</strong> <span class="math">\(\mathcal{O}(\Delta^2)\)</span>
-<strong>term</strong> and set</p>
-<div class="math">
-\[x_r \approx x_1 = x_0 + \Delta\]</div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Newton&#39;s method for finding the root f given x_0&#39;&#39;&#39;</span>
-<span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
-<span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
-<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
-   <span class="c1"># Compute the Newton &quot;step&quot;</span>
-   <span class="n">Set</span> <span class="n">Delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">fp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-   <span class="c1"># Compute the next value of x</span>
-   <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">Delta</span>
-<span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="c1"># compute the approximations here</span>
 </pre></div>
 </div>
-<p>Quick motivation of Newton <em>from the geometry</em>…</p>
-<p><strong>Exercise</strong>: Solve <span class="math">\(f(x) = \sin(x)-2/5 = 0\)</span> starting with
-<span class="math">\(x_0 = 0.5\)</span> until <span class="math">\(|f(x)| &lt; 10^{-5}\)</span>.</p>
-<p>Such convergence is called <strong>quadratic convergence</strong> or <strong>second-order
-convergence</strong>.</p>
-<p>More generally, <span class="math">\(\epsilon_{n+1} = C \epsilon_n^p\)</span>, where <span class="math">\(p\)</span>
-is the <strong>order of convergence</strong> and <span class="math">\(C\)</span> is the <strong>rate of
-convergence</strong>.</p>
 </div>
-<div class="section" id="Secant-Method">
-<h3>Secant Method<a class="headerlink" href="#Secant-Method" title="Permalink to this headline">¶</a></h3>
-<p>Actually, just like Newton but without <span class="math">\(f'(x)\)</span>! Use a <em>finite
-difference</em> instead.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Secant method for finding the root f given x_0&#39;&#39;&#39;</span>
-<span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
-<span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
-<span class="n">Set</span> <span class="n">x_0</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">tau</span>
-<span class="n">While</span> <span class="o">|</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">|</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="n">do</span>
-   <span class="c1"># Approximate the derivative</span>
-   <span class="n">Set</span> <span class="n">fp</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x_0</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x_0</span><span class="p">)</span>
-   <span class="c1"># Compute the Newton &quot;step&quot;</span>
-   <span class="n">Set</span> <span class="n">Delta</span> <span class="o">=</span> <span class="o">-</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">fp</span>
-   <span class="c1"># Store old x, and compute next value</span>
-   <span class="n">Set</span> <span class="n">x_0</span> <span class="o">=</span> <span class="n">x</span>
-   <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">Delta</span>
-<span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
-</pre></div>
-</div>
-<p>Depending on <span class="math">\(f(x)\)</span> (and its cost), <em>may</em> be better to use
-<span class="math">\(x\)</span> and <span class="math">\(x+\delta\)</span> for finite difference where
-<span class="math">\(\delta &lt; (x-x_0)\)</span>.</p>
-</div>
-</div>
-<div class="section" id="Solving-Systems-of-Nonlinear-Equations-Numerically">
-<h2>Solving Systems of Nonlinear Equations Numerically<a class="headerlink" href="#Solving-Systems-of-Nonlinear-Equations-Numerically" title="Permalink to this headline">¶</a></h2>
-<p>From <span class="math">\(f(x) = 0\)</span> to <span class="math">\(\mathbf{f}(\mathbf{x}) = \mathbf{0}\)</span>…</p>
-<p>…and from <span class="math">\(f'(x)\)</span> to the <strong>Jacobian</strong> matrix <span class="math">\(\mathbf{J}\)</span>:</p>
-<div class="math">
-\[\begin{split}  \mathbf{J}(\mathbf{x}) = \begin{bmatrix}
-    \frac{\partial f_0}{\partial x_0} &amp; \frac{\partial f_1}{\partial x_0} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_0} \\
-    \frac{\partial f_0}{\partial x_1} &amp; \frac{\partial f_1}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_1} \\
-         &amp;     &amp;  \ddots &amp;  \\
-    \frac{\partial f_0}{\partial x_{n-1}} &amp; \frac{\partial f_1}{\partial x_{n-1}} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_{n-1}}
-\end{bmatrix}\end{split}\]</div>
-<p>(here, partial derivatives evaluated at <span class="math">\(\mathbf{x}\)</span>)</p>
-<p>Newton’s method leads to the sequence</p>
-<div class="math">
-\[\mathbf{x}_{n+1} = \mathbf{x}_{n} - \mathbf{J}^{-1}(\mathbf{x}_n) \mathbf{f}(\mathbf{x}_n) \, .\]</div>
-<div class="section" id="scipy.optimize.fsolve">
-<h3><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code><a class="headerlink" href="#scipy.optimize.fsolve" title="Permalink to this headline">¶</a></h3>
-<p>Good to know the equations, but better (usually) to use SciPy and its
-<code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code> function:</p>
-<p>The signature (from <code class="docutils literal"><span class="pre">help(fsolve)</span></code>) is</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fsolve</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">fprime</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col_deriv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1.49012e-08</span><span class="p">,</span> <span class="n">maxfev</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">epsfcn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Here, <code class="docutils literal"><span class="pre">func</span></code> represents the nonlinear system function
-<span class="math">\(\mathbf{f}(\mathbf{x})\)</span>, and <code class="docutils literal"><span class="pre">args</span></code> represents any values
-needed to define what <span class="math">\(\mathbf{f}(\mathbf{x})\)</span> does. The initial
-guess is <code class="docutils literal"><span class="pre">x0</span></code>. If available, <code class="docutils literal"><span class="pre">fprime</span></code> should compute
-<span class="math">\(\mathbf{J}(\mathbf{x})\)</span>; if not provided, <code class="docutils literal"><span class="pre">fsolve</span></code> approximates
-the Jacobian using a forward-difference approximation.</p>
-<p><strong>Exercise</strong>: Solve the nonlinear system of equations <span class="math">\(x-y = 4\)</span>
-and <span class="math">\(x^2 + y = -3\)</span> using <code class="docutils literal"><span class="pre">fsolve</span></code> <span class="math">\(x_0=1/2\)</span> and
-<span class="math">\(y_0=-3\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span>
-
-<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span> <span class="c1"># unpack z</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span>
-
-<span class="n">z0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_lin</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">,</span>
+         <span class="n">x</span><span class="p">,</span> <span class="n">y_quad</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_cub</span><span class="p">,</span> <span class="s1">&#39;r:&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;quadratic&#39;</span><span class="p">,</span> <span class="s1">&#39;cubic&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-8d4399594022&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> plt.plot(x, y, &#39;k&#39;, x, y_lin, &#39;b-.&#39;,
+</span><span class="ansi-green-intense-fg ansi-bold">      2</span>          x, y_quad, &#39;g--&#39;, x, y_cub, &#39;r:&#39;)
+<span class="ansi-green-intense-fg ansi-bold">      3</span> plt<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;y&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;linear&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;quadratic&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;cubic&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> plt<span class="ansi-blue-fg">.</span>xlabel<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;x&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;y_lin&#39; is not defined
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Beyond-Polynomial-Models">
+<h2>Beyond Polynomial Models<a class="headerlink" href="#Beyond-Polynomial-Models" title="Permalink to this headline">¶</a></h2>
+<p>Linear models are common, and polynomial models can provide necessary
+improvements. For many cases, neither type of model is sufficient.</p>
+<p>Consider data that needs to be fitted to</p>
 <div class="math">
-$$\left ( 0.61803398875, \quad -3.38196601125\right )$$</div></div>
-</div>
-</div>
+\[y(t) = a\sin(bt + c) + d\]</div>
+<p>Because <span class="math">\(b\)</span> and <span class="math">\(c\)</span> are <em>inside</em> a nonlinear function,
+<em>linear</em> least-squares fitting is not applicable. Rather, we need
+<em>nonlinear</em> least squares via, e.g., <code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code>.</p>
+<p><strong>Example</strong>: A recent experiment led to the measurement of reactor
+powers as a function of time as tabulated below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">t</th>
+<th class="head">P</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.0</td>
+<td>2.945</td>
+</tr>
+<tr class="row-odd"><td>1.0</td>
+<td>3.964</td>
+</tr>
+<tr class="row-even"><td>2.0</td>
+<td>4.481</td>
+</tr>
+<tr class="row-odd"><td>3.0</td>
+<td>5.747</td>
+</tr>
+<tr class="row-even"><td>4.0</td>
+<td>7.523</td>
+</tr>
+<tr class="row-odd"><td>5.0</td>
+<td>8.71</td>
+</tr>
+<tr class="row-even"><td>6.0</td>
+<td>10.733</td>
+</tr>
+<tr class="row-odd"><td>7.0</td>
+<td>13.91</td>
+</tr>
+<tr class="row-even"><td>8.0</td>
+<td>16.721</td>
+</tr>
+<tr class="row-odd"><td>9.0</td>
+<td>19.951</td>
+</tr>
+<tr class="row-even"><td>10.0</td>
+<td>24.61</td>
+</tr>
+</tbody>
+</table>
+<p>Fit this data to the model <span class="math">\(P(t) = ae^{bt}\)</span>. Is there a way we
+could use regular old linear regression effectively?</p>
 </div>
 <div class="section" id="Recap">
 <h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
-<p>By the end of this lesson, you should be able to</p>
+<p>You should now be able to:</p>
 <ul class="simple">
-<li>Find one or more roots of a one-dimensional, nonlinear equation
-<span class="math">\(f(x) = 0\)</span> using the bisection and Newton methods.</li>
-<li>Find local extrema of a function <span class="math">\(f(x)\)</span> using the bisection and
-Newton methods.</li>
-<li>Use <code class="docutils literal"><span class="pre">fsolve</span></code> to solve nonlinear systems.</li>
+<li>Explain (and demonstrate) what is meant by a least-squares fit of a
+linear model <span class="math">\(ax+b\)</span> to a set of measured points
+<span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
+<li>Use built-in tools to perform linear, least-squares fitting of data
+to models</li>
+<li>Use built-in tools to perform nonlinear, least-squares fitting of
+data to models</li>
 </ul>
-<p><strong>Exam Friday</strong>. Same format (no notes, etc.) Covers through finite
-differences, focuses on material since Exam 1, but should be (like life)
-assumed cumulative. <strong>Questions?</strong></p>
 </div>
 </div>
 
@@ -556,27 +499,13 @@ assumed cumulative. <strong>Questions?</strong></p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 23 - Root Finding and Optimization</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 23 - Data Analysis via Least-Squares Fitting</a></li>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Nonlinear-Equations">Nonlinear Equations</a><ul>
-<li><a class="reference internal" href="#Analytic-Solutions">Analytic Solutions</a></li>
-<li><a class="reference internal" href="#Graphical-Solutions">Graphical Solutions</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Determining-Roots-Numerically">Determining Roots Numerically</a><ul>
-<li><a class="reference internal" href="#Bisection">Bisection</a></li>
-<li><a class="reference internal" href="#Newton's-Method">Newton’s Method</a></li>
-<li><a class="reference internal" href="#Secant-Method">Secant Method</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Solving-Systems-of-Nonlinear-Equations-Numerically">Solving Systems of Nonlinear Equations Numerically</a><ul>
-<li><a class="reference internal" href="#scipy.optimize.fsolve"><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Noisy-Data">Noisy Data</a></li>
+<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What “Best” Means</a></li>
+<li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
+<li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
