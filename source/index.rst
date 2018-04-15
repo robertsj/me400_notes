@@ -35,8 +35,8 @@
    Lecture 22 - Optimization <lectures/Optimization>   
    Lecture 23 - Modeling Data with Least Squares Fitting <lectures/Modeling_Data_With_Least_Squares_Fitting>   
    Lecture 24 - Modeling Data with Interpolation <lectures/Modeling_Data_With_Interpolation>   
-.. Lecture 25 <lectures/Eulers_Method_for_IVPs>   
-   Lecture 26 <lectures/Systems_of_IVPs> 
+   Lecture 25 <lectures/Eulers_Method_for_IVPs>   
+..   Lecture 26 <lectures/Systems_of_IVPs> 
    Lecture 27 <lectures/Numerical_Solution_of_BVPs> 
    Lecture 28 <lectures/Symbolic_Expressions_and_Equations> 
    Lecture 29 <lectures/Symbolic_ODEs> 
