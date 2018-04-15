@@ -21,7 +21,7 @@
     "\n",
     "### Prerequisites\n",
     "\n",
-    "You should already be able to\n",
+    "You should already have a basic comprehension of ODEs, especially IVPs, at the level covered in MATH 340 (or 240, if you had that version).  \n",
     "\n",
     "- Solve ODEs based on what you've learned in a course like MATH 340 (this is not a strict requirement, but if you have *not* had MATH 340, you may wish to set up a time with me or the TAs).\n",
     "- Set up and solve algebraic systems using SymPy\n",
@@ -1024,7 +1024,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.2"
+   "version": "3.6.3"
   }
  },
  "nbformat": 4,

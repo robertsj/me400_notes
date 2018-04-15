@@ -211,7 +211,7 @@ solutions via <code class="docutils literal"><span class="pre">dsolve</span></co
 conditions to the user. However, SymPy (and other symbolic tools) cannot
 solve all differential equations. For such equations, we can apply
 numerical techniques. Specifically, we’ll apply the finite-difference
-approximations presented in <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>. For
+approximations presented in <a class="reference external" href="ME400_Lecture_19.ipynb">Lecture 19</a>. For
 now, we’ll consider only single, first-order equations, leaving systems
 for <a class="reference internal" href="ME400_Lecture_28.html"><span class="doc">Lecture 28</span></a>.</p>
 <div class="section" id="Objectives">
@@ -565,24 +565,25 @@ does the error change with time? Let’s expand the error about
 <span class="math">\(\Delta = 0\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">y0</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y0 Delta n p&#39;</span><span class="p">)</span>
-<span class="n">e</span> <span class="o">=</span> <span class="n">y0</span><span class="o">*</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">t_sy</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Delta</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">t_sy</span><span class="o">/</span><span class="n">Delta</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span></span><span class="n">y0</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y0 Delta n p, q&#39;</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span><span class="o">/</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">t_sy</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Delta</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">t_sy</span><span class="o">/</span><span class="n">Delta</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1">#e</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\Delta \left(\frac{t y_{0}}{2} p^{2} e^{- p t} - p y_{0} e^{- p t}\right) + \Delta^{2} \left(- \frac{p^{4} y_{0}}{8} t^{2} e^{- p t} + \frac{5 t}{6} p^{3} y_{0} e^{- p t} - p^{2} y_{0} e^{- p t}\right) + \mathcal{O}\left(\Delta^{3}\right)$$</div></div>
+$$\Delta \left(\frac{p q}{2} t e^{- p t} - q e^{- p t}\right) + \mathcal{O}\left(\Delta^{2}\right)$$</div></div>
 </div>
 <p>Evidently, the global error is of first order, consistent with the local
 error. However, it’s not clear (or easy to determine) exactly how the

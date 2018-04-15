@@ -1,0 +1,938 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Euler’s Method for Initial-Value Problems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2017',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Euler's-Method-for-Initial-Value-Problems">
+<h1>Euler’s Method for Initial-Value Problems<a class="headerlink" href="#Euler's-Method-for-Initial-Value-Problems" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we review the basics of <em>first-order</em>, <em>ordinary
+differential equations</em> and their role in <em>initial value problems</em>. Some
+of the basic solution techniques</p>
+<p>revisit the tools provided by SymPy and apply them to solution of
+<em>ordinary differential equations</em> (ODEs). Engineering is full of ODEs,
+since they are fundamental to the language of balance relationships
+found in heat transfer, nuclear reactor physics, control systems, and
+other areas. The goal here is <em>not</em> to present the theory of ODEs, nor
+is it to present the various systematic ways be which one can determine
+solutions to ODEs. Rather, the focus is placed squarely on defining ODEs
+symbolically, solving them symbolically, and, <em>importantly</em>, applying
+initial or boundary conditions to those symbolic solutions and solving
+the resulting <em>algebraic</em> equations for any undetermined coefficients.
+In other words, the focus is on the <em>problem solving</em> process.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Define first-order IVPs given engineering input (e.g., a description
+of some system)</li>
+<li>Solve first-order IVPs analytically (prior knowledge in part)</li>
+<li>Solve first-order IVPs numerically using the forward-Euler and
+backward-Euler methods.</li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>You should already have a basic comprehension of ODEs, especially IVPs,
+at the level covered in MATH 340 (now a pre-requisite for this course).
+That includes deducing general solutions, applying initial conditions,
+and determining complete solutions. In fact, you should also know
+something about Laplace transforms and Euler’s method, the latter
+technique which is the focus of this lesson. Specifically, you should,
+given a day or two of review, be able to sit down and complete a good
+chunk of an exam like <a class="reference external" href="https://www.math.ksu.edu/courses/exam-archive/math240/Math240fxS17.pdf">this
+one</a>
+at a passing level. If that is <em>not</em> the case, see an instructor in
+office hours and/or begin to review the <a class="reference external" href="https://www.math.ksu.edu/math240/book/">MATH 340
+textbook</a>.</p>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>differential equation</li>
+<li>ordinary</li>
+<li>linear</li>
+<li>ODE</li>
+<li>initial value problem</li>
+<li>boundary value problem</li>
+</ul>
+</div>
+</div>
+<div class="section" id="Differential-Equations">
+<h2>Differential Equations<a class="headerlink" href="#Differential-Equations" title="Permalink to this headline">¶</a></h2>
+<p>A <em>differential equation</em> is any equation in which an unknown function
+<span class="math">\(f\)</span> appears with one of more of its derivatives. When <span class="math">\(f\)</span> is
+a function of only one variable, the derivatives are <em>ordinary</em> (as
+opposed to <em>partial</em>), and the equation is an <em>ordinary differential
+equation</em> (ODE). In compact notation, such an equation may be written</p>
+<div class="math">
+\begin{equation}
+    \mathcal{L}f(x) = q(x) \, ,
+\end{equation}</div><p>where <span class="math">\(\mathcal{L}\)</span> is a differential operator. If
+<span class="math">\(\mathcal{L}\)</span> contains only <em>linear combinations</em> of <span class="math">\(f(x)\)</span>
+and its derivates, then <span class="math">\(\mathcal{L}\)</span> is a <em>linear operator</em>, and
+the equation is a <em>linear</em> ODE. If <span class="math">\(q(x) = 0\)</span>, the equation is
+<em>homogeneous</em> and is otherwise <em>inhomogeneous</em>. If the highest
+derivative of <span class="math">\(f(x)\)</span> present in <span class="math">\(\mathcal{L}f\)</span> is <span class="math">\(n\)</span>
+(i.e., <span class="math">\(d^n f/dx^n\)</span>), then the equation is called an <em>n</em>th-order
+equation.</p>
+<p>Examples of linear operators include
+<span class="math">\(\mathcal{L}f = \frac{df}{dx}\)</span> and
+<span class="math">\(\mathcal{L}f = a(x) \frac{d^2f}{dx^2} + b(x)\)</span>, where <span class="math">\(a(x)\)</span>
+and <span class="math">\(b(x)\)</span> are arbitrary functions of <span class="math">\(x\)</span> (but not of
+<span class="math">\(f(x)\)</span>). For comparison, a nonlinear example is
+<span class="math">\(\mathcal{L}f = \left ( \frac{df}{dx} \right )^2 - \sqrt{f(x)}\)</span>,
+which includes nonlinear functions of <span class="math">\(f\)</span> and its first
+derivative.</p>
+<p>Our focus here and the next module is entirely on <em>ordinary differential
+equations</em> (both linear and nonlinear) and their solution by analytic
+and numerical techniques.</p>
+</div>
+<div class="section" id="Whence-Comes-?">
+<h2>Whence Comes <span class="math">\(y'+py=q\)</span>?<a class="headerlink" href="#Whence-Comes-?" title="Permalink to this headline">¶</a></h2>
+<p>Consider problems of the form</p>
+<div class="math">
+\[\frac{dy}{dt} + p(t)y(t) = q(t) \, , \qquad y(0) = y_0 \, .\]</div>
+<p>This is the canonical way to represent a <strong>first-order</strong>, <strong>linear</strong>,
+<strong>initial-value problem</strong> (IVP). It is first order because there is only
+a first derivative. It is an initial-value problem because the unknown
+(here, <span class="math">\(y(t)\)</span>) is specified at some “initial” time. It is linear
+because <span class="math">\(p(t)\)</span> does not depend on <span class="math">\(y(t)\)</span>.</p>
+<p>A first-order IVP can be used to represent of a number of physical
+phenomena. The first that comes to mind (to me, as a nuclear engineer)
+is <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_decay">radioactive
+decay</a> with external
+production, usually written <span class="math">\(N' = -\lambda N(t) + R(t)\)</span>, where
+<span class="math">\(N(t)\)</span> is the number of radioactive nuclei at time <span class="math">\(t\)</span>,
+<span class="math">\(\lambda\)</span> is the decay constant (with units of inverse seconds),
+and <span class="math">\(R(t)\)</span> is the number of new nuclei born per second. The time
+rate of change of <span class="math">\(N(t)\)</span> is a balance of those new nuclei from
+<span class="math">\(R(t)\)</span> against the number <span class="math">\(-\lambda N(t)\)</span> lost by decay. For
+sufficiently long times, <span class="math">\(dy/dt \to 0\)</span>, and <span class="math">\(y = R/\lambda\)</span>,
+a <em>steady state</em> in which losses are exactly balanced by gains.</p>
+<p>An equally good example is the case of an object of mass <span class="math">\(m\)</span> in
+<a class="reference external" href="http://hyperphysics.phy-astr.gsu.edu/hbase/lindrg.html">free fall through a viscuous
+medium</a>,
+e.g., the atmosphere. If some object is held a distance above the earth
+and dropped, its acceleration at any point in time is related to the net
+forces acting on the body. These forces include the gravitational force
+<span class="math">\(F_g = -m g\)</span> (i.e., downward) and the air resistance <span class="math">\(F_r\)</span>.
+A simple resistance model is <span class="math">\(F_r = cv\)</span>, where <span class="math">\(c\)</span> is a
+(positive) constant and <span class="math">\(v\)</span> is the velocity directed toward Earth.
+Hence, the downward force is</p>
+<div class="math">
+\[F(t) = -cv(t) + m g \, .\]</div>
+<p>From Newton’s second law, <span class="math">\(F = ma\)</span>, so we have</p>
+<div class="math">
+\[ma(t) = m \frac{dv}{dt} = -cv(t)  + mg \, ,\]</div>
+<p>or</p>
+<div class="math">
+\[v' = -\frac{c}{m} v(t) + g \, .\]</div>
+<p>The positive <span class="math">\(c/m\)</span> has the same effect as a positive
+<span class="math">\(\lambda\)</span> in radioactive decay: the larger the velocity <span class="math">\(v\)</span>,
+the larger the retardation force <span class="math">\(cv\)</span> (just like the larger the
+number of nuclei <span class="math">\(N\)</span>, the larger the number <span class="math">\(\lambda N\)</span>
+decaying per unit time). For the free-fall case, the steady-state
+condition <span class="math">\(v'=0\)</span> has a special name: <em>terminal velocity</em>.</p>
+<p>Lots of phenomena have this sort of behavior, this natural <em>negative
+feedback</em>, and such feedback can help us when we solve these problems
+numerically. In those cases where the feedback is <em>positive</em>, we expect
+the number of nuclei to <em>grow</em> more and more (or, equivalently, for a
+falling object to keep accelerating toward earth). The former happens
+when pythons (or neutrons) multiply in nature; thankfully, the <a class="reference external" href="https://en.wikipedia.org/wiki/April_10%E2%80%9311,_2001_tornado_outbreak#Tri-state_hailstorm">hail of
+northeastern
+Kansas</a>
+does reach a terminal velocity. Oh, and I’m not joking about pythons:
+combine the <a class="reference external" href="https://en.wikipedia.org/wiki/Malthusian_growth_model">Malthusian
+model</a> with
+the fact there is an artificial source term due to pet owners releasing
+their larger-than-expected pets into the <a class="reference external" href="https://en.wikipedia.org/wiki/Burmese_pythons_in_Florida">Florida
+Everglades</a>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve <span class="math">\(\frac{dy}{dt} = ay(t)\)</span> with
+<span class="math">\(y(0) = y_0\)</span>.</p>
+<p><em>Solution</em>: Rearrange the equation to be</p>
+<div class="math">
+\[\frac{1}{y}dy = a dt \, ,\]</div>
+<p>and then integrate to obtain</p>
+<div class="math">
+\[\ln(y) = a t + C' \, .\]</div>
+<p>Here, <span class="math">\(C'\)</span> is an arbitrary integration constant. Exponentiation of
+both sides results in</p>
+<div class="math">
+\[y(t) = e^{at + C'} = C e^{at} \, ,\]</div>
+<p>where <span class="math">\(C = e^{C'}\)</span> is still an arbitrary constant.</p>
+<p>So far, this is just <em>integral calculus</em>. To solve the given IVP, we
+need to <em>apply the initial condition</em> (IC). Specifically, we need to
+specify <span class="math">\(C\)</span> that satisfies <span class="math">\(y(0) = C e^{0} = y_0\)</span>. Clearly,
+<span class="math">\(C = y_0\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve <span class="math">\(\frac{dy}{dt} + py(t) = q\)</span> subject to
+<span class="math">\(y(0) = y_0\)</span> where <span class="math">\(p\)</span> and <span class="math">\(q\)</span> are constant.</p>
+<p><em>Solution</em>: This standard problem is solved by use of an <em>integration
+factor</em>. Sure, there is a formula you can memorize, but I have a bad
+memory. What I do remember is that we want to find some integration
+factor <span class="math">\(\mu(t)\)</span> such that</p>
+<div class="math">
+\[\frac{d}{dt}[\mu(t) y(t)]  = \mu(t) q\, .\]</div>
+<p><em>Why</em>? We’ve turned the original problem into one for which both sides
+(<span class="math">\(\mu q\)</span> and <span class="math">\(\frac{d}{dt}[\mu y]\)</span>) can be directly
+integrated like we did for <span class="math">\(y'=ay\)</span>! Let’s apply the product rule:</p>
+<div class="math">
+\[\frac{d}{dt}[\mu(t) y(t)] = \frac{d\mu}{dt} y(t) + \mu(t) \frac{dy}{dt} = \mu(t) q \, .\]</div>
+<p>By comparison to the original equation, we need</p>
+<div class="math">
+\[\frac{d\mu}{dt} y(t) + \mu(t) \frac{dy}{dt} = \mu(t) \frac{dy}{dt} + \mu(t) py(t) \, ,\]</div>
+<p>or</p>
+<div class="math">
+\[\frac{d\mu}{dt} =  \mu(t) p \longrightarrow \frac{d\mu}{\mu} = p dt \longrightarrow \ln \mu =  p t\]</div>
+<p>or</p>
+<div class="math">
+\[\mu(t) = e^{pt} \, .\]</div>
+<p>Finally, integrate the IVP from <span class="math">\(0\)</span> to <span class="math">\(t\)</span>, making sure to
+use the dummy variable <span class="math">\(t'\)</span> inside the integrals:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+  \int^{t}_{0} \frac{d}{dt'}[\mu(t') y(t')] dt' &amp;= \int^{t}_{0} \mu(t') q dt' \\
+  \int^{t}_{0} \frac{d}{dt'}[e^{pt'} y(t')] dt' &amp;= \int^{t}_{0} e^{pt'} q dt' \\
+  e^{pt} y(t) - e^{0}y(0) &amp;= \frac{q}{p} [e^{pt}-e^{0}] \\
+  e^{pt} y(t) - y(0) &amp;= \frac{q}{p} [e^{pt}-1] \, .
+\end{split}\end{split}\]</div>
+<p>A bit of rearranging then leads to</p>
+<div class="math">
+\[y(t) = \frac{q}{p} [1 - e^{-pt}] + y(0)e^{-pt} \, .\]</div>
+<p>Of course, this is the result some of you might have memorized, but
+working through it with the goal of being able to <em>integrate the
+equation directly</em> might shed some new light on (or simply remind you
+of) the origin of the formula.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Check that the solution found for <span class="math">\(y' + py = q\)</span>
+actually solves the IVP by substitution of the result into the original
+equation.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider <span class="math">\(v' = -\frac{c}{m} v(t) + g\)</span>. Can you
+determine the <em>terminal velocity</em> (i.e., the velocity obtained when the
+falling object is no longer accelerating) <em>without</em> solving the IVP? If
+not, go ahead and solve the IVP.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: My kid <em>hates</em> hot food, so if I make him my (absolute
+delicious grilled-cheese sandwich with 100% real Wisconsin cheese [of
+course]), I’ve got to let it cool down to approximately room temperature
+(say 70 <span class="math">\({}^{\circ}\)</span>F). If immediately after grilling it, the
+sandwich is 150 <span class="math">\({}^{\circ}\)</span>F, and 5 minutes later, it is
+100<span class="math">\({}^{\circ}\)</span>, <strong>how much longer do I have to let it cool?</strong>
+Assume that Newton’s law of cooling, <span class="math">\(T' = k(T-T_m)\)</span>, applies.
+(Hint: you <em>do</em> have enough information to solve this problem.)</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Radio-carbon dating is a technique used to determine how
+old fossils are. The technique is based on the fact that the radioactive
+isotope C-14 is produced in the atmosphere at an approximately constant
+rate. Living, breathing creatures have C-14 at levels consistent with
+the atomosphere. Dead, fossilized creatures have C-14 levels that
+decrease over time. The <em>half life</em> of C-14 is about 5600 years, meaning
+that every 5600 years, the amount of C-14 in the fossil will decrease by
+half. Use this number and the simple model <span class="math">\(N' = -\lambda N(t)\)</span>
+(where <span class="math">\(N\)</span> represents the amount of C-14) to determine
+<span class="math">\(\lambda\)</span>. Then, determine how old a fossil must be if its C-14
+concentration is only 1/100 of that of a living creature.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Try solving the <em>nonlinear</em> logistics equation:
+<span class="math">\(y' = y(t)[a - by(t)]\)</span> with <span class="math">\(y(0) = y_0\)</span>. This model extends
+the exponential growth model <span class="math">\(y'/y = a\)</span> by <span class="math">\(y'/y = a - by\)</span>.
+The <span class="math">\(-by\)</span> term represents some sort of inhibitor for unbounded
+growth. Think about it: unbounded growth would require unbounded
+resources. In the real world, those resources are not available, and so
+there tends to be muted growth as populations become very large. This
+reduction in the grown rate can be modeled as being proportional to the
+population itself, leading to this nonlinear model. Plot the solution
+for <span class="math">\(y(0) = 1\)</span>, <span class="math">\(a = 1\)</span>, and <span class="math">\(b = 0\)</span> and
+<span class="math">\(b = 1\)</span>. Notice a difference?</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="The-General-Problem-">
+<h2>The General Problem <span class="math">\(y' = f(y(t), t)\)</span><a class="headerlink" href="#The-General-Problem-" title="Permalink to this headline">¶</a></h2>
+<p>The general form of a first-order, ordinary differential equation is</p>
+<div class="math">
+\[\frac{dy}{dt} = f(y(t), t) \, ,\]</div>
+<p>where <span class="math">\(f(y(t), t)\)</span> is a function of both <span class="math">\(t\)</span> and
+<span class="math">\(y(t)\)</span>. For the standard linear problem with constant coefficients
+(<span class="math">\(y' + py = q\)</span>), we may write</p>
+<div class="math">
+\[\frac{dy}{dt} = f(y(t), t) \qquad \text{where} \qquad f(y(t), t) = q - py(t) \, .\]</div>
+<p>If <span class="math">\(f(y(t), t)\)</span> is a <em>linear</em> function of <span class="math">\(f(t)\)</span>, then the
+IVP is also linear; otherwise, the IVP is nonlinear.</p>
+<p>For this and the next lesson, the general form <span class="math">\(y' = f(y(t), t)\)</span>
+will be used exclusively.</p>
+</div>
+<div class="section" id="There-Once-was-a-Man-Named-Euler">
+<h2>There Once was a Man Named Euler<a class="headerlink" href="#There-Once-was-a-Man-Named-Euler" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Leonhard_Euler">Leonhard Euler</a> was a
+prolific mathematician, perhaps second only to <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss">Carl
+Gauss</a>. I point
+him out because the simplest (and probably best known) approach for
+solving <span class="math">\(y' + py = q\)</span> has his name. (Point of trivia: he’s buried
+in St. Petersburg, I was quite surprised to learn while strolling
+through an old cemetery).</p>
+<p>The method bearing his name requires the numerical differentiation we
+learned previously. Specifically, we need one of the first-order,
+finite-difference approximations for <span class="math">\(dy/dt\)</span>. You’ll recall those
+are the <em>forward difference</em></p>
+<div class="math">
+\[\frac{dy}{dt} = \frac{y(t+\Delta)-y(t)}{\Delta} + \mathcal{O}(\Delta) \, ,\]</div>
+<p>and the <em>backward difference</em></p>
+<div class="math">
+\[\frac{dy}{dt} = \frac{y(t)-y(t-\Delta)}{\Delta} + \mathcal{O}(\Delta) \, .\]</div>
+<p>If we substitute the forward difference into the general IVP (i.e.,
+<span class="math">\(y' = f(y(t),t)\)</span>), we find</p>
+<div class="math">
+\[\frac{y(t+\Delta)-y(t)}{\Delta} = f(y(t), t) + \mathcal{O}(\Delta) \, ,\]</div>
+<p>and by isolating <span class="math">\(y(t+\Delta)\)</span> on the left, we have</p>
+<div class="math">
+\[y(t+\Delta) = \Delta f(y(t), t) + y(t)  + \mathcal{O}(\Delta^2)  \, .\]</div>
+<p>In other words, if we know the value of <span class="math">\(y(t)\)</span> at time <span class="math">\(t\)</span>,
+then we can estimate its values at the future time <span class="math">\(t+\Delta\)</span>. We
+only need <em>old</em> information, the information at time <span class="math">\(t\)</span>. This is
+called the <em>forward Euler</em> method. We march forward in time using only
+old information.</p>
+<p>Alternatively, substitute the <em>backward difference</em> into the IVP to find</p>
+<div class="math">
+\[y(t) = \Delta f(y(t), t) + y(t-\Delta)  + \mathcal{O}(\Delta^2)  \, .\]</div>
+<p>To compute <span class="math">\(y(t)\)</span>, we still need <em>some</em> old information, and in
+this case, that old information is <span class="math">\(y(t-\Delta)\)</span>. However, the
+value of <span class="math">\(y(t)\)</span> at time <span class="math">\(t\)</span> <em>also depends on itself</em> through
+the term <span class="math">\(f(y(t), t)\)</span>. This dependence can make the <em>backward
+Euler</em> method a bit more challenging to apply, but as we’ll see below,
+we’ll get a numerical solution with improved <em>stability</em>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = q - py(t)\)</span> where <span class="math">\(p\)</span> and
+<span class="math">\(q\)</span> are constant. Given the value of <span class="math">\(y(t_0)\)</span>, determine
+<span class="math">\(y(t_0+\Delta)\)</span> using the <em>forward Euler</em> method.</p>
+<p><em>Solution</em>: From above, we have</p>
+<div class="math">
+\[\begin{split}\begin{split}
+y(t_0 + \Delta) &amp;= \Delta f(y(t_0), t_0) + y(t_0) \\
+                &amp;= \Delta(q - py(t_0)) + y(t_0) \\
+                &amp;= \Delta q + [1 - \Delta p]  y(t_0) \, .
+\end{split}\end{split}\]</div>
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = q - py(t)\)</span> where <span class="math">\(p\)</span> and
+<span class="math">\(q\)</span> are constant. Given the value of <span class="math">\(y(t_0)\)</span>, determine
+<span class="math">\(y(t_0+\Delta)\)</span> using the <em>backward Euler</em> method.</p>
+<p><em>Solution</em>: From above, we have</p>
+<div class="math">
+\[y(t) = \Delta f(y(t), t) + y(t-\Delta) \, .\]</div>
+<p>Substitute <span class="math">\(t = t_0 + \Delta\)</span> into this equation to find</p>
+<div class="math">
+\[\begin{split}\begin{split}
+y(t_0 + \Delta) &amp;= \Delta f(y(t_0+\Delta), t_0+\Delta) + y(t_0) \\
+                &amp;= \Delta(q - py(t_0+\Delta)) + y(t_0) \, . \\
+\end{split}\end{split}\]</div>
+<p>By isolating <span class="math">\(y(t_0+\Delta)\)</span> on the left, we find</p>
+<div class="math">
+\[[1 + \Delta p] y(t_0 + \Delta)   =  \Delta q + \Delta y(t_0) \, ,\]</div>
+<p>and, hence,</p>
+<div class="math">
+\[y(t_0 + \Delta)   = \frac{ \Delta q + \Delta y(t_0)}{1 + \Delta p} \, .\]</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = q - p\sqrt{y(t)}\)</span> where <span class="math">\(p\)</span> and
+<span class="math">\(q\)</span> are constant. Given the value of <span class="math">\(y(t_0)\)</span>, determine
+<span class="math">\(y(t_0+\Delta)\)</span> using the <em>backward Euler</em> method.</p>
+<p><em>Solution</em>: The basic process is the same as the last example, but we
+cannot isolate <span class="math">\(y(t_0+\Delta)\)</span> on the left-hand side. Rather, what
+results is the following, nonlinear equation:</p>
+<div class="math">
+\[\overbrace{y(t_0 + \Delta) + \Delta p\sqrt{y(t_0+\Delta)} - \Delta q -  y(t_0) = 0}^{g(y(t_0+\Delta))\,=\, 0} \, .\]</div>
+<p>To determine <span class="math">\(y(t_0+\Delta)\)</span> requires the root is found. Here, the
+problem is a quadratic (note that <span class="math">\(ay + by^{1/2} + c\)</span> is
+equivalent to <span class="math">\(ax^2 + bx + c\)</span> for <span class="math">\(x^2 = y\)</span>).</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Chopping-Up-Time">
+<h2>Chopping Up Time<a class="headerlink" href="#Chopping-Up-Time" title="Permalink to this headline">¶</a></h2>
+<p>To determine <span class="math">\(y(t)\)</span> at multiple times, we must divide time into
+discrete points starting from the initial time <span class="math">\(t_0\)</span>. If a fixed
+time step <span class="math">\(\Delta\)</span> is used, then <span class="math">\(y\)</span> is now evaluated at the
+points <span class="math">\(t_0, t_0+\Delta, t_0+2\Delta, \ldots\)</span>, or</p>
+<div class="math">
+\[t_n = t_0 + n\Delta, \qquad n = 0, 1, 2, \ldots\]</div>
+<p>We could allow for a <span class="math">\(\Delta\)</span> that changes, but we’ll keep it
+fixed for simplicity and leave the fancy stuff to SciPy in the next
+lesson. With this notation, the forward Euler method can be written as</p>
+<div class="math">
+\[y_{n+1} =  \Delta f(y_n, t_n) + y_n \, , \qquad n = 0, 1, 2, \ldots\]</div>
+<p>while the backward Euler method can be written as</p>
+<div class="math">
+\[y_{n+1}  = \Delta f(y_{n+1}, t_{n+1}) + y_n \, , \qquad n = 0, 1, 2, \ldots\]</div>
+<p>How high should <span class="math">\(n\)</span> go? It depends on how long into the future
+(taking <span class="math">\(t\)</span> to represent time) we wish to evaluate the solution.
+Let that future time be denoted <span class="math">\(T\)</span>, and let the number of steps
+we wish to take be denoted <span class="math">\(N\)</span>. Consequently,
+<span class="math">\(\Delta = (T-t_0)/N\)</span>. We’ll always start at <span class="math">\(t=0\)</span>, so
+<span class="math">\(\Delta = T/N\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Solve <span class="math">\(y' + y(t) = 10\)</span> for <span class="math">\(y(0) = 0\)</span>,
+<span class="math">\(t \in [0, 10]\)</span>, and <span class="math">\(N=25\)</span> with the forward-Euler method.
+Plot the numerical result along with the analytic solution
+<span class="math">\(y(t) = 10 - 10e^{-t}\)</span>.</p>
+<p><em>Solution</em>: First, rearrange to get <span class="math">\(y' = f(y(t), t) = 10 - y(t)\)</span>.
+The exact solution can be found using the integration-factor technique
+shown in a solved exercise above. The rest can then be done in code.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">25</span>                      <span class="c1"># number of steps beyond the IC</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># +1 to include IC</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>           <span class="c1"># constant time step</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>           <span class="c1"># +1 to include IC</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>                  <span class="c1"># set the IC</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span>
+    <span class="n">f_i</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>          <span class="c1"># define f(y_i, t_i)</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Delta</span><span class="o">*</span><span class="n">f_i</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># forward Euler step</span>
+
+<span class="n">y_exact</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span> <span class="c1"># exact solution</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;-k.&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span> <span class="n">y_exact</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;forward euler&#39;</span><span class="p">,</span> <span class="s1">&#39;exact&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_EulersMethodForIVPs_8_0.png" src="../_images/lectures_EulersMethodForIVPs_8_0.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the last exercise using the backward Euler.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use either backward Euler or forward Euler to solve the
+last example for <span class="math">\(\Delta = 10/25\)</span>, <span class="math">\(10/250\)</span>, and
+<span class="math">\(10/2500\)</span>. How does the <em>absolute error</em> in <span class="math">\(y(10)\)</span> change
+with <span class="math">\(\Delta\)</span>? Does that seem reasonable?</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Finish the following function definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">forward_euler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Solves y&#39; = f(y(t), t) using forward Euler at the given times.</span>
+
+<span class="sd">       Inputs:</span>
+<span class="sd">         f  - right-hand side function (callable function)</span>
+<span class="sd">         y0 - initial value of y (float)</span>
+<span class="sd">         t  - times at which to compute y(t), including t0, (NumPy array)</span>
+
+<span class="sd">       Returns:</span>
+<span class="sd">         y  - values of y at each time step (NumPy array)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">y</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Implement backward Euler following the exercise above.
+Note, because <span class="math">\(f(y(t), t)\)</span> can in general be nonlinear, you’ll
+need to incorporate a root-finding algorithm, e.g., bisection or Newton.
+Alternatively, use <code class="docutils literal"><span class="pre">fsolve</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply forward Euler <em>by hand</em> to the following IVPs to
+approximate <span class="math">\(y(1)\)</span> using a step size <span class="math">\(\Delta = 0.2\)</span>: 1.
+<span class="math">\(y' = y\)</span> for <span class="math">\(y(0) = 1\)</span>. 2. <span class="math">\(y' = 2ty\)</span> for
+<span class="math">\(y(0) = 1\)</span> 3. <span class="math">\(y' = -y/10 + 1\)</span> for <span class="math">\(y(0) = 0\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the previous exercise but use backward Euler.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = y\)</span>, <span class="math">\(y(0) = 1\)</span>. Of course, the
+solution is <span class="math">\(y(x) = e^x\)</span>. Let <span class="math">\(\Delta = 1/N\)</span> and
+<span class="math">\(x_i = \Delta i\)</span>, where <span class="math">\(N\)</span> is some integer. If <span class="math">\(y_i\)</span>
+is the approximation of <span class="math">\(y(x)\)</span> at <span class="math">\(x = x_i\)</span>, then prove that
+<span class="math">\(\lim_{N\to \infty} y_N = e\)</span> for both forward Euler and backward
+Euler.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the IVP <span class="math">\(y' = f(t, y(t))\)</span> subject to
+<span class="math">\(y(0) = y_0\)</span>. Here, <span class="math">\(f(t, y(t))\)</span> can be any function of
+<span class="math">\(t\)</span> or <span class="math">\(y(t)\)</span>. Examples include <span class="math">\(f(t, y(t)) = ay + bt\)</span>
+and <span class="math">\(f(t, y(t)) = a y(t)^2\)</span>. The latter case leads to a
+<em>nonlinear</em> IVP. Given the initial condition, write down how you would
+determine <span class="math">\(y(\Delta)\)</span> using (a) forward Euler and (b) backward
+Euler.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider the following twist on Euler’s method for
+<span class="math">\(\frac{dy}{dt} = f(t)\)</span> using fixed time steps <span class="math">\(\Delta\)</span>:</p>
+<div class="math">
+\[\tilde{y}_{n+1} = y_n + \Delta f(t_n)\]</div>
+<p>and</p>
+<div class="math">
+\[y_{n+1} = y_n + \frac{\Delta}{2} [f(t_n) + \tilde{f}(t_{n+1})] \, .\]</div>
+<p>This is an example of a <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_multistep_method">multi-step
+method</a> and
+belongs to the famous
+<a class="reference external" href="http://mathworld.wolfram.com/Runge-KuttaMethod.html">Runge-Kutta</a>
+family of methods. This particular version is sometimes called <a class="reference external" href="https://en.wikipedia.org/wiki/Heun%27s_method">Heun’s
+method</a>.</p>
+<p>Your task is to write a function <code class="docutils literal"><span class="pre">heun_method(f,</span> <span class="pre">y0,</span> <span class="pre">t)</span></code> where <code class="docutils literal"><span class="pre">f</span></code>
+is a callable function, <code class="docutils literal"><span class="pre">y0</span></code> is the initial condition, and <code class="docutils literal"><span class="pre">t</span></code> is an
+array of times at which the solution is to be computed.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="A-Look-at-Errors-and-Stability-(Optional)">
+<h2>A Look at Errors and Stability (Optional)<a class="headerlink" href="#A-Look-at-Errors-and-Stability-(Optional)" title="Permalink to this headline">¶</a></h2>
+<p>Consider <span class="math">\(y' = 2 - y\)</span> with <span class="math">\(y(0) = 1\)</span>, the solution of which
+is <span class="math">\(y(t) = 2 - e^{-t}\)</span>. Solution of the same problem using forward
+Euler and either 25 or 100 points over <span class="math">\(t\in [0, 10]\)</span> leads to the
+following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">t25</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+<span class="n">t100</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">y25</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">26</span><span class="p">);</span> <span class="n">y25</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">y100</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">101</span><span class="p">);</span> <span class="n">y100</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">):</span>
+    <span class="n">y25</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="o">/</span><span class="mf">25.0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">y25</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">y25</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">y100</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="o">/</span><span class="mf">100.0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">y100</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">y100</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">yexact</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t25</span><span class="p">,</span> <span class="n">y25</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">t100</span><span class="p">,</span> <span class="n">y100</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">,</span> <span class="n">t100</span><span class="p">,</span> <span class="n">yexact</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$N=25$&#39;</span><span class="p">,</span> <span class="s1">&#39;$N=100$&#39;</span><span class="p">,</span> <span class="s1">&#39;exact&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_EulersMethodForIVPs_11_0.png" src="../_images/lectures_EulersMethodForIVPs_11_0.png" />
+</div>
+</div>
+<p>Certainly, the <span class="math">\(N=100\)</span> approximation looks better than the
+<span class="math">\(N=25\)</span> approximation. We can also plot the errors for both as a
+function of time:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">error25</span> <span class="o">=</span> <span class="n">y25</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t25</span><span class="p">))</span>
+<span class="n">error100</span> <span class="o">=</span> <span class="n">y100</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t100</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">t25</span><span class="p">,</span> <span class="n">error25</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">t100</span><span class="p">,</span> <span class="n">error100</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$N=25$&#39;</span><span class="p">,</span> <span class="s1">&#39;$N=100$&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_EulersMethodForIVPs_13_0.png" src="../_images/lectures_EulersMethodForIVPs_13_0.png" />
+</div>
+</div>
+<p>Clearly, the error for <span class="math">\(N=25\)</span> is larger over the time domain, as
+we might expect. Recall that
+<span class="math">\((y_{n+1}-y_n)/\Delta = -py_n + q + \mathcal{O}(\Delta)\)</span>, so
+<span class="math">\(y_{n+1} = (1-\Delta p)y_n + \Delta q + \mathcal{O}(\Delta^2)\)</span>.
+This second-order error in <span class="math">\(y_n\)</span> is the <em>local error</em>, i.e., the
+error introduced by a single step in time. On the other hand, the
+<em>global error</em> is the error shown above as a function of time. A key
+question is how that global error at a fixed point in time depends on
+<span class="math">\(\Delta\)</span>.</p>
+<p>We can attack the global error for our simple problem. For constant
+<span class="math">\(q\)</span>, <span class="math">\(p\)</span> and <span class="math">\(\Delta\)</span>, the analytic solution is</p>
+<div class="math">
+\[y_n = \frac{q}{p} (1 - e^{-p \Delta n})  \, ,\]</div>
+<p>while the forward-Euler solution is</p>
+<div class="math">
+\[\begin{split}\begin{aligned}
+ y^{FE}_n  &amp;= \Delta q \sum^{n-1}_{i=0} (1-\Delta p)^{i} \\
+      &amp;= \Delta q \frac{1 - (1-\Delta p)^{n-1}}{\Delta p } \\
+      &amp;= \frac{q}{p} [ 1 - (1-\Delta p)^{n-1} ] \, .
+\end{aligned}\end{split}\]</div>
+<p>For a given <span class="math">\(t\)</span> and <span class="math">\(\Delta\)</span>, the number of steps is
+<span class="math">\(n = t/\Delta\)</span>, and the global error is therefore</p>
+<div class="math">
+\[\varepsilon(t, \Delta) = y \frac{q}{p} [e^{-p t}-(1-\Delta p)^{\frac{t}{\Delta} - 1} ] \, .\]</div>
+<p>Note first that</p>
+<div class="math">
+\[\lim_{\Delta \to 0} (1-\Delta p)^{t/\Delta} = e^{-p t} \, ,\]</div>
+<p>so
+<span class="math">\(\varepsilon(t, \Delta) = (q/p)[e^{-pt}-e^{-p/t}/(1-\Delta p)] \to 0\)</span>
+as <span class="math">\(\Delta \to 0\)</span>. That mean the approximate value <em>converges</em> to
+the correct value when the step size <span class="math">\(\Delta\)</span> vanishes.</p>
+<p>However, for fixed <span class="math">\(t\)</span>, how <em>fast</em> does the error decrease with
+<span class="math">\(\Delta\)</span>? And for fixed <span class="math">\(\Delta\)</span>, how does the error change
+with time? Let’s expand the error <span class="math">\(\varepsilon(t, \Delta)\)</span> about
+<span class="math">\(\Delta = 0\)</span>:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+\varepsilon(t, \Delta) &amp;= \varepsilon(t, 0) + \frac{\partial \varepsilon}{\partial \Delta}\Big |_{\Delta = 0}  + \mathcal{O}(\Delta^2) \\
+             &amp;=  \Delta \left(\frac{p q}{2} t e^{- p t} - q e^{- p t}\right) + \mathcal{O}(\Delta^2) \\
+             &amp;= \mathcal{O}(\Delta) \, .
+\end{split}\end{split}\]</div>
+<p>Evidently, the global error is of first order. However, it’s not clear
+(or easy to determine) exactly how the error depends on <span class="math">\(t\)</span> for
+fixed <span class="math">\(\Delta\)</span>. If we assume <span class="math">\(p &gt; 0\)</span> (i.e., radioactive
+decay and not multiplying pythons), then</p>
+<div class="math">
+\[\Big |\varepsilon(t, \Delta) \Big | &lt; \Bigg | \frac{q}{p} \Bigg | \Bigg | (1-\Delta p)^{\frac{t}{\Delta} -1} \Bigg | \, .\]</div>
+<p>However, the right-hand side is bounded (i.e., does not grow with large
+<span class="math">\(t\)</span>) only if <span class="math">\(|1-\Delta p| &lt; 1\)</span>, and that is true only if
+<span class="math">\(\Delta &lt; 2/p\)</span>. To summarize: the global error does not blow up as
+long as <span class="math">\(p &gt; 0\)</span> and <span class="math">\(\Delta &lt; 2/p\)</span>.</p>
+<p>Of course, simply stating such rules is never as exciting as seeing what
+happens when the rules are broken, so we’ll solve <span class="math">\(y' = 2 - y\)</span>
+with <span class="math">\(y(0) = 0\)</span> for <span class="math">\(N = 4\)</span>, <span class="math">\(N = 10\)</span>, and
+<span class="math">\(N = 20\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">N</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">]:</span>
+    <span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">Delta</span><span class="o">*</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="n">N</span><span class="p">][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Delta</span><span class="o">*</span><span class="n">q</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;k-o&#39;</span><span class="p">,</span>  <span class="n">t</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;b-s&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="s1">&#39;r-*&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$N=4$&#39;</span><span class="p">,</span> <span class="s1">&#39;$N=10$&#39;</span><span class="p">,</span>  <span class="s1">&#39;$N=25$&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_EulersMethodForIVPs_15_0.png" src="../_images/lectures_EulersMethodForIVPs_15_0.png" />
+</div>
+</div>
+<p>Yikes! The <span class="math">\(N=4\)</span> case clearly does not converge to the
+steady-state value <span class="math">\(y = 1\)</span>! In other words, it <em>diverges</em>. Because
+the forward-Euler approximation converges only for certain values of
+<span class="math">\(\Delta\)</span> and <span class="math">\(p\)</span>, it is called a <em>conditionally stable</em>
+method.</p>
+<p>Conditional stability requires very small <span class="math">\(\Delta\)</span>. For problems
+whose solutions blow up (i.e., <span class="math">\(p &lt; 0\)</span>), all bets are off and an
+<em>unconditionally stable</em> method is the better choice. For example, the
+backward-Euler approximation is unconditionally stable, demonstration of
+which is an exercise left to the student (i.e., repeat this study with
+backward Euler and show that <span class="math">\(\varepsilon(t, \Delta)\)</span> cannot blow
+up).</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the example above (i.e., <span class="math">\(p=1\)</span>, <span class="math">\(q=1\)</span>,
+<span class="math">\(y(0) = 0\)</span>, and <span class="math">\(N = 4, 10, 25\)</span>) to show that backward Euler
+has no stability issues.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Use <em>backward Euler</em> to solve <span class="math">\(y' = 2t - 3y + 1\)</span>
+given <span class="math">\(y(1) = 5\)</span> and estimate <span class="math">\(y(1.2)\)</span>. Compare the error in
+this estimate for <span class="math">\(\Delta = 0.1, 0.01, 0.001, 0.0001\)</span>. How does
+this error depend on <span class="math">\(\Delta\)</span>?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the previous exercise using Heun’s method (see a
+previous exercise).</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>None.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Euler’s Method for Initial-Value Problems</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Differential-Equations">Differential Equations</a></li>
+<li><a class="reference internal" href="#Whence-Comes-?">Whence Comes <span class="math">\(y'+py=q\)</span>?</a></li>
+<li><a class="reference internal" href="#The-General-Problem-">The General Problem <span class="math">\(y' = f(y(t), t)\)</span></a></li>
+<li><a class="reference internal" href="#There-Once-was-a-Man-Named-Euler">There Once was a Man Named Euler</a></li>
+<li><a class="reference internal" href="#Chopping-Up-Time">Chopping Up Time</a></li>
+<li><a class="reference internal" href="#A-Look-at-Errors-and-Stability-(Optional)">A Look at Errors and Stability (Optional)</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/EulersMethodForIVPs.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/EulersMethodForIVPs.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
