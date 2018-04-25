@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 25 - Data Analysis via Interpolation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 25 - Solving First-Order IVPs Numerically &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,153 +39,335 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="Lecture-25---Data-Analysis-via-Interpolation">
-<h1>Lecture 25 - Data Analysis via Interpolation<a class="headerlink" href="#Lecture-25---Data-Analysis-via-Interpolation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture, we continue the theme of data analysis initiated in
-<a class="reference external" href="ME400_Lecture_24.ipynb">Lecture 24</a>, focusing now on the process of
-<strong>interpolation</strong>. Whereas the fitted models of <a class="reference external" href="ME400_Lecture_24.ipynb">Lecture
-24</a> allow one to produce simple models from
-noisy (or otherwise complicated) data, interpolation allows one to
-estimate new values from known discrete points that are assumed to be
-noise free.</p>
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-25---Solving-First-Order-IVPs-Numerically">
+<h1>Lecture 25 - Solving First-Order IVPs Numerically<a class="headerlink" href="#Lecture-25---Solving-First-Order-IVPs-Numerically" title="Permalink to this headline">¶</a></h1>
+<p><strong>Last Time</strong>: Interpolation (last topic on Exam 3!)</p>
+<p><strong>Today</strong>: Initial Value Problems (IVPs)</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Apply linear interpolation to evaluate <span class="math">\(f(x)\)</span> given discrete
-points <span class="math">\((x_i, f(x_i))\)</span> for <span class="math">\(i = 0, 1 \ldots\)</span>.</li>
-<li>Apply linear interpolation to evaluate <span class="math">\(f(x, y)\)</span> given discrete
-points <span class="math">\((x_i, y_j, f(x_i, y_j))\)</span> for
-<span class="math">\(\, i = 0, 1, \ldots\)</span> and <span class="math">\(j = 0, 1,\ldots\)</span>.</li>
-<li>Apply tools from NumPy and SciPy to perform high-order (e.g.,
-cubine-spline) interpolation</li>
+<li>Define an appropriate differential equation to model an engineering
+process</li>
+<li>Apply forward and backward differences to produce forward and
+backward Euler</li>
+<li>Solve IVPs numerically to produce solutions at several time steps</li>
+</ul>
+</div>
+<div class="section" id="Prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>You should already be able to</p>
+<ul class="simple">
+<li>Solve ODEs based on what you’ve learned in a course like MATH 340 and
+<a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture 26</span></a></li>
+<li>Compute a first-order, finite-difference approximation for
+<span class="math">\(\frac{df}{dx}\)</span></li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>linear interpolation</li>
-<li><code class="docutils literal"><span class="pre">np.interp</span></code></li>
-<li><code class="docutils literal"><span class="pre">scipy.interpolate</span></code></li>
-<li><code class="docutils literal"><span class="pre">interp1d</span></code></li>
-<li><code class="docutils literal"><span class="pre">interp2d</span></code></li>
+<li>Euler’s method</li>
+<li>forward Euler</li>
+<li>backward Euler</li>
+<li>local error</li>
+<li>global error</li>
 </ul>
+<div class="section" id="The-General-Problem">
+<h3>The General Problem<a class="headerlink" href="#The-General-Problem" title="Permalink to this headline">¶</a></h3>
+<p>Our goal is to solve the initial value problem (IVP):</p>
+<div class="math">
+\[\frac{dy}{dt} = f(y(t), t) \qquad y(0) = y_0 \, .\]</div>
+<p>Today, just single IVPs. Next time, systems of IVPs.</p>
+</div>
+<div class="section" id="There-Once-was-a-Man-Named-Euler">
+<h3>There Once was a Man Named Euler<a class="headerlink" href="#There-Once-was-a-Man-Named-Euler" title="Permalink to this headline">¶</a></h3>
+<div class="figure" id="id1">
+<img alt="Euler's grave in St. Petersburg" src="http://farm2.static.flickr.com/1085/1270449525_4b4b973a27_o.jpg" />
+<p class="caption"><span class="caption-text">Euler’s grave in St. Petersburg</span></p>
+</div>
+<p>Recall the forward and backward difference approximations:</p>
+<div class="math">
+\[\frac{dy}{dt} \approx \frac{y(t+\Delta)-y(t)}{\Delta} \qquad \text{and} \qquad
+\frac{dy}{dt} \approx \frac{y(t)-y(t-\Delta)}{\Delta}\]</div>
+<p>Substitute forward difference into <span class="math">\(y' = f(y(t), t)\)</span> to get</p>
+<div class="math">
+\[\frac{y(t+\Delta)-y(t)}{\Delta} = f(y(t), t) + \mathcal{O}(\Delta)\]</div>
+<p>or</p>
+<div class="math">
+\[y(t+\Delta) = \Delta f(y(t), t) + y(t)  + \mathcal{O}(\Delta^2)\]</div>
+<p>Drop the error term to get the <strong>forward Euler approximation</strong></p>
+<div class="math">
+\[\boxed{y(t+\Delta) \approx \Delta f(y(t), t) + y(t)}\]</div>
+<p>Do the same with the backward difference to get</p>
+<div class="math">
+\[\frac{y(\tau)-y(\tau-\Delta)}{\Delta} = f(y(\tau), \tau) + \mathcal{O}(\Delta)\]</div>
+<p>or (let <span class="math">\(\tau = t+\Delta\)</span>) to get the <strong>backward Euler
+approximation</strong>:</p>
+<div class="math">
+\[\boxed{ y(t+\Delta) \approx \Delta f(y(t+\Delta), t+\Delta) + y(t+\Delta)}\]</div>
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = \sqrt{y(t)} + 2\)</span> with
+<span class="math">\(y(0) = 1\)</span>. Use one step of the <em>forward Euler method</em> to estimate
+<span class="math">\(y(0.1)\)</span>. Do this <em>by hand</em>.</p>
+<p><strong>Exercise</strong>: Consider <span class="math">\(y' = \sqrt{y(t)} + 2\)</span> with
+<span class="math">\(y(0) = 1\)</span>. Use one step of the <em>backward Euler method</em> to
+estimate <span class="math">\(y(0.1)\)</span>. Do this <em>by hand</em>.</p>
+</div>
+<div class="section" id="Chopping-Up-Time">
+<h3>Chopping Up Time<a class="headerlink" href="#Chopping-Up-Time" title="Permalink to this headline">¶</a></h3>
+<p>We’ll approximate <span class="math">\(y(t)\)</span> at discrete times
+<span class="math">\(t_0,\, t_1,\, t_2,\, \ldots\)</span>, or</p>
+<div class="math">
+\[t_n = t_0 + n\Delta \qquad n = 0, 1, \ldots \, .\]</div>
+<div class="math">
+\[\text{forward Euler} \qquad  \boxed{y_{n+1} =  \Delta f(y_n, t_n) + y_n \, , \qquad n = 0, 1, 2, \ldots}\]</div>
+<div class="math">
+\[\text{backward Euler} \qquad \boxed{y_{n+1}  = \Delta f(y_{n+1}, t_{n+1}) + y_n \, , \qquad n = 0, 1, 2, \ldots}\]</div>
+<p><strong>Exercise</strong>: Given <span class="math">\(y' = -2y(t) + 1\)</span> with <span class="math">\(y(0) = 0\)</span>, use
+forward Euler to estimate <span class="math">\(y(10)\)</span> for <span class="math">\(\Delta = 0.2\)</span>,
+<span class="math">\(0.1\)</span>, and <span class="math">\(0.05\)</span>. What happens to the error?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">y_10</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="mi">5</span><span class="p">))</span> <span class="c1"># true value</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="Simple-Linear-Interpolation">
-<h2>Simple Linear Interpolation<a class="headerlink" href="#Simple-Linear-Interpolation" title="Permalink to this headline">¶</a></h2>
-<p>A common task in many thermal engineering courses is to use tabulated
-physical properties. Often, the value needed is not in the table, and
-<em>linear interpolation</em> is required to estimate the missing value.</p>
-<p><strong>Classical</strong>: interpolate between two pairs <span class="math">\((x_0, y_0)\)</span> and
-<span class="math">\((x_1, y_1)\)</span> by finding a slope and intercept. <em>Fine, but it gets
-old.</em></p>
-<p><strong>Alternative</strong>: the teeter-totter analogy (and the path to
-<em>barycentric</em> interpolation)</p>
-<p>Barycentric interpolation in 1-D:</p>
+</div>
+<div class="section" id="Application-Problem---Transferring-Wort">
+<h3>Application Problem - Transferring Wort<a class="headerlink" href="#Application-Problem---Transferring-Wort" title="Permalink to this headline">¶</a></h3>
+<p>Consider a cylindrical tank 2.5 m tall with a radius of 1.25 m filled
+with wort (a magical concoction of water, barley, and hops–no fruit,
+please). At the bottom of this tank is a drain that opens to a flow area
+of 0.0025 m<span class="math">\(^2\)</span>. At time <span class="math">\(t = 0\)</span>, the drain is manually
+opened such that its open flow area follows the form</p>
+<div class="math">
+\[\begin{split}a_{drain}(t) =
+\begin{cases}
+   0.0025 \frac{t^2}{25} &amp; t \leq 5 \, \text{s} \\
+   0.0025 &amp; t &gt; 5\, \text{s} \, .
+\end{cases}\end{split}\]</div>
+<p>In other words, it takes some time to get that drain open, but it
+becomes easier to open with time until it fully opens (not unrealistic
+methinks). <strong>How long does it take to get my wort out of the tank?</strong></p>
+</div>
+</div>
+<div class="section" id="Getting-the-IVP">
+<h2>Getting the IVP<a class="headerlink" href="#Getting-the-IVP" title="Permalink to this headline">¶</a></h2>
+<p><strong>Assume</strong> the fluid is <em>incompressible</em> (i.e., <span class="math">\(\rho\)</span> is
+constant) and that gravity is the only thing driving this process.</p>
+<p>Equations of interest (from thermodynamics and/or fluid dynamics):</p>
+<div class="math">
+\[\text{conservation of mass:} \qquad  \rho a V = \text{constant}\]</div>
+<p>and</p>
+<div class="math">
+\[\text{conservation of energy:} \qquad \frac{V^2}{2} + gz = \text{constant}\]</div>
+<p>where <span class="math">\(V\)</span> is velocity, <span class="math">\(a\)</span> is a flow area, <span class="math">\(z\)</span> is
+height, and <span class="math">\(g\)</span> is gravitational acceleration (9.81
+m/s<span class="math">\(^2\)</span>).</p>
+<p>Then conservation of energy gives</p>
+<div class="math">
+\[\frac{V_{top}^2-V_{drain}^2}{2} + g \overbrace{(z_{top}-z_{bottom})}^{h} = 0 \, .\]</div>
+<p><strong>Assume</strong> that <span class="math">\(V_{top} \ll V_{drain}\)</span> so that
+<span class="math">\(\boxed{V_{drain} = \sqrt{2gh(t)}}\)</span> where <span class="math">\(h(t)\)</span> will vary
+with time.</p>
+<p>Conservation of mass gives</p>
 <div class="math">
 \[\begin{split}\begin{split}
-f(x) &amp;= f(a) + \frac{f(b) - f(a)}{b - a} (x - a) \\
-     &amp;= f(a) \left ( \frac{b - x}{b - a} \right ) + f(b) \left( \frac{x - a}{b - a} \right ) \\
-     &amp;= f(a) w_a + f(b) w_b \, .
+   \frac{d m_{drain}}{dt} \Delta t &amp;= \frac{d m_{top}}{dt} \Delta t \\
+   \rho V_{drain}(t) a_{drain}(t) \Delta t &amp;= \rho a_{top} \left(-\frac{dh}{dt}\right ) \Delta t \, .
 \end{split}\end{split}\]</div>
-<p>Note, <span class="math">\(w_a + w_b = 1\)</span> (as we might expect).</p>
-<p><strong>Exercise</strong>: Consider the following table of thermodynamic data for
-saturated steam (saved as <a class="reference external" href="thermo_data.txt">thermo_data.txt</a>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span> <span class="n">T</span> <span class="p">[</span><span class="n">K</span><span class="p">]</span>   <span class="n">P</span> <span class="p">[</span><span class="n">MPa</span><span class="p">]</span>  <span class="n">h_l</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span> <span class="n">h_v</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span>
-<span class="mf">373.150</span>   <span class="mf">0.101</span>    <span class="mf">2675.572</span>     <span class="mf">419.099</span>
-<span class="mf">389.817</span>   <span class="mf">0.179</span>    <span class="mf">2701.054</span>     <span class="mf">489.625</span>
-<span class="mf">406.483</span>   <span class="mf">0.298</span>    <span class="mf">2724.633</span>     <span class="mf">560.634</span>
-<span class="mf">423.150</span>   <span class="mf">0.476</span>    <span class="mf">2745.919</span>     <span class="mf">632.252</span>
-<span class="mf">439.817</span>   <span class="mf">0.730</span>    <span class="mf">2764.528</span>     <span class="mf">704.626</span>
-<span class="mf">456.483</span>   <span class="mf">1.082</span>    <span class="mf">2780.059</span>     <span class="mf">777.934</span>
-<span class="mf">473.150</span>   <span class="mf">1.555</span>    <span class="mf">2792.062</span>     <span class="mf">852.393</span>
-<span class="mf">489.817</span>   <span class="mf">2.175</span>    <span class="mf">2800.004</span>     <span class="mf">928.269</span>
-<span class="mf">506.483</span>   <span class="mf">2.972</span>    <span class="mf">2803.247</span>    <span class="mf">1005.893</span>
-<span class="mf">523.150</span>   <span class="mf">3.976</span>    <span class="mf">2801.012</span>    <span class="mf">1085.687</span>
-<span class="mf">539.817</span>   <span class="mf">5.222</span>    <span class="mf">2792.314</span>    <span class="mf">1168.202</span>
-<span class="mf">556.483</span>   <span class="mf">6.745</span>    <span class="mf">2775.820</span>    <span class="mf">1254.194</span>
-<span class="mf">573.150</span>   <span class="mf">8.588</span>    <span class="mf">2749.574</span>    <span class="mf">1344.771</span>
-</pre></div>
+<p>or</p>
+<div class="math">
+\[\boxed{\frac{dh}{dt} = -\frac{a_{drain}(t)}{a_{top}} \sqrt{2gh(t)}}\]</div>
+<p>Solve this with <strong>backward Euler</strong>.</p>
 </div>
-<p>Write a function that loads this data and returns <span class="math">\(h_v\)</span> for any
-value of <span class="math">\(P \in [0.101, 8.588]\)</span> using linear interpolation.</p>
-<p><strong>Exercise</strong>: What about for <span class="math">\(P &lt; 1.01\)</span> or <span class="math">\(P &gt; 8.588\)</span>? How
-can we still apply the model <span class="math">\(y(t) = ax + b\)</span>?</p>
-</div>
-<div class="section" id="Interpolation-In-Two-Dimensions">
-<h2>Interpolation In Two Dimensions<a class="headerlink" href="#Interpolation-In-Two-Dimensions" title="Permalink to this headline">¶</a></h2>
-<p>Some applications require interpolation of two-dimensional data
-evaluated at <span class="math">\((x_i, y_j)\)</span> for <span class="math">\(i=0,1,\ldots\)</span> and $
-j=0,1,:raw-latex:<a href="#id1"><span class="problematic" id="id2">`</span></a>ldots`$.</p>
-<p>Linear interpolation of such data is based on the model
-<span class="math">\(f(x, y) \approx ax + by + c\)</span> for <span class="math">\(x \in [x_i, x_{i+1}]\)</span> and
-<span class="math">\(y \in [y_j, y_{j+1}]\)</span>.</p>
-<p><strong>Exercise</strong>: Consider the following table of water densities
-(<span class="math">\(\rho\)</span>) for different temperatures [K] and pressures [MPa] (from
-<a class="reference external" href="thermodata_2.txt">thermodata_2.txt</a>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span> <span class="n">T</span> <span class="p">[</span><span class="n">K</span><span class="p">]</span>   <span class="n">P</span> <span class="p">[</span><span class="n">MPa</span><span class="p">]</span>  <span class="n">rho</span> <span class="p">[</span><span class="n">kg</span><span class="o">/</span><span class="n">m</span><span class="o">^</span><span class="mi">3</span><span class="p">]</span>
-<span class="mf">293.150</span>   <span class="mf">2.000</span>    <span class="mf">999.073</span>
-<span class="mf">293.150</span>   <span class="mf">4.000</span>    <span class="mf">999.982</span>
-<span class="mf">293.150</span>   <span class="mf">6.000</span>   <span class="mf">1000.888</span>
-<span class="mf">293.150</span>   <span class="mf">8.000</span>   <span class="mf">1001.791</span>
-<span class="mf">313.150</span>   <span class="mf">2.000</span>    <span class="mf">993.053</span>
-<span class="mf">313.150</span>   <span class="mf">4.000</span>    <span class="mf">993.924</span>
-<span class="mf">313.150</span>   <span class="mf">6.000</span>    <span class="mf">994.790</span>
-<span class="mf">313.150</span>   <span class="mf">8.000</span>    <span class="mf">995.653</span>
-<span class="mf">333.150</span>   <span class="mf">2.000</span>    <span class="mf">984.037</span>
-<span class="mf">333.150</span>   <span class="mf">4.000</span>    <span class="mf">984.903</span>
-<span class="mf">333.150</span>   <span class="mf">6.000</span>    <span class="mf">985.766</span>
-<span class="mf">333.150</span>   <span class="mf">8.000</span>    <span class="mf">986.625</span>
-<span class="mf">353.150</span>   <span class="mf">2.000</span>    <span class="mf">972.650</span>
-<span class="mf">353.150</span>   <span class="mf">4.000</span>    <span class="mf">973.538</span>
-<span class="mf">353.150</span>   <span class="mf">6.000</span>    <span class="mf">974.422</span>
-<span class="mf">353.150</span>   <span class="mf">8.000</span>    <span class="mf">975.301</span>
-<span class="mf">373.150</span>   <span class="mf">2.000</span>    <span class="mf">959.242</span>
-<span class="mf">373.150</span>   <span class="mf">4.000</span>    <span class="mf">960.172</span>
-<span class="mf">373.150</span>   <span class="mf">6.000</span>    <span class="mf">961.097</span>
-<span class="mf">373.150</span>   <span class="mf">8.000</span>    <span class="mf">962.017</span>
-</pre></div>
-</div>
-<p>Use linear interpolation to estimate <span class="math">\(\rho(T, P)\)</span>.</p>
-<p>What about interpolating arbitrary <span class="math">\(f(x_i, y_i)\)</span> points?</p>
-</div>
-<div class="section" id="Higher-Order-Interpolation">
-<h2>Higher-Order Interpolation<a class="headerlink" href="#Higher-Order-Interpolation" title="Permalink to this headline">¶</a></h2>
-<p>Linear interpolation is conceptually straightforward, but it helps to
-use tools like <code class="docutils literal"><span class="pre">np.interp</span></code> (see the exercises above).</p>
-<p>Interpolation that is <em>better</em> than linear is often defined via
-<em>interpolating splines</em>:</p>
-<p>Linear: - <span class="math">\(y(x) = a_i x + b_i, \quad x \in [x_i, x_{i+1}]\)</span> -
-piece-wise continuous <span class="math">\(y(x)\)</span> - <span class="math">\(y(x_i)\)</span> matches <span class="math">\(y_i\)</span>
-for all <span class="math">\(i\)</span></p>
-<p>Quadratic: -
-<span class="math">\(y(x) = a_i x^2 + b_i x + c_i, \quad \in [x_i, x_{i+1}]\)</span> -
-piece-wise continuous <span class="math">\(y(x)\)</span> - continuous
-<span class="math">\(y'_i(x_{i+1}) = y'_{i+1}(x_{i+1})\)</span> - how many equations? how many
-unknowns?</p>
-<p>Interpolation that is <em>better</em> than linear is more challenging to
-implement, and we’ll turn to the <code class="docutils literal"><span class="pre">scipy.interpolate</span></code> module and its
-<code class="docutils literal"><span class="pre">interp1d</span></code> and <code class="docutils literal"><span class="pre">interp2d</span></code> utilities.</p>
-<p><strong>Exercise</strong>: Revisit <span class="math">\(P(T)\)</span> and interpolate using quadratic
-interpolation.</p>
-<p><strong>Exercise</strong>: Revisit <span class="math">\(\rho(T, P)\)</span> and interpolate using cubic
-interpolation.</p>
-</div>
-<div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
-<p>You should now be able to:</p>
+<div class="section" id="Connecting-the-Dots">
+<h2>Connecting the Dots<a class="headerlink" href="#Connecting-the-Dots" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Apply linear interpolation to evaluate <span class="math">\(f(x)\)</span> given discrete
-points <span class="math">\((x_i, f(x_i))\)</span> for <span class="math">\(i = 0, 1 \ldots\)</span>.</li>
-<li>Apply linear interpolation to evaluate <span class="math">\(f(x, y)\)</span> given discrete
-points <span class="math">\((x_i, y_j, f(x_i, y_j))\)</span> for
-<span class="math">\(\, i = 0, 1, \ldots\)</span> and <span class="math">\(j = 0, 1,\ldots\)</span>.</li>
-<li>Apply tools from NumPy and SciPy to perform high-order (e.g.,
-cubine-spline) interpolation</li>
+<li>What if this were not a cylinder by a cone (i.e., a tapered funnel)?
+Or something more complicated? How would you modify the equation?</li>
+<li>Suppose you were to design a tank like the one we analyzed that has
+to fit in some finite volume. How would you optimize its geometry to
+provide the fast drainage possible given a fixed drain flow area?</li>
 </ul>
+<div class="section" id="Recap">
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
+<p>You should now be able to</p>
+<ul class="simple">
+<li>Define an appropriate differential equation to model an engineering
+process</li>
+<li>Apply forward and backward differences to produce forward and
+backward Euler</li>
+<li>Solve IVPs numerically to produce solutions at several time steps</li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -197,16 +379,21 @@ cubine-spline) interpolation</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 25 - Data Analysis via Interpolation</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 25 - Solving First-Order IVPs Numerically</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#The-General-Problem">The General Problem</a></li>
+<li><a class="reference internal" href="#There-Once-was-a-Man-Named-Euler">There Once was a Man Named Euler</a></li>
+<li><a class="reference internal" href="#Chopping-Up-Time">Chopping Up Time</a></li>
+<li><a class="reference internal" href="#Application-Problem---Transferring-Wort">Application Problem - Transferring Wort</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Simple-Linear-Interpolation">Simple Linear Interpolation</a></li>
-<li><a class="reference internal" href="#Interpolation-In-Two-Dimensions">Interpolation In Two Dimensions</a></li>
-<li><a class="reference internal" href="#Higher-Order-Interpolation">Higher-Order Interpolation</a></li>
+<li><a class="reference internal" href="#Getting-the-IVP">Getting the IVP</a></li>
+<li><a class="reference internal" href="#Connecting-the-Dots">Connecting the Dots</a><ul>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -8,11 +8,13 @@
     }
    },
    "source": [
-    "# Lecture 27 - Solving First-Order IVPs Numerically\n",
-    "\n",
-    "## Overview, Objectives, and Key Terms\n",
+    "# Lecture 27 - Numerical Solutions of Two-Point BVPs\n",
     " \n",
-    "The basics of ODEs were reviewed in [Lecture 26](ME400_Lecture_26.ipynb). There, SymPy was used to provide general solutions via `dsolve`, leaving application of initial and boundary conditions to the user.  However, SymPy (and other symbolic tools) cannot solve all differential equations.  For such equations, we can apply numerical techniques.  Specifically, we'll apply the finite-difference approximations presented in [Lecture 19](ME400_Lecture_19.ipynb).  For now, we'll consider only single, first-order equations, leaving systems for [Lecture 28](ME400_Lecture_28.ipynb)."
+    "**Last Time**: Systems of IVPs\n",
+    "\n",
+    "**Today**: One-dimensional, boundary-value problems (BVPs)\n",
+    "\n",
+    "**Remember**: Exam 3 on Friday.  No additional old exam is available since no third midterm was given in past terms (but last practice exam has material relevant for this one).  Same rules: one 11'' by 8.5'' sheet, handwritten but no other resources.  Same format: roughly half written, half coded. Cumulative, with emphasis on material since Exam 2."
    ]
   },
   {
@@ -23,29 +25,12 @@
     }
    },
    "source": [
-    "### Objectives\n",
+    "### Objectives \n",
     "\n",
     "By the end of this lesson, you should be able to\n",
     "\n",
-    "- Solve first-order IVPs numerically using forward and backward Euler's method\n",
-    "- Explain what is mean by local and global errors\n",
-    "- Explain what is meant by stability and how to achieve it"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Prerequisites\n",
-    "\n",
-    "You should already be able to\n",
-    "\n",
-    "- Solve ODEs based on what you've learned in a course like MATH 340 and [Lecture 26](ME400_Lecture_26.ipynb)\n",
-    "- Compute a first-order, finite-difference approximation for $\\frac{df}{dx}$"
+    "- Explain the two major boundary conditions and how to represent them using finite differences\n",
+    "- Solve two-point  BVPs characteristics of heat transfer and other applications using the finite-difference method"
    ]
   },
   {
@@ -58,14 +43,9 @@
    "source": [
     "### Key Terms\n",
     "\n",
-    "- Euler's method\n",
-    "- forward Euler\n",
-    "- backward Euler\n",
-    "- Heun's (improved Euler's) method\n",
-    "- local error\n",
-    "- global error\n",
-    "- stable method\n",
-    "- `scipy.integrate.odeint`"
+    "- finite-difference method (Euler is one example)\n",
+    "- Dirichlet condition (e.g., fixed temperature)\n",
+    "- Neumann condition (e.g., perfect insulator)"
    ]
   },
   {
@@ -76,9 +56,15 @@
     }
    },
    "source": [
-    "## There Once was a Man Named Euler\n",
+    "## The Two-Point BVP\n",
     "\n",
-    "![Euler's grave in St. Petersburg](http://farm2.static.flickr.com/1085/1270449525_4b4b973a27_o.jpg)"
+    "Our focus is on the second-order BVP\n",
+    "\n",
+    "$$\n",
+    "    \\frac{d^2 y}{dx^2} + p(x) \\frac{dy}{dx} + q(x) y(x) = f(x), \\qquad y(x_a) = y_a, \\qquad y(x_b) = y_b \\, .\n",
+    "$$\n",
+    "\n",
+    "The goal is to apply numerical differentiation to this equation, leading to a linear system.  "
    ]
   },
   {
@@ -89,10 +75,65 @@
     }
    },
    "source": [
-    "Forward difference approximation:\n",
+    "### Whence Such BVPs?\n",
     "\n",
     "$$\n",
-    "    \\frac{dy}{dt} \\approx \\frac{y(t+\\Delta)-y(t)}{\\Delta} \\, ,\n",
+    "\\text{heat conduction:} \\qquad \\boxed{-\\frac{d}{dx}\\left ( k(x)\\frac{dT}{dx}\\right ) = f(x)} \\, \\quad \\text{s.t.} \\quad T(x_a) = T_a \\quad \\text{and} \\quad T(x_b) = T_b \n",
+    "$$\n",
+    "\n",
+    "$$\n",
+    "\\text{neutron diffusion:} \\qquad \\boxed{-\\frac{d}{dx}\\left( D(x) \\frac{d\\phi}{dx} \\right )+ \\Sigma_a \\phi(x) = f(x)} \\, \\quad \\text{s.t.} \\quad \\phi(x_a) = \\phi_a \\quad \\text{and} \\quad \\phi(x_b) = \\phi_b \n",
+    "$$\n",
+    "\n",
+    "Many other problems in physics and engineering take the same form."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Put the heat conduction equation into the standard form $y'' + py + q = f$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Chopping up $x$\n",
+    "\n",
+    "Back to the model problem $y'' + py' + qy = f$.  Chop up $x$ into the points\n",
+    "\n",
+    "$$\n",
+    "   \\boxed{x = x_a, \\, x_a + \\Delta, x_a + 2\\Delta, \\ldots, x_b - \\Delta, x_b}\n",
+    "$$\n",
+    "\n",
+    "or $\\boxed{x_n = x_a + \\Delta n}$ for $n = 0, 1, \\ldots, N$.  \n",
+    "\n",
+    "We want to find $y(x_n) = y_n$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Replace $y'$ and $y''$ with Finite Differences Approximations\n",
+    "\n",
+    "$$\n",
+    "  \\boxed{\\frac{dy}{dx}\\Bigg |_{x = x_n} = \\frac{y_{n+1} - y_{n-1}}{2\\Delta}}\n",
+    "     \\qquad \\text{and} \\qquad\n",
+    "  \\boxed{\\frac{d^2y}{dx^2}\\Bigg |_{x = x_n} = \\frac{y_{n+1} - 2y_{n} + y_{n-1}}{\\Delta^2}}\n",
     "$$"
    ]
   },
@@ -104,10 +145,40 @@
     }
    },
    "source": [
-    "Backward difference approximation:\n",
+    "Substitute into $y'' + py' + qy(x_n) = f(x_n)$ to get\n",
     "\n",
     "$$\n",
-    "    \\frac{dy}{dt} \\approx \\frac{y(t)-y(t-\\Delta)}{\\Delta} \\, .\n",
+    "\\boxed{ \\frac{y_{n+1} - 2y_{n} + y_{n-1}}{\\Delta^2} + p_n \\frac{y_{n+1} - y_{n-1}}{2\\Delta} \n",
+    "   + q_n y_n = f_n }\\, ,\n",
+    "$$\n",
+    "\n",
+    "where $p_n = p(x_n)$, $q_n = q(x_n)$ and $f_n = f(x_n)$.\n",
+    "\n",
+    "Key observation: the value $y_n$ depends on its neighbors, $y_{n+1}$ and $y_{n-1}$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**What about at $x_0$ and $x_N$**?  Apply boundary conditions!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "A **Dirichlet condition** sets the value of $y(x_a)$:\n",
+    "$$\n",
+    "   \\qquad y(x_a) = y_a \\longrightarrow y_0 = y_a \n",
     "$$"
    ]
   },
@@ -119,18 +190,22 @@
     }
    },
    "source": [
-    "Discretize $y(t)$ so discretize $t$:\n",
+    "A **Neumann condition** sets the value of $\\frac{dy}{dx}\\big |_{x=x_a}$:\n",
     "\n",
     "$$\n",
-    "   t = t_0, t_0 + \\Delta, t_0 + 2\\Delta, \\ldots t_0 + N\\Delta \\, .\n",
-    "$$\n",
-    "\n",
-    "with\n",
-    "\n",
-    "$$\n",
-    "  \\Delta = \\frac{t_N - t_0}{N} \\, .\n",
-    "$$\n",
-    "\n"
+    "   \\frac{dy}{dx} \\Bigg |_{x=x_a} = d_a \\longrightarrow \\frac{y_{1}-y_{0}}{\\Delta} = d_a \\, .\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Similar expressions for the left boundary."
    ]
   },
   {
@@ -141,56 +216,21 @@
     }
    },
    "source": [
-    "**Exercise**:  Solve $y' = -2y(t) + 1$ with $y(0) = 0$ using (1) forward Euler and (2) backward Euler.  Is one more accurate?  Are they *stable*?"
+    "**Exercise**:  Set up the finite-difference equations for $-y'' + y(x) = 1$ subject to $y(0) = y(10) = 0$ using 5 evenly spaced points **with pen and paper**.  Then, use NumPy to solve the system."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": null,
    "metadata": {
-    "slideshow": {
-     "slide_type": "skip"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "\\frac{a e^{a \\left(C_{1} + t\\right)}}{b \\left(e^{a \\left(C_{1} + t\\right)} - 1\\right)}\n",
-      "\\frac{a e^{a \\left(t + \\frac{1}{a} \\log{\\left (- \\frac{b}{a - b} \\right )}\\right)}}{b \\left(e^{a \\left(t + \\frac{1}{a} \\log{\\left (- \\frac{b}{a - b} \\right )}\\right)} - 1\\right)}\n"
-     ]
-    }
-   ],
-   "source": [
-    "import sympy as sy\n",
-    "sy.init_printing()\n",
-    "y, t, a, b = sy.symbols('y t a b')\n",
-    "ivp = sy.Eq(sy.diff(y(t), t), a*y(t)-b*y(t)**2)\n",
-    "y_sol = sy.dsolve(ivp).rhs\n",
-    "print(sy.latex(y_sol.simplify()))\n",
-    "coef = sy.solve(sy.Eq(y_sol.subs(t, 0), 1), sy.Symbol('C1'))[0]\n",
-    "y_sol = y_sol.subs(sy.Symbol('C1'), coef)\n",
-    "print(sy.latex(y_sol))"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
+    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
+   "outputs": [],
    "source": [
-    "## Nonlinear IVPs\n",
-    "\n",
-    "Remember the decay problem:\n",
-    "\n",
-    "$$\n",
-    "  \\frac{dN}{dt} = - a N\n",
-    "$$\n",
-    "\n",
-    "with $N(0) = N_0$.  What if $-a \\rightarrow a$ (with $a > 0$)?  "
+    "import numpy as np"
    ]
   },
   {
@@ -201,39 +241,26 @@
     }
    },
    "source": [
-    "A potentially improved model (the *logistic equation*):\n",
+    "**Exercise**: Consider the following *partial* differential equation (PDE):\n",
     "\n",
     "$$\n",
-    "  \\frac{dN}{dt} = aN(t) - bN^2(t)\n",
+    " \\frac{\\partial c}{\\partial t} = D(x) \\frac{\\partial^2 c}{\\partial x^2} - v(x)\\frac{\\partial c}{\\partial x} + S(x)\n",
     "$$\n",
     "\n",
-    "Basically, a penalty for larger population.  How to solve?"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "By hand, rearrange to $[(1/a)/N + (b/a)/(a-bN)]dN = dt$ and integrate.  Same result from SymPy:\n",
+    "which is a simplified, one-dimensional, *advection-diffusion equation*.  Here, $c(x)$ is the concentration of some quantity of interest (perhaps a pollutant in a stream), $D$ is a diffusion coefficient (that quantifies how rapidly the species tends to dissipate away from a region in space), and $v(x)$ is the velocity of the surrounding field (here, perhaps the stream with the pollutant).  \n",
     "\n",
-    "$$\n",
-    "N(t) = \\frac{a e^{a \\left(C_{1} + t\\right)}}{b \\left(e^{a \\left(C_{1} + t\\right)} - 1\\right)}\n",
-    "$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "source": [
-    "Numerically, let's try Euler!"
+    "Like many equations that model physical systems, the convection-diffusion equation is a statement of balance.  On the left, we have $\\frac{\\partial c}{\\partial t}$, which is  the time rate of change of the concentration at any point $x$.  This change comes from three sources:\n",
+    "\n",
+    "  1. the *diffusion* of the species away from a point $x$, here quantified by $D(x) \\frac{\\partial^2 c}{\\partial x^2}$\n",
+    "  2. the *advection* of the species away from a point $x$ due to the flow of the surrounding field (here, again, the stream), here quantified by  $-v(x)\\frac{\\partial c}{\\partial x}$\n",
+    "  3. any external sources of the species, perhaps a leaking canister or a chemical reaction, here represented by $S(x)$\n",
+    "\n",
+    "Now, do the following:\n",
+    "\n",
+    "  - Suppose the unit of $c$ is m$^{-3}$.  What must be the units of $D$, $v$, and $S$?\n",
+    "  - Write down the *steady-state* form of the above convection-diffusion equation by setting the time derivative to zeros.\n",
+    "  - Solve the steady-state equation  for the case $v = 1$, $S = 1$, $c(0) = 0$ and $c(10) = 1$ using $\\Delta = 0.01$ m.\n",
+    "  - Plot your solution for $D = 10$, $D = 1$, and $D = 0.1$.  What happens?  (The phenomenon you should observe is the development of a *boundary layer*, a term that should become familiar in fluid mechanics.)\n"
    ]
   },
   {
@@ -244,75 +271,9 @@
     }
    },
    "source": [
-    "## `odeint`\n",
-    "\n",
-    "```\n",
-    "odeint(func, y0, t, args=(), Dfun=None, col_deriv=0, full_output=0, ml=None, mu=None, rtol=None, atol=None, tcrit=None, h0=0.0, hmax=0.0, hmin=0.0, ixpr=0, mxstep=0, mxhnil=0, mxordn=12, mxords=5, printmessg=0)\n",
-    "    Integrate a system of ordinary differential equations.\n",
-    "    \n",
-    "    Solve a system of ordinary differential equations using lsoda from the\n",
-    "    FORTRAN library odepack.\n",
-    "    \n",
-    "    Solves the initial value problem for stiff or non-stiff systems\n",
-    "    of first order ode-s::\n",
-    "    \n",
-    "        dy/dt = func(y, t0, ...)\n",
-    "    \n",
-    "    where y can be a vector.\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "```\n",
-    "    Parameters\n",
-    "    ----------\n",
-    "    func : callable(y, t0, ...)\n",
-    "        Computes the derivative of y at t0.\n",
-    "    y0 : array\n",
-    "        Initial condition on y (can be a vector).\n",
-    "    t : array\n",
-    "        A sequence of time points for which to solve for y.  The initial\n",
-    "        value point should be the first element of this sequence.\n",
-    "    args : tuple, optional\n",
-    "        Extra arguments to pass to function.\n",
-    "```"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "**Exercise**: Logistic again!"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Recap\n",
-    "\n",
-    "You should now be able to\n",
-    "\n",
-    "- Solve first-order IVPs numerically using forward and backward Euler's method\n",
-    "- Explain what is mean by local and global errors\n",
-    "- Explain what is meant by stability and how to achieve it\n",
-    "\n",
-    "Now, for some comments on the exam..."
+    "By now, you should be able to:\n",
+    "- Explain the two major boundary conditions and how to represent them using finite differences\n",
+    "- Solve two-point  BVPs characteristics of heat transfer and other applications using the finite-difference method"
    ]
   }
  ],
@@ -333,7 +294,10 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.2"
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
   }
  },
  "nbformat": 4,

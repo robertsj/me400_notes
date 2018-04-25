@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 26 - Solving ODEs Symbolically &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 26 - Numerical Solutions of First-Order Systems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,88 +39,375 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="Lecture-26---Solving-ODEs-Symbolically">
-<h1>Lecture 26 - Solving ODEs Symbolically<a class="headerlink" href="#Lecture-26---Solving-ODEs-Symbolically" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture, we revisit the tools provided by SymPy and apply them
-to solution of <em>ordinary differential equations</em> (ODEs). Engineering is
-full of ODEs, since they are fundamental to the language of balance
-relationships found in heat transfer, nuclear reactor physics, control
-systems, and other areas. The goal here is <em>not</em> to present the theory
-of ODEs, nor is it to present the various systematic ways be which one
-can determine solutions to ODEs. Rather, the focus is placed squarely on
-defining ODEs symbolically, solving them symbolically, and,
-<em>importantly</em>, applying initial or boundary conditions to those symbolic
-solutions and solving the resulting <em>algebraic</em> equations for any
-undetermined coefficients. In other words, the focus is on the <em>problem
-solving</em> process.</p>
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Lecture-26---Numerical-Solutions-of-First-Order-Systems">
+<h1>Lecture 26 - Numerical Solutions of First-Order Systems<a class="headerlink" href="#Lecture-26---Numerical-Solutions-of-First-Order-Systems" title="Permalink to this headline">¶</a></h1>
+<p>This lesson is a direct extension of our last lesson, in which the focus
+was the numerical solution of first-order IVPs. Here, those techniques
+are extended to <em>systems</em> of first-order equations.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Define first- and second-order, ordinary differential equations
-symbolically</li>
-<li>Solve first- and second-order, ODEs symbollically</li>
-<li>Apply initial and boundary conditions as is appropriate to determine
-complete solutions to ODEs important in engineering disciplines.</li>
+<li>Solve systems of first-order IVPs numerically using forward and
+backward Euler’s method</li>
+<li>Solve systems of first-order IVPs using <code class="docutils literal"><span class="pre">odeint</span></code></li>
 </ul>
 </div>
 <div class="section" id="Prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
+<h2>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>You should already be able to</p>
 <ul class="simple">
-<li>Solve ODEs based on what you’ve learned in a course like MATH 340
-(this is not a strict requirement, but if you have <em>not</em> had MATH
-340, you may wish to set up a time with me or the TAs).</li>
-<li>Set up and solve algebraic systems using SymPy</li>
-<li>Perform subsitution into symbolic values using SymPy</li>
-<li>Define derivatives of arbitrary functions using SymPy</li>
+<li>Solve IVPs using Euler’s method (forward and backward)</li>
+<li>Define one- and two-dimensional arrays using NumPy arrays</li>
+<li>Use <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> to solve <span class="math">\(\mathbf{Ax = b}\)</span></li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>differential equation</li>
-<li>ordinary</li>
-<li>linear</li>
-<li>ODE</li>
-<li>initial value problem</li>
-<li>boundary value problem</li>
+<li><code class="docutils literal"><span class="pre">odeint</span></code></li>
+<li>first-order system</li>
 </ul>
+<div class="section" id="A-Model-Problem">
+<h3>A Model Problem<a class="headerlink" href="#A-Model-Problem" title="Permalink to this headline">¶</a></h3>
+<p>The <em>spring-mass</em> system:</p>
+<div class="math">
+\[m \frac{d^2 x}{dt^2} = -k x(t) - a \frac{dx}{dt} \, , \qquad x(0) = x_0\, \text{and}\, x'(0)=v_0 \, .\]</div>
+<p>where <span class="math">\(x(t)\)</span> is position (m), <span class="math">\(m\)</span> is mass (kg), <span class="math">\(k\)</span> is
+a spring constant, and <span class="math">\(a\)</span> is a damping coefficient.</p>
+<p><strong>Exercise</strong>: What must be the units of <span class="math">\(k\)</span> and <span class="math">\(a\)</span>?</p>
+</div>
+<div class="section" id="Getting-to-">
+<h3>Getting to <span class="math">\(y' = f(y(t), t)\)</span><a class="headerlink" href="#Getting-to-" title="Permalink to this headline">¶</a></h3>
+<p>To use Euler’s method (or <code class="docutils literal"><span class="pre">odeint</span></code>), the IVP must be in the standard
+form</p>
+<div class="math">
+\[\frac{dy}{dt} = f(y(t), t) \, .\]</div>
+<p>For the spring-mass sytem, we must <em>eliminate the second derivative</em>.</p>
+</div>
+<div class="section" id="Introduce-">
+<h3>Introduce <span class="math">\(u = x' \longrightarrow u' = x''\)</span><a class="headerlink" href="#Introduce-" title="Permalink to this headline">¶</a></h3>
+<p>Then, the spring-mass IVP becomes</p>
+<div class="math">
+\[\begin{split}\begin{split}
+    \frac{dx}{dt} &amp;= u(t) \\
+    \frac{du}{dt} &amp;= \frac{-kx(t) + -au(t)}{m} \\
+\end{split}\end{split}\]</div>
+<p>or</p>
+<div class="math">
+\[\begin{split}\boxed{
+\overbrace{\left [ \begin{array}{c}
+  x' \\
+  u'
+\end{array} \right ]}^{\mathbf{y}'}
+=
+\overbrace{
+\left [ \begin{array}{rr}
+    0   &amp;  1 \\
+   -\frac{k}{m}  &amp;  -\frac{a}{m} \\
+\end{array} \right ]
+\left [ \begin{array}{c}
+  x(t) \\
+  u(t)
+\end{array} \right ]}^{\mathbf{f}(\mathbf{y}(t), t)}
+}\end{split}\]</div>
+<p>with <span class="math">\(x(0) = x_0\)</span> and <span class="math">\(x'(0) = u(0) = v_0\)</span>.</p>
+</div>
+<div class="section" id="Using-Euler-on-IVP-System">
+<h3>Using Euler on IVP System<a class="headerlink" href="#Using-Euler-on-IVP-System" title="Permalink to this headline">¶</a></h3>
+<p>For systems, <span class="math">\(\frac{dy}{dt} = f(y(t), t)\)</span> becomes
+<span class="math">\(\frac{d\mathbf{y}}{dt} = \mathbf{f}(\mathbf{y}(t), t)\)</span>, and Euler
+steps become</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}    \boxed{\text{forward Euler} \qquad \mathbf{y}_{n+1} = \Delta \mathbf{f}(\mathbf{y}_n, t_n) + \mathbf{y}_n }\\and\end{aligned}\end{align} \]</div>
+<div class="math">
+\[\boxed{\text{backward Euler} \qquad \mathbf{y}_{n+1} = \Delta \mathbf{f}(\mathbf{y}_{n+1}, t_{n+1}) + \mathbf{y}_n} \, .\]</div>
+<p><strong>Exercise</strong>: Consider this system of IVPs:</p>
+<div class="math">
+\[\begin{split}\boxed{
+\overbrace{\left [ \begin{array}{c}
+  x' \\
+  u'
+\end{array} \right ]}^{\mathbf{y}'}
+=
+\overbrace{
+\left [ \begin{array}{rr}
+    0   &amp;  1 \\
+   -\frac{k}{m}  &amp;  -\frac{a}{m} \\
+\end{array} \right ]
+\left [ \begin{array}{c}
+  x(t) \\
+  u(t)
+\end{array} \right ]}^{\mathbf{f}(\mathbf{y}(t), t)}
+}\end{split}\]</div>
+<p>with <span class="math">\(x(0) = x_0\)</span> and <span class="math">\(x'(0) = u(0) = v_0\)</span>. Starting from
+the initial condition, take one step of forward Euler with a step size
+of <span class="math">\(\Delta\)</span> for the spring-mass system. Then do the same with
+backward Euler. <strong>Do this by hand!</strong></p>
+<p><strong>Exercise</strong>: For <span class="math">\(\Delta = 0.01\)</span>, compute <span class="math">\(x(10)\)</span> and
+<span class="math">\(y(10)\)</span> by solving the following system using forward Euler</p>
+<div class="math">
+\[\begin{split}\overbrace{\left [ \begin{array}{c}
+  x' \\
+  y'
+\end{array} \right ]}^{{\mathbf{z'}}}
+=
+\overbrace{\underbrace{\left [ \begin{array}{rr}
+  -10   &amp;  0.00 \\
+   10   &amp; -0.01 \\
+\end{array} \right ]}_{\mathbf{A}}
+\left [ \begin{array}{c}
+  x(t) \\
+  y(t)
+\end{array} \right ]
++
+\underbrace{\left [ \begin{array}{c}
+  1 \\
+  0
+\end{array} \right ]}_{\mathbf{s}}}^{\mathbf{f}(\mathbf{z}(t), t)} \, ,\end{split}\]</div>
+<p>and <span class="math">\(x(0) = y(0) = 0\)</span>. Here, <span class="math">\(\mathbf{A}\)</span> and
+<span class="math">\(\mathbf{s}\)</span> are defined for convenience.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>    <span class="c1"># initial condition</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="mf">0.001</span>               <span class="c1"># time step</span>
+<span class="n">num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">10.0</span><span class="o">/</span><span class="n">Delta</span><span class="p">)</span> <span class="c1"># number of steps</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">]])</span> <span class="c1"># system matrix</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span>
+              <span class="mf">0.0</span><span class="p">])</span>            <span class="c1"># forcing term</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+    <span class="c1"># copy the previous step&#39;s value</span>
+    <span class="n">z_old</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># compute the new time step</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;x={:.3f} and y={:.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="Differential-Equations">
-<h2>Differential Equations<a class="headerlink" href="#Differential-Equations" title="Permalink to this headline">¶</a></h2>
-<p>Equations involving a function <span class="math">\(f\)</span> and its derivatives is
-<em>differential</em>.</p>
-<p>Some features: - <em>orderinary</em> if one variable (e.g., <span class="math">\(df/dx\)</span> vs
-<span class="math">\(\partial f/\partial x\)</span>) - <em>linear</em> if only linear combinations
-<span class="math">\(f\)</span> and its derivatives - <em>homogeneous</em> if all terms have
-<span class="math">\(f\)</span> or its derivatives - <em>nth</em>-order if it has <span class="math">\(n\)</span>th
-derivative of <span class="math">\(f\)</span></p>
-<p>Our focus is on ordinary differential equations (and mostly linear).</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="section" id="Whence-ODEs?">
-<h2>Whence ODEs?<a class="headerlink" href="#Whence-ODEs?" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>1st-order (decay)</li>
-<li>2nd-order (vibration)</li>
-</ul>
-<p>Examples etc.</p>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+x=0.000 and y=0.000
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="SciPy's-odeint">
+<h3>SciPy’s <code class="docutils literal"><span class="pre">odeint</span></code><a class="headerlink" href="#SciPy's-odeint" title="Permalink to this headline">¶</a></h3>
+<p>In practice, it may be easier and faster to use <code class="docutils literal"><span class="pre">odeint</span></code>.</p>
+<p>Basic use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="k">import</span> <span class="n">odeint</span>
+<span class="n">odeint</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="o">...</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>where - <code class="docutils literal"><span class="pre">func</span></code> represents <span class="math">\(\mathbf{f}(\mathbf{y}(t), t)\)</span> and
+should have the form <code class="docutils literal"><span class="pre">def</span> <span class="pre">func(y,</span> <span class="pre">t,</span> <span class="pre">arg1,</span> <span class="pre">arg2,</span> <span class="pre">...)</span></code> - <code class="docutils literal"><span class="pre">y0</span></code> is the
+initial condition (either a single <code class="docutils literal"><span class="pre">float</span></code> or a NumPy array if a
+system) - <code class="docutils literal"><span class="pre">t</span></code> array of times at which the solution is to be computed
+(the first value is the initial condition time) - <code class="docutils literal"><span class="pre">args</span></code> are options
+arguments passed to <code class="docutils literal"><span class="pre">func</span></code></p>
+<p><strong>Exercise</strong>: Solve <span class="math">\(y' = \sqrt{y(t)} + 2\)</span> with <span class="math">\(y(0) = 1\)</span>
+using <code class="docutils literal"><span class="pre">odeint</span></code> for <code class="docutils literal"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">10.0]</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">t</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">odeint</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="c1"># no args needed for this problem</span>
+</pre></div>
+</div>
+</div>
+<p><strong>Exercise</strong>: Consider the spring-mass system. For <span class="math">\(m = 1\)</span>,
+<span class="math">\(k = 1\)</span>, <span class="math">\(a = 1\)</span>, <span class="math">\(x(0) = 0\)</span>, and <span class="math">\(v(0) = 1\)</span>,
+compute <span class="math">\(x(t)\)</span> at <span class="math">\(t = [0, 0.5, 1.0, \ldots, 10]\)</span> (that’s 21
+times) using <code class="docutils literal"><span class="pre">odeint</span></code>. Plot these estimates and the the actual
+solution. Also plot the <em>absolute error</em>.</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
-<p>You should now be able to</p>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Define first- and second-order, ordinary differential equations
-symbolically</li>
-<li>Solve first- and second-order, ODEs symbollically</li>
-<li>Apply initial and boundary conditions as is appropriate to determine
-complete solutions to ODEs important in engineering disciplines.</li>
+<li>Solve systems of first-order IVPs numerically using forward and
+backward Euler’s method</li>
+<li>Solve systems of first-order IVPs using <code class="docutils literal"><span class="pre">odeint</span></code></li>
 </ul>
-<p>Lab 12 is the last “required” lab.</p>
-<p>Homework 12 to be release soon; due last day of classes.</p>
+</div>
 </div>
 </div>
 
@@ -132,16 +419,18 @@ complete solutions to ODEs important in engineering disciplines.</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 26 - Solving ODEs Symbolically</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 26 - Numerical Solutions of First-Order Systems</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#A-Model-Problem">A Model Problem</a></li>
+<li><a class="reference internal" href="#Getting-to-">Getting to <span class="math">\(y' = f(y(t), t)\)</span></a></li>
+<li><a class="reference internal" href="#Introduce-">Introduce <span class="math">\(u = x' \longrightarrow u' = x''\)</span></a></li>
+<li><a class="reference internal" href="#Using-Euler-on-IVP-System">Using Euler on IVP System</a></li>
+<li><a class="reference internal" href="#SciPy's-odeint">SciPy’s <code class="docutils literal"><span class="pre">odeint</span></code></a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Differential-Equations">Differential Equations</a></li>
-<li><a class="reference internal" href="#Whence-ODEs?">Whence ODEs?</a></li>
-<li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>
 </ul>

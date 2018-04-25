@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 27 - Solving First-Order IVPs Numerically &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    <title>Lecture 27 - Numerical Solutions of Two-Point BVPs &#8212; ME 400 Course Notes Fall 2017 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -201,160 +201,140 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="section" id="Lecture-27---Solving-First-Order-IVPs-Numerically">
-<h1>Lecture 27 - Solving First-Order IVPs Numerically<a class="headerlink" href="#Lecture-27---Solving-First-Order-IVPs-Numerically" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>The basics of ODEs were reviewed in <a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture
-26</span></a>. There, SymPy was used to provide general
-solutions via <code class="docutils literal"><span class="pre">dsolve</span></code>, leaving application of initial and boundary
-conditions to the user. However, SymPy (and other symbolic tools) cannot
-solve all differential equations. For such equations, we can apply
-numerical techniques. Specifically, we’ll apply the finite-difference
-approximations presented in <a class="reference internal" href="ME400_Lecture_19.html"><span class="doc">Lecture 19</span></a>. For
-now, we’ll consider only single, first-order equations, leaving systems
-for <a class="reference internal" href="ME400_Lecture_28.html"><span class="doc">Lecture 28</span></a>.</p>
+<div class="section" id="Lecture-27---Numerical-Solutions-of-Two-Point-BVPs">
+<h1>Lecture 27 - Numerical Solutions of Two-Point BVPs<a class="headerlink" href="#Lecture-27---Numerical-Solutions-of-Two-Point-BVPs" title="Permalink to this headline">¶</a></h1>
+<p><strong>Last Time</strong>: Systems of IVPs</p>
+<p><strong>Today</strong>: One-dimensional, boundary-value problems (BVPs)</p>
+<p><strong>Remember</strong>: Exam 3 on Friday. No additional old exam is available
+since no third midterm was given in past terms (but last practice exam
+has material relevant for this one). Same rules: one 11’’ by 8.5’’
+sheet, handwritten but no other resources. Same format: roughly half
+written, half coded. Cumulative, with emphasis on material since Exam 2.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Solve first-order IVPs numerically using forward and backward Euler’s
-method</li>
-<li>Explain what is mean by local and global errors</li>
-<li>Explain what is meant by stability and how to achieve it</li>
-</ul>
-</div>
-<div class="section" id="Prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
-<p>You should already be able to</p>
-<ul class="simple">
-<li>Solve ODEs based on what you’ve learned in a course like MATH 340 and
-<a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture 26</span></a></li>
-<li>Compute a first-order, finite-difference approximation for
-<span class="math">\(\frac{df}{dx}\)</span></li>
+<li>Explain the two major boundary conditions and how to represent them
+using finite differences</li>
+<li>Solve two-point BVPs characteristics of heat transfer and other
+applications using the finite-difference method</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Euler’s method</li>
-<li>forward Euler</li>
-<li>backward Euler</li>
-<li>Heun’s (improved Euler’s) method</li>
-<li>local error</li>
-<li>global error</li>
-<li>stable method</li>
-<li><code class="docutils literal"><span class="pre">scipy.integrate.odeint</span></code></li>
+<li>finite-difference method (Euler is one example)</li>
+<li>Dirichlet condition (e.g., fixed temperature)</li>
+<li>Neumann condition (e.g., perfect insulator)</li>
 </ul>
+<div class="section" id="The-Two-Point-BVP">
+<h3>The Two-Point BVP<a class="headerlink" href="#The-Two-Point-BVP" title="Permalink to this headline">¶</a></h3>
+<p>Our focus is on the second-order BVP</p>
+<div class="math">
+\[\frac{d^2 y}{dx^2} + p(x) \frac{dy}{dx} + q(x) y(x) = f(x), \qquad y(x_a) = y_a, \qquad y(x_b) = y_b \, .\]</div>
+<p>The goal is to apply numerical differentiation to this equation, leading
+to a linear system.</p>
 </div>
 </div>
-<div class="section" id="There-Once-was-a-Man-Named-Euler">
-<h2>There Once was a Man Named Euler<a class="headerlink" href="#There-Once-was-a-Man-Named-Euler" title="Permalink to this headline">¶</a></h2>
-<div class="figure" id="id1">
-<img alt="Euler's grave in St. Petersburg" src="http://farm2.static.flickr.com/1085/1270449525_4b4b973a27_o.jpg" />
-<p class="caption"><span class="caption-text">Euler’s grave in St. Petersburg</span></p>
+<div class="section" id="Whence-Such-BVPs?">
+<h2>Whence Such BVPs?<a class="headerlink" href="#Whence-Such-BVPs?" title="Permalink to this headline">¶</a></h2>
+<div class="math">
+\[\text{heat conduction:} \qquad \boxed{-\frac{d}{dx}\left ( k(x)\frac{dT}{dx}\right ) = f(x)} \, \quad \text{s.t.} \quad T(x_a) = T_a \quad \text{and} \quad T(x_b) = T_b\]</div>
+<div class="math">
+\[\text{neutron diffusion:} \qquad \boxed{-\frac{d}{dx}\left( D(x) \frac{d\phi}{dx} \right )+ \Sigma_a \phi(x) = f(x)} \, \quad \text{s.t.} \quad \phi(x_a) = \phi_a \quad \text{and} \quad \phi(x_b) = \phi_b\]</div>
+<p>Many other problems in physics and engineering take the same form.</p>
+<p><strong>Exercise</strong>: Put the heat conduction equation into the standard form
+<span class="math">\(y'' + py + q = f\)</span>.</p>
+<div class="section" id="Chopping-up-">
+<h3>Chopping up <span class="math">\(x\)</span><a class="headerlink" href="#Chopping-up-" title="Permalink to this headline">¶</a></h3>
+<p>Back to the model problem <span class="math">\(y'' + py' + qy = f\)</span>. Chop up <span class="math">\(x\)</span>
+into the points</p>
+<div class="math">
+\[\boxed{x = x_a, \, x_a + \Delta, x_a + 2\Delta, \ldots, x_b - \Delta, x_b}\]</div>
+<p>or <span class="math">\(\boxed{x_n = x_a + \Delta n}\)</span> for <span class="math">\(n = 0, 1, \ldots, N\)</span>.</p>
+<p>We want to find <span class="math">\(y(x_n) = y_n\)</span>.</p>
 </div>
-<p>Forward difference approximation:</p>
+<div class="section" id="Replace--and--with-Finite-Differences-Approximations">
+<h3>Replace <span class="math">\(y'\)</span> and <span class="math">\(y''\)</span> with Finite Differences Approximations<a class="headerlink" href="#Replace--and--with-Finite-Differences-Approximations" title="Permalink to this headline">¶</a></h3>
 <div class="math">
-\[\frac{dy}{dt} \approx \frac{y(t+\Delta)-y(t)}{\Delta} \, ,\]</div>
-<p>Backward difference approximation:</p>
+\[\boxed{\frac{dy}{dx}\Bigg |_{x = x_n} = \frac{y_{n+1} - y_{n-1}}{2\Delta}}
+   \qquad \text{and} \qquad
+\boxed{\frac{d^2y}{dx^2}\Bigg |_{x = x_n} = \frac{y_{n+1} - 2y_{n} + y_{n-1}}{\Delta^2}}\]</div>
+<p>Substitute into <span class="math">\(y'' + py' + qy(x_n) = f(x_n)\)</span> to get</p>
 <div class="math">
-\[\frac{dy}{dt} \approx \frac{y(t)-y(t-\Delta)}{\Delta} \, .\]</div>
-<p>Discretize <span class="math">\(y(t)\)</span> so discretize <span class="math">\(t\)</span>:</p>
+\[\boxed{ \frac{y_{n+1} - 2y_{n} + y_{n-1}}{\Delta^2} + p_n \frac{y_{n+1} - y_{n-1}}{2\Delta}
+   + q_n y_n = f_n }\, ,\]</div>
+<p>where <span class="math">\(p_n = p(x_n)\)</span>, <span class="math">\(q_n = q(x_n)\)</span> and
+<span class="math">\(f_n = f(x_n)\)</span>.</p>
+<p>Key observation: the value <span class="math">\(y_n\)</span> depends on its neighbors,
+<span class="math">\(y_{n+1}\)</span> and <span class="math">\(y_{n-1}\)</span>.</p>
+<p><strong>What about at :math:`x_0` and :math:`x_N`</strong>? Apply boundary
+conditions!</p>
+<p>A <strong>Dirichlet condition</strong> sets the value of <span class="math">\(y(x_a)\)</span>:</p>
 <div class="math">
-\[t = t_0, t_0 + \Delta, t_0 + 2\Delta, \ldots t_0 + N\Delta \, .\]</div>
-<p>with</p>
+\[\qquad y(x_a) = y_a \longrightarrow y_0 = y_a\]</div>
+<p>A <strong>Neumann condition</strong> sets the value of
+<span class="math">\(\frac{dy}{dx}\big |_{x=x_a}\)</span>:</p>
 <div class="math">
-\[\Delta = \frac{t_N - t_0}{N} \, .\]</div>
-<p><strong>Exercise</strong>: Solve <span class="math">\(y' = -2y(t) + 1\)</span> with <span class="math">\(y(0) = 0\)</span> using
-(1) forward Euler and (2) backward Euler. Is one more accurate? Are they
-<em>stable</em>?</p>
-<div class="nbinput docutils container">
+\[\frac{dy}{dx} \Bigg |_{x=x_a} = d_a \longrightarrow \frac{y_{1}-y_{0}}{\Delta} = d_a \, .\]</div>
+<p>Similar expressions for the left boundary.</p>
+<p><strong>Exercise</strong>: Set up the finite-difference equations for
+<span class="math">\(-y'' + y(x) = 1\)</span> subject to <span class="math">\(y(0) = y(10) = 0\)</span> using 5
+evenly spaced points <strong>with pen and paper</strong>. Then, use NumPy to solve
+the system.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
-<span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;y t a b&#39;</span><span class="p">)</span>
-<span class="n">ivp</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span> <span class="n">a</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">y_sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">dsolve</span><span class="p">(</span><span class="n">ivp</span><span class="p">)</span><span class="o">.</span><span class="n">rhs</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">y_sol</span><span class="o">.</span><span class="n">simplify</span><span class="p">()))</span>
-<span class="n">coef</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">y_sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">y_sol</span> <span class="o">=</span> <span class="n">y_sol</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;C1&#39;</span><span class="p">),</span> <span class="n">coef</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">y_sol</span><span class="p">))</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-\frac{a e^{a \left(C_{1} + t\right)}}{b \left(e^{a \left(C_{1} + t\right)} - 1\right)}
-\frac{a e^{a \left(t + \frac{1}{a} \log{\left (- \frac{b}{a - b} \right )}\right)}}{b \left(e^{a \left(t + \frac{1}{a} \log{\left (- \frac{b}{a - b} \right )}\right)} - 1\right)}
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="Nonlinear-IVPs">
-<h2>Nonlinear IVPs<a class="headerlink" href="#Nonlinear-IVPs" title="Permalink to this headline">¶</a></h2>
-<p>Remember the decay problem:</p>
+<p><strong>Exercise</strong>: Consider the following <em>partial</em> differential equation
+(PDE):</p>
 <div class="math">
-\[\frac{dN}{dt} = - a N\]</div>
-<p>with <span class="math">\(N(0) = N_0\)</span>. What if <span class="math">\(-a \rightarrow a\)</span> (with
-<span class="math">\(a &gt; 0\)</span>)?</p>
-<p>A potentially improved model (the <em>logistic equation</em>):</p>
-<div class="math">
-\[\frac{dN}{dt} = aN(t) - bN^2(t)\]</div>
-<p>Basically, a penalty for larger population. How to solve?</p>
-<p>By hand, rearrange to <span class="math">\([(1/a)/N + (b/a)/(a-bN)]dN = dt\)</span> and
-integrate. Same result from SymPy:</p>
-<div class="math">
-\[N(t) = \frac{a e^{a \left(C_{1} + t\right)}}{b \left(e^{a \left(C_{1} + t\right)} - 1\right)}\]</div>
-<p>Numerically, let’s try Euler!</p>
-</div>
-<div class="section" id="odeint">
-<h2><code class="docutils literal"><span class="pre">odeint</span></code><a class="headerlink" href="#odeint" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">odeint</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">Dfun</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">col_deriv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ml</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tcrit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">h0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">hmax</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">hmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ixpr</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mxstep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mxhnil</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mxordn</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">mxords</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">printmessg</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">Integrate</span> <span class="n">a</span> <span class="n">system</span> <span class="n">of</span> <span class="n">ordinary</span> <span class="n">differential</span> <span class="n">equations</span><span class="o">.</span>
-
-    <span class="n">Solve</span> <span class="n">a</span> <span class="n">system</span> <span class="n">of</span> <span class="n">ordinary</span> <span class="n">differential</span> <span class="n">equations</span> <span class="n">using</span> <span class="n">lsoda</span> <span class="kn">from</span> <span class="nn">the</span>
-    <span class="n">FORTRAN</span> <span class="n">library</span> <span class="n">odepack</span><span class="o">.</span>
-
-    <span class="n">Solves</span> <span class="n">the</span> <span class="n">initial</span> <span class="n">value</span> <span class="n">problem</span> <span class="k">for</span> <span class="n">stiff</span> <span class="ow">or</span> <span class="n">non</span><span class="o">-</span><span class="n">stiff</span> <span class="n">systems</span>
-    <span class="n">of</span> <span class="n">first</span> <span class="n">order</span> <span class="n">ode</span><span class="o">-</span><span class="n">s</span><span class="p">::</span>
-
-        <span class="n">dy</span><span class="o">/</span><span class="n">dt</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-
-    <span class="n">where</span> <span class="n">y</span> <span class="n">can</span> <span class="n">be</span> <span class="n">a</span> <span class="n">vector</span><span class="o">.</span>
-</pre></div>
-</div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Parameters</span>
-<span class="o">----------</span>
-<span class="n">func</span> <span class="p">:</span> <span class="n">callable</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-    <span class="n">Computes</span> <span class="n">the</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">y</span> <span class="n">at</span> <span class="n">t0</span><span class="o">.</span>
-<span class="n">y0</span> <span class="p">:</span> <span class="n">array</span>
-    <span class="n">Initial</span> <span class="n">condition</span> <span class="n">on</span> <span class="n">y</span> <span class="p">(</span><span class="n">can</span> <span class="n">be</span> <span class="n">a</span> <span class="n">vector</span><span class="p">)</span><span class="o">.</span>
-<span class="n">t</span> <span class="p">:</span> <span class="n">array</span>
-    <span class="n">A</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">time</span> <span class="n">points</span> <span class="k">for</span> <span class="n">which</span> <span class="n">to</span> <span class="n">solve</span> <span class="k">for</span> <span class="n">y</span><span class="o">.</span>  <span class="n">The</span> <span class="n">initial</span>
-    <span class="n">value</span> <span class="n">point</span> <span class="n">should</span> <span class="n">be</span> <span class="n">the</span> <span class="n">first</span> <span class="n">element</span> <span class="n">of</span> <span class="n">this</span> <span class="n">sequence</span><span class="o">.</span>
-<span class="n">args</span> <span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">optional</span>
-    <span class="n">Extra</span> <span class="n">arguments</span> <span class="n">to</span> <span class="k">pass</span> <span class="n">to</span> <span class="n">function</span><span class="o">.</span>
-</pre></div>
-</div>
-<p><strong>Exercise</strong>: Logistic again!</p>
-</div>
-<div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
-<p>You should now be able to</p>
+\[\frac{\partial c}{\partial t} = D(x) \frac{\partial^2 c}{\partial x^2} - v(x)\frac{\partial c}{\partial x} + S(x)\]</div>
+<p>which is a simplified, one-dimensional, <em>advection-diffusion equation</em>.
+Here, <span class="math">\(c(x)\)</span> is the concentration of some quantity of interest
+(perhaps a pollutant in a stream), <span class="math">\(D\)</span> is a diffusion coefficient
+(that quantifies how rapidly the species tends to dissipate away from a
+region in space), and <span class="math">\(v(x)\)</span> is the velocity of the surrounding
+field (here, perhaps the stream with the pollutant).</p>
+<p>Like many equations that model physical systems, the
+convection-diffusion equation is a statement of balance. On the left, we
+have <span class="math">\(\frac{\partial c}{\partial t}\)</span>, which is the time rate of
+change of the concentration at any point <span class="math">\(x\)</span>. This change comes
+from three sources:</p>
+<ol class="arabic simple">
+<li>the <em>diffusion</em> of the species away from a point <span class="math">\(x\)</span>, here
+quantified by <span class="math">\(D(x) \frac{\partial^2 c}{\partial x^2}\)</span></li>
+<li>the <em>advection</em> of the species away from a point <span class="math">\(x\)</span> due to the
+flow of the surrounding field (here, again, the stream), here
+quantified by <span class="math">\(-v(x)\frac{\partial c}{\partial x}\)</span></li>
+<li>any external sources of the species, perhaps a leaking canister or a
+chemical reaction, here represented by <span class="math">\(S(x)\)</span></li>
+</ol>
+<p>Now, do the following:</p>
 <ul class="simple">
-<li>Solve first-order IVPs numerically using forward and backward Euler’s
-method</li>
-<li>Explain what is mean by local and global errors</li>
-<li>Explain what is meant by stability and how to achieve it</li>
+<li>Suppose the unit of <span class="math">\(c\)</span> is m<span class="math">\(^{-3}\)</span>. What must be the
+units of <span class="math">\(D\)</span>, <span class="math">\(v\)</span>, and <span class="math">\(S\)</span>?</li>
+<li>Write down the <em>steady-state</em> form of the above convection-diffusion
+equation by setting the time derivative to zeros.</li>
+<li>Solve the steady-state equation for the case <span class="math">\(v = 1\)</span>,
+<span class="math">\(S = 1\)</span>, <span class="math">\(c(0) = 0\)</span> and <span class="math">\(c(10) = 1\)</span> using
+<span class="math">\(\Delta = 0.01\)</span> m.</li>
+<li>Plot your solution for <span class="math">\(D = 10\)</span>, <span class="math">\(D = 1\)</span>, and
+<span class="math">\(D = 0.1\)</span>. What happens? (The phenomenon you should observe is
+the development of a <em>boundary layer</em>, a term that should become
+familiar in fluid mechanics.)</li>
 </ul>
-<p>Now, for some comments on the exam…</p>
+<p>By now, you should be able to: - Explain the two major boundary
+conditions and how to represent them using finite differences - Solve
+two-point BVPs characteristics of heat transfer and other applications
+using the finite-difference method</p>
+</div>
 </div>
 </div>
 
@@ -366,17 +346,17 @@ method</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 27 - Solving First-Order IVPs Numerically</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#">Lecture 27 - Numerical Solutions of Two-Point BVPs</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#The-Two-Point-BVP">The Two-Point BVP</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#There-Once-was-a-Man-Named-Euler">There Once was a Man Named Euler</a></li>
-<li><a class="reference internal" href="#Nonlinear-IVPs">Nonlinear IVPs</a></li>
-<li><a class="reference internal" href="#odeint"><code class="docutils literal"><span class="pre">odeint</span></code></a></li>
-<li><a class="reference internal" href="#Recap">Recap</a></li>
+<li><a class="reference internal" href="#Whence-Such-BVPs?">Whence Such BVPs?</a><ul>
+<li><a class="reference internal" href="#Chopping-up-">Chopping up <span class="math">\(x\)</span></a></li>
+<li><a class="reference internal" href="#Replace--and--with-Finite-Differences-Approximations">Replace <span class="math">\(y'\)</span> and <span class="math">\(y''\)</span> with Finite Differences Approximations</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
