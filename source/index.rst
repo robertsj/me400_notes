@@ -11,23 +11,23 @@
 
    Prologue <overview>
    Syllabus <administrivia/ME400_Syllabus>
-   Lecture 1 <lectures/ME400_Lecture_1>
-   Lecture 2 <lectures/ME400_Lecture_2>
-   Lecture 3 <lectures/ME400_Lecture_3>
-   Lecture 4 <lectures/ME400_Lecture_4>
-   Lecture 5 <lectures/ME400_Lecture_5>
-   Lecture 6 <lectures/ME400_Lecture_6>  
-   Lecture 7 <lectures/ME400_Lecture_7>  
-   Lecture 8 <lectures/ME400_Lecture_8>  
-   Lecture 9 <lectures/ME400_Lecture_9>  
-   Lecture 10 <lectures/ME400_Lecture_10>  
-   Lecture 11 <lectures/ME400_Lecture_11>  
-   Lecture 12 <lectures/ME400_Lecture_12>  
-   Lecture 13 <lectures/ME400_Lecture_13>  
-   Lecture 14 <lectures/ME400_Lecture_14>  
-   Lecture 15 <lectures/ME400_Lecture_15>  
-   Lecture 16 <lectures/ME400_Lecture_16>  
-   Lecture 17 <lectures/ME400_Lecture_17>   
+   Lecture 1 - Getting Started <lectures/Getting_Started>
+   Lecture 2 - Basic Operators and Built-In Functions <lectures/Basic_Operators_and_Built-In_Functions>
+   Lecture 3 - Basic Data Processing with NumPy and Matplotlib <lectures/Basic_Data_Processing_with_NumPy_and_Matplotlib>
+   Lecture 4 - More on NumPy Arrays: Slicing and `np.linalg` <lectures/More_on_NumPy_Arrays>
+   Lecture 5 - Algorithms, Flowcharts, and Pseudocode <lectures/Algorithms_Flowcharts_and_Pseudocode>
+   Lecture 6 - Conditional Statements and the Structure of Python Code <lectures/Conditional_Statements_and_the_Structure_of_Python_Code>  
+   Lecture 7 - More on Conditionals <lectures/More_on_Conditionals>  
+   Lecture 8 - Loops in Python <lectures/Loops_in_Python>  
+   Lecture 9 - More on Loops <lectures/More_on_Loops>  
+   Lecture 10 - Pythonic Containers <lectures/Pythonic_Containers>  
+   Lecture 11 - Processing Text Data <lectures/Processing_Text_Data>  
+   Lecture 12 - Basics of Functions <lectures/Basics_of_Functions>  
+   Lecture 13 - More on Functions <lectures/More_on_Functions>  
+   Lecture 14 - Searching <lectures/Searching>  
+   Lecture 15 - Sorting <lectures/Sorting>  
+   Lecture 16 - Modules and Packages <lectures/Modules_and_Packages>  
+   Lecture 17 - Unit Tests and Defensive Programming <lectures/Unit_Tests_and_Defensive_Programming>   
    Lecture 18 - Numerical Differentiation <lectures/Numerical_Differentiation>  
    Lecture 19 - Numerical Integration <lectures/Numerical_Integration> 
    Lecture 20 - Linear Systems <lectures/Linear_Systems> 
