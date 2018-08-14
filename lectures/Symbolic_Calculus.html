@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 19 - Symbolic Calculus with SymPy &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 19 - Symbolic Calculus with SymPy &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-19---Symbolic-Calculus-with-SymPy">
 <h1>Lecture 19 - Symbolic Calculus with SymPy<a class="headerlink" href="#Lecture-19---Symbolic-Calculus-with-SymPy" title="Permalink to this headline">¶</a></h1>
@@ -237,7 +242,7 @@ In fact, the classical definition for the derivative of a function
 <span class="math">\(f(x)\)</span> is</p>
 <div class="math">
 \[\lim_{h \to 0} \frac{f(x+h)-f(x)}{h} \, .\]</div>
-<p>SymPy can handle limits, so let’s see if we use limits to find the
+<p>SymPy can handle limits, so let&#8217;s see if we use limits to find the
 derivative of <span class="math">\(f(x) = ax^2 + bx + c\)</span>. First, remember to do the
 necessary import and initialization, and get symbols ready:</p>
 <div class="nbinput nblast docutils container">
@@ -284,7 +289,7 @@ perturbed value <span class="math">\(x+h\)</span>:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$2 a x + b$$</div></div>
+\[$$2 a x + b$$\]</div></div>
 </div>
 <p>The result <span class="math">\(2ax+b\)</span> is precisely what one should expect. If we want
 the symbolic representation of the limit, we need only use <code class="docutils literal"><span class="pre">Limit</span></code>
@@ -306,7 +311,7 @@ instead of <code class="docutils literal"><span class="pre">limit</span></code>,
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\lim_{h \to 0^+}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$</div></div>
+\[$$\lim_{h \to 0^+}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$\]</div></div>
 </div>
 <p>which can be then be evaluated via</p>
 <div class="nbinput docutils container">
@@ -326,9 +331,9 @@ $$\lim_{h \to 0^+}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} -
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$2 a x + b$$</div></div>
+\[$$2 a x + b$$\]</div></div>
 </div>
-<p>Note the “+” in the limit above: by default, SymPy evaluates the the
+<p>Note the &#8220;+&#8221; in the limit above: by default, SymPy evaluates the the
 right-hand limit, i.e., as <span class="math">\(h\)</span> approaches zero from the right.
 Alternative, we could evaluate the left-hand limit with</p>
 <div class="nbinput docutils container">
@@ -348,7 +353,7 @@ Alternative, we could evaluate the left-hand limit with</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\lim_{h \to 0^-}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$</div></div>
+\[$$\lim_{h \to 0^-}\left(\frac{1}{h} \left(- a x^{2} + a \left(h + x\right)^{2} - b x + b \left(h + x\right)\right)\right)$$\]</div></div>
 </div>
 <p>When the right-hand and left-hand limits of <span class="math">\(f(x)\)</span> agree as
 <span class="math">\(x\)</span> approaches some value <span class="math">\(x_0\)</span>, a two-sided limit is said
@@ -371,12 +376,12 @@ always exist:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left ( \infty, \quad -\infty\right )$$</div></div>
+\[$$\left ( \infty, \quad -\infty\right )$$\]</div></div>
 </div>
 </div>
 <div class="section" id="Derivatives">
 <h2>Derivatives<a class="headerlink" href="#Derivatives" title="Permalink to this headline">¶</a></h2>
-<p>Thankfully, we don’t need to use limits everytime we want to
+<p>Thankfully, we don&#8217;t need to use limits everytime we want to
 differentiate a function with SymPy:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -395,7 +400,7 @@ differentiate a function with SymPy:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$2 a x + b$$</div></div>
+\[$$2 a x + b$$\]</div></div>
 </div>
 <p>Higher-order derivatives are also easily computed:</p>
 <div class="nbinput docutils container">
@@ -415,7 +420,7 @@ $$2 a x + b$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$2 a$$</div></div>
+\[$$2 a$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -434,7 +439,7 @@ $$2 a$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0$$</div></div>
+\[$$0$$\]</div></div>
 </div>
 <p>If a function <code class="docutils literal"><span class="pre">g(x)</span></code> is not given an explicit form, SymPy leaves its
 derivatives in symbolic form:</p>
@@ -456,7 +461,7 @@ derivatives in symbolic form:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{d}{d x} g{\left (x \right )}$$</div></div>
+\[$$\frac{d}{d x} g{\left (x \right )}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -475,7 +480,7 @@ $$\frac{d}{d x} g{\left (x \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{d^{2}}{d x^{2}}  g{\left (x \right )}$$</div></div>
+\[$$\frac{d^{2}}{d x^{2}}  g{\left (x \right )}$$\]</div></div>
 </div>
 <p>As for limits, we can define a derivative without its evaluation, e.g.,</p>
 <div class="nbinput docutils container">
@@ -495,7 +500,7 @@ $$\frac{d^{2}}{d x^{2}}  g{\left (x \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{\partial}{\partial x}\left(a x^{2} + b x + c\right)$$</div></div>
+\[$$\frac{\partial}{\partial x}\left(a x^{2} + b x + c\right)$$\]</div></div>
 </div>
 <p>Here, note the <em>partial</em> derivative symbols <span class="math">\(\partial\)</span>. Because
 <span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and <span class="math">\(c\)</span> are symbols, SymPy cannot know that
@@ -533,7 +538,7 @@ imagine the other variables (here, <span class="math">\(y\)</span>) as constants
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{2 a}{y} x$$</div></div>
+\[$$\frac{2 a}{y} x$$\]</div></div>
 </div>
 </div>
 <div class="section" id="Implicit-Differentiation">
@@ -576,7 +581,7 @@ explicit function of <span class="math">\(x\)</span>:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$x^{2} - y{\left (x \right )} + 5 \sin{\left (x \right )} + 3 \sec{\left (y{\left (x \right )} \right )} - 3$$</div></div>
+\[$$x^{2} - y{\left (x \right )} + 5 \sin{\left (x \right )} + 3 \sec{\left (y{\left (x \right )} \right )} - 3$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -596,7 +601,7 @@ $$x^{2} - y{\left (x \right )} + 5 \sin{\left (x \right )} + 3 \sec{\left (y{\le
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$2 x + 5 \cos{\left (x \right )} + 3 \tan{\left (y{\left (x \right )} \right )} \sec{\left (y{\left (x \right )} \right )} \frac{d}{d x} y{\left (x \right )} - \frac{d}{d x} y{\left (x \right )}$$</div></div>
+\[$$2 x + 5 \cos{\left (x \right )} + 3 \tan{\left (y{\left (x \right )} \right )} \sec{\left (y{\left (x \right )} \right )} \frac{d}{d x} y{\left (x \right )} - \frac{d}{d x} y{\left (x \right )}$$\]</div></div>
 </div>
 <p>To find <span class="math">\(dy/dx\)</span> is as easy as doing</p>
 <div class="nbinput docutils container">
@@ -616,7 +621,7 @@ $$2 x + 5 \cos{\left (x \right )} + 3 \tan{\left (y{\left (x \right )} \right )}
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ - \frac{2 x + 5 \cos{\left (x \right )}}{3 \tan{\left (y{\left (x \right )} \right )} \sec{\left (y{\left (x \right )} \right )} - 1}\right ]$$</div></div>
+\[$$\left [ - \frac{2 x + 5 \cos{\left (x \right )}}{3 \tan{\left (y{\left (x \right )} \right )} \sec{\left (y{\left (x \right )} \right )} - 1}\right ]$$\]</div></div>
 </div>
 <p>Pretty slick!</p>
 <p>Notice, to represent the (mathematical) function <span class="math">\(y(x)\)</span>, all that
@@ -639,7 +644,7 @@ function, and its derivative with respect to <code class="docutils literal"><spa
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{d}{d x} y{\left (x \right )}$$</div></div>
+\[$$\frac{d}{d x} y{\left (x \right )}$$\]</div></div>
 </div>
 <p>However, always make sure to use <code class="docutils literal"><span class="pre">y(x)</span></code> when <code class="docutils literal"><span class="pre">y</span></code> is to be a function
 of <code class="docutils literal"><span class="pre">x</span></code>. Typing <code class="docutils literal"><span class="pre">y</span></code> alone, which suggests <code class="docutils literal"><span class="pre">y</span></code> is a symbol all by
@@ -661,7 +666,7 @@ itself, will lead to the following derivative:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0$$</div></div>
+\[$$0$$\]</div></div>
 </div>
 </div>
 </div>
@@ -698,7 +703,7 @@ above can be defined for <span class="math">\(f(x) = x^2\)</span> as</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\sum_{i=1}^{n} \frac{1}{n} \left(- a + b\right) \left(a + \frac{i}{n} \left(- a + b\right)\right)^{2}$$</div></div>
+\[$$\sum_{i=1}^{n} \frac{1}{n} \left(- a + b\right) \left(a + \frac{i}{n} \left(- a + b\right)\right)^{2}$$\]</div></div>
 </div>
 <p>For the specific case of <span class="math">\(f(x) = x^2\)</span>, <span class="math">\(a=0\)</span>, and
 <span class="math">\(b=1\)</span>, we have</p>
@@ -720,7 +725,7 @@ $$\sum_{i=1}^{n} \frac{1}{n} \left(- a + b\right) \left(a + \frac{i}{n} \left(- 
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$</div></div>
+\[$$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -747,7 +752,7 @@ $$\sum_{i=1}^{n} \frac{i^{2}}{n^{3}}$$</div></div>
 </div>
 <p>Of course, the greater the number of little rectangles, the closer to
 <span class="math">\(\int^1_0 x^2 dx = 1/3\)</span> we get. Can we take <span class="math">\(n=\infty\)</span>?
-Note, <code class="docutils literal"><span class="pre">sp.oo</span></code> represents <span class="math">\(\infty\)</span> in SymPy. Let’s try</p>
+Note, <code class="docutils literal"><span class="pre">sp.oo</span></code> represents <span class="math">\(\infty\)</span> in SymPy. Let&#8217;s try</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [24]:
@@ -765,7 +770,7 @@ Note, <code class="docutils literal"><span class="pre">sp.oo</span></code> repre
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0$$</div></div>
+\[$$0$$\]</div></div>
 </div>
 <p>Well, that does not work. How about using a limit?</p>
 <div class="nbinput docutils container">
@@ -785,7 +790,7 @@ $$0$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1}{3}$$</div></div>
+\[$$\frac{1}{3}$$\]</div></div>
 </div>
 <p>That is the right result.</p>
 </div>
@@ -811,7 +816,7 @@ indefinite integrals, the syntax is</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{x^{3}}{3}$$</div></div>
+\[$$\frac{x^{3}}{3}$$\]</div></div>
 </div>
 <p>To add bounds and make the integral definite, the syntax becomes</p>
 <div class="nbinput docutils container">
@@ -831,7 +836,7 @@ $$\frac{x^{3}}{3}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$</div></div>
+\[$$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$\]</div></div>
 </div>
 <p>Now, consider the following, rather benign looking integral:</p>
 <div class="nbinput docutils container">
@@ -851,14 +856,14 @@ $$- \frac{a^{3}}{3} + \frac{b^{3}}{3}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\begin{cases} \frac{1}{a - 1} &amp; \text{for}\: \Re{\left(a\right)} &gt; 1 \\\int_{1}^{\infty} x^{- a}\, dx &amp; \text{otherwise} \end{cases}$$</div></div>
+\[$$\begin{cases} \frac{1}{a - 1} &amp; \text{for}\: \Re{\left(a\right)} &gt; 1 \\\int_{1}^{\infty} x^{- a}\, dx &amp; \text{otherwise} \end{cases}$$\]</div></div>
 </div>
 <p>SymPy provides two outputs because in one case (<span class="math">\(\Re(a) &gt; a\)</span>,
 i.e., the real part of <span class="math">\(a\)</span> must be greater than unity), the
 integral exists, while in the second, the integral is left in the
 symbolic form because it cannot be evaluated.</p>
 <p>The whole business of being real or imaginary takes us a bit out of our
-scope, but we’re not really interested in complex numbers here. Can we
+scope, but we&#8217;re not really interested in complex numbers here. Can we
 avoid the issue and simply tell SymPy that <span class="math">\(a\)</span> should be a real
 number? Yes. One way is simply to define <span class="math">\(a\)</span> to be real from the
 start:</p>
@@ -880,7 +885,7 @@ start:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\begin{cases} \frac{1}{a - 1} &amp; \text{for}\: a &gt; 1 \\\int_{1}^{\infty} x^{- a}\, dx &amp; \text{otherwise} \end{cases}$$</div></div>
+\[$$\begin{cases} \frac{1}{a - 1} &amp; \text{for}\: a &gt; 1 \\\int_{1}^{\infty} x^{- a}\, dx &amp; \text{otherwise} \end{cases}$$\]</div></div>
 </div>
 <p>The result is basically the same (evaluated only for <span class="math">\(a&gt;1\)</span>), but
 it no longer has <span class="math">\(\Re(a)\)</span>.</p>
@@ -904,7 +909,7 @@ above for derivatives). For example, consider</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\int_{a}^{b} x^{2}\, dx$$</div></div>
+\[$$\int_{a}^{b} x^{2}\, dx$$\]</div></div>
 </div>
 <p>This integral can be formally evaluated using <code class="docutils literal"><span class="pre">doit</span></code>, or</p>
 <div class="nbinput docutils container">
@@ -924,7 +929,7 @@ $$\int_{a}^{b} x^{2}\, dx$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1}{3}$$</div></div>
+\[$$\frac{1}{3}$$\]</div></div>
 </div>
 <p>and numerically evaluated using <code class="docutils literal"><span class="pre">evalf</span></code>, or</p>
 <div class="nbinput docutils container">
@@ -944,7 +949,7 @@ $$\frac{1}{3}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0.333333333333333$$</div></div>
+\[$$0.333333333333333$$\]</div></div>
 </div>
 </div>
 <div class="section" id="Further-Reading">
@@ -953,7 +958,7 @@ $$0.333333333333333$$</div></div>
 can be used for calculus. Much more value will come by <em>practicing</em> with
 the tools presented, and one way to do that would be to revisit problems
 from past calculus courses. Some possible topics to explore may include
-evaluating limits (with tools like l’Hopital’s rule), the various
+evaluating limits (with tools like l&#8217;Hopital&#8217;s rule), the various
 differentiation rules (chain, product, etc., all of which can be
 demonstrated symbolically), and multidimensional integrals.</p>
 </div>
@@ -995,15 +1000,15 @@ demonstrated symbolically), and multidimensional integrals.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Symbolic_Calculus.ipynb.txt"
+      <li><a href="../_sources/lectures/Symbolic_Calculus.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1014,14 +1019,14 @@ demonstrated symbolically), and multidimensional integrals.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/Symbolic_Calculus.ipynb.txt"
+      <a href="../_sources/lectures/Symbolic_Calculus.txt"
           rel="nofollow">Page source</a>
     </div>
 

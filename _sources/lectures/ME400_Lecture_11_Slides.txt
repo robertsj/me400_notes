@@ -1,0 +1,467 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 11 - Processing Text Data\n",
+    " \n",
+    "Lectures [5](ME400_Lecture_5.ipynb) through [9](ME400_Lecture_10.ipynb) covered the basic logical structures used in programming and their implementation in Python.  [Lecture 10](ME400_Lecture_10.ipynb) presented Python's built-in container types.  In this lecture, we turn to the practical problem of processing text data.  Often, such data starts life in *files* on our machines.  Ultimately, that data is represented as one (or more) strings that can be processed using a combination of the structures already covered (particularly, loops) and more specialized string functions.  We'll wrap up with ways in which we can output existing data into useful text-based formats."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Open and process text files.\n",
+    "- Use string functions to parse data into desired formats.\n",
+    "- Convert data into desired string formats.\n",
+    "- Write strings to text files\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- `open`\n",
+    "- `close`\n",
+    "- `read`\n",
+    "- `str`\n",
+    "- `str.split`\n",
+    "- `str.count`\n",
+    "- `str.find`\n",
+    "- `str.isnumeric`\n",
+    "- `str.replace`\n",
+    "- `in` operator\n",
+    "- `str.format`\n",
+    "- `{}` for replacement\n",
+    "- `write`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## First, a Primer on String Manipulation and Formatting\n",
+    "\n",
+    "The `str` type is fundamental and *powerful*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# Same thing from last lecture but using something\n",
+    "# called \"list comprehension.\" Optional goodie.\n",
+    "[item for item in dir(str) if not '__' in item]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Go do `help(join)` and similarly for these!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:  Given `s = \"1 2 3 4 5\"`, produce a `list` with those five numbers.  Then, do the same for `t = \"1, 2, 3, 4, 5\"`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "s = \"1 2 3 4 5\"\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "t = \"1, 2, 3, 4, 5\"\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Text data can contain *special* characters.  For example, `\"\\n\"` is the newline character:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "s = \"line 1\\nline 2\"\n",
+    "print(s)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "t = \\\n",
+    "\"\"\"line 1\n",
+    "line 2\"\"\"\n",
+    "print(t) # identical to s! "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The `str.split` function defaults to removing *all white space and newlines*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "s.split()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "\"1      2\\n3  4 5\".split() # no white space left!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Other useful functions: `str.find`, `str.replace`, and `str.strip`.  Try them!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "That's all about *parsing* strings (i.e., getting data from them).  How to put data *into* string format?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**:  A common technique for filling out forms is to start from a template and to use substitution to insert values of interest.  Consider a program that accepts a user's first and last name, both `str` values.  Use a template to print, e.g., `\"Hello Bill Gates!\"`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "first, last = 'Bill', 'Gates'\n",
+    "s = \"Hello {} {}!\"\n",
+    "print(s)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Given `x = np.pi`, produce the string `'3.14159'`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "`\"{:7.4f}\".format(np.pi)` yields `\" 3.1416\"` (note the space).\n",
+    "\n",
+    "Let's dissect `\"{:T.Df}\".format(x)`.  Here,\n",
+    "- `{}` indicates substitution \n",
+    "- `:` indicates a special format\n",
+    "- `f` indicates a float format \n",
+    "- `T` is the total number of characters of the formatted number (may yield white-space padding to left)\n",
+    "- `D` is the number of digits after the decimal point.   "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Importing Text (when NumPy Fails)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "First, some simple data:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "t = np.linspace(0, 10, 5)\n",
+    "x = t + t**3\n",
+    "v = 1 + 3*t**2\n",
+    "a = 6*t\n",
+    "np.savetxt('data.txt', np.array([t, x, v, a]).T, delimiter=',')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "You could read the file via `np.loadtxt`, etc.  But what's the other option?  Open the file and parse the `str` contents."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Saving to Text\n",
+    "\n",
+    "In principle, easy as `f.write(s)` for some `str` variable `s`.  The challenge is in defining `s`.  Templates help!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**: Write `t` and `x` to file in two columns without using NumPy and using just two decimal places."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## A Challenging Problem"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "By now, you should be able to\n",
+    "\n",
+    "- Open and process text files.\n",
+    "- Use string functions to parse data into desired formats.\n",
+    "- Convert data into desired string formats.\n",
+    "- Write strings to text files"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

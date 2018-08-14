@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 26 - Solving ODEs Symbolically &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 26 - Solving ODEs Symbolically &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-26---Solving-ODEs-Symbolically">
 <h1>Lecture 26 - Solving ODEs Symbolically<a class="headerlink" href="#Lecture-26---Solving-ODEs-Symbolically" title="Permalink to this headline">¶</a></h1>
@@ -230,10 +235,9 @@ complete solutions to ODEs important in engineering disciplines.</li>
 </div>
 <div class="section" id="Prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
-<p>You should already have a basic comprehension of ODEs, especially IVPs,
-at the level covered in MATH 340 (or 240, if you had that version).</p>
+<p>You should already be able to</p>
 <ul class="simple">
-<li>Solve ODEs based on what you’ve learned in a course like MATH 340
+<li>Solve ODEs based on what you&#8217;ve learned in a course like MATH 340
 (this is not a strict requirement, but if you have <em>not</em> had MATH
 340, you may wish to set up a time with me or the TAs).</li>
 <li>Set up and solve algebraic systems using SymPy</li>
@@ -261,9 +265,9 @@ a function of only one variable, the derivatives are <em>ordinary</em> (as
 opposed to <em>partial</em>), and the equation is an <em>ordinary differential
 equation</em> (ODE). In compact notation, such an equation may be written</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \mathcal{L}f(x) = q(x) \, ,
-\end{equation}</div><p>where <span class="math">\(\mathcal{L}\)</span> is a differential operator. If
+\end{equation}\]</div><p>where <span class="math">\(\mathcal{L}\)</span> is a differential operator. If
 <span class="math">\(\mathcal{L}\)</span> contains only <em>linear combinations</em> of <span class="math">\(f(x)\)</span>
 and its derivates, then <span class="math">\(\mathcal{L}\)</span> is a <em>linear operator</em>, and
 the equation is a <em>linear</em> ODE. If <span class="math">\(q(x) = 0\)</span>, the equation is
@@ -285,14 +289,14 @@ techniques.</p>
 </div>
 <div class="section" id="Whence-Comes-?">
 <h2>Whence Comes <span class="math">\(y'+py=q\)</span>?<a class="headerlink" href="#Whence-Comes-?" title="Permalink to this headline">¶</a></h2>
-<p>For now, we’ll keep it simple and consider problems of the form</p>
+<p>For now, we&#8217;ll keep it simple and consider problems of the form</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \frac{dy}{dt} + p(t)y(t) = q(t) \, , \qquad y(0) = y_0 \, .
-\end{equation}</div><p>This is a <strong>first-order</strong>, <strong>initial-value problem</strong> (IVP). It is first
+\end{equation}\]</div><p>This is a <strong>first-order</strong>, <strong>initial-value problem</strong> (IVP). It is first
 order because there is only a first derivative. It is an initial-value
 problem because the unknown (here, <span class="math">\(y(t)\)</span>) is specified at some
-“initial” time.</p>
+&#8220;initial&#8221; time.</p>
 <p>A first-order IVP can be used to represent of a number of physical
 phenomena. The first that comes to mind (to me, as a nuclear engineer)
 is <a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_decay">radioactive
@@ -316,17 +320,17 @@ A simple resistance model is <span class="math">\(F_r = cv\)</span>, where <span
 (positive) constant and <span class="math">\(v\)</span> is the velocity directed toward Earth.
 Hence, the downward force is</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     F(t) = -cv(t) + m g \, .
-\end{equation}</div><p>From Newton’s second law, <span class="math">\(F = ma\)</span>, so we have</p>
+\end{equation}\]</div><p>From Newton&#8217;s second law, <span class="math">\(F = ma\)</span>, so we have</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     ma(t) = m \frac{dv}{dt} = -cv(t)  + mg \, ,
-\end{equation}</div><p>or</p>
+\end{equation}\]</div><p>or</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     v' = -\frac{c}{m} v(t) + g \, .
-\end{equation}</div><p>The positive <span class="math">\(c/m\)</span> has the same effect as a positive
+\end{equation}\]</div><p>The positive <span class="math">\(c/m\)</span> has the same effect as a positive
 <span class="math">\(\lambda\)</span> in radioactive decay: the larger the velocity <span class="math">\(v\)</span>,
 the larger the retardation force <span class="math">\(cv\)</span> (just like the larger the
 number of nuclei <span class="math">\(N\)</span>, the larger the number <span class="math">\(\lambda N\)</span>
@@ -340,7 +344,7 @@ falling object to keep accelerating toward earth). The former happens
 when pythons (or neutrons) multiply in nature; thankfully, the <a class="reference external" href="https://en.wikipedia.org/wiki/April_10%E2%80%9311,_2001_tornado_outbreak#Tri-state_hailstorm">hail of
 northeastern
 Kansas</a>
-does reach a terminal velocity. Oh, and I’m not joking about pythons:
+does reach a terminal velocity. Oh, and I&#8217;m not joking about pythons:
 combine the <a class="reference external" href="https://en.wikipedia.org/wiki/Malthusian_growth_model">Malthusian
 model</a> with
 the fact there is an artificial source term due to pet owners releasing
@@ -350,7 +354,7 @@ Everglades</a>.</p>
 <div class="section" id="Symbolic-Solution-of-First-Order-IVPs">
 <h2>Symbolic Solution of First-Order IVPs<a class="headerlink" href="#Symbolic-Solution-of-First-Order-IVPs" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="By-&quot;Hand&quot;">
-<h3>By “Hand”<a class="headerlink" href="#By-"Hand"" title="Permalink to this headline">¶</a></h3>
+<h3>By &#8220;Hand&#8221;<a class="headerlink" href="#By-"Hand"" title="Permalink to this headline">¶</a></h3>
 <p>First, a sanity check <span class="math">\(\frac{dy}{dt} = ay(t)\)</span> with
 <span class="math">\(y(0) = y_0\)</span>. This can be solved, and it depends on only
 integration. Rearrange the equation to be</p>
@@ -371,7 +375,7 @@ specify <span class="math">\(C\)</span> that satisfies <span class="math">\(y(0)
 </div>
 <div class="section" id="With-SymPy">
 <h3>With SymPy<a class="headerlink" href="#With-SymPy" title="Permalink to this headline">¶</a></h3>
-<p>With this simplest of IVPs solved “by hand,” we turn to SymPy and its
+<p>With this simplest of IVPs solved &#8220;by hand,&#8221; we turn to SymPy and its
 <code class="docutils literal"><span class="pre">dsolve</span></code> function. First, initialize the symbols:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -404,7 +408,7 @@ specify <span class="math">\(C\)</span> that satisfies <span class="math">\(y(0)
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{d}{d t} y{\left (t \right )} = a y{\left (t \right )}$$</div></div>
+\[$$\frac{d}{d t} y{\left (t \right )} = a y{\left (t \right )}$$\]</div></div>
 </div>
 <p>Finally, produce the general solution via</p>
 <div class="nbinput docutils container">
@@ -425,7 +429,7 @@ $$\frac{d}{d t} y{\left (t \right )} = a y{\left (t \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$y{\left (t \right )} = C_{1} e^{a t}$$</div></div>
+\[$$y{\left (t \right )} = C_{1} e^{a t}$$\]</div></div>
 </div>
 <p>The solution returned is a SymPy equation (i.e., <code class="docutils literal"><span class="pre">sy.Eq</span></code>) relating
 <span class="math">\(y(t)\)</span> on the left-hand side to <span class="math">\(C_1 e^{at}\)</span> on the
@@ -449,7 +453,7 @@ right-hand side. We want to get the right-hand side and determine
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$C_{1} e^{a t}$$</div></div>
+\[$$C_{1} e^{a t}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -469,11 +473,11 @@ $$C_{1} e^{a t}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ y_{0}\right ]$$</div></div>
+\[$$\left [ y_{0}\right ]$$\]</div></div>
 </div>
 <p>As observed in <a class="reference external" href="ME400_Lecture_18.ipynb">Lecture 18</a>, the output from
 <code class="docutils literal"><span class="pre">sy.solve</span></code> is a <code class="docutils literal"><span class="pre">list</span></code> that has zero or more solutions (here,
-there’s just one). The final solution to the IVP is defined by
+there&#8217;s just one). The final solution to the IVP is defined by
 substituting this solution for <span class="math">\(C_1\)</span> (here, <span class="math">\(y_0\)</span>) into
 <code class="docutils literal"><span class="pre">sol.rhs</span></code>:</p>
 <div class="nbinput docutils container">
@@ -494,9 +498,9 @@ substituting this solution for <span class="math">\(C_1\)</span> (here, <span cl
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$y_{0} e^{a t}$$</div></div>
+\[$$y_{0} e^{a t}$$\]</div></div>
 </div>
-<p>This is the result we’re after.</p>
+<p>This is the result we&#8217;re after.</p>
 <p>By default, SymPy uses <span class="math">\(C_1\)</span>, <span class="math">\(C_2\)</span>, etc. for its constants
 of integration. Symbolically, these are always defined as
 <code class="docutils literal"><span class="pre">Symbol('C1')</span></code>, <code class="docutils literal"><span class="pre">Symbol('C2')</span></code>, etc.</p>
@@ -524,7 +528,7 @@ of integration. Symbolically, these are always defined as
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$y{\left (t \right )} = \frac{1}{p} \left(q + e^{p \left(C_{1} - t\right)}\right)$$</div></div>
+\[$$y{\left (t \right )} = \frac{1}{p} \left(q + e^{p \left(C_{1} - t\right)}\right)$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -545,7 +549,7 @@ $$y{\left (t \right )} = \frac{1}{p} \left(q + e^{p \left(C_{1} - t\right)}\righ
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1}{p} \left(p y_{0} + q e^{p t} - q\right) e^{- p t}$$</div></div>
+\[$$\frac{1}{p} \left(p y_{0} + q e^{p t} - q\right) e^{- p t}$$\]</div></div>
 </div>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Solve <span class="math">\(\frac{dn}{dt} = -\lambda n + s(t)\)</span> where</p>
@@ -557,7 +561,7 @@ $$\frac{1}{p} \left(p y_{0} + q e^{p t} - q\right) e^{- p t}$$</div></div>
 <p><span class="math">\(\lambda = 10^{-3}\)</span>, and <span class="math">\(y(0) = 0\)</span>. Plot your result for
 <span class="math">\(t \in [0, 30]\)</span>.</p>
 <p><em>Solution</em>: This problem is a bit tricky because the forcing function
-<span class="math">\(s(t)\)</span> is discontinuous. Here’s one way to tackle this. First
+<span class="math">\(s(t)\)</span> is discontinuous. Here&#8217;s one way to tackle this. First
 solve for <span class="math">\(0 \leq t \leq 10\)</span>. This part is identical to the last
 exercise. Then, with that solution, <span class="math">\(y(10)\)</span> is known, and this can
 be used as the initial value for <span class="math">\(t &gt; 10\)</span>. This part is identical
@@ -596,7 +600,7 @@ the in-text example <span class="math">\(y'=ay\)</span>.</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$10.0 - 10.0 e^{- 0.1 t}$$</div></div>
+\[$$10.0 - 10.0 e^{- 0.1 t}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -629,7 +633,7 @@ $$10.0 - 10.0 e^{- 0.1 t}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$17.1828182845905 e^{- 0.1 t}$$</div></div>
+\[$$17.1828182845905 e^{- 0.1 t}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -661,11 +665,11 @@ $$17.1828182845905 e^{- 0.1 t}$$</div></div>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: My kid <em>hates</em> hot food, so if I make him my (absolute
 delicious grilled-cheese sandwich with 100% real Wisconsin cheese [of
-course]), I’ve got to let it cool down to approximately room temperature
+course]), I&#8217;ve got to let it cool down to approximately room temperature
 (say 70 <span class="math">\({}^{\circ}\)</span>F). If immediately after grilling it, the
 sandwich is 150 <span class="math">\({}^{\circ}\)</span>F, and 5 minutes later, it is
 100<span class="math">\({}^{\circ}\)</span>, <strong>how much longer do I have to let it cool?</strong>
-Assume that Newton’s law of cooling, <span class="math">\(T' = k(T-T_m)\)</span>, applies.
+Assume that Newton&#8217;s law of cooling, <span class="math">\(T' = k(T-T_m)\)</span>, applies.
 (Hint: you <em>do</em> have enough information to solve this problem.)</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Radio-carbon dating is a technique used to determine how
@@ -696,7 +700,7 @@ and <span class="math">\(b = 1\)</span>. Notice a difference?</p>
 <hr class="docutils" />
 <div class="section" id="Second-Order-Problems">
 <h2>Second-Order Problems<a class="headerlink" href="#Second-Order-Problems" title="Permalink to this headline">¶</a></h2>
-<p>Many models in engineering involve high-order derivatives. Here, we’ll
+<p>Many models in engineering involve high-order derivatives. Here, we&#8217;ll
 focus only on second-order differential equations.</p>
 <div class="section" id="Second-Order-IVPs">
 <h3>Second-Order IVPs<a class="headerlink" href="#Second-Order-IVPs" title="Permalink to this headline">¶</a></h3>
@@ -704,8 +708,8 @@ focus only on second-order differential equations.</p>
 consider the equation</p>
 <div class="math">
 \[m \frac{d^2 x}{dt^2} = -k x - a \frac{dx}{dt} \, ,\]</div>
-<p>which represents Newton’s second law for a spring-mass system with
-<em>spring constant</em> <span class="math">\(k\)</span> and <em>damping</em> force <span class="math">\(a\)</span>. Here, we’ll
+<p>which represents Newton&#8217;s second law for a spring-mass system with
+<em>spring constant</em> <span class="math">\(k\)</span> and <em>damping</em> force <span class="math">\(a\)</span>. Here, we&#8217;ll
 be solving this equation subject to the ICs <span class="math">\(x(0) = x_0\)</span> and
 <span class="math">\(x'(0) = v_0\)</span>.</p>
 <hr class="docutils" />
@@ -744,7 +748,7 @@ kg, what are the units for <span class="math">\(k\)</span> and <span class="math
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$m \frac{d^{2}}{d t^{2}}  x{\left (t \right )} = - a \frac{d}{d t} x{\left (t \right )} - k x{\left (t \right )}$$</div></div>
+\[$$m \frac{d^{2}}{d t^{2}}  x{\left (t \right )} = - a \frac{d}{d t} x{\left (t \right )} - k x{\left (t \right )}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -765,7 +769,7 @@ $$m \frac{d^{2}}{d t^{2}}  x{\left (t \right )} = - a \frac{d}{d t} x{\left (t \
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$x{\left (t \right )} = C_{1} e^{\frac{t}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}\right)} + C_{2} e^{\frac{t}{2 m} \left(- a + \sqrt{a^{2} - 4 k m}\right)}$$</div></div>
+\[$$x{\left (t \right )} = C_{1} e^{\frac{t}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}\right)} + C_{2} e^{\frac{t}{2 m} \left(- a + \sqrt{a^{2} - 4 k m}\right)}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -787,7 +791,7 @@ $$x{\left (t \right )} = C_{1} e^{\frac{t}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left ( C_{1} + C_{2} = x_{0}, \quad \frac{C_{1}}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}\right) + \frac{C_{2}}{2 m} \left(- a + \sqrt{a^{2} - 4 k m}\right) = v_{0}\right )$$</div></div>
+\[$$\left ( C_{1} + C_{2} = x_{0}, \quad \frac{C_{1}}{2 m} \left(- a - \sqrt{a^{2} - 4 k m}\right) + \frac{C_{2}}{2 m} \left(- a + \sqrt{a^{2} - 4 k m}\right) = v_{0}\right )$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -808,7 +812,7 @@ $$\left ( C_{1} + C_{2} = x_{0}, \quad \frac{C_{1}}{2 m} \left(- a - \sqrt{a^{2}
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left \{ C_{1} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(- \frac{a x_{0}}{2} - m v_{0} + \frac{x_{0}}{2} \sqrt{a^{2} - 4 k m}\right), \quad C_{2} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(m v_{0} + \frac{x_{0}}{2} \left(a + \sqrt{a^{2} - 4 k m}\right)\right)\right \}$$</div></div>
+\[$$\left \{ C_{1} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(- \frac{a x_{0}}{2} - m v_{0} + \frac{x_{0}}{2} \sqrt{a^{2} - 4 k m}\right), \quad C_{2} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(m v_{0} + \frac{x_{0}}{2} \left(a + \sqrt{a^{2} - 4 k m}\right)\right)\right \}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -829,7 +833,7 @@ $$\left \{ C_{1} : \frac{1}{\sqrt{a^{2} - 4 k m}} \left(- \frac{a x_{0}}{2} - m 
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{e^{- \frac{a t}{m}}}{2 \sqrt{a^{2} - 4 k m}} \left(\left(2 m v_{0} + x_{0} \left(a + \sqrt{a^{2} - 4 k m}\right)\right) e^{\frac{t}{2 m} \left(a + \sqrt{a^{2} - 4 k m}\right)} + \left(- a x_{0} - 2 m v_{0} + x_{0} \sqrt{a^{2} - 4 k m}\right) e^{\frac{t}{2 m} \left(a - \sqrt{a^{2} - 4 k m}\right)}\right)$$</div></div>
+\[$$\frac{e^{- \frac{a t}{m}}}{2 \sqrt{a^{2} - 4 k m}} \left(\left(2 m v_{0} + x_{0} \left(a + \sqrt{a^{2} - 4 k m}\right)\right) e^{\frac{t}{2 m} \left(a + \sqrt{a^{2} - 4 k m}\right)} + \left(- a x_{0} - 2 m v_{0} + x_{0} \sqrt{a^{2} - 4 k m}\right) e^{\frac{t}{2 m} \left(a - \sqrt{a^{2} - 4 k m}\right)}\right)$$\]</div></div>
 </div>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Let <span class="math">\(m = 1\)</span> and <span class="math">\(k = 1\)</span> in the solution for
@@ -842,7 +846,7 @@ assuming <span class="math">\(x_0 = 1\)</span> and <span class="math">\(v_0 = 1\
 <h3>Second-Order BVPs<a class="headerlink" href="#Second-Order-BVPs" title="Permalink to this headline">¶</a></h3>
 <p>Boundary-value problems (BVPs) are of critcal importance for many
 physical models, including those of heat conduction through media and
-neutron diffusion in nuclear reactors. We’ll stick with second-order
+neutron diffusion in nuclear reactors. We&#8217;ll stick with second-order
 equations with <em>constant</em> coefficients, i.e., equations of the form</p>
 <div class="math">
 \[\frac{d^2 y}{dx^2} + p\frac{dy}{dx} + q y(x) = s(x) \, ,\]</div>
@@ -854,10 +858,10 @@ BVP.</p>
 <em>inhomogenous</em> otherwise. The general solution to such equations is the
 sum of the homogeneous solution (i.e., the solution when
 <span class="math">\(s(x) = 0\)</span>) and the particular solution. There are a variety of
-tricks for solving such equations, but that’s not our focus; rather,
-we’ll leverage SymPy for the general solution and apply boundary
+tricks for solving such equations, but that&#8217;s not our focus; rather,
+we&#8217;ll leverage SymPy for the general solution and apply boundary
 conditions (BCs) to develop final solutions.</p>
-<p>More specifically, here’s our approach, and it follows what we’ve done
+<p>More specifically, here&#8217;s our approach, and it follows what we&#8217;ve done
 for IVPs: 1. Define the BVP 2. Solve the BVP using <code class="docutils literal"><span class="pre">dsolve</span></code> 3. Define
 the BCs 4. Solve the BCs to define the two undetermined constants 5.
 Substitute those constants (and any other values) to the general
@@ -890,7 +894,7 @@ respectively.</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$k \frac{d^{2}}{d x^{2}}  T{\left (x \right )} = 0$$</div></div>
+\[$$k \frac{d^{2}}{d x^{2}}  T{\left (x \right )} = 0$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -911,7 +915,7 @@ $$k \frac{d^{2}}{d x^{2}}  T{\left (x \right )} = 0$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$T{\left (x \right )} = C_{1} + C_{2} x$$</div></div>
+\[$$T{\left (x \right )} = C_{1} + C_{2} x$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -933,7 +937,7 @@ $$T{\left (x \right )} = C_{1} + C_{2} x$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left ( C_{1} = 0, \quad C_{1} + C_{2} a = 100\right )$$</div></div>
+\[$$\left ( C_{1} = 0, \quad C_{1} + C_{2} a = 100\right )$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -954,7 +958,7 @@ $$\left ( C_{1} = 0, \quad C_{1} + C_{2} a = 100\right )$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left \{ C_{1} : 0, \quad C_{2} : \frac{100}{a}\right \}$$</div></div>
+\[$$\left \{ C_{1} : 0, \quad C_{2} : \frac{100}{a}\right \}$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -975,7 +979,7 @@ $$\left \{ C_{1} : 0, \quad C_{2} : \frac{100}{a}\right \}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{100 x}{a}$$</div></div>
+\[$$\frac{100 x}{a}$$\]</div></div>
 </div>
 <p>The temperature found is linear, and it varies from 0 (at the left) to
 100 (at the right). Does the solution depend on the conductivity
@@ -990,7 +994,7 @@ subject to <span class="math">\(T(0) = 0\)</span> and <span class="math">\(T(a) 
 subject to <span class="math">\(T(0) = 0\)</span> and <span class="math">\(T'(a) = 0\)</span>. The condition
 <span class="math">\(T'(a)\)</span> is we specify the right surface of the wall to be
 perfectly insulating. If <span class="math">\(T'\)</span> vanishes, so does the heat flux
-<span class="math">\(kT'\)</span>, and if not heat is passing through, we’re insulated.</p>
+<span class="math">\(kT'\)</span>, and if not heat is passing through, we&#8217;re insulated.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Consider the second-order, ordinary differential equation</p>
 <div class="math">
@@ -1057,7 +1061,7 @@ familiar in fluid mechanics.)</li>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
 <p>You may wish to review your text from a past course on differential
-equations. That text might very well be Prof. Bennett’s online textbook
+equations. That text might very well be Prof. Bennett&#8217;s online textbook
 called <a class="reference external" href="https://www.math.ksu.edu/math240/book/">Elementary Differential
 Equations</a>.</p>
 </div>
@@ -1081,7 +1085,7 @@ Equations</a>.</p>
 <li><a class="reference internal" href="#Differential-Equations">Differential Equations</a></li>
 <li><a class="reference internal" href="#Whence-Comes-?">Whence Comes <span class="math">\(y'+py=q\)</span>?</a></li>
 <li><a class="reference internal" href="#Symbolic-Solution-of-First-Order-IVPs">Symbolic Solution of First-Order IVPs</a><ul>
-<li><a class="reference internal" href="#By-&quot;Hand&quot;">By “Hand”</a></li>
+<li><a class="reference internal" href="#By-&quot;Hand&quot;">By &#8220;Hand&#8221;</a></li>
 <li><a class="reference internal" href="#With-SymPy">With SymPy</a></li>
 </ul>
 </li>
@@ -1104,15 +1108,15 @@ Equations</a>.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_26.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_26.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1123,14 +1127,14 @@ Equations</a>.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_26.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_26.txt"
           rel="nofollow">Page source</a>
     </div>
 

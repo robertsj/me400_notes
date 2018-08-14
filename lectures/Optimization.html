@@ -1,30 +1,31 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Optimization &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Optimization &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Lecture 24 - Data Analysis via Least-Squares Fitting" href="Modeling_Data_With_Least_Squares_Fitting.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <link rel="next" title="Data Analysis via Least-Squares Fitting" href="Modeling_Data_With_Least_Squares_Fitting.html" />
     <link rel="prev" title="Root Finding" href="Root_Finding.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -33,7 +34,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -201,16 +202,20 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Optimization">
 <h1>Optimization<a class="headerlink" href="#Optimization" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference external" href="#root_finding">Root Finding</a>, the bisection method and Newton’s
+<p>In <a class="reference external" href="#root_finding">Root Finding</a>, the bisection method and Newton&#8217;s
 method were used to solve nonlinear equations. Now, thoese methods (and
 tools like <code class="docutils literal"><span class="pre">fsolve</span></code>) are used to solve <strong>optimization problems</strong>. The
-subject is rich, so we’ll touch on only the basics, but you’ll have
+subject is rich, so we&#8217;ll touch on only the basics, but you&#8217;ll have
 tools at your disposal to tackle such problems in varied applications.</p>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
@@ -243,7 +248,7 @@ costs or maximize those ratios, we need to use <em>optimization</em>. Although
 optimization problems and the techniques to solve them are quite
 diverse, we will stick to 1-D problems in which the <em>objective function</em>
 to be minimized or maximized is continuous (as opposed to discrete).</p>
-<p>You’ve had calculus (and we’ve reviewed some its topics). Hence, you
+<p>You&#8217;ve had calculus (and we&#8217;ve reviewed some its topics). Hence, you
 might recall that a function <span class="math">\(f(x)\)</span> exhibits an <strong>extremum</strong>,
 i.e., a <strong>minimum</strong> or <strong>maximum</strong>, at any point <span class="math">\(x\)</span> for which
 <span class="math">\(f'(x)\)</span> is zero and <span class="math">\(f''(x)\)</span> is nonzero. When <span class="math">\(f'(x)\)</span>
@@ -254,15 +259,15 @@ point</strong>, though that term is more meaningful in multiple dimensions.</p>
 largest area that fencing can enclose if arranged in a rectangle of
 sides <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>?</p>
 <p><em>Solution</em>:</p>
-<p>Here’s the problem. We want to maximize <span class="math">\(A = ab\)</span> where
+<p>Here&#8217;s the problem. We want to maximize <span class="math">\(A = ab\)</span> where
 <span class="math">\(2a+2b = L\)</span> or <span class="math">\(b = L/2 - a\)</span>. We know <span class="math">\(L\)</span> and
 <span class="math">\(b\)</span> depends on <span class="math">\(a\)</span>, so there is just one free parameter
-(i.e., we’re in 1-D where we’ll stay throughout). Note that <span class="math">\(a\)</span>
+(i.e., we&#8217;re in 1-D where we&#8217;ll stay throughout). Note that <span class="math">\(a\)</span>
 (and <span class="math">\(b\)</span>) can range from 0 to <span class="math">\(L/2\)</span>.</p>
 <p>Formally, we see a solution to</p>
 <div class="math">
 \[\max_{a \in [0,\, L/2]} a\left (\frac{L}{2}-a \right)\]</div>
-<p>which reads “find the value of <span class="math">\(a\)</span> in the range <span class="math">\([0, L/2]\)</span>
+<p>which reads &#8220;find the value of <span class="math">\(a\)</span> in the range <span class="math">\([0, L/2]\)</span>
 that maximizes the quantity <span class="math">\(f(a) = a(L/2-a)\)</span>. Here, <span class="math">\(f(a)\)</span>
 is the <strong>objective function</strong>.</p>
 <p>Differentiation of <span class="math">\(f(a)\)</span> gives</p>
@@ -279,8 +284,8 @@ square to maximize the area enclosed.</p>
 and explicitly find the point at which it vanishes, our problem is
 solved. That is rarely the case. Often, the functions of interest have
 complicated derivatives that make <span class="math">\(f'(x) = 0\)</span> a nonlinear
-equation. We generally can’t solve that problem directly. In many cases,
-we don’t even have <span class="math">\(f'(x)\)</span>, and at best, we can approximate it
+equation. We generally can&#8217;t solve that problem directly. In many cases,
+we don&#8217;t even have <span class="math">\(f'(x)\)</span>, and at best, we can approximate it
 numerically using finite differences.</p>
 <p>Further complicating matters is that even if we can solve
 <span class="math">\(f'(x)=0\)</span>, the result might not be an extremum (consider
@@ -305,7 +310,7 @@ might not be unique.</p>
 <img alt="../_images/lectures_Optimization_4_0.png" src="../_images/lectures_Optimization_4_0.png" />
 </div>
 </div>
-<p>Of the three roots, two correspond to minima—but the left one (blue
+<p>Of the three roots, two correspond to minima&#8212;but the left one (blue
 circle) is greater than the right one (red square), so is it really a
 minimum? <em>Yes</em>, if we make the distinction between <em>local</em> and <em>global</em>
 minima. For this problem, the right minimum is the <em>global</em> minimum,
@@ -313,23 +318,23 @@ while the central root (green star) represents a local maximum
 (<span class="math">\(f(x)\)</span> is <em>unbounded</em>, i.e., there is no value <span class="math">\(M &lt; \infty\)</span>
 such that <span class="math">\(|f(x)| &lt; M\)</span> for all possible values of <span class="math">\(x\)</span>).
 Given the choice, a global optimum is usualy preferred, but for many
-cases, we’re at best guaranteed a local minimum. There are techniques to
-increase our chances of finding a global optimum, but that’s outside the
+cases, we&#8217;re at best guaranteed a local minimum. There are techniques to
+increase our chances of finding a global optimum, but that&#8217;s outside the
 present scope!</p>
 <div class="section" id="When-the-Derivative-is-Available">
 <h3>When the Derivative is Available<a class="headerlink" href="#When-the-Derivative-is-Available" title="Permalink to this headline">¶</a></h3>
 <p>If we have <span class="math">\(f(x)\)</span> and can evaluated <span class="math">\(f'(x)\)</span>, then either
-Newton’s method or the secant method can be applied to
+Newton&#8217;s method or the secant method can be applied to
 <span class="math">\(g(x)=f'(x) = 0\)</span>. (The same goes for multi-variable problems). In
 fact, this approach (among others) in built into
 <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code>, which the reader should investigate.</p>
 </div>
 <div class="section" id="When-the-Derivative-is-Unavailable">
 <h3>When the Derivative is Unavailable<a class="headerlink" href="#When-the-Derivative-is-Unavailable" title="Permalink to this headline">¶</a></h3>
-<p>If we had <span class="math">\(f'(x)\)</span>, we could apply Newton’s method to
-<span class="math">\(g(x) = f'(x) = 0\)</span>. Assuming we don’t, how to proceed? One option
+<p>If we had <span class="math">\(f'(x)\)</span>, we could apply Newton&#8217;s method to
+<span class="math">\(g(x) = f'(x) = 0\)</span>. Assuming we don&#8217;t, how to proceed? One option
 is to adapt the bisection method. Now, the search is not based on the
-change of the sign of <span class="math">\(f(x)\)</span> but rather it’s magnitude relative to
+change of the sign of <span class="math">\(f(x)\)</span> but rather it&#8217;s magnitude relative to
 the left and right points. Again, we have to have isolated our (single)
 target value in some finite range, which may be no easy task (plotting
 helps).</p>
@@ -372,22 +377,22 @@ on optimization and root finding.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="Root_Finding.html" title="previous chapter">Root Finding</a></li>
-      <li>Next: <a href="Modeling_Data_With_Least_Squares_Fitting.html" title="next chapter">Lecture 24 - Data Analysis via Least-Squares Fitting</a></li>
+      <li>Next: <a href="Modeling_Data_With_Least_Squares_Fitting.html" title="next chapter">Data Analysis via Least-Squares Fitting</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Optimization.ipynb.txt"
+      <li><a href="../_sources/lectures/Optimization.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -398,14 +403,14 @@ on optimization and root finding.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/Optimization.ipynb.txt"
+      <a href="../_sources/lectures/Optimization.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 29 - Numerical Solutions of Two-Point BVPs &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 29 - Numerical Solutions of Two-Point BVPs &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,14 +200,18 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-29---Numerical-Solutions-of-Two-Point-BVPs">
 <h1>Lecture 29 - Numerical Solutions of Two-Point BVPs<a class="headerlink" href="#Lecture-29---Numerical-Solutions-of-Two-Point-BVPs" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>This lesson is all about solving two-point boundary-value problems
-numerically. We’ll apply the finite-difference approximations <a class="reference external" href="ME400_Lecture_21.ipynb">Lecture
+numerically. We&#8217;ll apply the finite-difference approximations <a class="reference external" href="ME400_Lecture_21.ipynb">Lecture
 21</a> to convert BVPs into matrix systems. Both
 inhomogeneous cases (e.g., heat conduction with a driving source) and
 homogeneous (a critical nuclear reactor) will be considered.</p>
@@ -222,12 +227,12 @@ homogeneous (a critical nuclear reactor) will be considered.</p>
 <h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
 <p>You should already be able to</p>
 <ul class="simple">
-<li>Solve systems of IVPs using Euler’s method based on the material of
+<li>Solve systems of IVPs using Euler&#8217;s method based on the material of
 <a class="reference internal" href="ME400_Lecture_28.html"><span class="doc">Lecture 28</span></a></li>
 <li>Define one- and two-dimensional arrays using NumPy arrays based on
-the material of <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>.</li>
+the material of <a class="reference external" href="ME400_Lecture_4.ipynb">Lecture 4</a>.</li>
 <li>Use <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> to solve <span class="math">\(\mathbf{Ax = b}\)</span> based on the
-material of <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>.</li>
+material of <a class="reference external" href="ME400_Lecture_4.ipynb">Lecture 4</a>.</li>
 </ul>
 <p>Please review these topics (and resources) as needed.</p>
 </div>
@@ -244,45 +249,45 @@ material of <a class="reference internal" href="ME400_Lecture_4.html"><span clas
 <h2>Chopping Up the BVP<a class="headerlink" href="#Chopping-Up-the-BVP" title="Permalink to this headline">¶</a></h2>
 <p>Our focus is again on the second-order BVP</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \frac{d^2 y}{dx^2} + p(x) \frac{dy}{dx} + q(x) y(x) = f(x), \qquad y(a) = y_a, \qquad y(b) = y_b \, .
-\end{equation}</div><p>The goal is to apply <a class="reference external" href="../../../courses/pythonic_apps_1/module_4/numerical_differentiation.rst">Numerical
+\end{equation}\]</div><p>The goal is to apply <a class="reference external" href="../../../courses/pythonic_apps_1/module_4/numerical_differentiation.rst">Numerical
 Differentiation</a>
 to this equation, leading to a linear system.</p>
 <p>Observe that there are two derivatives in the BVP, one second order, and
 one first order. There are numerous ways to approximate these by finite
-differences, but we’ll opt for a method with second-order errors. For
+differences, but we&#8217;ll opt for a method with second-order errors. For
 the first derivative, we already analyzed the central difference:</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \frac{dy}{dx} = \frac{y(x+\Delta)-y(x-\Delta)}{2\Delta} + \mathcal{O}(\Delta^2) \, .
-\end{equation}</div><p>For the second derivative, we saw (but did not analyze) another central
+\end{equation}\]</div><p>For the second derivative, we saw (but did not analyze) another central
 difference:</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \frac{d^2y}{dx^2} = \frac{y(x+\Delta)-2y(x)+y(x-h)}{\Delta^2} + \mathcal{O}(\Delta^2) \, .
-\end{equation}</div><p>Given these differencing schemes, let us chop the domain
+\end{equation}\]</div><p>Given these differencing schemes, let us chop the domain
 <span class="math">\(x\in [a, b]\)</span> into discrete points
 <span class="math">\(x_i = a + \Delta i,\, i = 0, 1, \ldots, n\)</span>, where
 <span class="math">\(\Delta = (b-a)/n\)</span>. For all but <span class="math">\(i=0\)</span> and <span class="math">\(i=n\)</span>, we
 have</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \frac{y_{i+1} - 2y_i + y_{i-1}}{\Delta^2}
       + p_i \frac{y_{i+1}-y_{i-1}}{2 \Delta}
         + q_i y_i
           = f_i
-\end{equation}</div><p>where, for example, <span class="math">\(y_i = y(x_i)\)</span>.</p>
+\end{equation}\]</div><p>where, for example, <span class="math">\(y_i = y(x_i)\)</span>.</p>
 <p>At the boundaries, we need to be more careful. For the given boundary
 conditions, our equations are as simple as</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     y_0 = y_a
-\end{equation}</div><p>and</p>
+\end{equation}\]</div><p>and</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     y_n = y_b \, .
-\end{equation}</div><p>The boundary conditions used here are known as <em>Dirichlet</em> boundary
+\end{equation}\]</div><p>The boundary conditions used here are known as <em>Dirichlet</em> boundary
 conditions, in which the unknown function itself is defined at the
 boundary. <em>Neumann</em> boundary conditions specify a value of the
 <em>derivative</em> of the function, e.g., <span class="math">\(y'(a) = \alpha\)</span>. <em>Robin</em> or
@@ -319,7 +324,7 @@ Here, <span class="math">\(x=b\)</span> is the right boundary.</p>
 <p>To illustrate the approach just described, let us consider our previous
 example for which <span class="math">\(p(x)=0\)</span>, <span class="math">\(q(x)=f(x)=-1\)</span>, and
 <span class="math">\(y(0) = y(10) = 0\)</span>. The analytic solution is
-<span class="math">\(y(x) = 1 - e^{10-x}/(1+e^{10}) - e^{x}/(1+e^{10})\)</span>. We’ll keep it
+<span class="math">\(y(x) = 1 - e^{10-x}/(1+e^{10}) - e^{x}/(1+e^{10})\)</span>. We&#8217;ll keep it
 simple and let <span class="math">\(n = 4\)</span>, which gives us five equations:</p>
 <div class="math">
 \[\begin{split}\begin{aligned}
@@ -391,7 +396,7 @@ the equations together in a very transparent form. The second approach,
 however, leads to a somewhat simpler system. Note, though, this second
 approach is only applicable when the boundary condition is a Dirichlet
 condition.</p>
-<p>Let’s solve this numerically:</p>
+<p>Let&#8217;s solve this numerically:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [48]:
@@ -434,7 +439,7 @@ points!</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Apply the approach outlined above to solve
 <span class="math">\(y'' + y(x) = 1\)</span>, subject to <span class="math">\(y'(0) = y(10) = 0\)</span>. Note,
-that’s a Neumann condition at the left boundary.</p>
+that&#8217;s a Neumann condition at the left boundary.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Use the finite-difference method to solve
 <span class="math">\(y'' + y(x) = x\)</span>, subject to <span class="math">\(y'(0) = y(10) = 0\)</span>.</p>
@@ -474,37 +479,37 @@ subject to <span class="math">\(\gamma_a y(a) + \beta_a y'(a) = \alpha_a\)</span
 determinant. Here, that determinant leads to a polynomial equation for
 <span class="math">\(\lambda\)</span>. As long as <span class="math">\(\mathbf{A}\)</span> is 4 by 4 or smaller,
 <span class="math">\(\lambda\)</span> can be found directly. For larger matrices, we need
-numerical techniques (as was discussed in <a class="reference internal" href="ME400_Lecture_23.html"><span class="doc">Lecture
-23</span></a>.</p>
+numerical techniques (as was discussed in <a class="reference external" href="ME400_Lecture_23.ipynb">Lecture
+23</a>.</p>
 <p>Eigenvalue problems are not limited to discrete systems, however. For
 example, consider the following BVP:</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
    - \frac{d^2 y}{dx^2} = \lambda y(x), \qquad y(0)=y(10)=0 \, .
-\end{equation}</div><p>This is really the homogeneous equation <span class="math">\(y'' - \lambda y = 0\)</span>, for
+\end{equation}\]</div><p>This is really the homogeneous equation <span class="math">\(y'' - \lambda y = 0\)</span>, for
 which <span class="math">\(y(x) = a \cos(\sqrt{\lambda}x) + b \sin(\sqrt{\lambda}x)\)</span>.
 The left boundary condition <span class="math">\(y(0)=0\)</span> gives <span class="math">\(a = 0\)</span>. However,
 the right condition leaves us with a somewhat strange situation:</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     b \sin(\sqrt{\lambda}10) = 0 \, .
-\end{equation}</div><p>Why is this strange? All it says about <span class="math">\(b\)</span> is that <span class="math">\(b=0\)</span>,
+\end{equation}\]</div><p>Why is this strange? All it says about <span class="math">\(b\)</span> is that <span class="math">\(b=0\)</span>,
 the trivial solution. But if <span class="math">\(b\ne 0\)</span>, then it can be divided from
 both sides, leaving</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \sin(\sqrt{\lambda}10) = 0 \, .
-\end{equation}</div><p>Perhaps now our situation is a bit more obvious: the left boundary is
+\end{equation}\]</div><p>Perhaps now our situation is a bit more obvious: the left boundary is
 not able to determine <span class="math">\(b\)</span>, but it is able to determine those
 values of <span class="math">\(\lambda\)</span> for which the BVP and its boundary conditions
 are satisfied. Here, those values are</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \lambda = \frac{n^2 \pi^2}{100} \, .
-\end{equation}</div><p>Now, to solve such an equation, we can employ the same discretization
+\end{equation}\]</div><p>Now, to solve such an equation, we can employ the same discretization
 used above, which leads to the following matrix eigenvalue problem:</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
  \left [
    \begin{matrix}
       1          &amp; 0           &amp; 0           &amp; 0           &amp; 0 \\
@@ -534,7 +539,7 @@ used above, which leads to the following matrix eigenvalue problem:</p>
       y_4 \\
    \end{matrix}
  \right ] \, .
-\end{equation}</div><p>We can solve this numerically via</p>
+\end{equation}\]</div><p>We can solve this numerically via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -566,7 +571,7 @@ used above, which leads to the following matrix eigenvalue problem:</p>
 are defined only to within a multiplicative constant, so too are
 eigenfunctions.</p>
 <p>The smallest eigenvalue found numerically is <span class="math">\(0.09372583\)</span>, which
-is pretty close to <span class="math">\(\pi^2/100\)</span>. Let’s look at the corresponding
+is pretty close to <span class="math">\(\pi^2/100\)</span>. Let&#8217;s look at the corresponding
 eigenvector compared to the analytic solution. We can make sure to pick
 out the correct eigenvector by finding the index of the lowest
 eigenvalue:</p>
@@ -654,13 +659,13 @@ eigenvalues often play a role.</p>
 <h2>Comment on FDM and Alternatives<a class="headerlink" href="#Comment-on-FDM-and-Alternatives" title="Permalink to this headline">¶</a></h2>
 <p>The finite-difference method is easy to understand, often simple to
 implement, and useful for a variety of real-world applications. However,
-it isn’t the only option and it’s often not the best option.
+it isn&#8217;t the only option and it&#8217;s often not the best option.
 <a class="reference external" href="https://en.wikipedia.org/wiki/Finite_volume_method">Finite-volume
-methods</a> (FVM’s)
+methods</a> (FVM&#8217;s)
 integrate the differential equation first, and the resulting
 <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> represents a discretetized conservation
 law. <a class="reference external" href="https://en.wikipedia.org/wiki/Finite_element_method">Finite-element
-methods</a> (FEM’s)
+methods</a> (FEM&#8217;s)
 also integrate the differential equation first (albeit in a slightly
 different form). Then, the solutions are assumed to take simple
 piece-wise continuous form (lines, parabolas, or even cubics), and the
@@ -711,15 +716,15 @@ material previously covered.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_29.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_29.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -730,14 +735,14 @@ material previously covered.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_29.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_29.txt"
           rel="nofollow">Page source</a>
     </div>
 

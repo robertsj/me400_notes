@@ -1,0 +1,281 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 18 - Numerical Differentiation\n",
+    " \n",
+    "From [Lecture 1](ME400_Lecture_1.ipynb) through [Lecture 17](ME400_Lecture_17.ipynb), the focus has been squarely on the fundamentals of programming, with some basic numerical tools (like numerical arrays and plotting) and best practices (like unit testing) included along the way.  Our focus now shifts to the use of programming to solve problems *numerically*.  We still need the basic tools we've acquired (loops, functions, etc.), but our purpose is in *application*.  In this lesson, we'll review the basics of Taylor series and how they can be used to define *finite-difference* approximations for derivatives.  We'll need these later in [Root Finding](Root_Finding.ipynb) and [Numerical Solution of BVPs](Numerical_Solution_of_BVPs.ipynb)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Derive finite-difference approximations for first- and second-order derivatives using Taylor series.\n",
+    "- Numerically/graphically/symbolically demonstrate that the error of an $n$th-order approximation as $\\Delta \\to 0$ exhibits the right behavior.\n",
+    "- Evaluate derivatives numerically"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## If, in the beginning, $\\Delta$ didn't go to 0...\n",
+    "\n",
+    "Recall that the derivative of $f(x)$ can be defined as\n",
+    "\n",
+    "$$\n",
+    "  \\frac{df}{dx} = \\lim_{\\Delta \\to 0} \\frac{f(x+\\Delta)-f(x)}{\\Delta} \\, .\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "What if that limit is not taken and, instead, a \"small\" value of $\\Delta$ is used?   "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The result is our first **finite-difference** approximation, the **forward difference**:\n",
+    "\n",
+    "$$\n",
+    "  f'(x) \\approx  \\frac{f(x+\\Delta)-f(x)}{\\Delta} \\, .\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "An equally valid approximation is the **backward difference**:\n",
+    "$$\n",
+    "  f'(x) \\approx  \\frac{f(x)-f(x-\\Delta)}{\\Delta} \\, .\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exercise**:  Show that the backward difference correctly differentiates $f(x) = ax^2 + bx + c$ in the limit that $\\Delta \\to 0$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: A rocket's velocity is described by\n",
+    "\n",
+    "$$\n",
+    "    v(t) = 2000 \\ln \\frac{10^{5}}{10^{5}-1500t} - 10t \\, \\quad t \\in [0, 20~\\text{s}]\n",
+    "$$\n",
+    "\n",
+    "Use the *backward difference* approximation with $\\Delta = 2$ seconds to estimate the acceleration at $t = 10$ s.  What is the *absolute error* in this approximation?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "\n",
+    "def v(t):\n",
+    "    \"\"\"Velocity of rocket (m/s) as a function of time.\"\"\"\n",
+    "    return 2000*np.log(1e5/(1e5-1500*t)) - 10*t\n",
+    "\n",
+    "a_10_approx = None\n",
+    "a_10_ref = None # remember your chain rule..."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: How does that error behave for $\\Delta = 1$? $\\Delta = 0.5$?  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Better Approximations via Taylor Series\n",
+    "\n",
+    "Formally,\n",
+    "$$\n",
+    "\\begin{split}\n",
+    "  f(x+\\Delta) \n",
+    "   &= f(x) + f'(x)\\Delta + \\frac{1}{2}f''(x)\\Delta^2 + \\sum^{\\infty}_{n=3} \\frac{f^{(n)}}{n!} \\Delta^n \\\\\n",
+    "   &= f(x) + f'(x)\\Delta + \\frac{1}{2}f''(x)\\Delta^2 + \\mathcal{O}(\\Delta^3) \\, .\n",
+    "\\end{split}\n",
+    "$$\n",
+    "\n",
+    "Note:\n",
+    " - $\\mathcal{O}(\\Delta^n)$ represents any and all terms proportional to $\\Delta^n$ or higher powers of $\\Delta$.  \n",
+    " - Often, terms represented by $\\mathcal{O}(\\Delta^n)$ are called \"order $n$\" terms or are said to be \"order $n$\"."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: What *order* is the error of the forward difference method? "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Expand both $f(x+\\Delta)$ and $f(x-\\Delta)$ about $x$ and find an approximation for $\\frac{d f}{dx}$ that is second order."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Expand both $f(x+\\Delta)$ and $f(x-\\Delta)$ about $x$ and find an approximation for $\\frac{d^2 f}{dx^2}$ that is second order."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "## Putting it altogether\n",
+    "\n",
+    "See Canvas!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to\n",
+    "\n",
+    "- Derive finite-difference approximations for first- and second-order derivatives using Taylor series.\n",
+    "- Numerically/graphically/symbolically demonstrate that the error of an $n$th-order approximation as $\\Delta \\to 0$ exhibits the right behavior.\n",
+    "- Evaluate derivatives numerically"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exam 2**:\n",
+    "  - median=68% (average lower due to skipped exams)\n",
+    "  - max=100%\n",
+    "  - Problem 1 average about 50% (those 2.5 points separate the two exams)\n",
+    "  - if today's numbers were final, 20 A's, 27 B's, 29 C's, 9 D's (94 total)\n",
+    "  - today's Canvas grades should represent your Phase 1 score (your grade could still improve (up to a C) or go down depending on your semester-end, formative/lab scores)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

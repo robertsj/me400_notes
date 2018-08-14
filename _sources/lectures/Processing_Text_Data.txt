@@ -1,0 +1,906 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Processing Text Data\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "Lectures [5](ME400_Lecture_5.ipynb) through [9](ME400_Lecture_10.ipynb) covered the basic logical structures used in programming and their implementation in Python.  [Lecture 10](ME400_Lecture_10.ipynb) presented Python's built-in container types.  In this lecture, we turn to the practical problem of processing text data.  Often, such data starts life in *files* on our machines.  Ultimately, that data is represented as one (or more) strings that can be processed using a combination of the structures already covered (particularly, loops) and more specialized string functions.  We'll wrap up with ways in which we can output existing data into useful text-based formats.\n",
+    " \n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Open and process text files.\n",
+    "- Use string functions to parse data into desired formats.\n",
+    "- Convert data into desired string formats.\n",
+    "- Write strings to text files\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- `open`\n",
+    "- `close`\n",
+    "- `read`\n",
+    "- `str`\n",
+    "- `str.split`\n",
+    "- `str.count`\n",
+    "- `str.find`\n",
+    "- `str.isnumeric`\n",
+    "- `str.replace`\n",
+    "- `in` operator\n",
+    "- `str.format`\n",
+    "- `{}` for replacement\n",
+    "- `write`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Reading Text Files\n",
+    "\n",
+    "We'll start with a case we've seen before: the text file from [Lecture 4](ME400_Lecture_4.ipynb), the contents of which are \n",
+    "\n",
+    "```\n",
+    "time (s)   vel (m/s)  acc (m/s**2)\n",
+    "0.00000000 1.00000000 0.00000000\n",
+    "0.22222222 1.24884887 0.01097394\n",
+    "0.44444444 1.55962350 0.08779150\n",
+    "0.66666667 1.94773404 0.29629630\n",
+    "0.88888889 2.43242545 0.70233196\n",
+    "1.11111111 3.03773178 1.37174211\n",
+    "1.33333333 3.79366789 2.37037037\n",
+    "1.55555556 4.73771786 3.76406036\n",
+    "1.77777778 5.91669359 5.61865569\n",
+    "2.00000000 7.38905610 8.00000000\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It was suggested then that any data with such a simple format is best read by using `np.loadtxt`.  However, the simplicity of this data makes it useful for studying more traditional file processing.\n",
+    "\n",
+    "In Python, files are first opened to produce a *file handle*, i.e., a variable that provides the user access to the file and various functions with which to inspect the file.  To load a file and produce such a file handle requires the built-in `open` function.  This function is typically called with two arguments: a filename, always a `str` value, and the access mode, which can be `r` for *read*, `w` for *write*, and `a` for *append*.   For now, we'll focus on reading files, and we can open `data.txt` for reading by executing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<_io.TextIOWrapper name='data.txt' mode='r' encoding='UTF-8'>"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "f = open('data.txt', 'r')\n",
+    "f"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The particular value of `f` is not important, but it does suggest it is associated with our text file and that it is set for reading.  At this point, though, the file is only *ready* to be processed; we still need to do something with it.  Let's see what we can do with the file handle `f`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "buffer\n",
+      "close\n",
+      "closed\n",
+      "detach\n",
+      "encoding\n",
+      "errors\n",
+      "fileno\n",
+      "flush\n",
+      "isatty\n",
+      "line_buffering\n",
+      "mode\n",
+      "name\n",
+      "newlines\n",
+      "read\n",
+      "readable\n",
+      "readline\n",
+      "readlines\n",
+      "seek\n",
+      "seekable\n",
+      "tell\n",
+      "truncate\n",
+      "writable\n",
+      "write\n",
+      "writelines\n"
+     ]
+    }
+   ],
+   "source": [
+    "for item in dir(f): \n",
+    "    if not item[0:1] == '_':\n",
+    "        print(item)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In fact, file handles have quite a few functions.  The important ones for getting the content of the file into our program are `read` and `readlines`.  We'll explore `write` later on.  Let's start with `f.read()`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Help on built-in function read:\n",
+      "\n",
+      "read(size=-1, /) method of _io.TextIOWrapper instance\n",
+      "    Read at most n characters from stream.\n",
+      "    \n",
+      "    Read from underlying buffer until we have n characters or we hit EOF.\n",
+      "    If n is negative or omitted, read until EOF.\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "help(f.read)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "By default, `read` will read *all* the characters.  Although not stated, the function produces a `str` with all of the characters read.  Hence, we can turn the contents of our text file (connected now to `f`) into a single string via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'time (s)   vel (m/s)  acc (m/s**2)\\n0.00000000 1.00000000 0.00000000\\n0.22222222 1.24884887 0.01097394\\n0.44444444 1.55962350 0.08779150\\n0.66666667 1.94773404 0.29629630\\n0.88888889 2.43242545 0.70233196\\n1.11111111 3.03773178 1.37174211\\n1.33333333 3.79366789 2.37037037\\n1.55555556 4.73771786 3.76406036\\n1.77777778 5.91669359 5.61865569\\n2.00000000 7.38905610 8.00000000\\n'"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "s = f.read()\n",
+    "s"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Well, the contents sure are there, but the formatting is a bit weird.  If we *print* the string, we see what we might expect:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "time (s)   vel (m/s)  acc (m/s**2)\n",
+      "0.00000000 1.00000000 0.00000000\n",
+      "0.22222222 1.24884887 0.01097394\n",
+      "0.44444444 1.55962350 0.08779150\n",
+      "0.66666667 1.94773404 0.29629630\n",
+      "0.88888889 2.43242545 0.70233196\n",
+      "1.11111111 3.03773178 1.37174211\n",
+      "1.33333333 3.79366789 2.37037037\n",
+      "1.55555556 4.73771786 3.76406036\n",
+      "1.77777778 5.91669359 5.61865569\n",
+      "2.00000000 7.38905610 8.00000000\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(s)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "By default, displaying a `str` variable (and not printing it) will show all of the characters, including the special `\\n` character.  Here, `\\n` is a *newline* character and represents the break between lines in text files.  When a string is printed, the effects of special characters (like `\\n`) are shown.\n",
+    "\n",
+    "> **Exercise**: Define a string that, when printed, shows \"ABC\" on the first line and \"XYZ\" on the second line.\n",
+    "\n",
+    "Now that we've read the file into a single string, we need to close it:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "f.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It is important to close files once read.  Doing so helps to prevent multiple programs from accessing the same file. \n",
+    "\n",
+    "> **Note**: Always close a file once it has been read.\n",
+    "\n",
+    "> **Exercise**: The `open` function is not limited to files ending in `.txt`.  Any text file works, including `.py` files.  Go and open a previous homework or laboratory file (making sure to set the mode to `r` and *not* `w`!).  Read the contents into a string, and use a loop to count the number of `#` characters in your file.\n",
+    "\n",
+    "\n",
+    "In addition to `f.read()`, we can use `f.readlines()`.  Now, we've closed the file, so we need to open it again before we read it.  Then, following the advice above, the file is closed:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "f = open('data.txt', 'r')\n",
+    "lines = f.readlines() \n",
+    "f.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `readlines` function reads the same contents as `read` but the result is a `list` of each line of the text file:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['time (s)   vel (m/s)  acc (m/s**2)\\n',\n",
+       " '0.00000000 1.00000000 0.00000000\\n',\n",
+       " '0.22222222 1.24884887 0.01097394\\n',\n",
+       " '0.44444444 1.55962350 0.08779150\\n',\n",
+       " '0.66666667 1.94773404 0.29629630\\n',\n",
+       " '0.88888889 2.43242545 0.70233196\\n',\n",
+       " '1.11111111 3.03773178 1.37174211\\n',\n",
+       " '1.33333333 3.79366789 2.37037037\\n',\n",
+       " '1.55555556 4.73771786 3.76406036\\n',\n",
+       " '1.77777778 5.91669359 5.61865569\\n',\n",
+       " '2.00000000 7.38905610 8.00000000\\n']"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "lines"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Often, data is easier to process by first separating a text file into individual lines.\n",
+    "\n",
+    "> **Exercise**: Go find again an old homework file ending in `.py`.  Open it and read its contents using `readlines`.  How many lines does the file contain?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Parsing Strings\n",
+    "\n",
+    "With `read` and `readlines` we get a single string for the whole file or a `list` of strings corresponding to each line, respectively.  This is progress, but we need to do more in order to extract values (whatever they may be) from the string.\n",
+    "\n",
+    "For the example of `data.txt`, the values of interest are the time, velocity, and acceleration.  Hence, a representative string is the single line \n",
+    "\n",
+    "```\n",
+    "'0.00000000 1.00000000 0.00000000\\n'\n",
+    "```\n",
+    "\n",
+    "which is the value of `lines[1]`.  To extract the three, individual values, the `split` function can be used:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.00000000\n",
+      "1.00000000\n",
+      "0.00000000\n"
+     ]
+    }
+   ],
+   "source": [
+    "t, v, a = lines[1].split()\n",
+    "print(t)\n",
+    "print(v)\n",
+    "print(a)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In fact, `str` values can be split based on different criteria.  By default, the `str` value is divided into sequences of characters separated by one or more white spaces (i.e., one or more `' '` characters).  For example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog']"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'The quick brown fox jumps over the lazy dog'.split()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here, we've split a (potentially familiar) sentence into its individual words.  This sentence is a [pangram](https://en.wikipedia.org/wiki/Pangram), i.e., a sentence with all the letters of the alphabet.  If, however, we had a string with comma-separated values, we could get those values via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['1', '1', '2', '3', '5', '8', '13']"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'1,1,2,3,5,8,13'.split(',')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hence, `split` can be used to parse data that has a reasonably simple structure.\n",
+    "\n",
+    "> **Exercise**: Write a short program to turn the string `'1,1,2,3,5,8,13'` into an `ndarray`.\n",
+    ">> *Solution*. The string must be split into individual strings, those individual strings must be turned into numbers,  and put those numbers must be put into an array.  To size the array, we use the number of items resulting from the split.  Here is a complete approach:\n",
+    "```python\n",
+    "    s = '1,1,2,3,5,8,13' # start with the string\n",
+    "    v = s.split(s, ',')  # split it into a list of str values\n",
+    "    a = np.zeros(len(v)) # intialize an array of proper length\n",
+    "    for i in range(len(v)):\n",
+    "        a[i] = int(v[i]) # convert the ith value into an int\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `str` type provides several other functions to help one parse contents of a `str` value.  For instance, how many times does the letter `'o'` appear in `'hello world'`?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'hello world'.count('o')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Where does the first `'o'` occur?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'hello world'.find('o')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Is there an `x` in it?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-1"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'hello world'.find('x') # -1 if not found"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'x' in 'hello world' # false if not one of the elements (here, characters)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Does `'1984'` contain only numerical values?  How about `'3.14159'`?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'1984'.isnumeric() # yes, just digits"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'3.14159'.isnumeric() # no, the . is not numerical"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If the data to be parsed has non-numerical values, we sometimes need to [wrangle](https://en.wikipedia.org/wiki/Data_wrangling) the data into a more usable form.  Suppose our data for time, velocity, and acceleration suffered from a measurement error at 100 s, leading to this line\n",
+    "```\n",
+    "0.00000000 1.00000000 N/A\n",
+    "```\n",
+    "Obviously, `N/A` is not a number (and stands for \"not available\"), but it might be the value substituted by the measurement software if that particular value were missed.  In order to process the data, it might be reasonable to treat all the `N/A` values as a zero, which could be accomplished by *replacing* `N/A` with `0.0`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'0.00000000 1.00000000 0.0'"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "s = '0.00000000 1.00000000 N/A'\n",
+    "s = s.replace('N/A', '0.0')\n",
+    "s"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Putting It All Together: Processing `data.txt`\n",
+    "\n",
+    "Files can be read, and their contents can be put into a single string or a list of strings for each line of text.  Using loops, these lines can be processed one by one, perhaps using `split`, `find`, `count`, or `replace`, depending on the application.  \n",
+    "\n",
+    "For `data.txt`, let us produce the three arrays `t`, `v`, and `a`.  Take as known that the first line provides text information about the columns of data.  Then, the entire processing can be done via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,\n",
+       "        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "\n",
+    "# open file, read lines, and close file\n",
+    "f = open('data.txt', 'r')\n",
+    "lines = f.readlines() \n",
+    "f.close()\n",
+    "\n",
+    "# initialize empty\n",
+    "t, v, a = [], [], []\n",
+    "for line in lines[1:]: \n",
+    "    vals = line.split()\n",
+    "    t.append(float(vals[0]))\n",
+    "    v.append(float(vals[1])) \n",
+    "    a.append(float(vals[2]))\n",
+    "t = np.array(t)\n",
+    "v = np.array(v)\n",
+    "a = np.array(a)\n",
+    "t"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Writing to File\n",
+    "\n",
+    "Having read data from a file, analysis can be performed.  The results of such analysis are often displayed visually (think `plt.plot`). Other applications may require that data be saved to file.  If the data is solely array-based, then `np.savetxt` is a good option.  More complicated (or less structured) information requires a different approach.\n",
+    "\n",
+    "Just as file handles can be created to read from a text file, they can be created to *save* to a text file.  The only difference in syntax is the use of `w` instead of `r`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "f = open('new_data.txt', 'w')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Any string can be written to file using the `write` function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "f.write('Here is some sample text!')\n",
+    "f.close() # Always close a file when done."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The output is the number of characters written.  Here, `f` is closed after writing just one string.  However, several lines can be written in sequence, with the contents of any additional string placed after the contents already written.\n",
+    "\n",
+    "Often, numerical data should be written in a *format* that is easily read.  The right way to produce formatted text is to use the `str.format` method.  For example, consider the repeating decimal corresponding to 1/3.  To print that number with just four decimal places, one could use"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'0.3333'"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\"{:.4f}\".format(1/3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Several strings, integers, and floating-point values can be formatted all at once:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'1 divided by 3 is approximately 0.3333'"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\"{} divided by {} is approximately {:.4f}\".format(1, 3, 1/3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To use `format` requires a string with one or more sets of `{}`.  The arguments to `format` are the values to be formatted.  If the `{}` appears without any contents, the corresponding value is formatted into its default `str` representation.  For example, compare the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'0.3333333333333333'"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "str(1/3)\n",
+    "\"{}\".format(1/3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That sure includes a lot of decimal places!  \n",
+    "\n",
+    "More specific formatting instructions can be passed.  For `float` values, the syntax `{:.4f}` yields a formatted value with any number of digits to the left of the decimal point and exactly four digits to the right of the decimal point. The colon `:` is always included when a format specification is given (such as `.4f`).  If scientific notation is preferred, one can use a format like `{:.4e}`.  Compare the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'3.3333e-01'"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'{:.4f}'.format(1/3)\n",
+    "'{:.4e}'.format(1/3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Python provides [several other formats](https://docs.python.org/3.4/library/string.html#format-string-syntax) for handling special `int`, `float`, and other needs, but `{}`, `{:.4f}`, and `{:.4e}` (with values other than 4) should be sufficient for most simple tasks.\n",
+    "\n",
+    "With formatting, the time, velocity, and acceleration data read above can be written back to file :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f = open('new_data.txt', 'w')\n",
+    "# write the header information (remember the newline \\n!)\n",
+    "f.write('time (s)   vel (m/s)  acc (m/s**2)\\n') \n",
+    "for i in range(len(t)):\n",
+    "    # produce each line of text (again, rememeber \\n!)\n",
+    "    s = \"{:.8f} {:.8f} {:.8f}\\n\".format(t[i], v[i], a[i])\n",
+    "    f.write(s)\n",
+    "f.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, `new_data.txt` should have exactly the same contents.\n",
+    "\n",
+    "> **Exercise**: Go and verify that the previous code produces the expected file `new_data.txt`.  This will require that you download and run this notebook or copy the code and paste it into Spyder.\n",
+    "\n",
+    "> **Exercise**: Given `a = 1`, `b = 1/9`, and `c = 'Python'`, produce the string `'1   0.111   Python'`.\n",
+    "\n",
+    "> **Exercise**: Given `A = np.random.rand(5, 5)`, write its values to file element by element.  Each line of the text file should look similar to `1 5 0.569113`, where the values 1 and 5 correspond to the row and column the element.\n",
+    "\n",
+    ">> *Solution*.  First, recognize the desired format: an integer, a space, an integer, a space, and a float with 6 decimal places.  Using the format function, such a string is produce via `\"{} {} {:.6f}\".format(i1, i2, f1)`) where `i1` and `i2` have `int` values and `f1` has a `float` value.  Second, that format can be used inside a nested loop structure that iterates through all rows and columns and writes `i`, `j`, and `A[i, j]` to file.\n",
+    "```python\n",
+    "    A = np.random.rand(5, 5)\n",
+    "    f = open('data_from_A.txt', 'w')\n",
+    "    for i in range(5): \n",
+    "        for j in range(5):\n",
+    "            f.write(\"{} {} {:.6f}\".format(i, j, A[i, j]))\n",
+    "    f.close()\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "The student interested in more complex formatting should read the [documentation](https://docs.python.org/3.4/library/string.html#format-string-syntax) on Python's formatting syntax."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

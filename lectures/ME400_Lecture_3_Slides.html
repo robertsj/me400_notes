@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 3 - Basic Data Processing with NumPy and Matplotlib &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 3 - Basic Data Processing with NumPy and Matplotlib &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,14 +200,18 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-3---Basic-Data-Processing-with-NumPy-and-Matplotlib">
 <h1>Lecture 3 - Basic Data Processing with NumPy and Matplotlib<a class="headerlink" href="#Lecture-3---Basic-Data-Processing-with-NumPy-and-Matplotlib" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lesson, we’ll explore some core features of NumPy and Matplotlib
-and extend our Python based “calculator” to include processing of
+<p>In this lesson, we&#8217;ll explore some core features of NumPy and Matplotlib
+and extend our Python based &#8220;calculator&#8221; to include processing of
 <em>arrays</em> of data. <a class="reference external" href="http://www.numpy.org/">NumPy</a> is the basic
 numerical package for Python. A lot of its utility comes from its
 numerical, multidimensional array type, <code class="docutils literal"><span class="pre">ndarray</span></code>. Use of these arrays
@@ -215,7 +220,7 @@ compact) code. Moreover, the array-valued results of numerical
 computations are easily visualized using Matplotlib, which was
 originally developed to provide MATLAB-like graphics in the Python
 environment.</p>
-<p>I think it’s so important that students can create, process, and display
+<p>I think it&#8217;s so important that students can create, process, and display
 data that I highlight it early in the course and revisit it throughtout.
 NumPy and Matplotlib together provide about the easiest way to work with
 data.</p>
@@ -347,6 +352,7 @@ data.</p>
  &#39;__file__&#39;,
  &#39;__git_revision__&#39;,
  &#39;__loader__&#39;,
+ &#39;__mkl_version__&#39;,
  &#39;__name__&#39;,
  &#39;__package__&#39;,
  &#39;__path__&#39;,
@@ -356,6 +362,8 @@ data.</p>
  &#39;_globals&#39;,
  &#39;_import_tools&#39;,
  &#39;_mat&#39;,
+ &#39;_mklinit&#39;,
+ &#39;_numpy_tester&#39;,
  &#39;abs&#39;,
  &#39;absolute&#39;,
  &#39;absolute_import&#39;,
@@ -510,6 +518,7 @@ data.</p>
  &#39;empty&#39;,
  &#39;empty_like&#39;,
  &#39;equal&#39;,
+ &#39;erf&#39;,
  &#39;errstate&#39;,
  &#39;euler_gamma&#39;,
  &#39;exp&#39;,
@@ -544,6 +553,8 @@ data.</p>
  &#39;fmax&#39;,
  &#39;fmin&#39;,
  &#39;fmod&#39;,
+ &#39;format_float_positional&#39;,
+ &#39;format_float_scientific&#39;,
  &#39;format_parser&#39;,
  &#39;frexp&#39;,
  &#39;frombuffer&#39;,
@@ -727,6 +738,7 @@ data.</p>
  &#39;oldnumeric&#39;,
  &#39;ones&#39;,
  &#39;ones_like&#39;,
+ &#39;os&#39;,
  &#39;outer&#39;,
  &#39;packbits&#39;,
  &#39;pad&#39;,
@@ -928,7 +940,7 @@ using 10 evenly-spaced points.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-4-d069113fb511&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">2</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-4-7a163de28991&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">2</span>
 <span class="ansi-red-fg">    f =</span>
         ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -936,16 +948,6 @@ using 10 evenly-spaced points.</p>
 </pre></div></div>
 </div>
 <p>Why not <code class="docutils literal"><span class="pre">math.sin(x)</span></code>?</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="Summary-of-Creating-and-Manipulating-1-D-Arrays">
 <h3>Summary of Creating and Manipulating 1-D Arrays<a class="headerlink" href="#Summary-of-Creating-and-Manipulating-1-D-Arrays" title="Permalink to this headline">¶</a></h3>
@@ -978,12 +980,12 @@ using 10 evenly-spaced points.</p>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">np.ones(shap</span>
 <span class="pre">e)</span></code></td>
 <td><code class="docutils literal"><span class="pre">np.ones(3)</span></code></td>
-<td><code class="docutils literal"><span class="pre">array([</span> <span class="pre">1.,</span>&#160; <span class="pre">1.,</span>&#160; <span class="pre">1.])</span></code></td>
+<td><code class="docutils literal"><span class="pre">array([</span> <span class="pre">1.,</span>&nbsp; <span class="pre">1.,</span>&nbsp; <span class="pre">1.])</span></code></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">np.zeros(sha</span>
 <span class="pre">pe)</span></code></td>
 <td><code class="docutils literal"><span class="pre">np.zeros(3)</span></code></td>
-<td><code class="docutils literal"><span class="pre">array([</span> <span class="pre">0.,</span>&#160; <span class="pre">0.,</span>&#160; <span class="pre">0.])</span></code></td>
+<td><code class="docutils literal"><span class="pre">array([</span> <span class="pre">0.,</span>&nbsp; <span class="pre">0.,</span>&nbsp; <span class="pre">0.])</span></code></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">np.arange(st</span>
 <span class="pre">art,</span> <span class="pre">end,</span> <span class="pre">step</span>
@@ -993,7 +995,7 @@ using 10 evenly-spaced points.</p>
 </tr>
 </tbody>
 </table>
-<p>What’s the difference between <code class="docutils literal"><span class="pre">linspace</span></code> and <code class="docutils literal"><span class="pre">arange</span></code>?</p>
+<p>What&#8217;s the difference between <code class="docutils literal"><span class="pre">linspace</span></code> and <code class="docutils literal"><span class="pre">arange</span></code>?</p>
 <p>NumPy arrays support <strong>vectorized</strong> arithmetic operations. For those who
 speak MATLAB®, that means</p>
 <div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">];</span> <span class="c">% define two arrays</span>
@@ -1025,7 +1027,7 @@ speak MATLAB®, that means</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-4d49e3346d60&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-045b8e2fb643&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
 <span class="ansi-red-fg">    a = # define two arrays</span>
                            ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -1036,7 +1038,7 @@ speak MATLAB®, that means</p>
 <div class="section" id="Inspecting-Arrays-and-Their-Elements">
 <h3>Inspecting Arrays and Their Elements<a class="headerlink" href="#Inspecting-Arrays-and-Their-Elements" title="Permalink to this headline">¶</a></h3>
 <p>Access elements of an array (called <em>indexing</em>) using <code class="docutils literal"><span class="pre">[]</span></code> (square
-“brackets).</p>
+&#8220;brackets).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
@@ -1058,7 +1060,7 @@ speak MATLAB®, that means</p>
 </pre></div>
 </div>
 </div>
-<p>We can also determine an array’s length (or, more generically, size):</p>
+<p>We can also determine an array&#8217;s length (or, more generically, size):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [8]:
@@ -1191,15 +1193,15 @@ format, use <code class="docutils literal"><span class="pre">np.loadtxt</span></
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_3_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_3_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1210,14 +1212,14 @@ format, use <code class="docutils literal"><span class="pre">np.loadtxt</span></
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_3_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_3_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

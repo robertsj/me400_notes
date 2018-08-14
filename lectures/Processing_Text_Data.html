@@ -1,0 +1,1100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Processing Text Data &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2018',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <link rel="next" title="Basics of Functions" href="Basics_of_Functions.html" />
+    <link rel="prev" title="Pythonic Containers" href="Pythonic_Containers.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="section" id="Processing-Text-Data">
+<h1>Processing Text Data<a class="headerlink" href="#Processing-Text-Data" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>Lectures <a class="reference external" href="ME400_Lecture_5.ipynb">5</a> through
+<a class="reference external" href="ME400_Lecture_10.ipynb">9</a> covered the basic logical structures used
+in programming and their implementation in Python. <a class="reference external" href="ME400_Lecture_10.ipynb">Lecture
+10</a> presented Python&#8217;s built-in container
+types. In this lecture, we turn to the practical problem of processing
+text data. Often, such data starts life in <em>files</em> on our machines.
+Ultimately, that data is represented as one (or more) strings that can
+be processed using a combination of the structures already covered
+(particularly, loops) and more specialized string functions. We&#8217;ll wrap
+up with ways in which we can output existing data into useful text-based
+formats.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Open and process text files.</li>
+<li>Use string functions to parse data into desired formats.</li>
+<li>Convert data into desired string formats.</li>
+<li>Write strings to text files</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">open</span></code></li>
+<li><code class="docutils literal"><span class="pre">close</span></code></li>
+<li><code class="docutils literal"><span class="pre">read</span></code></li>
+<li><code class="docutils literal"><span class="pre">str</span></code></li>
+<li><code class="docutils literal"><span class="pre">str.split</span></code></li>
+<li><code class="docutils literal"><span class="pre">str.count</span></code></li>
+<li><code class="docutils literal"><span class="pre">str.find</span></code></li>
+<li><code class="docutils literal"><span class="pre">str.isnumeric</span></code></li>
+<li><code class="docutils literal"><span class="pre">str.replace</span></code></li>
+<li><code class="docutils literal"><span class="pre">in</span></code> operator</li>
+<li><code class="docutils literal"><span class="pre">str.format</span></code></li>
+<li><code class="docutils literal"><span class="pre">{}</span></code> for replacement</li>
+<li><code class="docutils literal"><span class="pre">write</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="Reading-Text-Files">
+<h2>Reading Text Files<a class="headerlink" href="#Reading-Text-Files" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ll start with a case we&#8217;ve seen before: the text file from <a class="reference external" href="ME400_Lecture_4.ipynb">Lecture
+4</a>, the contents of which are</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span>   <span class="n">vel</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="p">)</span>  <span class="n">acc</span> <span class="p">(</span><span class="n">m</span><span class="o">/</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="mf">0.00000000</span> <span class="mf">1.00000000</span> <span class="mf">0.00000000</span>
+<span class="mf">0.22222222</span> <span class="mf">1.24884887</span> <span class="mf">0.01097394</span>
+<span class="mf">0.44444444</span> <span class="mf">1.55962350</span> <span class="mf">0.08779150</span>
+<span class="mf">0.66666667</span> <span class="mf">1.94773404</span> <span class="mf">0.29629630</span>
+<span class="mf">0.88888889</span> <span class="mf">2.43242545</span> <span class="mf">0.70233196</span>
+<span class="mf">1.11111111</span> <span class="mf">3.03773178</span> <span class="mf">1.37174211</span>
+<span class="mf">1.33333333</span> <span class="mf">3.79366789</span> <span class="mf">2.37037037</span>
+<span class="mf">1.55555556</span> <span class="mf">4.73771786</span> <span class="mf">3.76406036</span>
+<span class="mf">1.77777778</span> <span class="mf">5.91669359</span> <span class="mf">5.61865569</span>
+<span class="mf">2.00000000</span> <span class="mf">7.38905610</span> <span class="mf">8.00000000</span>
+</pre></div>
+</div>
+<p>It was suggested then that any data with such a simple format is best
+read by using <code class="docutils literal"><span class="pre">np.loadtxt</span></code>. However, the simplicity of this data makes
+it useful for studying more traditional file processing.</p>
+<p>In Python, files are first opened to produce a <em>file handle</em>, i.e., a
+variable that provides the user access to the file and various functions
+with which to inspect the file. To load a file and produce such a file
+handle requires the built-in <code class="docutils literal"><span class="pre">open</span></code> function. This function is
+typically called with two arguments: a filename, always a <code class="docutils literal"><span class="pre">str</span></code> value,
+and the access mode, which can be <code class="docutils literal"><span class="pre">r</span></code> for <em>read</em>, <code class="docutils literal"><span class="pre">w</span></code> for <em>write</em>,
+and <code class="docutils literal"><span class="pre">a</span></code> for <em>append</em>. For now, we&#8217;ll focus on reading files, and we
+can open <code class="docutils literal"><span class="pre">data.txt</span></code> for reading by executing</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;_io.TextIOWrapper name=&#39;data.txt&#39; mode=&#39;r&#39; encoding=&#39;UTF-8&#39;&gt;
+</pre></div>
+</div>
+</div>
+<p>The particular value of <code class="docutils literal"><span class="pre">f</span></code> is not important, but it does suggest it
+is associated with our text file and that it is set for reading. At this
+point, though, the file is only <em>ready</em> to be processed; we still need
+to do something with it. Let&#8217;s see what we can do with the file handle
+<code class="docutils literal"><span class="pre">f</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;_&#39;</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+buffer
+close
+closed
+detach
+encoding
+errors
+fileno
+flush
+isatty
+line_buffering
+mode
+name
+newlines
+read
+readable
+readline
+readlines
+seek
+seekable
+tell
+truncate
+writable
+write
+writelines
+</pre></div></div>
+</div>
+<p>In fact, file handles have quite a few functions. The important ones for
+getting the content of the file into our program are <code class="docutils literal"><span class="pre">read</span></code> and
+<code class="docutils literal"><span class="pre">readlines</span></code>. We&#8217;ll explore <code class="docutils literal"><span class="pre">write</span></code> later on. Let&#8217;s start with
+<code class="docutils literal"><span class="pre">f.read()</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">help</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on built-in function read:
+
+read(size=-1, /) method of _io.TextIOWrapper instance
+    Read at most n characters from stream.
+
+    Read from underlying buffer until we have n characters or we hit EOF.
+    If n is negative or omitted, read until EOF.
+
+</pre></div></div>
+</div>
+<p>By default, <code class="docutils literal"><span class="pre">read</span></code> will read <em>all</em> the characters. Although not
+stated, the function produces a <code class="docutils literal"><span class="pre">str</span></code> with all of the characters read.
+Hence, we can turn the contents of our text file (connected now to
+<code class="docutils literal"><span class="pre">f</span></code>) into a single string via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;time (s)   vel (m/s)  acc (m/s**2)\n0.00000000 1.00000000 0.00000000\n0.22222222 1.24884887 0.01097394\n0.44444444 1.55962350 0.08779150\n0.66666667 1.94773404 0.29629630\n0.88888889 2.43242545 0.70233196\n1.11111111 3.03773178 1.37174211\n1.33333333 3.79366789 2.37037037\n1.55555556 4.73771786 3.76406036\n1.77777778 5.91669359 5.61865569\n2.00000000 7.38905610 8.00000000\n&#39;
+</pre></div>
+</div>
+</div>
+<p>Well, the contents sure are there, but the formatting is a bit weird. If
+we <em>print</em> the string, we see what we might expect:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+time (s)   vel (m/s)  acc (m/s**2)
+0.00000000 1.00000000 0.00000000
+0.22222222 1.24884887 0.01097394
+0.44444444 1.55962350 0.08779150
+0.66666667 1.94773404 0.29629630
+0.88888889 2.43242545 0.70233196
+1.11111111 3.03773178 1.37174211
+1.33333333 3.79366789 2.37037037
+1.55555556 4.73771786 3.76406036
+1.77777778 5.91669359 5.61865569
+2.00000000 7.38905610 8.00000000
+
+</pre></div></div>
+</div>
+<p>By default, displaying a <code class="docutils literal"><span class="pre">str</span></code> variable (and not printing it) will
+show all of the characters, including the special <code class="docutils literal"><span class="pre">\n</span></code> character.
+Here, <code class="docutils literal"><span class="pre">\n</span></code> is a <em>newline</em> character and represents the break between
+lines in text files. When a string is printed, the effects of special
+characters (like <code class="docutils literal"><span class="pre">\n</span></code>) are shown.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Define a string that, when printed, shows &#8220;ABC&#8221; on the
+first line and &#8220;XYZ&#8221; on the second line.</div></blockquote>
+<p>Now that we&#8217;ve read the file into a single string, we need to close it:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>It is important to close files once read. Doing so helps to prevent
+multiple programs from accessing the same file.</p>
+<blockquote>
+<div><p><strong>Note</strong>: Always close a file once it has been read.</p>
+<p><strong>Exercise</strong>: The <code class="docutils literal"><span class="pre">open</span></code> function is not limited to files ending
+in <code class="docutils literal"><span class="pre">.txt</span></code>. Any text file works, including <code class="docutils literal"><span class="pre">.py</span></code> files. Go and
+open a previous homework or laboratory file (making sure to set the
+mode to <code class="docutils literal"><span class="pre">r</span></code> and <em>not</em> <code class="docutils literal"><span class="pre">w</span></code>!). Read the contents into a string,
+and use a loop to count the number of <code class="docutils literal"><span class="pre">#</span></code> characters in your file.</p>
+</div></blockquote>
+<p>In addition to <code class="docutils literal"><span class="pre">f.read()</span></code>, we can use <code class="docutils literal"><span class="pre">f.readlines()</span></code>. Now, we&#8217;ve
+closed the file, so we need to open it again before we read it. Then,
+following the advice above, the file is closed:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">readlines</span></code> function reads the same contents as <code class="docutils literal"><span class="pre">read</span></code> but the
+result is a <code class="docutils literal"><span class="pre">list</span></code> of each line of the text file:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">lines</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;time (s)   vel (m/s)  acc (m/s**2)\n&#39;,
+ &#39;0.00000000 1.00000000 0.00000000\n&#39;,
+ &#39;0.22222222 1.24884887 0.01097394\n&#39;,
+ &#39;0.44444444 1.55962350 0.08779150\n&#39;,
+ &#39;0.66666667 1.94773404 0.29629630\n&#39;,
+ &#39;0.88888889 2.43242545 0.70233196\n&#39;,
+ &#39;1.11111111 3.03773178 1.37174211\n&#39;,
+ &#39;1.33333333 3.79366789 2.37037037\n&#39;,
+ &#39;1.55555556 4.73771786 3.76406036\n&#39;,
+ &#39;1.77777778 5.91669359 5.61865569\n&#39;,
+ &#39;2.00000000 7.38905610 8.00000000\n&#39;]
+</pre></div>
+</div>
+</div>
+<p>Often, data is easier to process by first separating a text file into
+individual lines.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Go find again an old homework file ending in <code class="docutils literal"><span class="pre">.py</span></code>.
+Open it and read its contents using <code class="docutils literal"><span class="pre">readlines</span></code>. How many lines
+does the file contain?</div></blockquote>
+</div>
+<div class="section" id="Parsing-Strings">
+<h2>Parsing Strings<a class="headerlink" href="#Parsing-Strings" title="Permalink to this headline">¶</a></h2>
+<p>With <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">readlines</span></code> we get a single string for the whole
+file or a <code class="docutils literal"><span class="pre">list</span></code> of strings corresponding to each line, respectively.
+This is progress, but we need to do more in order to extract values
+(whatever they may be) from the string.</p>
+<p>For the example of <code class="docutils literal"><span class="pre">data.txt</span></code>, the values of interest are the time,
+velocity, and acceleration. Hence, a representative string is the single
+line</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;0.00000000 1.00000000 0.00000000</span><span class="se">\n</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+<p>which is the value of <code class="docutils literal"><span class="pre">lines[1]</span></code>. To extract the three, individual
+values, the <code class="docutils literal"><span class="pre">split</span></code> function can be used:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.00000000
+1.00000000
+0.00000000
+</pre></div></div>
+</div>
+<p>In fact, <code class="docutils literal"><span class="pre">str</span></code> values can be split based on different criteria. By
+default, the <code class="docutils literal"><span class="pre">str</span></code> value is divided into sequences of characters
+separated by one or more white spaces (i.e., one or more <code class="docutils literal"><span class="pre">'</span> <span class="pre">'</span></code>
+characters). For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;The quick brown fox jumps over the lazy dog&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;The&#39;, &#39;quick&#39;, &#39;brown&#39;, &#39;fox&#39;, &#39;jumps&#39;, &#39;over&#39;, &#39;the&#39;, &#39;lazy&#39;, &#39;dog&#39;]
+</pre></div>
+</div>
+</div>
+<p>Here, we&#8217;ve split a (potentially familiar) sentence into its individual
+words. This sentence is a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Pangram">pangram</a>, i.e., a sentence
+with all the letters of the alphabet. If, however, we had a string with
+comma-separated values, we could get those values via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;1,1,2,3,5,8,13&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;1&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;5&#39;, &#39;8&#39;, &#39;13&#39;]
+</pre></div>
+</div>
+</div>
+<p>Hence, <code class="docutils literal"><span class="pre">split</span></code> can be used to parse data that has a reasonably simple
+structure.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Write a short program to turn the string
+<code class="docutils literal"><span class="pre">'1,1,2,3,5,8,13'</span></code> into an <code class="docutils literal"><span class="pre">ndarray</span></code>. &gt; <em>Solution</em>. The string
+must be split into individual strings, those individual strings must
+be turned into numbers, and put those numbers must be put into an
+array. To size the array, we use the number of items resulting from
+the split. Here is a complete approach:</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;1,1,2,3,5,8,13&#39;</span> <span class="c1"># start with the string</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>  <span class="c1"># split it into a list of str values</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="c1"># intialize an array of proper length</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># convert the ith value into an int</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">str</span></code> type provides several other functions to help one parse
+contents of a <code class="docutils literal"><span class="pre">str</span></code> value. For instance, how many times does the
+letter <code class="docutils literal"><span class="pre">'o'</span></code> appear in <code class="docutils literal"><span class="pre">'hello</span> <span class="pre">world'</span></code>?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;hello world&#39;</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>2
+</pre></div>
+</div>
+</div>
+<p>Where does the first <code class="docutils literal"><span class="pre">'o'</span></code> occur?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;hello world&#39;</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4
+</pre></div>
+</div>
+</div>
+<p>Is there an <code class="docutils literal"><span class="pre">x</span></code> in it?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;hello world&#39;</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="c1"># -1 if not found</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>-1
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="s1">&#39;hello world&#39;</span> <span class="c1"># false if not one of the elements (here, characters)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>False
+</pre></div>
+</div>
+</div>
+<p>Does <code class="docutils literal"><span class="pre">'1984'</span></code> contain only numerical values? How about <code class="docutils literal"><span class="pre">'3.14159'</span></code>?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;1984&#39;</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()</span> <span class="c1"># yes, just digits</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>True
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;3.14159&#39;</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()</span> <span class="c1"># no, the . is not numerical</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>False
+</pre></div>
+</div>
+</div>
+<p>If the data to be parsed has non-numerical values, we sometimes need to
+<a class="reference external" href="https://en.wikipedia.org/wiki/Data_wrangling">wrangle</a> the data into
+a more usable form. Suppose our data for time, velocity, and
+acceleration suffered from a measurement error at 100 s, leading to this
+line</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">0.00000000</span> <span class="mf">1.00000000</span> <span class="n">N</span><span class="o">/</span><span class="n">A</span>
+</pre></div>
+</div>
+<p>Obviously, <code class="docutils literal"><span class="pre">N/A</span></code> is not a number (and stands for &#8220;not available&#8221;), but
+it might be the value substituted by the measurement software if that
+particular value were missed. In order to process the data, it might be
+reasonable to treat all the <code class="docutils literal"><span class="pre">N/A</span></code> values as a zero, which could be
+accomplished by <em>replacing</em> <code class="docutils literal"><span class="pre">N/A</span></code> with <code class="docutils literal"><span class="pre">0.0</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;0.00000000 1.00000000 N/A&#39;</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;N/A&#39;</span><span class="p">,</span> <span class="s1">&#39;0.0&#39;</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[18]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;0.00000000 1.00000000 0.0&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Putting-It-All-Together:-Processing-data.txt">
+<h2>Putting It All Together: Processing <code class="docutils literal"><span class="pre">data.txt</span></code><a class="headerlink" href="#Putting-It-All-Together:-Processing-data.txt" title="Permalink to this headline">¶</a></h2>
+<p>Files can be read, and their contents can be put into a single string or
+a list of strings for each line of text. Using loops, these lines can be
+processed one by one, perhaps using <code class="docutils literal"><span class="pre">split</span></code>, <code class="docutils literal"><span class="pre">find</span></code>, <code class="docutils literal"><span class="pre">count</span></code>, or
+<code class="docutils literal"><span class="pre">replace</span></code>, depending on the application.</p>
+<p>For <code class="docutils literal"><span class="pre">data.txt</span></code>, let us produce the three arrays <code class="docutils literal"><span class="pre">t</span></code>, <code class="docutils literal"><span class="pre">v</span></code>, and
+<code class="docutils literal"><span class="pre">a</span></code>. Take as known that the first line provides text information about
+the columns of data. Then, the entire processing can be done via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c1"># open file, read lines, and close file</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># initialize empty</span>
+<span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,
+        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Writing-to-File">
+<h2>Writing to File<a class="headerlink" href="#Writing-to-File" title="Permalink to this headline">¶</a></h2>
+<p>Having read data from a file, analysis can be performed. The results of
+such analysis are often displayed visually (think <code class="docutils literal"><span class="pre">plt.plot</span></code>). Other
+applications may require that data be saved to file. If the data is
+solely array-based, then <code class="docutils literal"><span class="pre">np.savetxt</span></code> is a good option. More
+complicated (or less structured) information requires a different
+approach.</p>
+<p>Just as file handles can be created to read from a text file, they can
+be created to <em>save</em> to a text file. The only difference in syntax is
+the use of <code class="docutils literal"><span class="pre">w</span></code> instead of <code class="docutils literal"><span class="pre">r</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;new_data.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Any string can be written to file using the <code class="docutils literal"><span class="pre">write</span></code> function:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Here is some sample text!&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># Always close a file when done.</span>
+</pre></div>
+</div>
+</div>
+<p>The output is the number of characters written. Here, <code class="docutils literal"><span class="pre">f</span></code> is closed
+after writing just one string. However, several lines can be written in
+sequence, with the contents of any additional string placed after the
+contents already written.</p>
+<p>Often, numerical data should be written in a <em>format</em> that is easily
+read. The right way to produce formatted text is to use the
+<code class="docutils literal"><span class="pre">str.format</span></code> method. For example, consider the repeating decimal
+corresponding to 1/3. To print that number with just four decimal
+places, one could use</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s2">&quot;{:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;0.3333&#39;
+</pre></div>
+</div>
+</div>
+<p>Several strings, integers, and floating-point values can be formatted
+all at once:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s2">&quot;{} divided by {} is approximately {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;1 divided by 3 is approximately 0.3333&#39;
+</pre></div>
+</div>
+</div>
+<p>To use <code class="docutils literal"><span class="pre">format</span></code> requires a string with one or more sets of <code class="docutils literal"><span class="pre">{}</span></code>. The
+arguments to <code class="docutils literal"><span class="pre">format</span></code> are the values to be formatted. If the <code class="docutils literal"><span class="pre">{}</span></code>
+appears without any contents, the corresponding value is formatted into
+its default <code class="docutils literal"><span class="pre">str</span></code> representation. For example, compare the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="s2">&quot;{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[24]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;0.3333333333333333&#39;
+</pre></div>
+</div>
+</div>
+<p>That sure includes a lot of decimal places!</p>
+<p>More specific formatting instructions can be passed. For <code class="docutils literal"><span class="pre">float</span></code>
+values, the syntax <code class="docutils literal"><span class="pre">{:.4f}</span></code> yields a formatted value with any number
+of digits to the left of the decimal point and exactly four digits to
+the right of the decimal point. The colon <code class="docutils literal"><span class="pre">:</span></code> is always included when
+a format specification is given (such as <code class="docutils literal"><span class="pre">.4f</span></code>). If scientific
+notation is preferred, one can use a format like <code class="docutils literal"><span class="pre">{:.4e}</span></code>. Compare the
+following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;{:.4f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="s1">&#39;{:.4e}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;3.3333e-01&#39;
+</pre></div>
+</div>
+</div>
+<p>Python provides <a class="reference external" href="https://docs.python.org/3.4/library/string.html#format-string-syntax">several other
+formats</a>
+for handling special <code class="docutils literal"><span class="pre">int</span></code>, <code class="docutils literal"><span class="pre">float</span></code>, and other needs, but <code class="docutils literal"><span class="pre">{}</span></code>,
+<code class="docutils literal"><span class="pre">{:.4f}</span></code>, and <code class="docutils literal"><span class="pre">{:.4e}</span></code> (with values other than 4) should be
+sufficient for most simple tasks.</p>
+<p>With formatting, the time, velocity, and acceleration data read above
+can be written back to file :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;new_data.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="c1"># write the header information (remember the newline \n!)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;time (s)   vel (m/s)  acc (m/s**2)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)):</span>
+    <span class="c1"># produce each line of text (again, rememeber \n!)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;{:.8f} {:.8f} {:.8f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Now, <code class="docutils literal"><span class="pre">new_data.txt</span></code> should have exactly the same contents.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: Go and verify that the previous code produces the
+expected file <code class="docutils literal"><span class="pre">new_data.txt</span></code>. This will require that you download
+and run this notebook or copy the code and paste it into Spyder.</p>
+<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">1/9</span></code>, and <code class="docutils literal"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">'Python'</span></code>,
+produce the string <code class="docutils literal"><span class="pre">'1</span>&nbsp;&nbsp; <span class="pre">0.111</span>&nbsp;&nbsp; <span class="pre">Python'</span></code>.</p>
+<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">np.random.rand(5,</span> <span class="pre">5)</span></code>, write its values
+to file element by element. Each line of the text file should look
+similar to <code class="docutils literal"><span class="pre">1</span> <span class="pre">5</span> <span class="pre">0.569113</span></code>, where the values 1 and 5 correspond to
+the row and column the element.</p>
+<blockquote>
+<div><em>Solution</em>. First, recognize the desired format: an integer, a
+space, an integer, a space, and a float with 6 decimal places.
+Using the format function, such a string is produce via
+<code class="docutils literal"><span class="pre">&quot;{}</span> <span class="pre">{}</span> <span class="pre">{:.6f}&quot;.format(i1,</span> <span class="pre">i2,</span> <span class="pre">f1)</span></code>) where <code class="docutils literal"><span class="pre">i1</span></code> and <code class="docutils literal"><span class="pre">i2</span></code>
+have <code class="docutils literal"><span class="pre">int</span></code> values and <code class="docutils literal"><span class="pre">f1</span></code> has a <code class="docutils literal"><span class="pre">float</span></code> value. Second,
+that format can be used inside a nested loop structure that
+iterates through all rows and columns and writes <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>,
+and <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]</span></code> to file.</div></blockquote>
+</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data_from_A.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;{} {} {:.6f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>The student interested in more complex formatting should read the
+<a class="reference external" href="https://docs.python.org/3.4/library/string.html#format-string-syntax">documentation</a>
+on Python&#8217;s formatting syntax.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Processing Text Data</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Reading-Text-Files">Reading Text Files</a></li>
+<li><a class="reference internal" href="#Parsing-Strings">Parsing Strings</a></li>
+<li><a class="reference internal" href="#Putting-It-All-Together:-Processing-data.txt">Putting It All Together: Processing <code class="docutils literal"><span class="pre">data.txt</span></code></a></li>
+<li><a class="reference internal" href="#Writing-to-File">Writing to File</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Pythonic_Containers.html" title="previous chapter">Pythonic Containers</a></li>
+      <li>Next: <a href="Basics_of_Functions.html" title="next chapter">Basics of Functions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/Processing_Text_Data.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/Processing_Text_Data.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

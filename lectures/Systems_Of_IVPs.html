@@ -1,29 +1,32 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Numerical Solutions of First-Order Systems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Numerical Solutions of First-Order Systems &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <link rel="next" title="Numerical Solutions of Two-Point BVPs" href="Numerical_Solution_of_BVPs.html" />
+    <link rel="prev" title="Euler’s Method for Initial-Value Problems" href="Eulers_Method_For_IVPs.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +34,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Numerical-Solutions-of-First-Order-Systems">
 <h1>Numerical Solutions of First-Order Systems<a class="headerlink" href="#Numerical-Solutions-of-First-Order-Systems" title="Permalink to this headline">¶</a></h1>
@@ -214,7 +221,7 @@ are extended to <em>systems</em> of first-order equations.</p>
 <ul class="simple">
 <li>Set up and solve simple linear systems <em>numerically</em> using NumPy.</li>
 <li>Solve systems of first-order IVPs numerically using forward and
-backward Euler’s method</li>
+backward Euler&#8217;s method</li>
 <li>Solve systems of first-order IVPs using <code class="docutils literal"><span class="pre">odeint</span></code></li>
 </ul>
 </div>
@@ -222,7 +229,7 @@ backward Euler’s method</li>
 <h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
 <p>You should already be able to</p>
 <ul class="simple">
-<li>Solve IVPs using Euler’s method (forward and backward)</li>
+<li>Solve IVPs using Euler&#8217;s method (forward and backward)</li>
 <li>Define one- and two-dimensional arrays using NumPy arrays</li>
 <li>Use <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> to solve <span class="math">\(\mathbf{Ax = b}\)</span></li>
 </ul>
@@ -238,7 +245,7 @@ backward Euler’s method</li>
 </div>
 <div class="section" id="A-Coupled-System-and-Its-Numerical-Solution">
 <h2>A Coupled System and Its Numerical Solution<a class="headerlink" href="#A-Coupled-System-and-Its-Numerical-Solution" title="Permalink to this headline">¶</a></h2>
-<p>Let’s motivate the discussion with the familiar <a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">spring-mass
+<p>Let&#8217;s motivate the discussion with the familiar <a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">spring-mass
 system</span></a>:</p>
 <div class="math">
 \[m \frac{d^2 x}{dt^2} = -k x - a \frac{dx}{dt} \, ,\]</div>
@@ -290,7 +297,7 @@ more general form</p>
 is obvious here: no matter how complicated <span class="math">\(\mathbf{f}\)</span> might be,
 all we need to do is evaluate it once using information defined at the
 old time <span class="math">\(t_n\)</span> to determine the solution at the new time
-<span class="math">\(t_{n+1}\)</span>. It’s <em>explicit</em>. We do <em>not</em> need to solve any linear
+<span class="math">\(t_{n+1}\)</span>. It&#8217;s <em>explicit</em>. We do <em>not</em> need to solve any linear
 or nonlinear systems. For the case of the spring-mass systems, that step
 looks like</p>
 <div class="math">
@@ -298,10 +305,10 @@ looks like</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Consider the spring-mass system. For <span class="math">\(m = 1\)</span>,
 <span class="math">\(k = 1\)</span>, <span class="math">\(a = 1\)</span>, <span class="math">\(x(0) = 0\)</span>, and <span class="math">\(v(0) = 1\)</span>,
-compute <span class="math">\(x(t)\)</span> at <span class="math">\(t = [0, 0.5, 1.0, \ldots, 10]\)</span> (that’s 21
+compute <span class="math">\(x(t)\)</span> at <span class="math">\(t = [0, 0.5, 1.0, \ldots, 10]\)</span> (that&#8217;s 21
 times) using forward Euler. Plot these estimates and the actual
 solution.</p>
-<p><em>Solution</em>: First, let’s get the reference solution using SymPy in the
+<p><em>Solution</em>: First, let&#8217;s get the reference solution using SymPy in the
 form of a callable, lambdified function. For completeness, return both
 <span class="math">\(x(t)\)</span> and <span class="math">\(v(t)\)</span>:</p>
 <div class="nbinput nblast docutils container">
@@ -378,8 +385,8 @@ form of a callable, lambdified function. For completeness, return both
 </div>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: This numerical solution for the spring-mass equation above
-is qualitatively close to the reference found using SymPy, but it’s
-quantitatively far enough away that I’m suspicious. Compute the absolute
+is qualitatively close to the reference found using SymPy, but it&#8217;s
+quantitatively far enough away that I&#8217;m suspicious. Compute the absolute
 error in <span class="math">\(x(10)\)</span> as a function of <span class="math">\(\Delta\)</span>. Does it
 converge?</p>
 <hr class="docutils" />
@@ -405,7 +412,7 @@ nuclides is well modeled by the following system of equations:</p>
 <span class="math">\(N_I\)</span> and <span class="math">\(N_{Xe}\)</span>?</li>
 <li>Find the steady-state (i.e., equilibrium) value of <span class="math">\(N_I\)</span> and
 <span class="math">\(N_{Xe}\)</span> when <span class="math">\(\phi = 10^{14}\)</span> 1/cm<span class="math">\(^2\)</span>.
-Remember, steady state means “constant in time.” Hence, set the
+Remember, steady state means &#8220;constant in time.&#8221; Hence, set the
 derivatives to zero, and solve for <span class="math">\(N^{SS}_I\)</span> and
 <span class="math">\(N^{SS}_{Xe}\)</span>.</li>
 <li>Use those steady-state values <span class="math">\(N^{SS}_I\)</span> and
@@ -418,8 +425,8 @@ for times up 24 <em>hours</em>. (Be careful about the step size you use.)</li>
 </div>
 <hr class="docutils" />
 <div class="section" id="When-the-Equations-are-&quot;Stiff&quot;">
-<h2>When the Equations are “Stiff”<a class="headerlink" href="#When-the-Equations-are-"Stiff"" title="Permalink to this headline">¶</a></h2>
-<p>A system of IVPs is considered “stiff” when the underlying time
+<h2>When the Equations are &#8220;Stiff&#8221;<a class="headerlink" href="#When-the-Equations-are-"Stiff"" title="Permalink to this headline">¶</a></h2>
+<p>A system of IVPs is considered &#8220;stiff&#8221; when the underlying time
 constants vary by several orders of magnitude. That means one part of
 the solution (one nuclide, or the position of one mass in a spring-mass
 system) may grow or decay exponentially over periods of seconds, whereas
@@ -433,7 +440,7 @@ example is backward Euler. Remember, implicit here means the solution at
 <span class="math">\(t_{n}\)</span>. For systems of IVPs, we need to solve a matrix system to
 make the step. For nonlinear IVPs, we need to solve a nonlinear equation
 (perhaps a system) to make the step.</p>
-<p>Let’s go back to the generic equation</p>
+<p>Let&#8217;s go back to the generic equation</p>
 <div class="math">
 \[\mathbf{y}' = \mathbf{f}(t, \mathbf{y}(t)) \, .\]</div>
 <p>Application of backward Euler gives</p>
@@ -627,15 +634,15 @@ and (2) backward Euler:</p>
 </div>
 </div>
 <div class="section" id="SciPy's-odeint">
-<h2>SciPy’s <code class="docutils literal"><span class="pre">odeint</span></code><a class="headerlink" href="#SciPy's-odeint" title="Permalink to this headline">¶</a></h2>
+<h2>SciPy&#8217;s <code class="docutils literal"><span class="pre">odeint</span></code><a class="headerlink" href="#SciPy's-odeint" title="Permalink to this headline">¶</a></h2>
 <p>While the Euler methods are proven and simple techniques for solving
 first-order IVPs, routine analysis is best performed using more robust
-methods like those implemented in SciPy’s <code class="docutils literal"><span class="pre">odeint</span></code>. The basic
+methods like those implemented in SciPy&#8217;s <code class="docutils literal"><span class="pre">odeint</span></code>. The basic
 ingredients needed to solve an IVP with <code class="docutils literal"><span class="pre">odeint</span></code> are a function that
 represents <span class="math">\(y'\)</span>, the times at which <span class="math">\(y(t)\)</span> is to be
 evaluated, and the initial conditions.</p>
 <p>Specifically, the <code class="docutils literal"><span class="pre">scipy.integrate.odeint</span></code> function is used to solve
-individual, first-order IVP’s or systems of such equations. Behind the
+individual, first-order IVP&#8217;s or systems of such equations. Behind the
 scenes, either an
 <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_multistep_method#Adams.E2.80.93Moulton_methods">Adams</a>
 or
@@ -645,18 +652,18 @@ automatic, and more details can be found <a class="reference external" href="htt
 documentation</a>.</p>
 <div class="section" id="Use-of-odeint-For-A-Single-IVP">
 <h3>Use of <code class="docutils literal"><span class="pre">odeint</span></code> For A Single IVP<a class="headerlink" href="#Use-of-odeint-For-A-Single-IVP" title="Permalink to this headline">¶</a></h3>
-<p>Let’s revisit our single IVP example, namely <span class="math">\(y' + y(t) = 2\)</span> with
+<p>Let&#8217;s revisit our single IVP example, namely <span class="math">\(y' + y(t) = 2\)</span> with
 <span class="math">\(y(0)=1\)</span> for <span class="math">\(t\in [0, 10]\)</span>. The <code class="docutils literal"><span class="pre">odeint</span></code> function
 requires, at a minimum, three inputs: (1) a function that evaluates the
 derivative <span class="math">\(y'(t)\)</span> given the time <span class="math">\(t\)</span> and the value of the
 function <span class="math">\(f(t)\)</span>, (2) the initial condition <span class="math">\(y(0)=y_0\)</span>, and
 (3) the times at which <span class="math">\(y(t)\)</span> is to be evaluated. These times are
-independent of the times and corresponding <span class="math">\(\Delta\)</span>‘s used
+independent of the times and corresponding <span class="math">\(\Delta\)</span>&#8216;s used
 internally; they only are used for the output.</p>
 <p>The derivative function has two arguments: the time <span class="math">\(t\)</span> at which
 <span class="math">\(y'\)</span> is to be evaluated, and the value of <span class="math">\(y\)</span> at that same
-time. That sounds like you need to know <span class="math">\(y(t)\)</span> beforehand—but
-you don’t! This derivative function is only called behind the scenes by
+time. That sounds like you need to know <span class="math">\(y(t)\)</span> beforehand&#8212;but
+you don&#8217;t! This derivative function is only called behind the scenes by
 <code class="docutils literal"><span class="pre">odeint</span></code> itself. Hence, <code class="docutils literal"><span class="pre">odeint</span></code> knows (or has an approximation to)
 <span class="math">\(y\)</span> at the time <span class="math">\(t\)</span>, and your job is to use the two to
 define <span class="math">\(y'\)</span>. For our example, that means we need a function that
@@ -727,7 +734,7 @@ whereas <code class="docutils literal"><span class="pre">y_exact</span></code> y
 (50,)
 </pre></div></div>
 </div>
-<p>Normally, this apparent mismatch is no big deal—we plotted both
+<p>Normally, this apparent mismatch is no big deal&#8212;we plotted both
 against the same <code class="docutils literal"><span class="pre">t_odeint</span></code> array. However, the mismatch does lead to
 strange results when we try to compute the error. The solution, however,
 is to make them the same size, and we can do that, e.g., with an
@@ -780,7 +787,7 @@ uniform in magnitude. The overall magnitude of the error is determined
 by the desired numerical accuracy (defined by the optional arguments
 <code class="docutils literal"><span class="pre">rtol</span></code> and <code class="docutils literal"><span class="pre">atol</span></code>). The time-dependent fluctuations are due to use
 of nonuniform time steps. The details are well beyond our scope, but
-you’ll recall from the Taylor expansion of <span class="math">\(y'\)</span> that the errors
+you&#8217;ll recall from the Taylor expansion of <span class="math">\(y'\)</span> that the errors
 are related to <span class="math">\(y''\)</span>. If some estimate can be made of <span class="math">\(y''\)</span>
 during the time-stepping procedure, then the error can also be
 estimated. Proper selection of <span class="math">\(\Delta\)</span> (either larger or smaller)
@@ -836,7 +843,7 @@ fo</p>
 </pre></div>
 </div>
 </div>
-<p>Then, define the derivative function. Here, that’s everything on the
+<p>Then, define the derivative function. Here, that&#8217;s everything on the
 right-hand side of the original IVP.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -973,8 +980,8 @@ systems of equations. A good resource to supplement this lesson is the
 </ul>
 </li>
 <li><a class="reference internal" href="#A-Coupled-System-and-Its-Numerical-Solution">A Coupled System and Its Numerical Solution</a></li>
-<li><a class="reference internal" href="#When-the-Equations-are-&quot;Stiff&quot;">When the Equations are “Stiff”</a></li>
-<li><a class="reference internal" href="#SciPy's-odeint">SciPy’s <code class="docutils literal"><span class="pre">odeint</span></code></a><ul>
+<li><a class="reference internal" href="#When-the-Equations-are-&quot;Stiff&quot;">When the Equations are &#8220;Stiff&#8221;</a></li>
+<li><a class="reference internal" href="#SciPy's-odeint">SciPy&#8217;s <code class="docutils literal"><span class="pre">odeint</span></code></a><ul>
 <li><a class="reference internal" href="#Use-of-odeint-For-A-Single-IVP">Use of <code class="docutils literal"><span class="pre">odeint</span></code> For A Single IVP</a></li>
 <li><a class="reference internal" href="#Use-of-odeint-for-Systems-of-IVPs">Use of <code class="docutils literal"><span class="pre">odeint</span></code> for Systems of IVPs</a></li>
 </ul>
@@ -987,21 +994,23 @@ systems of equations. A good resource to supplement this lesson is the
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Eulers_Method_For_IVPs.html" title="previous chapter">Euler&#8217;s Method for Initial-Value Problems</a></li>
+      <li>Next: <a href="Numerical_Solution_of_BVPs.html" title="next chapter">Numerical Solutions of Two-Point BVPs</a></li>
   </ul></li>
 </ul>
 </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Systems_Of_IVPs.ipynb.txt"
+      <li><a href="../_sources/lectures/Systems_Of_IVPs.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1012,14 +1021,14 @@ systems of equations. A good resource to supplement this lesson is the
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/Systems_Of_IVPs.ipynb.txt"
+      <a href="../_sources/lectures/Systems_Of_IVPs.txt"
           rel="nofollow">Page source</a>
     </div>
 

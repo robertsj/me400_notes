@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 28 - Numerical Solutions of First-Order Systems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 28 - Symbolic Computing with SymPy &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -39,128 +40,518 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="Lecture-28---Numerical-Solutions-of-First-Order-Systems">
-<h1>Lecture 28 - Numerical Solutions of First-Order Systems<a class="headerlink" href="#Lecture-28---Numerical-Solutions-of-First-Order-Systems" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>This lesson is a direct extension of <a class="reference internal" href="ME400_Lecture_27.html"><span class="doc">Lecture
-27</span></a>, in which the focus was the numerical
-solution of first-order IVPs. Here, those techniques are extended to
-<em>systems</em> of first-order equations.</p>
-<div class="section" id="Homework-11-Recap">
-<h3>Homework 11 Recap<a class="headerlink" href="#Homework-11-Recap" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">C_p</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Heat capacity for O_2 as given in problem statement.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="mf">31.32234</span><span class="p">;</span> <span class="n">B</span><span class="o">=-</span><span class="mf">20.23531</span><span class="p">;</span> <span class="n">C</span><span class="o">=</span><span class="mf">57.86644</span><span class="p">;</span> <span class="n">D</span><span class="o">=-</span><span class="mf">36.50624</span><span class="p">;</span> <span class="n">E</span> <span class="o">=-</span><span class="mf">0.007374</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="o">/</span><span class="mi">1000</span>
-    <span class="k">return</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">D</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">E</span><span class="o">/</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span>
+  
+<style>
+/* CSS for nbsphinx extension */
 
-<span class="k">def</span> <span class="nf">mean_C_p</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Compute mean of C_p(T) over T in [100, 700]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="n">C_p</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">700.0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">600.0</span>
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
 
-<span class="k">def</span> <span class="nf">T_C_p_avg</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Determine temperature T such that C_p(T) equals mean(C_p(T)).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">fsolve</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">mean_C_p</span><span class="p">()</span> <span class="o">-</span> <span class="n">C_p</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x0</span><span class="o">=</span><span class="mf">400.0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_mu</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Model for mu(T) with coefficients.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">coeffs</span>
-    <span class="k">return</span> <span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span>
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
 
-<span class="k">def</span> <span class="nf">get_best_coeffs</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Generate the best coefficients for model_mu using curve_fit.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">T</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">read_viscosity</span><span class="p">()</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.016</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="n">foo</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">model_mu</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
 
-<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">get_best_coeffs</span><span class="p">()</span>
-<span class="n">best_coeffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="section" id="Lecture-28---Symbolic-Computing-with-SymPy">
+<h1>Lecture 28 - Symbolic Computing with SymPy<a class="headerlink" href="#Lecture-28---Symbolic-Computing-with-SymPy" title="Permalink to this headline">¶</a></h1>
+<p>Last several times: numerical solution of differential equations.</p>
+<p>Today: something entirely new and original, <strong>symbolic computing</strong>.</p>
+<p>Next time: symbolic calculus and ODEs.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
-<p>By the end of this lesson, you should be able to</p>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Set up and solve simple linear systems <em>numerically</em> using NumPy.</li>
-<li>Solve systems of first-order IVPs numerically using forward and
-backward Euler’s method</li>
-<li>Solve systems of first-order IVPs using <code class="docutils literal"><span class="pre">odeint</span></code></li>
+<li>Thou shalt define the symbols and expressions with great care</li>
+<li>Thou shalt set up and solve the symbolic equations</li>
+<li>Thou shalt solve said equations and evaluate the results numerically</li>
+</ul>
+<div class="section" id="It-Starts-with-Symbols-and-Expressions">
+<h3>It Starts with Symbols and Expressions<a class="headerlink" href="#It-Starts-with-Symbols-and-Expressions" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s define the <strong>symbols</strong> <span class="math">\(x\)</span>, <span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and
+<span class="math">\(c\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
+<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span> <span class="c1"># this leads to fancy math text</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a b c&#39;</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$\left ( x, \quad a, \quad b, \quad c\right )$$\]</div></div>
+</div>
+<p>Using <span class="math">\(x\)</span>, <span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and <span class="math">\(c\)</span>, let&#8217;s define the
+<strong>symbolic expression</strong> <span class="math">\(p = ax^2 + bx + c\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">c</span>
+<span class="n">p</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$a x^{2} + b x + c$$\]</div></div>
+</div>
+<p><code class="docutils literal"><span class="pre">SymPy</span></code> has most of the special functions built in.</p>
+<p><strong>Exercise</strong>: Define the expression <span class="math">\(q = \sqrt{x} + e^x\)</span>.</p>
+</div>
+<div class="section" id="Symbolic-Equations">
+<h3>Symbolic Equations<a class="headerlink" href="#Symbolic-Equations" title="Permalink to this headline">¶</a></h3>
+<p>Can we set up and solve <span class="math">\(ax^2 + bx + c = 0\)</span>? You betcha.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">eq</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">eq</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$a x^{2} + b x + c = 0$$\]</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">eq</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">sol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$\left [ \frac{1}{2 a} \left(- b + \sqrt{- 4 a c + b^{2}}\right), \quad - \frac{1}{2 a} \left(b + \sqrt{- 4 a c + b^{2}}\right)\right ]$$\]</div></div>
+</div>
+<p>What if <span class="math">\(a = 1\)</span>, <span class="math">\(b = 5\)</span>, and <span class="math">\(c = 2\)</span>. We can
+<strong>substitute</strong>, too:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">root0</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="n">root1</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="n">root0</span><span class="p">,</span> <span class="n">root1</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$\left ( - \frac{5}{2} + \frac{\sqrt{17}}{2}, \quad - \frac{5}{2} - \frac{\sqrt{17}}{2}\right )$$\]</div></div>
+</div>
+<p>When needed, symbolic expressions can be <strong>numerically evaluated</strong>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">root0</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">root0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$\left ( -0.4384471871911697, \quad -0.4384471871911697\right )$$\]</div></div>
+</div>
+<p><strong>Exercise</strong>: Solve <span class="math">\(e^{ax} = \sqrt{bx}\)</span></p>
+<p>Systems can be solved by defining a <code class="docutils literal"><span class="pre">list</span></code> of <code class="docutils literal"><span class="pre">Eq</span></code> variables and
+each unknown to find (e.g., <code class="docutils literal"><span class="pre">sy.solve([eq0,</span> <span class="pre">eq1],</span> <span class="pre">x,</span> <span class="pre">y)</span></code> if we want
+<code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code>.</p>
+<p><strong>Exercise</strong>: Solve <span class="math">\(2x + y = 3\)</span> and <span class="math">\(x - 5y = 2\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x y&#39;</span><span class="p">)</span>
+<span class="n">eq0</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">eq1</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">5</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Odds-and-Ends">
+<h3>Odds and Ends<a class="headerlink" href="#Odds-and-Ends" title="Permalink to this headline">¶</a></h3>
+<p><strong>Simplification</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="p">((</span><span class="n">sy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="n">sy</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">sy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">sy</span><span class="o">.</span><span class="n">sec</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sy</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$\frac{1}{\tan{\left (t \right )}} \left(\left(\sin{\left (t \right )} + \tan{\left (t \right )}\right)^{2} + \cos^{2}{\left (t \right )} - \sec^{2}{\left (t \right )}\right)$$\]</div></div>
+</div>
+<p><strong>Expansion</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a b c d&#39;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">b</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">d</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+<span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$\left(a x + b y\right)^{2} \left(c x + d y\right)$$\]</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$a^{2} c x^{3} + a^{2} d x^{2} y + 2 a b c x^{2} y + 2 a b d x y^{2} + b^{2} c x y^{2} + b^{2} d y^{3}$$\]</div></div>
+</div>
+<p><strong>Collection</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">expr</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$a^{2} c x^{3} + b^{2} d y^{3} + x^{2} \left(a^{2} d y + 2 a b c y\right) + x \left(2 a b d y^{2} + b^{2} c y^{2}\right)$$\]</div></div>
+</div>
+<p><strong>Lambdification</strong> (i.e., turning SymPy expressions into regular Python
+functions)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># define a symbolic expression named f</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="c1"># turn the symbolic expression into a function f_fun</span>
+<span class="n">f_fun</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="c1"># call the function</span>
+<span class="n">f_fun</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[$$0.010000000000000002$$\]</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">f_fun</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([ 2.25,  6.25, 12.25])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f_fun</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;k-x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_28_Slides_27_0.png" src="../_images/lectures_ME400_Lecture_28_Slides_27_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Putting-it-all-together">
+<h3>Putting it all together<a class="headerlink" href="#Putting-it-all-together" title="Permalink to this headline">¶</a></h3>
+<p>Consider the familiar equation <span class="math">\(a x^2 + b x + c = 0\)</span>. Do the
+following:</p>
+<ul class="simple">
+<li>solve the equation symbolically to produce two roots <span class="math">\(x_0\)</span> and
+<span class="math">\(x_1\)</span></li>
+<li>substitute <span class="math">\(b = 1\)</span> and <span class="math">\(c = 1\)</span> into the roots, leaving
+<span class="math">\(a\)</span> a symbol</li>
+<li>explore what happens to the roots as <span class="math">\(a \to 0\)</span> (limits, plots,
+etc.)</li>
 </ul>
 </div>
-<div class="section" id="Prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h3>
-<p>You should already be able to</p>
-<ul class="simple">
-<li>Solve IVPs using Euler’s method based on the material of <a class="reference internal" href="ME400_Lecture_27.html"><span class="doc">Lecture
-27</span></a></li>
-<li>Define one- and two-dimensional arrays using NumPy arrays based on
-the material of <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>.</li>
-<li>Use <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> to solve <span class="math">\(\mathbf{Ax = b}\)</span> based on the
-material of <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>.</li>
-</ul>
-<p>Please review these topics (and resources) as needed.</p>
+<div class="section" id="Recap">
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
+<p>You should now be able to <em>define the symbols and expressions</em>, <em>solve
+symbolic equations</em>, and <em>evaluate expressions numerically</em>.</p>
 </div>
-<div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">odeint</span></code></li>
-<li>first-order system</li>
-</ul>
-<p><strong>Example</strong>: Solve the following system</p>
-<div class="math">
-\[\begin{split}\left [ \begin{array}{rrrrr}
-  -2    &amp;  1  &amp; 0 &amp; \ddots \\
-   1   &amp;  -2 &amp; 1 &amp; 0 &amp; \ddots \\
-   0   &amp;  1 &amp; -2 &amp; 1 &amp; \ddots \\
-       &amp;  &amp;  &amp; \ddots &amp; \\
-       &amp; &amp; &amp;            1 &amp; -2
-\end{array} \right ]
-\left [ \begin{array}{c}
-  x_0 \\
-  x_1 \\
-  \vdots \\
-  x_n \\
-\end{array} \right ]
-=
-\left [ \begin{array}{c}
-  1 \\
-  1 \\
-  \vdots \\
-  1
-\end{array} \right ]\end{split}\]</div>
-<p><strong>Example</strong>: For <span class="math">\(\Delta = 0.1\)</span>, compute <span class="math">\(x(10)\)</span> and
-<span class="math">\(y(10)\)</span> by solving the following system using (1) forward Euler,
-(2) backward Euler, and (3) <code class="docutils literal"><span class="pre">odeint</span></code>:</p>
-<div class="math">
-\[\begin{split}\left [ \begin{array}{c}
-  x' \\
-  y'
-\end{array} \right ]
-=
-\left [ \begin{array}{rr}
-  -10   &amp;  0.00 \\
-   10   &amp; -0.01 \\
-\end{array} \right ]
-\left [ \begin{array}{c}
-  x(t) \\
-  y(t)
-\end{array} \right ]
-+
-\left [ \begin{array}{c}
-  1 \\
-  0
-\end{array} \right ]\end{split}\]</div>
-<p>for <span class="math">\(x(0) = y(0) = 0\)</span>.</p>
+<div class="section" id="Grades-and-All-That">
+<h3>Grades and All That<a class="headerlink" href="#Grades-and-All-That" title="Permalink to this headline">¶</a></h3>
+<p><strong>Exam 3</strong> - median of 72.5% - max of 100%.</p>
+<p><strong>Final Grade Boundaries</strong> - 87%, 77%, 67%, 57% (i.e., 3% shift).</p>
+<p><strong>Evaluations in Lab on Friday!</strong> - Specific <em>suggestions</em> are very
+useful to me - The TA&#8217;s and I tried to be very accessible during and
+outside of office hours. If this helped you, we want to know.</p>
 </div>
 </div>
 </div>
@@ -173,12 +564,14 @@ material of <a class="reference internal" href="ME400_Lecture_4.html"><span clas
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 28 - Numerical Solutions of First-Order Systems</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
-<li><a class="reference internal" href="#Homework-11-Recap">Homework 11 Recap</a></li>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#">Lecture 28 - Symbolic Computing with SymPy</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
+<li><a class="reference internal" href="#It-Starts-with-Symbols-and-Expressions">It Starts with Symbols and Expressions</a></li>
+<li><a class="reference internal" href="#Symbolic-Equations">Symbolic Equations</a></li>
+<li><a class="reference internal" href="#Odds-and-Ends">Odds and Ends</a></li>
+<li><a class="reference internal" href="#Putting-it-all-together">Putting it all together</a></li>
+<li><a class="reference internal" href="#Recap">Recap</a></li>
+<li><a class="reference internal" href="#Grades-and-All-That">Grades and All That</a></li>
 </ul>
 </li>
 </ul>
@@ -194,15 +587,15 @@ material of <a class="reference internal" href="ME400_Lecture_4.html"><span clas
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_28_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_28_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -213,14 +606,14 @@ material of <a class="reference internal" href="ME400_Lecture_4.html"><span clas
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_28_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_28_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

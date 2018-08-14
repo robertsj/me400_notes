@@ -1,0 +1,332 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**:  Based on Euler-Bernoulli beam theory, the natural frequencies $\\omega$ of a homogeneous, cantilevered beam of length  $L$ satisfy \n",
+    "\n",
+    "$$\n",
+    "  EI \\frac{d^4 y}{dx^4} = \\frac{m}{L} \\omega^2 y(x) \\, ,\n",
+    "$$\n",
+    "\n",
+    "subject to $y(0) = y''(0) = 0$ and $y'(L) = y'''(L)$.  Here, $y(x)$ is the displacement of the beam at a point $x$.  Moreover, $E$ is Young's modulus [Pa], while $I$ is the moment of inertia [m${}^4$], specifically, the second moment of area $\\iint_A y^2 dydz$.  Finally, the beam's mass is $m$ [kg].  \n",
+    "\n",
+    "Consider a steel I-beam for which $L=5$ m, $E = 200\\cdot 10^9$ Pa, $I = 8.5\\cdot 10^{-5}$ m$^4$, and $m = 700$ kg.  Estimate the lowest, natural frequency $\\omega_0$ of this beam using the finite-difference method to produce an matrix-eigenvalue problem. \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*Solution*: This is a challenge problem!  However, it pulls together some critical thinking and ideas presented over several lessons.  \n",
+    "\n",
+    "The real hard part is deciding how to handle the higher-order derivatives (and particularly, at the boundaries).  Recall, though, that SymPy gave us tool for approximating derivatives of any order.  First, let's import SymPy and define symbols for $y$, $x$, and $\\Delta$ (assume we'll chop up the BVP with evenly-spaced points)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import sympy as sy\n",
+    "sy.init_printing()\n",
+    "y, x, Delta = sy.symbols('y x Delta')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "First, let's tackle the boundary conditions at the left-hand side, i.e., $y(0) = y''(0) = 0$.  The condition on $y(x)$ is easy.  The condition on $y''(x)$ is a bit trickier.  Remember, we generally need to evaluate $y(x)$ at $n+1$ points to approximate the $n$th derivative.  (Forget why? To estimate a first derivative (a \"slope\") requires a line, and a line is defined by two points.)  However, we're at the *boundary*, so we can't use points to the left of $x=0$.  Hence, let's try $x=0$, $x=\\Delta$, and $x=2\\Delta$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAARUAAAAqBAMAAABvm9IdAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAVO8Qq4lmdpnNMkQi\n3btapmadAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAE70lEQVRYCc1WT4gbVRj/JZNkk0wmu+vBP+Cf\noAcPUjbUivZQOxcRRdlcSlcRzFFB2OChuwehg11xV7Cm4KHRQnPx4ClZQQRBdvTQk6Wp+OfgwhYs\nVkopWxZdaSvx+96beTOZTJI3hYX9IG/en9/vfd/73pf5DXAPZqzebN8DTZNyX1UTKGCHkL2TBM9Y\nXQ/GC/OJYjkFPJ4sliQeFhPFcgCYd5MFA30P+kgO4XwV8+19EguFsZUokUTQP60+UqbD/DthWvYw\nFsveP7GsJg1l7/Iy5eyfWB5EyU0YjX5F6iM5hGINU3sXy8lEf9GLxxZeTZgWaHtYmTtbH9i8JIcp\nd2DWH5zv9//z+/J5gR85bkZQRnlgSp2bh7mJteeB7InXgVdiV4cmjSs81Wlwq0khD8+dvs6E4i63\nGZfbODsHnMERF4fjFofnCi7Pvb/DrSblHAwbb3aJkJ/jAjGaTI6xnINcBdkmsuKoMYjBqbd4aN4v\nXsaK8sAgZnBEHvJVpCs0u75Y47Xj3MSY5aJsI7UDoxKzOjy1yVN5yANWvPWxsZCHdA+Zu4R10iKf\nBz1a9HERmLZh3gI+jy7FjUs9nl2HPKBPGRsLeSjsIHOb0jmTE/ksdKNbP/shSk9gGTjqwNwFFqKA\nwbGx3MAPVfkadiAP6FNGxKI80E4WZSQPmc+sM7g1UPsKU9v4E7hUEwX+dhQwOM6aFZxEuU6z5gzk\nAX3KiFiUB+JsUKWs0/cEF0yuSU3YSjNrKF/BZYrFQZFy90h4dbj/fb6Jm7BmaCVDP1EwPiU+lsAD\n4X+mnw2Zz1QP/bBtG3gS0w08pe6oQ2gcbrF9xt3pMLyParqBXaS7tDJLv0WHGkF5rdX6qdX6lIYj\nPdD1EDxF58j9S7DiNoPDZu6g0+ZYqHZTVLti4zAg0t+oFm/LWGxaEQXjU+LzAuUBXJYinSKfw7FQ\nzt8F3xHdVI4q67uI7+hwDVMVcUd8PnlAnzIiFuUBKQc/inSKfJq9YO/s6VM0oNfKVXDtyncd/EIM\ncH5v4a8qda8yg2uXy4UKxoWiDMUS8YAvgPe4XCif9J4J1+4beIlm87b5j/wnX8bBNvABQ+Ms62aa\nNL+CjTr47/jQKtsW9XzKUCwRD6Vfjq30UmeZ9jEVTL4m3NS53UTHJVl4cZli5DQ/s/QytaJg6Rk2\noceWW+SX5qGlT1xwerdkUdO1+pRwLHXmRzwUiNGzvP9CFYU2Y6RQ/o5LXR7RfcJyuUdmkJch6zRo\nyuqW7oiVNWo3QxhFCcUyxoNiHhE9KZTAY1XQPR3t0t05HkQJnaJQR+oxyxUyTYMjEtoYpTwdcMZ4\nUKDjoucJJX6j0a+4xnM3xEL8B4Cnx7AoPVa9zEkqux6eHnHfDGM8+ETvm8ETSiEI3yy3eZW+dIT5\nMXlD8fD0WEiVufQRz8lvKQmKo4zxIEn+cXyhDCe6VBeYnCseg42nx+oeefWCguRc1VWdMR4U5h3R\n84TSrJlttTKu4+nx1/h2HCq8pu9hXQrll7OPUu1ONk+Pi2dm/5gMlgh9D7bUkbl+X2tvT4/T/f62\nFp5A2h6UUGruPEs4ocea+JAUT2QIIREfHhOhAmBTKz/g9PAhKZ5I4HMmOGigxxN39gH6HmymsFDq\nWaDHenhC2YzU8RAIJTMmW6DHk7ESoe8hEEq9vQM91sOTTigpnsD4H2+ImHFCMp65AAAAAElFTkSu\nQmCC\n",
+      "text/latex": [
+       "$$\\frac{1}{\\Delta^{2}} y{\\left (0 \\right )} - \\frac{2}{\\Delta^{2}} y{\\left (\\Delta \\right )} + \\frac{1}{\\Delta^{2}} y{\\left (2 \\Delta \\right )}$$"
+      ],
+      "text/plain": [
+       "y(0)   2⋅y(Δ)   y(2⋅Δ)\n",
+       "──── - ────── + ──────\n",
+       "  2       2        2  \n",
+       " Δ       Δ        Δ   "
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2ydx2 = sy.diff(y(x), x, 2)\n",
+    "d2ydx2.as_finite_difference([x, x+Delta, x+2*Delta]).subs(x, 0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note, we now have two equations for the two left boundary conditions:\n",
+    "\n",
+    "$$\n",
+    "  y(0) = y_0 = 0 \\, ,\n",
+    "$$\n",
+    "\n",
+    "and\n",
+    "\n",
+    "$$\n",
+    "  y''(0) \\approx \\frac{y_0 - 2 y_1 + y_2}{\\Delta^2} = 0 \\, ,\n",
+    "$$\n",
+    "\n",
+    "where $y_i = y(i\\Delta)$. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Suppose we chop the domain into $N+1$ points so that the last value of $y(x)$ is $y(L) = y_N$.  The condition $y'(L)$ is easily handled by the backward difference:\n",
+    "\n",
+    "$$\n",
+    "  y'(L) \\approx \\frac{y_N - y_{N-1}}{\\Delta} = 0 \\, .\n",
+    "$$\n",
+    "\n",
+    "For the condition $y'''(L) = 0$, we turn back to SymPy.  Now, we're at the right boundary, so we cannot use points to the right of $x = L$.  Because we're approximating the third derivative, we need at least four points.  The (perhaps) obvious ones are $x = L$, $x= L-\\Delta$, $x=L-2\\Delta$, and $x=L-3\\Delta$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nJ3qICzofAnMAAAAASUVORK5CYII=\n",
+      "text/latex": [
+       "$$\\frac{1}{\\Delta^{3}} y{\\left (L \\right )} - \\frac{1}{\\Delta^{3}} y{\\left (- 3 \\Delta + L \\right )} + \\frac{3}{\\Delta^{3}} y{\\left (- 2 \\Delta + L \\right )} - \\frac{3}{\\Delta^{3}} y{\\left (- \\Delta + L \\right )}$$"
+      ],
+      "text/plain": [
+       "y(L)   y(-3⋅Δ + L)   3⋅y(-2⋅Δ + L)   3⋅y(-Δ + L)\n",
+       "──── - ─────────── + ───────────── - ───────────\n",
+       "  3          3              3              3    \n",
+       " Δ          Δ              Δ              Δ     "
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d3ydx3 = sy.diff(y(x), x, 3)\n",
+    "L = sy.symbols('L')\n",
+    "d3ydx3.as_finite_difference([x-3*Delta, x-2*Delta, x-Delta, x]).subs(x, L)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Thus, we have\n",
+    "\n",
+    "$$\n",
+    "  y'''(L) \\approx \\frac{y_N - 3 y_{N-1} + 3 y_{N-2} - y_{N-3}}{\\Delta^3} = 0 \\, .\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If we have $N+1$ points, we need $N+1$ equations.  Four of those are defined already by applying the boundary conditions.   Note that the boundary conditions  define equations for $y_0$, $y_1$, $y_{N-1}$, and $y_{N}$ (though $y_2$, $y_{N-2}$, and $y_{N-3}$ are involved).  Thus, we need equations for $y_2, y_3, \\ldots, y_{N-2}$.  These remaining equations come directly from the BVP itself, and to approximate $d^4y/dx^4$ at $x = i\\Delta$, we again use SymPy.  Because we're away from the boundaries, we can use points to the left and to the right of $x$.  Hence, try the points $x-2\\Delta$, $x-\\Delta$, $x$, $x+\\Delta$, and $x+2\\Delta$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\frac{6}{\\Delta^{4}} y{\\left (x \\right )} + \\frac{1}{\\Delta^{4}} y{\\left (- 2 \\Delta + x \\right )} - \\frac{4}{\\Delta^{4}} y{\\left (- \\Delta + x \\right )} - \\frac{4}{\\Delta^{4}} y{\\left (\\Delta + x \\right )} + \\frac{1}{\\Delta^{4}} y{\\left (2 \\Delta + x \\right )}$$"
+      ],
+      "text/plain": [
+       "6⋅y(x)   y(-2⋅Δ + x)   4⋅y(-Δ + x)   4⋅y(Δ + x)   y(2⋅Δ + x)\n",
+       "────── + ─────────── - ─────────── - ────────── + ──────────\n",
+       "   4           4             4            4            4    \n",
+       "  Δ           Δ             Δ            Δ            Δ     "
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d4ydx4 = sy.diff(y(x), x, 4)\n",
+    "d4ydx4.as_finite_difference([x-2*Delta, x-Delta, x, x+Delta, x+2*Delta])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hence, we have the internal (away from boundaries) equations:\n",
+    "\n",
+    "$$\n",
+    "   \\frac{L}{m} \\frac{EI}{\\Delta^4} [y_{i+2} - 4 y_{i+1} + 6 y_i - 4 y_{i-1} + y_{i-2}] = \\omega^2 y_i \\, .\n",
+    "$$\n",
+    "\n",
+    "This is an eigenvalue problem, and the eigenvalues are $\\lambda_n = \\omega^2_n$.  Hence, we will find $\\lambda_0$, from which $\\omega_0 = \\sqrt{\\lambda_0}$.\n",
+    "\n",
+    "We can put it all together in a pretty small program (here, implemented as a function):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def beam_lowest_frequency(L, E, I, m, N):\n",
+    "    \"\"\"Determine the lowest natural frequency of a \n",
+    "       homogeneous, cantilevered beam of length L, modulus E, \n",
+    "       moment of inertia I, and mass m using N + 1 evenly spaced\n",
+    "       points.\n",
+    "    \"\"\"\n",
+    "    assert N > 3, \"Need more than 4 points!\"\n",
+    "    \n",
+    "    import numpy as np\n",
+    "    x = np.linspace(0, L, N+1)\n",
+    "    Delta = x[1] - x[0]\n",
+    "    \n",
+    "    # initialize the system matrix\n",
+    "    A = np.zeros((N+1, N+1))\n",
+    "    # y(0) = 0\n",
+    "    A[0, 0] = 1.0\n",
+    "    # y''(0) = 0\n",
+    "    A[1, 0] = 1/Delta**2\n",
+    "    A[1, 1] = -2/Delta**2\n",
+    "    A[1, 2] = 1/Delta**2\n",
+    "    # y'(L) = 0\n",
+    "    A[N, N] = 1/Delta\n",
+    "    A[N, N-1] =  -1/Delta\n",
+    "    # y'''(L) = 0\n",
+    "    A[N-1, N] = 1/Delta**3\n",
+    "    A[N-1, N-1] = -3/Delta**3\n",
+    "    A[N-1, N-2] = 3/Delta**3\n",
+    "    A[N-1, N-3] = -1/Delta**3\n",
+    "    # (m/L)(EI)d^4y/dx^4 = lambda*y(x)\n",
+    "    c = (L/m)*(E*I/Delta**4)\n",
+    "    for i in range(2, N-1):\n",
+    "        A[i, i-2] = c\n",
+    "        A[i, i-1] = -4*c\n",
+    "        A[i, i  ] = 6*c\n",
+    "        A[i, i+1] = -4*c\n",
+    "        A[i, i+2] = c\n",
+    "    \n",
+    "    # solve the system and return the lowest\n",
+    "    # frequency\n",
+    "    #l, v = np.linalg.eig(A)\n",
+    "    return A#np.sqrt(np.min(l))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " 1.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00 \n",
+      " 2.56e+00 -5.12e+00  2.56e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00 \n",
+      " 7.96e+05 -3.18e+06  4.77e+06 -3.18e+06  7.96e+05  0.00e+00  0.00e+00  0.00e+00  0.00e+00 \n",
+      " 0.00e+00  7.96e+05 -3.18e+06  4.77e+06 -3.18e+06  7.96e+05  0.00e+00  0.00e+00  0.00e+00 \n",
+      " 0.00e+00  0.00e+00  7.96e+05 -3.18e+06  4.77e+06 -3.18e+06  7.96e+05  0.00e+00  0.00e+00 \n",
+      " 0.00e+00  0.00e+00  0.00e+00  7.96e+05 -3.18e+06  4.77e+06 -3.18e+06  7.96e+05  0.00e+00 \n",
+      " 0.00e+00  0.00e+00  0.00e+00  0.00e+00  7.96e+05 -3.18e+06  4.77e+06 -3.18e+06  7.96e+05 \n",
+      " 0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00 -4.10e+00  1.23e+01 -1.23e+01  4.10e+00 \n",
+      " 0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00  0.00e+00 -1.60e+00  1.60e+00 \n"
+     ]
+    }
+   ],
+   "source": [
+    "A = beam_lowest_frequency(5, 200e9, 8.5e-5, 700, N=8)\n",
+    "for a in A:\n",
+    "    fmt = '{:9.2e} '*len(a)\n",
+    "    print(fmt.format(*tuple(a)))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ -1.68897663e+00,  -3.95779138e-02,   1.00000000e+00,\n",
+       "         1.28055502e+00,   1.68761527e+05,   1.16891488e+06,\n",
+       "         3.72351278e+06,   7.58481524e+06,   1.12278088e+07])"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "np.sort(np.linalg.eig(A)[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

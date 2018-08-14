@@ -1,0 +1,528 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 6 - Conditional Statements and the Structure of Python Code\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lesson, we turn back to Python and begin the development of more complicated programs.  The emphasis here and in [Lecture 7](ME400_Lecture_7.ipynb) is on the logic of *selection* and its implementation via conditional statements in Python.  Effective use of conditional statements requires a thorough understanding of the relational and logical operators defined in [Lesson 2](ME400_Lecture_2.ipynb).  Of course, one must also first be comfortable with the theoretical coverage of selection presented in [Lecture 5](ME400_Lecture_5.ipynb).\n",
+    "\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- explain the importance of indentation in Python programs\n",
+    "- write a program with conditional statements containing `if`, `else`, and `elif`\n",
+    "- predict the outcome of a Python program with `if`, `else`, and `elif` statements\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- `if`\n",
+    "- `else`\n",
+    "- `elif` \n",
+    "- suite\n",
+    "- `NameError`\n",
+    "- ternary operation\n",
+    "- `SyntaxError`\n",
+    "- `pass`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The Simplest `if`\n",
+    "\n",
+    "Recall the basic conditional statement from [Lecture 5](ME400_Lecture_5.ipynb), repeated graphically here:\n",
+    "\n",
+    "![Flowchart fragment for a simple conditional statement](img/simple_if.png)\n",
+    "\n",
+    "In pseudocode, that same statement could be written as\n",
+    "```octave\n",
+    "If the condition is satisfied then\n",
+    "    Do something\n",
+    "```\n",
+    "\n",
+    "Very nearly the same structure is used in Python.  Consider as a simple example a program that accepts as input a number and prints a message to the user if that number is negative.  In Python, that's easy:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "enter your number -3\n",
+      "the number is negative\n"
+     ]
+    }
+   ],
+   "source": [
+    "number = int(input('enter your number '))\n",
+    "if number < 0:\n",
+    "    print(\"the number is negative\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "enter your number 7\n"
+     ]
+    }
+   ],
+   "source": [
+    "number = int(input('enter your number '))\n",
+    "if number < 0:\n",
+    "    print(\"the number is negative\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This example illustrates the basic syntax of `if` statements, and four key observations can be made:\n",
+    "\n",
+    "  1. The `if` statement begins with the keyword `if`.  Because `if` is a keyword, we can't use it as a name for variables.  Rather, `if` can only be used for `if` statements.\n",
+    "  2. The *condition* is `number < 0`, which is an expression relating `number` and `0` by the `<` relational operator.  In other words, `number < 0` is either `True` or `False`.  When `True`, the statement immediately following the `if` statement is executed.  Otherwise, that line (here, the one with `print`) is skipped.\n",
+    "  3. Immediately after the condition is a `:` (i.e., a colon).  This **colon is required** and indicates the end of the `if` statement.  There **is no then** in Python.\n",
+    "  4. The line immediately after the `if` statement (the one with `print`) is **indented**.  Here, that indentation consists of four spaces.  At least one space is required, but **four spaces is most common and recommended for all indentation**.  Moreover, all lines in the same block of code (e.g., the lines optionally executed if the condition of an `if` statement is satisfied) must have the same indentation.   Such a block of code is called a \"suite\" in the [Python documentation](https://docs.python.org/3/reference/compound_stmts.html).\n",
+    "  \n",
+    "To get comfortable with the basic `if`-statement structure, it is worth exploring a few examples:   "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: Suppose `a` and `b` are numbers already defined.  Use an `if` statement to swap their values when `b` is less than `a`.\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*Solution*:  \n",
+    "\n",
+    "\n",
+    "```python\n",
+    "if b < a:\n",
+    "      tmp = b # tmp is a very common abbreviation for temporary\n",
+    "      b = a\n",
+    "      a = tmp\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: What does the following code do?\n",
+    "\n",
+    "\n",
+    "```python\n",
+    "a = 1\n",
+    "b = False\n",
+    "c = 'Harry Potter'\n",
+    "d = 0\n",
+    "if a and b or c and not d:\n",
+    "      print(\"The answer is 42.\")\n",
+    "```\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*Solution*: It prints out \"The answer is 42.\" To know that, however, requires you can evaluate the condition.  Remember that the order of operations is important.  First `not`, then `and`, and finally `or` is applied.  The result is `True` (since `not 0` equals `True`)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: What does this code do?\n",
+    "\n",
+    "\n",
+    "```python\n",
+    "from math import sqrt # one can import single functions\n",
+    "a, b, c = 1, 2, 3 # what does this statement do?\n",
+    "if b**2 > 4*a*c\n",
+    "      root1 = (-b + sqrt(b**2 > 4*a*c))/(2*a)\n",
+    "     root2 = (-b - sqrt(b**2 > 4*a*c))/(2*a)\n",
+    "print(root1, root2)\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*Solution*: Actually, it doesn't do anything but lead to errors!  First, the Python interpreter catches that the `if` statement is missing its colon.  If that gets fixed, the interpreter then catches that the indentation is not uniform in the block of code immediately following the `if`.  Both `root1` and `root2` should start in the same column, but `root2` starts one column before `root1`.  Finally, for the particular values of `a`, `b`, and `c`, `b**2` is less than `4*a*c`, and the condition is *not* satisfied.  Hence, neither `root1` nor `root2` are defined, and the `print` statement is therefore using undefined names. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> **Warning**: Variables must be defined (i.e., assigned a value) before they can be used.  Otherwise, a `NameError` will occur."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The `else` Clause\n",
+    "\n",
+    "The basic `if` statement provides a way to skip certain lines of code.  However, often one wants to choose between two alternative lines of code.  Perhaps for our example above, we would like to let the user also know when a `number` is nonnegative, i.e., a separate `print` statement should be executed when `number >= 0`.  In Python, we can use the `else` clause to define an optional block of code to be executed when the condition is not satisfied.  For our `number` example, the updated program is"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "enter your number 123\n",
+      "the number is nonnegative\n"
+     ]
+    }
+   ],
+   "source": [
+    "number = int(input('enter your number '))\n",
+    "if number < 0:\n",
+    "    print(\"the number is negative\")\n",
+    "else:\n",
+    "    print(\"the number is nonnegative\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note, the `else` clause is not something built explicitly into the flowcharts we have seen, but it is possible to do so by adding a process block (rectangle) between the conditional block (diamond) and subsequent blocks along the arrow labeled \"false.\"\n",
+    "\n",
+    "> **Exercise**: Modify the flowchart for the basic conditional statement to include processes performed when the condition is not satisfied."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As has been mentioned, all `if` statements (including those with the `else` clause) can be rewritten in terms of  basic `if` statements.  In some cases, the resulting code is more complicated.  For our modified `number` example, we could use two basic `if` statements to achieve the same behavior as the `if`/`else` structure:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "enter your number 123\n",
+      "the number is nonnegative\n"
+     ]
+    }
+   ],
+   "source": [
+    "number = int(input('enter your number '))\n",
+    "if number < 0:\n",
+    "    print(\"the number is negative\")\n",
+    "if number >= 0:\n",
+    "    print(\"the number is nonnegative\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This solution is logically equivalent to  the `if`/`else` version, but it is a bit more complex.  First, the total amount of code is a bit larger because we need to explicitly define a second condition.  Moreover, because we have to define that condition explicitly, we have increased the chance of introducing a logical error (or \"bug\") into our program.  For instance, if we accidentally had set the second condition to `number > 0`, which might seem right at first glance, the result would not be equivalent because the case in which `number == 0` would be missed.\n",
+    "\n",
+    "**Exercise**.  Are the following equivalent?\n",
+    "\n",
+    "\n",
+    "```python\n",
+    "# Option 1\n",
+    "a = 9\n",
+    "if a%2:\n",
+    "      a -= a%2\n",
+    "else:\n",
+    "      a += 1\n",
+    "\n",
+    "# Option 2\n",
+    "a = 9\n",
+    "if a%2:\n",
+    "      a -= a%2\n",
+    "if not a%2:\n",
+    "      a += 1\n",
+    "```\n",
+    "\n",
+    "*Solution*: They might look equivalent, but they are not.  In Option 1, `a%2` is 1, so `a -= a%2` is executed, and with the result that `a == 8`.  The `else` block is skipped.  In Option 2, `a%2` is again 1, and so `a -= a%2` is executed and `a == 8` after the first `if`.  However, now the second condition `not a%2` is *also satisfied*, meaning that `a += 1` is executed, and `a == 9` at the end.  Hence, any time the variables that show up in the condition of an `if` statement are modified, future conditions involving those same variables may have different values.  We could make Option 2 equivalent to Option 1 by using a temporary variable, e.g., `b = a - a%2` and `b = a + 1`, in each `if` statement, and then set `a = b` after both statements.  Kind of ugly, no?  But possible!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The `elif` Clause\n",
+    "\n",
+    "Consider again the `number` example explored above.  The `else` clause lets us tell the user that the number is negative or nonnegative.  What if insteady we wanted to know whether `number` is negative, positive, or neither (i.e., zero)?  In Python, that can be decided by using the `elif` clause:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "enter your number 0\n",
+      "the number is zero\n"
+     ]
+    }
+   ],
+   "source": [
+    "number = int(input('enter your number '))\n",
+    "if number < 0:\n",
+    "    print(\"the number is negative\")\n",
+    "elif number > 0:\n",
+    "    print(\"the number is positive\")\n",
+    "else:\n",
+    "    print(\"the number is zero\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In English, `elif` can be translated as \"else if\".  There is no limit to the number of `elif` clauses added.  \n",
+    "\n",
+    "> **Exercise**: Create a flowchart for the `number` example that shows whether the `number` is positive, negative, or zeros.\n",
+    "\n",
+    "Just as can be done for the `if`/`else` construct, the `if`/`elif`/`else` construct can be rewritten with basic `if` statements:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "enter your number 0\n",
+      "the number is zero\n"
+     ]
+    }
+   ],
+   "source": [
+    "number = int(input('enter your number '))\n",
+    "if number < 0:\n",
+    "    print(\"the number is negative\")\n",
+    "if number > 0:\n",
+    "    print(\"the number is positive\")\n",
+    "if number == 0:\n",
+    "    print(\"the number is zero\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Of course, there will be certain cases that are much harder to represent with only basic `if` statements."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Other Tidbits"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ternary Operation\n",
+    "\n",
+    "A basic if-then statement can be written as a compact, *ternary* operation (with three inputs, as opposed to the two required for *binary* operations like addition), e.g.,\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'b'"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = 1\n",
+    "b = 2\n",
+    "c = \"a\" if a > b else \"b\"\n",
+    "c"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This is equivalent to the more traditional `if`-`else` construct"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'b'"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = 1\n",
+    "b = 2\n",
+    "if a > b:\n",
+    "    c = \"a\"\n",
+    "else:\n",
+    "    c = \"b\"\n",
+    "c"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The ternary operation is presented here for completeness.  Its compact form makes it useful in some situations, but for most applications, the more traditional `if` statement with the `else` clause is much easier to read.  \n",
+    "\n",
+    "> **Note**: A regular `if` statement with the `else` clause is preferred to the ternary operation for almost all applications."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The `pass` Placeholder"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Sometimes in writing Python programs, you know that you will need a block of code to be executed as part of an `if` statement (or, later on, within loops and functions) but you are not yet read to define it.  You might try the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "unexpected EOF while parsing (<ipython-input-9-bbd7c5da3fed>, line 3)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-9-bbd7c5da3fed>\"\u001b[0;36m, line \u001b[0;32m3\u001b[0m\n\u001b[0;31m    # eventually I'll do something here but I have to get to class\u001b[0m\n\u001b[0m                                                                  ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m unexpected EOF while parsing\n"
+     ]
+    }
+   ],
+   "source": [
+    "a = 1\n",
+    "if a == 0:\n",
+    "    # eventually I'll do something here but I have to get to class"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Whoops! A nasty `SyntaxError` has popped up, which means we broke the rules of Python.  The rule we broke is that every \"suite\" (block of code) following things like `if` must have at least one line of code.  Comments do not count.\n",
+    "\n",
+    "> **Warning**: All blocks of code in `if` and other constructs must contain at least one line of code.\n",
+    "\n",
+    "To help in these situations, Python offers the `pass` statement, which can be used as follows:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "a = 1\n",
+    "if a == 0:\n",
+    "    # eventually I'll do something here but I have to get to class\n",
+    "    pass "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "Nothing for now."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

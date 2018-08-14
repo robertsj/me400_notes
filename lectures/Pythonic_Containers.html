@@ -1,0 +1,1290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pythonic Containers &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2018',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <link rel="next" title="Processing Text Data" href="Processing_Text_Data.html" />
+    <link rel="prev" title="More on Loops" href="More_on_Loops.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="section" id="Pythonic-Containers">
+<h1>Pythonic Containers<a class="headerlink" href="#Pythonic-Containers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>All the way back in <a class="reference external" href="ME400_Lecture_1.ipynb">Lecture 1</a>, the simplest
+of variable types were presented (namely, <code class="docutils literal"><span class="pre">int</span></code>, <code class="docutils literal"><span class="pre">float</span></code>, and
+<code class="docutils literal"><span class="pre">bool</span></code>) along with the more complex but indespensable <code class="docutils literal"><span class="pre">str</span></code> type. In
+<a class="reference external" href="ME400_Lecture_3.ipynb">Lecture 3</a>, NumPy was introduced, with its
+<code class="docutils literal"><span class="pre">ndarray</span></code> type serving as the workhorse for a variety of applications,
+particularly those with a numerical flavor. In this lecture, the
+built-in Python types <code class="docutils literal"><span class="pre">list</span></code>, <code class="docutils literal"><span class="pre">tuple</span></code>, and <code class="docutils literal"><span class="pre">dict</span></code> are presented,
+with motivating applications for each.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>Define and use <code class="docutils literal"><span class="pre">list</span></code> and <code class="docutils literal"><span class="pre">tuple</span></code> variables.</li>
+<li>Define and use <code class="docutils literal"><span class="pre">dict</span></code> variables.</li>
+<li>Explain the difference between <em>mutable</em> and <em>immutable</em> types.</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">list</span></code></li>
+<li><code class="docutils literal"><span class="pre">tuple</span></code></li>
+<li><code class="docutils literal"><span class="pre">dict</span></code></li>
+<li>mutable</li>
+<li>immutable</li>
+<li>container type</li>
+<li>sequential type</li>
+<li>associative type</li>
+<li><code class="docutils literal"><span class="pre">list.append()</span></code></li>
+<li><code class="docutils literal"><span class="pre">list.count()</span></code></li>
+<li><code class="docutils literal"><span class="pre">list.copy()</span></code></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">IPython.core.interactiveshell</span> <span class="kn">import</span> <span class="n">InteractiveShell</span>
+<span class="n">InteractiveShell</span><span class="o">.</span><span class="n">ast_node_interactivity</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="What-is-a-sequential-type?">
+<h2>What is a <em>sequential</em> type?<a class="headerlink" href="#What-is-a-sequential-type?" title="Permalink to this headline">¶</a></h2>
+<p>Beyond the simplest types, Python (and other languages) offers a number
+of built-in types that represent a collection of values. Generically,
+these are called [container
+types](<a class="reference external" href="https://en.wikipedia.org/wiki/Container_(abstract_data_type">https://en.wikipedia.org/wiki/Container_(abstract_data_type</a>)
+because they are <a class="reference external" href="https://en.wikipedia.org/wiki/List_of_data_structures">data
+structures</a>
+that contain one or more values. Container types differ in the way by
+which their values are stored and accessed.</p>
+<p>Probably the simple container type to understand is the <strong>sequential
+type</strong>, the elements of which are arranged one after another (i.e., a
+sequence) and can be accessed individually by knowing only their
+location within the sequence. Sound familiar? <em>It should</em>: NumPy&#8217;s
+<code class="docutils literal"><span class="pre">ndarray</span></code> is a sequential type. Remember, given an array (e.g.,
+<code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">np.array([1,</span> <span class="pre">2,</span> <span class="pre">3])</span></code>, we can access any element by its location
+with the <code class="docutils literal"><span class="pre">[]</span></code> operator (e.g., the first element <code class="docutils literal"><span class="pre">a[0]</span></code>). Similarly,
+the <code class="docutils literal"><span class="pre">str</span></code> type is a sequential type the elements of which are limited
+to individual characters.</p>
+<blockquote>
+<div><strong>Making Connections</strong>: Python&#8217;s <code class="docutils literal"><span class="pre">str</span></code> and NumPy&#8217;s <code class="docutils literal"><span class="pre">ndarray</span></code> are
+sequential types.</div></blockquote>
+<p>Often, a sequential type is the right choice when the relationship
+between values to be stored is best represented by their position in the
+sequence. A word, like &#8220;pandemonium,&#8221; loses its meaning if the
+individual characters are not accessible in order, and an array like
+<code class="docutils literal"><span class="pre">np.linspace(0,</span> <span class="pre">10)</span></code> is useless unless it can be used to represent
+values of <span class="math">\(x\)</span> from 0 to 10 in order.</p>
+</div>
+<div class="section" id="The-list-Type">
+<h2>The <code class="docutils literal"><span class="pre">list</span></code> Type<a class="headerlink" href="#The-list-Type" title="Permalink to this headline">¶</a></h2>
+<p>Lots of computation, numerical or otherwise, needs sequential data, and
+Python has more answers. The most versatile of Python&#8217;s sequential types
+is <code class="docutils literal"><span class="pre">list</span></code>. A <code class="docutils literal"><span class="pre">list</span></code> variable can be defined using comma-separated
+values within square brackets <code class="docutils literal"><span class="pre">[]</span></code>. For example, a list with the
+values 1, 2, and 3 is defined via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 2, 3]
+</pre></div>
+</div>
+</div>
+<p>That syntax may look familiar: we used it to help produce NumPy arrays
+like</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([1, 2, 3])
+</pre></div>
+</div>
+</div>
+<p>With <code class="docutils literal"><span class="pre">a</span></code> defined, we could just as well do</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([1, 2, 3])
+</pre></div>
+</div>
+</div>
+<p>However, <code class="docutils literal"><span class="pre">list</span></code> is more versatile for general programming because its
+elements can be <em>arbitrary</em>. In other words, they are not limited to
+numerical values. For example, consider this <code class="docutils literal"><span class="pre">list</span></code> of very different
+values:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span>
+<span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 3.14, &#39;hello&#39;, array([1, 2, 3])]
+</pre></div>
+</div>
+</div>
+<p>Like all sequential types in Python, individual elements of a <code class="docutils literal"><span class="pre">list</span></code>
+are accessed using <code class="docutils literal"><span class="pre">[]</span></code>, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;hello&#39;
+</pre></div>
+</div>
+</div>
+<p>Elements of <code class="docutils literal"><span class="pre">list</span></code> variables can also be extracted using the same
+<em>slicing</em> technique introduced in <a class="reference external" href="ME400_Lecture_4.ipynb">Lecture 4</a>.
+Recall, slicing an array (or, now, any sequence) take the form
+<code class="docutils literal"><span class="pre">a[start:stop:stride]</span></code>. Thus, we can get elements <code class="docutils literal"><span class="pre">0</span></code> and <code class="docutils literal"><span class="pre">2</span></code> of
+<code class="docutils literal"><span class="pre">d</span></code> via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">):</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, &#39;hello&#39;]
+</pre></div>
+</div>
+</div>
+<p>In addition to indexing and slicing, the <code class="docutils literal"><span class="pre">list</span></code> type provides a number
+of useful functions that can be listed using <code class="docutils literal"><span class="pre">dir</span></code>.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">dir</span></code> to list the attributes (functions, etc.)
+of a <code class="docutils literal"><span class="pre">list</span></code> variable.</div></blockquote>
+<p>Remember (as in <a class="reference external" href="ME400_Lecture_2">Lecture 2</a>) that <code class="docutils literal"><span class="pre">dir</span></code> can lead
+to a lots of names with double underscores, which usually represent
+items that are not of much interest. Note, though, that <code class="docutils literal"><span class="pre">dir</span></code> produces
+a list, and the elements of that lists can be accessed one by one using
+<code class="docutils literal"><span class="pre">for</span></code> loop. The interesting items can be printed by skipping those
+whose name starts with double underscore (<code class="docutils literal"><span class="pre">'__'</span></code>):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span> <span class="c1"># a list of str names</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+append
+clear
+copy
+count
+extend
+index
+insert
+pop
+remove
+reverse
+sort
+</pre></div></div>
+</div>
+<p>Some of these names may suggest obvious functionality, while some may be
+less intuitive.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">help</span></code> to define what each of these functions
+does.</div></blockquote>
+<p>Of particular interest is the functions <code class="docutils literal"><span class="pre">append</span></code>. Consider the empty
+list, defined as</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">e</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">e</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[]
+</pre></div>
+</div>
+</div>
+<p>Just like the empty string <code class="docutils literal"><span class="pre">''</span></code>, the empty <code class="docutils literal"><span class="pre">list</span></code> is equivalent to
+<code class="docutils literal"><span class="pre">False</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">bool</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>False
+</pre></div>
+</div>
+</div>
+<p>and has zero length:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0
+</pre></div>
+</div>
+</div>
+<p>We can add an element, say the integer 123, to <code class="docutils literal"><span class="pre">e</span></code> using append:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">e</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">e</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[123]
+</pre></div>
+</div>
+</div>
+<p>Another element, this time a <code class="docutils literal"><span class="pre">float</span></code>, could be added, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">e</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.111</span><span class="p">)</span>
+<span class="n">e</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[123, 0.111]
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">append</span></code> functions places the new element after all of the other
+elements. Often, lists are constructed iteratively, and <code class="docutils literal"><span class="pre">append</span></code> is
+the natural choice. However, one can also use <code class="docutils literal"><span class="pre">insert</span></code> to place new
+elements anywhere in the <code class="docutils literal"><span class="pre">list</span></code>. Alternatively, the last element of a
+list can be <em>removed</em> using <code class="docutils literal"><span class="pre">pop</span></code>, while arbitrary elements can be
+removed via <code class="docutils literal"><span class="pre">delete</span></code>.</p>
+<blockquote>
+<div><strong>Quick Exercise</strong>: Let <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5]</span></code>. Now, add a new
+element 6 to <code class="docutils literal"><span class="pre">x</span></code> after 5. Then delete 3 and 4 from <code class="docutils literal"><span class="pre">x</span></code>, leaving
+just <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">6]</span></code>.</div></blockquote>
+<p>Before moving on, it is worth noting that <code class="docutils literal"><span class="pre">list</span></code> variables, like
+<code class="docutils literal"><span class="pre">str</span></code> variables, may be manipulated using <code class="docutils literal"><span class="pre">+</span></code> and <code class="docutils literal"><span class="pre">*</span></code> operators,
+though the results may not be what one expects. For instance, it may be
+reasonable to assume that <code class="docutils literal"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> leads to a new <code class="docutils literal"><span class="pre">list</span></code> with
+elements equal to <code class="docutils literal"><span class="pre">[3,</span> <span class="pre">6,</span> <span class="pre">9]</span></code>, but that is not the case:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="mi">3</span> <span class="o">*</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 2, 3, 1, 2, 3, 1, 2, 3]
+</pre></div>
+</div>
+</div>
+<p>Apparently, the contents of the initial list are simply repeated three
+times in sequence. In fact, this behavior is similar to that observed
+for multiplication of an <code class="docutils literal"><span class="pre">int</span></code> by a <code class="docutils literal"><span class="pre">str</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="mi">3</span> <span class="o">*</span> <span class="s1">&#39;...&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;.........&#39;
+</pre></div>
+</div>
+</div>
+<p>Similarly, the addition of two lists leads to</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[1, 2, 3, 4, 5]
+</pre></div>
+</div>
+</div>
+<p>In other words, addition and multiplication can be used to join the
+contents of lists rather easily. However, arithmetic operations cannot
+be used with lists in the same way possible for NumPy arrays.</p>
+<blockquote>
+<div><p><strong>Exercise</strong>: What is the result of <code class="docutils literal"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">10*[0]</span></code>?</p>
+<p><strong>Exercise</strong>: Check whether <code class="docutils literal"><span class="pre">list(np.array([1,</span> <span class="pre">2,</span> <span class="pre">3])*2)</span></code> and
+<code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]*2</span></code> are equivalent. Can you say so without evaluating
+those expressions?</p>
+<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]</span></code>, what does <code class="docutils literal"><span class="pre">f[::-1]</span></code>
+produce? What are the implied <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">stop</span></code> values?</p>
+<p><strong>Exercise</strong>: Consider the list of lists <code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3,</span> <span class="pre">4]]</span></code>.
+How would one access the element <code class="docutils literal"><span class="pre">[3,</span> <span class="pre">4]</span></code>?</p>
+<blockquote>
+<div><em>Solution</em>: Recognize that <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code> is the first element of
+<code class="docutils literal"><span class="pre">M</span></code> and can, therefore, be accessed as <code class="docutils literal"><span class="pre">M[0]</span></code>. If that looks
+confusing, suppose that you first set <code class="docutils literal"><span class="pre">row1</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2]</span></code> and
+<code class="docutils literal"><span class="pre">row2</span> <span class="pre">=</span> <span class="pre">[3,</span> <span class="pre">4]</span></code>. Then <code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">[row1,</span> <span class="pre">row2]</span></code>. We get <code class="docutils literal"><span class="pre">row1</span></code>
+from <code class="docutils literal"><span class="pre">M[0]</span></code>.</div></blockquote>
+<p><strong>Exercise</strong>: Consider the list of lists <code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3,</span> <span class="pre">4]]</span></code>.
+How would one access the element <code class="docutils literal"><span class="pre">4</span></code>?</p>
+<blockquote>
+<div><em>Solution</em>: Recognize that <code class="docutils literal"><span class="pre">4</span></code> is the second element in
+<code class="docutils literal"><span class="pre">[3,</span> <span class="pre">4]</span></code> and that <code class="docutils literal"><span class="pre">[3,</span> <span class="pre">4]</span></code> is the second element of <code class="docutils literal"><span class="pre">M</span></code>.
+We get <code class="docutils literal"><span class="pre">[3,</span> <span class="pre">4]</span></code> via <code class="docutils literal"><span class="pre">M[1]</span></code>. To get <code class="docutils literal"><span class="pre">4</span></code>, we then can use
+<code class="docutils literal"><span class="pre">M[1][1]</span></code>. We <em>cannot</em> use <code class="docutils literal"><span class="pre">M[1,</span> <span class="pre">1]</span></code>, which is a special
+indexing allowed by 2-D NumPy arrays.</div></blockquote>
+<p><strong>Exercise</strong>: Consider the list of lists <code class="docutils literal"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3,</span> <span class="pre">4]]</span></code>.
+Is it possible to obtain the element <code class="docutils literal"><span class="pre">[2,</span> <span class="pre">4]</span></code> by slicing?</p>
+<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]</span></code>, how can slicing be used to
+produce the list <code class="docutils literal"><span class="pre">[4,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code>?</p>
+</div></blockquote>
+</div>
+<div class="section" id="Mutability">
+<h2>Mutability<a class="headerlink" href="#Mutability" title="Permalink to this headline">¶</a></h2>
+<p>A container type is <strong>mutable</strong> if the values of individual elements can
+be changed. The <code class="docutils literal"><span class="pre">list</span></code> type is mutable, as is NumPy&#8217;s <code class="docutils literal"><span class="pre">ndarray</span></code>,
+because we can access an element and change the value of an element. For
+example, given the list</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">g</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>that first value <code class="docutils literal"><span class="pre">1</span></code> can be changed to <code class="docutils literal"><span class="pre">99</span></code> via</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+</pre></div>
+</div>
+</div>
+<p>Of course, we are able to do exactly the same sort of operation to
+<code class="docutils literal"><span class="pre">ndarray</span></code> variable elements. However, we are <em>not</em> able to change the
+elements of variables whose type is <strong>immutable</strong>. One such type is
+<code class="docutils literal"><span class="pre">str</span></code>. Given</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>we <em>cannot</em> get <code class="docutils literal"><span class="pre">jello</span></code> via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;j&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-20-a225757de94d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>s<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;j&#39;</span>
+
+<span class="ansi-red-fg">TypeError</span>: &#39;str&#39; object does not support item assignment
+</pre></div></div>
+</div>
+<p>The fact that <code class="docutils literal"><span class="pre">list</span></code> and other types are mutable can lead to some
+behavior that may be surprising a new programmer. For example, consider
+the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">list2</span> <span class="o">=</span> <span class="n">list1</span>            <span class="c1"># a copy of list1, right?</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;list1 = &#39;</span><span class="p">,</span> <span class="n">list1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;list2 = &#39;</span><span class="p">,</span> <span class="n">list2</span><span class="p">)</span> <span class="c1"># so far, so good</span>
+<span class="n">list2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>            <span class="c1"># change list2</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;list1 = &#39;</span><span class="p">,</span> <span class="n">list1</span><span class="p">)</span> <span class="c1"># why is list1 changed?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+list1 =  [1, 2]
+list2 =  [1, 2]
+list1 =  [99, 2]
+</pre></div></div>
+</div>
+<p>Here, we might have expected <code class="docutils literal"><span class="pre">list1</span></code> to remain as <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2]</span></code> while
+<code class="docutils literal"><span class="pre">list2</span></code> became <code class="docutils literal"><span class="pre">[99,</span> <span class="pre">2]</span></code>. However, the assignment <code class="docutils literal"><span class="pre">h</span> <span class="pre">=</span> <span class="pre">i</span></code> does
+<em>not</em> assign a <em>copy</em> of the values already assigned to <code class="docutils literal"><span class="pre">list1</span></code>.
+Rather, <code class="docutils literal"><span class="pre">list2</span></code> is assigned to the <em>same</em> values. When those values
+change (by modifying either <code class="docutils literal"><span class="pre">list1</span></code> or <code class="docutils literal"><span class="pre">list2</span></code>), they do so for both
+names (<code class="docutils literal"><span class="pre">list1</span></code> and <code class="docutils literal"><span class="pre">list2</span></code>).</p>
+<blockquote>
+<div><strong>Warning</strong>: Given a <code class="docutils literal"><span class="pre">list</span></code> variables <code class="docutils literal"><span class="pre">a</span></code>, the operation
+<code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">a</span></code> does <em>not</em> make a copy of <code class="docutils literal"><span class="pre">a</span></code>&#8216;s elements. Rather, <code class="docutils literal"><span class="pre">b</span></code>
+and <code class="docutils literal"><span class="pre">a</span></code> are two names for the same data. Changing one necessarily
+changes the other.</div></blockquote>
+<p>Actually, this behavior is no so uncommon in programming, although it&#8217;s
+not always the default. Basically, when a variable is created (in any
+language), a certain amount of memory is required to store the values.
+We access those values by using the name of the variable. What Python
+does by default is to assign multiple names to the same memory when we
+make assignments like <code class="docutils literal"><span class="pre">list2</span> <span class="pre">=</span> <span class="pre">list1</span></code> above. For those who have (or
+will have) exposure to C or C++, the same behavior can be observed when
+assigning <em>pointer</em> variables to one another.</p>
+<p>One way to avoid this issue is to create an explicit copy. Built into
+<code class="docutils literal"><span class="pre">list</span></code> is the <code class="docutils literal"><span class="pre">copy</span></code> function, which can be used like</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">list2</span> <span class="o">=</span> <span class="n">list1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">list2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">101</span> <span class="c1"># changes list2, but not list1</span>
+<span class="n">list1</span>
+<span class="n">list2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[99, 2]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[101, 2]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="The-tuple-Type">
+<h2>The <code class="docutils literal"><span class="pre">tuple</span></code> Type<a class="headerlink" href="#The-tuple-Type" title="Permalink to this headline">¶</a></h2>
+<p>Python has another, built-in immutable type called <code class="docutils literal"><span class="pre">tuple</span></code> that, like
+<code class="docutils literal"><span class="pre">list</span></code>, allows one to store a sequence of elements with arbitrary
+types. The clearest way to define a <code class="docutils literal"><span class="pre">tuple</span></code> is via comma-separated
+values enclosed in <em>parentheses</em>, e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(1, 2, 3)
+</pre></div>
+</div>
+</div>
+<p>The parentheses make it very clear what is being defined, but they are
+not necessary. For example, one could define another <code class="docutils literal"><span class="pre">tuple</span></code> via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">D</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">D</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[24]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(1, 3.14, &#39;hello&#39;, array([1, 2, 3]))
+</pre></div>
+</div>
+</div>
+<p>Elements of <code class="docutils literal"><span class="pre">tuple</span></code> variables are accessed following the same indexing
+and slicing rules for lists. However, their elements cannot be
+reassigned because the <code class="docutils literal"><span class="pre">tuple</span></code> type is immutable (so that, e.g.,
+<code class="docutils literal"><span class="pre">D[0]</span> <span class="pre">=</span> <span class="pre">99</span></code> will fail).</p>
+<p>So what does a <code class="docutils literal"><span class="pre">tuple</span></code> variable have to offer? Again, <code class="docutils literal"><span class="pre">dir</span></code> may be
+used:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span> <span class="c1"># a list of str names</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+count
+index
+</pre></div></div>
+</div>
+<p>That&#8217;s not very many functions, and a comparison to <code class="docutils literal"><span class="pre">list</span></code> suggests
+that <code class="docutils literal"><span class="pre">tuple</span></code> is missing anything that would replace, remove, or add to
+its elements.</p>
+<blockquote>
+<div><strong>Exercise</strong>: See what the functions <code class="docutils literal"><span class="pre">tuple.count</span></code> and
+<code class="docutils literal"><span class="pre">tuple.index</span></code> are used to do.</div></blockquote>
+</div>
+<div class="section" id="The-dict-Type">
+<h2>The <code class="docutils literal"><span class="pre">dict</span></code> Type<a class="headerlink" href="#The-dict-Type" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">list</span></code> and <code class="docutils literal"><span class="pre">tuple</span></code> types are the built-in solutions for storing
+sequences of arbitrary elements. Remember, a sequential type is the
+right choice when the relationship between the data stored is positional
+(like word characters, etc.). There are circumstances, though, in which
+data is not really (or only) related by order.</p>
+<p>Consider a perhaps obvious example: <a class="reference external" href="https://www.merriam-webster.com">Webster&#8217;s
+dictionary</a>. Although the entries
+are often stored in sequence (alphabetically, not numerically), the data
+itself is more complex than a single value. Rather, each entry in the
+dictionary consists of two things: a <code class="docutils literal"><span class="pre">key</span></code>, in this the word to be
+defined, and the <code class="docutils literal"><span class="pre">value</span></code>, in this case, the definition of the word.
+Under the hood, the <code class="docutils literal"><span class="pre">key:value</span></code> pairs need not be stored in sequence
+(alphabetically or otherwise), but we should be able to get the
+<code class="docutils literal"><span class="pre">value</span></code> given any <code class="docutils literal"><span class="pre">key</span></code>.</p>
+<p>Python&#8217;s <code class="docutils literal"><span class="pre">dict</span></code> (short for dictionary, of course) provides us with
+such a data structure. A Python <code class="docutils literal"><span class="pre">dict</span></code> variable can have keys of any
+type paired with values of any type. One way to define a <code class="docutils literal"><span class="pre">dict</span></code>
+variable is by starting with the empty dictionary:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">stuff</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">stuff</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[26]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>{}
+</pre></div>
+</div>
+</div>
+<p>We can add a new element by indexing using the key and assigning that
+element to a value, or</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">stuff</span><span class="p">[</span><span class="s1">&#39;some key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;some value&#39;</span>
+<span class="n">stuff</span> <span class="c1"># not empty anymore</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>{&#39;some key&#39;: &#39;some value&#39;}
+</pre></div>
+</div>
+</div>
+<p>We can access the element for any key defined using the same syntax:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">stuff</span><span class="p">[</span><span class="s1">&#39;some key&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[28]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;some value&#39;
+</pre></div>
+</div>
+</div>
+<p>If we try to get a value for a key not in the dictionary, a <code class="docutils literal"><span class="pre">KeyError</span></code>
+(similar to <code class="docutils literal"><span class="pre">IndexError</span></code>) is encountered:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">stuff</span><span class="p">[</span><span class="s1">&#39;some other key&#39;</span><span class="p">]</span> <span class="c1"># not a key in our dictionary</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-29-bc5178045979&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>stuff<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;some other key&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-red-fg"># not a key in our dictionary</span>
+
+<span class="ansi-red-fg">KeyError</span>: &#39;some other key&#39;
+</pre></div></div>
+</div>
+<p>An easy way to check whether a dictionary has a key is to use the <code class="docutils literal"><span class="pre">in</span></code>
+operator. The basic syntax is <code class="docutils literal"><span class="pre">element</span> <span class="pre">in</span> <span class="pre">container</span></code>, and the result
+is <code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code>. The only requirement is that <code class="docutils literal"><span class="pre">container</span></code> is
+iterable, meaning that each of its elements can be inspected. This is
+true for sequential types like <code class="docutils literal"><span class="pre">list</span></code> and <code class="docutils literal"><span class="pre">ndarray</span></code>. It is also true
+for <code class="docutils literal"><span class="pre">dict</span></code> (and we&#8217;ll see how momentarily). So, to check whether
+<code class="docutils literal"><span class="pre">'some</span> <span class="pre">key'</span></code> and <code class="docutils literal"><span class="pre">'some</span> <span class="pre">other</span> <span class="pre">key'</span></code> are in our dictionary, we can
+use</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="s1">&#39;some key&#39;</span> <span class="ow">in</span> <span class="n">stuff</span>
+<span class="s1">&#39;some other key&#39;</span> <span class="ow">in</span> <span class="n">stuff</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[30]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>True
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[30]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>False
+</pre></div>
+</div>
+</div>
+<p>Hence, one can always check that a key exists before accessing a value.</p>
+<p>Dictionaries can also be defined all at once. For example, we can map
+the first few letters of the alphabet to their position via</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">alphanum</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">alphanum</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[31]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>{&#39;a&#39;: 0, &#39;b&#39;: 1, &#39;c&#39;: 2}
+</pre></div>
+</div>
+</div>
+<p><strong>Exercise:</strong> Do <code class="docutils literal"><span class="pre">from</span> <span class="pre">string</span> <span class="pre">import</span> <span class="pre">ascii_lowercase</span> <span class="pre">as</span> <span class="pre">s</span></code>, which
+creates a string <code class="docutils literal"><span class="pre">s</span></code> with the entire alphabet. Then, create your own
+<code class="docutils literal"><span class="pre">alphanum</span></code> dictionary with all 26 letters.</p>
+<p>So what does <code class="docutils literal"><span class="pre">dict</span></code> have? Let&#8217;s see:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">items</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span> <span class="c1"># a list of str names</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+clear
+copy
+fromkeys
+get
+items
+keys
+pop
+popitem
+setdefault
+update
+values
+</pre></div></div>
+</div>
+<p>Some of these look similar to those found in <code class="docutils literal"><span class="pre">list</span></code>, and some are new:
+go look them up via <code class="docutils literal"><span class="pre">help</span></code>. Two useful ones are <code class="docutils literal"><span class="pre">keys</span></code> and
+<code class="docutils literal"><span class="pre">values</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">alphanum</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">alphanum</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[33]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>dict_keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[33]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">alphanum</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">alphanum</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[34]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>dict_values([0, 1, 2])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[34]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[0, 1, 2]
+</pre></div>
+</div>
+</div>
+<p>An application requiring just the keys might be one in which student
+names (and not their student numbers, or grades, or other sensitive
+items) are required. The values might be needed if just grades were
+required, perhaps to do a statistical analysis.</p>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>None at this time.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pythonic Containers</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#What-is-a-sequential-type?">What is a <em>sequential</em> type?</a></li>
+<li><a class="reference internal" href="#The-list-Type">The <code class="docutils literal"><span class="pre">list</span></code> Type</a></li>
+<li><a class="reference internal" href="#Mutability">Mutability</a></li>
+<li><a class="reference internal" href="#The-tuple-Type">The <code class="docutils literal"><span class="pre">tuple</span></code> Type</a></li>
+<li><a class="reference internal" href="#The-dict-Type">The <code class="docutils literal"><span class="pre">dict</span></code> Type</a></li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="More_on_Loops.html" title="previous chapter">More on Loops</a></li>
+      <li>Next: <a href="Processing_Text_Data.html" title="next chapter">Processing Text Data</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/Pythonic_Containers.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/Pythonic_Containers.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

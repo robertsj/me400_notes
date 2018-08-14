@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Numerical Integration &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Numerical Integration &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
     <link rel="next" title="Linear Systems" href="Linear_Systems.html" />
     <link rel="prev" title="Numerical Differentiation" href="Numerical_Differentiation.html" />
    
@@ -33,7 +34,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -201,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Numerical-Integration">
 <h1>Numerical Integration<a class="headerlink" href="#Numerical-Integration" title="Permalink to this headline">¶</a></h1>
@@ -209,8 +214,8 @@ div.nboutput div.output_area.stderr {
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference external" href="Numerical_Differentiaton.ipynb">Numerical_Differentiaton</a>,
 finite-difference approximations were developed and used to evaluate
-derivatives numerically. In this lecture, we’ll explore and implement
-our own numerical methods for evaluation of integrals. We’ll also use
+derivatives numerically. In this lecture, we&#8217;ll explore and implement
+our own numerical methods for evaluation of integrals. We&#8217;ll also use
 the SciPy module for the first time, which provides its own set of tools
 for numerical integration.</p>
 <div class="section" id="Objectives">
@@ -253,11 +258,11 @@ following formal definition for a definite integral:</p>
    \lim_{n \to \infty} \sum^{n}_{i=1} f(i (b-a)/n + a) (b-a)/n\]</div>
 <p>Here, the sum is a <em>Riemann sum</em> (specifically a right-sided sum).
 Integrals are areas under curves, and Riemann sums approximate those
-areas by rectangles. Just as for derivatives, we <em>don’t take the limit</em>
+areas by rectangles. Just as for derivatives, we <em>don&#8217;t take the limit</em>
 but let <span class="math">\(n\)</span> be a finite number. Moreover, we have different Our
 numerical options depending on how we define the rectangles of the
 Riemann sum.</p>
-<p>Let’s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
+<p>Let&#8217;s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
 <span class="math">\(x\in[0, 1]\)</span> with <span class="math">\(n=5\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -278,7 +283,7 @@ Riemann sum.</p>
 </div>
 </div>
 <p>Notice that the height of a rectangle is equal to the function evaluated
-at the rectangle’s right <span class="math">\(x\)</span> coordinate. We call such a sum a
+at the rectangle&#8217;s right <span class="math">\(x\)</span> coordinate. We call such a sum a
 <em>right-sided</em> Riemann sum. For this particular function, this
 right-sided sum leads to some significant over estimation.</p>
 <p>If instead we defined our sum to be</p>
@@ -350,7 +355,7 @@ left-sided sum. Note that the <span class="math">\(x\)</span> points are not eve
 <p>Can we do better? Remember, I said that the forward, backward, and
 central finite-difference approximations have analogous Riemann sums.
 Here, take the right- and left-sided sums to be like the forward and
-backward differences. If you hadn’t noticed, the central difference is
+backward differences. If you hadn&#8217;t noticed, the central difference is
 nothing but an <em>average</em> of the forward and backward differences:</p>
 <div class="math">
 \[\frac{1}{2} \Bigg ( \frac{f(x+h)-f(x)}{h} + \frac{f(x)-f(x-h)}{h} \Bigg ) = \frac{f(x+h)-f(x-h)}{2h}\]</div>
@@ -377,8 +382,8 @@ average value of its <span class="math">\(x\)</span> coordinates, i.e.,</p>
 <img alt="../_images/lectures_Numerical_Integration_8_0.png" src="../_images/lectures_Numerical_Integration_8_0.png" />
 </div>
 </div>
-<p>This method is often called the <strong>midpoint rule</strong>, and it’s probably my
-favorite integration scheme because it’s pretty accurate and dirt simple
+<p>This method is often called the <strong>midpoint rule</strong>, and it&#8217;s probably my
+favorite integration scheme because it&#8217;s pretty accurate and dirt simple
 to implement.</p>
 <p>The alternative is to average the right- and left-sided sums, which
 leads to</p>
@@ -396,7 +401,7 @@ rectangles of heights <span class="math">\(y(x_1)\)</span> and <span class="math
 same <span class="math">\(x\)</span> coordinates <span class="math">\(x_1\)</span> and <span class="math">\(x_2\)</span> is equal to the
 area of the trapezoid whose coordinates include <span class="math">\((x_1, y_1)\)</span> and
 <span class="math">\((x_2, y_2)\)</span>), and the method is known as the <strong>trapezoid rule</strong>.
-(It’s those pesky end-point terms <span class="math">\((a)\)</span> and <span class="math">\(f(b)\)</span> that make
+(It&#8217;s those pesky end-point terms <span class="math">\((a)\)</span> and <span class="math">\(f(b)\)</span> that make
 this rule just a hair less convenient to apply in some cases, so I
 always stick to the midpoint rule when I can!)</p>
 <div class="nbinput docutils container">
@@ -417,9 +422,9 @@ always stick to the midpoint rule when I can!)</p>
 </div>
 </div>
 <p>For a function <span class="math">\(f(x)\)</span> with sufficiently nice properties (beyond
-our scope), it’s not too difficult to estimate the error associated with
+our scope), it&#8217;s not too difficult to estimate the error associated with
 these integrals as <span class="math">\(\Delta = (b-a)/n\)</span> goes to zero (or
-equivalently, <span class="math">\(n \to \infty\)</span>. However, I’ll skip giving away the
+equivalently, <span class="math">\(n \to \infty\)</span>. However, I&#8217;ll skip giving away the
 answers and let you determine these properties by numerical experiments
 in the homework!</p>
 <p>Finally, the integration rules just explored represent the simplest
@@ -432,11 +437,11 @@ right-sided sums, and and the midpoint rule take <span class="math">\(f(x)\)</sp
 <em>constant</em> between adjacent points <span class="math">\(x_i\)</span> and <span class="math">\(x_{i+1}\)</span>,
 while the trapezoid rule assumes <span class="math">\(f(x)\)</span> is <em>linear</em> between
 adjacent points. If <span class="math">\(f(x)\)</span> is assumed to be quadratic between
-<span class="math">\(x_i\)</span> and <span class="math">\(x_{i+2}\)</span>, the result is <a class="reference external" href="http://mathworld.wolfram.com/SimpsonsRule.html">Simpson’s
+<span class="math">\(x_i\)</span> and <span class="math">\(x_{i+2}\)</span>, the result is <a class="reference external" href="http://mathworld.wolfram.com/SimpsonsRule.html">Simpson&#8217;s
 rule</a> (another
 favorite of mine).</p>
 <hr class="docutils" />
-<p><strong>Exercise</strong>: Suppose you accessed your fancy phone’s accelerometer log
+<p><strong>Exercise</strong>: Suppose you accessed your fancy phone&#8217;s accelerometer log
 and extracted the following accelerations (in m/s<span class="math">\(^2\)</span>) and times
 (in s):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span>
@@ -590,12 +595,12 @@ scheme. Here it is in action:</p>
 </div>
 <p>By default, <code class="docutils literal"><span class="pre">quad</span></code> returns both the approximate integral and the
 estimated absolute error. Here, that error is ridiculously small (close
-to machine precision). For many problems, that’s all that one needs to
+to machine precision). For many problems, that&#8217;s all that one needs to
 do in order to compute an integral. However, <code class="docutils literal"><span class="pre">quad</span></code> does have a
 variety of optional input parameters, and, as always, you may learn more
 by executing <code class="docutils literal"><span class="pre">help(quad)</span></code>.</p>
 <p>Other functions in <code class="docutils literal"><span class="pre">scipy.integrate</span></code> that are of interest include
-<code class="docutils literal"><span class="pre">trapz</span></code> (the trapezoid rule) and <code class="docutils literal"><span class="pre">simps</span></code> (Simpson’s rule). Use of
+<code class="docutils literal"><span class="pre">trapz</span></code> (the trapezoid rule) and <code class="docutils literal"><span class="pre">simps</span></code> (Simpson&#8217;s rule). Use of
 <code class="docutils literal"><span class="pre">help</span></code> on each function is recommended, as examples are provided in
 the documentation.</p>
 </div>
@@ -639,15 +644,15 @@ the documentation.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Numerical_Integration.ipynb.txt"
+      <li><a href="../_sources/lectures/Numerical_Integration.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -658,14 +663,14 @@ the documentation.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/Numerical_Integration.ipynb.txt"
+      <a href="../_sources/lectures/Numerical_Integration.txt"
           rel="nofollow">Page source</a>
     </div>
 

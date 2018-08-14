@@ -1,0 +1,392 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 7 - More on Conditionals\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 5](ME400_Lecture_5.ipynb), the basics of programming logic were introduced, including the idea of *selection*. In [Lecture 6](ME400_Lecture_6.ipynb), those concepts were put into practice in Python using the `if`, `elif`, and `else` structure.  In this lesson, we dive into more complicated use cases, focusing on *nested* conditionals and the more complex code resulting from such conditionals.  Along the way, we'll apply the *graphical debugger* in Spyder to help understand the flow of execution (and to catch bugs!).  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "**Continue Monday's example...**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Read and write nested `if` statements\n",
+    "- Explain the difference between syntactical and logical errors\n",
+    "- Use the graphical debugger in Spyder to trace and debug a program\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- nested conditional\n",
+    "- bug\n",
+    "- debugger\n",
+    "- breakpoint\n",
+    "- syntactical error\n",
+    "- logical error\n",
+    "- trace code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Nested Conditionals\n",
+    "\n",
+    "**Example**: Write a program that gets a number from the user, says whether it is odd or even, and if it is odd, whether it is also divisible by 3.  Produce a flowchart."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "n = int(input('enter a number: '))\n",
+    "if n % 2:\n",
+    "#234 <-- 4 spaces for one indentation level\n",
+    "    print('n is odd')\n",
+    "else:\n",
+    "#234\n",
+    "    print('n is even')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Remember that indentation matters!**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: What's the tax on $75000?  Then rewrite *without* nested if's."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "income = float(input('enter your income: '))\n",
+    "tax = 0.0\n",
+    "if income > 13860: # poverty line\n",
+    "    if income > 52500: # median income\n",
+    "        if income > 250000: # average KSU college dean\n",
+    "            tax += (income-250000)*.35\n",
+    "            income = 250000.0\n",
+    "        tax += (income-52500)*.25\n",
+    "        income = 52500\n",
+    "    tax += (income-13860)*.15\n",
+    "print('your tax is ', tax)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Debugging\n",
+    "\n",
+    "> \"Everyone knows that debugging is twice as hard as writing the code in the first place. \n",
+    "> Therefore, if you write the code as cleverly as possible, you are, by \n",
+    "> definition, not smart enough to debug it.\"  \n",
+    "> \n",
+    ">  -[Brian W. Kernighan](https://en.wikipedia.org/wiki/Brian_Kernighan), \n",
+    ">   from *The Elements of Programming Style*, 2nd ed."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Errors are either **syntactical** or **logical**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Syntactical errors arise when the rules of Python (or another language) are broken."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Logical errors arise when the rules of logic are broken.  Sometimes, these lead to *runtime errors*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "if True\n",
+    "    print(\"we forgot our colon!\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "# make an array of three numbers\n",
+    "a = np.array([1, 2, 3])\n",
+    "# define be to be 3 times the third element\n",
+    "b = 3*a[3]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Does this have a bug?  What kind(s)?\n",
+    "\n",
+    "```\n",
+    "class = \"ME 400\"\n",
+    "instructor = \"Roberts\"\n",
+    "print(instructor, \" teaches \", class)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "class = \"ME 400\"\n",
+    "instructor = \"Roberts\"\n",
+    "print(instructor, \" teaches \", class)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Does this have a bug(s)?  What kind?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "food_price = 48.70 # cost of some entrees\n",
+    "booze_price = 15.76 # cost of some refreshments\n",
+    "total_price = food_price + booze_price # total price before tax\n",
+    "kansas = total_price * 0.06 # uncle sam (brownback) portion\n",
+    "riley = total_price * 0.01 # county's cut\n",
+    "manhattan = total_price * 0.01 # city's cut\n",
+    "excise = booze_price * 0.1 # kansas gets more?\n",
+    "print('total bill is ', food_price + booze_price + kansas + manhattan + excise)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Does this have a bug(s)?  What kind?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "import numpy as np\n",
+    "a = np.range(5) # make some numbers\n",
+    "b = a           # copy a\n",
+    "a = a**2        # change a\n",
+    "s = sum(b)      # compute the sum of b\n",
+    "print('I'm smart and know that s is 10!')\n",
+    "\"\"\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Old-School Debugging\n",
+    "\n",
+    "1. Compile (or run) program, see syntax errors, and fix.\n",
+    "2. Compile and run program, notice silly output \n",
+    "3. Put `print` statements everywhere to see what variable has what value and when\n",
+    "4. Comment and uncomment parts of code over and over to find offending lines\n",
+    "5. Cry, rinse, and repeat."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Pro Tips\n",
+    "\n",
+    " 1. Don't make errors in the first place:\n",
+    "    - **Design** your code with flowcharts and pseudocode as applicable\n",
+    "    - **Use defensive programming and unit testing** (future topics)\n",
+    " 2. Know what your code does before you actually run it by **tracing** it by hand \n",
+    " 3. Know what your code does by tracing it via the Spyder graphical **debugger** (or similar tool)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to:\n",
+    "- Read and write nested `if` statements\n",
+    "- Explain the difference between syntactical and logical errors\n",
+    "- Use the graphical debugger in Spyder to trace and debug a program\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

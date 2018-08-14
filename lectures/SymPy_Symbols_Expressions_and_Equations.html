@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 18 - SymPy: Symbols, Expressions, and Equations. &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 18 - SymPy: Symbols, Expressions, and Equations. &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,14 +200,18 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-18---SymPy:-Symbols,-Expressions,-and-Equations.">
 <h1>Lecture 18 - SymPy: Symbols, Expressions, and Equations.<a class="headerlink" href="#Lecture-18---SymPy:-Symbols,-Expressions,-and-Equations." title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>From <a class="reference internal" href="ME400_Lecture_7.html"><span class="doc">Lecture 1</span></a> through <a class="reference internal" href="ME400_Lecture_17.html"><span class="doc">Lecture
-17</span></a>, the focus has been squarely on the
+<p>From <a class="reference external" href="ME400_Lecture_7.ipynb">Lecture 1</a> through <a class="reference external" href="ME400_Lecture_17.ipynb">Lecture
+17</a>, the focus has been squarely on the
 fundamentals of programming, with some basic numerical tools (like
 numerical arrays and plotting) and best practices (like unit testing)
 included along the way. This lecture marks a transition to new topics
@@ -214,7 +219,7 @@ that will leverage the material already covered and provide students
 with tools for solving difficult analytical or numerical problems common
 to upper-level engineering courses. In particular, the SymPy module will
 be used to define <em>symbols</em> and <em>symbolic expressions</em>, leading to a
-very different (but very useful) tool for the engineer’s toolbox.</p>
+very different (but very useful) tool for the engineer&#8217;s toolbox.</p>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
@@ -244,7 +249,7 @@ tools.</li>
 <h2>Symbols<a class="headerlink" href="#Symbols" title="Permalink to this headline">¶</a></h2>
 <p>Symbolic computation, as the name suggests, depends on <em>symbols</em>. Unlike
 numerical computation, in which one manipulates <em>values</em>, symbolic
-computations involves the manipulation of symbols. That’s just like when
+computations involves the manipulation of symbols. That&#8217;s just like when
 you made the jump from grade-school number crunching to algebra for the
 first time. Now, we get to do it again (for, I hope, more interesting
 problems and with the help of Python).</p>
@@ -344,7 +349,7 @@ symbol is assigned. For example, one could (but should <em>not</em>) do</p>
 <div class="section" id="Nicer-Output">
 <h2>Nicer Output<a class="headerlink" href="#Nicer-Output" title="Permalink to this headline">¶</a></h2>
 <p>When a mathematical symbol is defined, it is often given a special font,
-e.g., “x” would be typeset as <span class="math">\(x\)</span> and not <code class="docutils literal"><span class="pre">x</span></code>. SymPy provides a
+e.g., &#8220;x&#8221; would be typeset as <span class="math">\(x\)</span> and not <code class="docutils literal"><span class="pre">x</span></code>. SymPy provides a
 way to get nicer output in IPython consoles and Jupyter notebooks. One
 just needs to do</p>
 <div class="nbinput nblast docutils container">
@@ -375,7 +380,7 @@ just needs to do</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$x$$</div></div>
+\[$$x$$\]</div></div>
 </div>
 <p>This nicely typeset format will be very useful for reading and
 understanding complex, symbolic expressions. In fact, it supports some
@@ -401,7 +406,7 @@ styles work:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left ( x_{0}, \quad y_{0}\right )$$</div></div>
+\[$$\left ( x_{0}, \quad y_{0}\right )$$\]</div></div>
 </div>
 <p>Actually, this output not only confirms that subscripts can be formatted
 as expected, but it shows that SymPy <code class="docutils literal"><span class="pre">symbol</span></code> can be placed in
@@ -430,9 +435,9 @@ mass times the speed of light squared, i.e.,</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$c^{2} m$$</div></div>
+\[$$c^{2} m$$\]</div></div>
 </div>
-<p>Notice that the expression’s order was changed. The particular order of
+<p>Notice that the expression&#8217;s order was changed. The particular order of
 symbols in the stored expression may differ from the expression
 originally entered.</p>
 <p>When storing expressions, Sympy often performs simplification
@@ -454,7 +459,7 @@ automatically, e.g.,</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$x^{4}$$</div></div>
+\[$$x^{4}$$\]</div></div>
 </div>
 <p>but not always, e.g.,</p>
 <div class="nbinput docutils container">
@@ -474,7 +479,7 @@ $$x^{4}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$x \left(x + 2\right)$$</div></div>
+\[$$x \left(x + 2\right)$$\]</div></div>
 </div>
 <p>Just as one can assign the result of evaluated expressions (e.g.,
 <code class="docutils literal"><span class="pre">2**3</span></code>) to a variable name, so too, can symbolic expressions be
@@ -497,10 +502,10 @@ assigned. For example, we can define</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$c^{2} m$$</div></div>
+\[$$c^{2} m$$\]</div></div>
 </div>
 <p>However, now <code class="docutils literal"><span class="pre">E</span></code> is a symbolic variable (here, a
-<code class="docutils literal"><span class="pre">sympy.core.mul.Mul</span></code>, but that’s just a detail) and can be manipulated
+<code class="docutils literal"><span class="pre">sympy.core.mul.Mul</span></code>, but that&#8217;s just a detail) and can be manipulated
 just like any other symbol, e.g.,</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -519,7 +524,7 @@ just like any other symbol, e.g.,</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$c^{4} m^{2}$$</div></div>
+\[$$c^{4} m^{2}$$\]</div></div>
 </div>
 <p>In many cases, we wish to do a sequence of symbolic computations before
 substituting numerical value. We know, for example, that the speed of
@@ -542,7 +547,7 @@ value in <span class="math">\(c\)</span> by</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$9.0 \cdot 10^{16} m$$</div></div>
+\[$$9.0 \cdot 10^{16} m$$\]</div></div>
 </div>
 <p>Note that this does <em>not</em> change the original expression:</p>
 <div class="nbinput docutils container">
@@ -562,7 +567,7 @@ $$9.0 \cdot 10^{16} m$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$c^{2} m$$</div></div>
+\[$$c^{2} m$$\]</div></div>
 </div>
 <p>To save the result of the substitution, one needs to assign it to a new
 name, e.g.,</p>
@@ -584,7 +589,7 @@ name, e.g.,</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$9.0 \cdot 10^{16} m$$</div></div>
+\[$$9.0 \cdot 10^{16} m$$\]</div></div>
 </div>
 <p>You may (or may not) recall that the relativistic mass is given by
 <span class="math">\(m = m_0 / \sqrt{1+(c/v)^2}\)</span>, where <span class="math">\(m_0\)</span> is the rest mass
@@ -608,7 +613,7 @@ substitute this, too, via</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{\frac{c^{2}}{v^{2}} + 1}}$$</div></div>
+\[$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{\frac{c^{2}}{v^{2}} + 1}}$$\]</div></div>
 </div>
 <p>Note three things. First, the argument to <code class="docutils literal"><span class="pre">E.subs</span></code> is a dictionary,
 with keys equal to the symbols being replaced and values equal to what
@@ -634,7 +639,7 @@ value. The solution is to use <em>chained substitution</em>, e.g.,</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{1 + \frac{1}{v^{2}} 9.0 \cdot 10^{16}}}$$</div></div>
+\[$$\frac{9.0 \cdot 10^{16} m_{0}}{\sqrt{1 + \frac{1}{v^{2}} 9.0 \cdot 10^{16}}}$$\]</div></div>
 </div>
 </div>
 <div class="section" id="Symbolic-Equations">
@@ -671,7 +676,7 @@ equation:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$a x = b y$$</div></div>
+\[$$a x = b y$$\]</div></div>
 </div>
 <p>and we could actually assign that equation a name via</p>
 <div class="nbinput nblast docutils container">
@@ -703,7 +708,7 @@ we could do</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ \frac{b y}{a}\right ]$$</div></div>
+\[$$\left [ \frac{b y}{a}\right ]$$\]</div></div>
 </div>
 <p>The result is what we expect, and it is returned as the single element
 of a list.</p>
@@ -726,7 +731,7 @@ find</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ \left \{ a : \frac{b y}{x}\right \}\right ]$$</div></div>
+\[$$\left [ \left \{ a : \frac{b y}{x}\right \}\right ]$$\]</div></div>
 </div>
 <p>Here, the solution is a list also with one element, and that element is
 a dictionary. Apparently, <code class="docutils literal"><span class="pre">sp.solve</span></code> solved for <span class="math">\(a\)</span>, but why?
@@ -748,7 +753,7 @@ Consider the following:</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left [ \left \{ b : \frac{c x}{y}\right \}\right ]$$</div></div>
+\[$$\left [ \left \{ b : \frac{c x}{y}\right \}\right ]$$\]</div></div>
 </div>
 <p>This suggests (but does not prove) that the solution is by default in
 alphabetical order, and if one does not specify the variables to solve.
@@ -763,7 +768,7 @@ to be found by <code class="docutils literal"><span class="pre">solve</span></co
 expression <code class="docutils literal"><span class="pre">expr</span></code> (treated implicitly as <code class="docutils literal"><span class="pre">sp.Eq(expr,</span> <span class="pre">0)</span></code>, or (3) a
 sequence (e.g., <code class="docutils literal"><span class="pre">list</span></code>) of such equations or expressions.</p>
 <p>Notice that <code class="docutils literal"><span class="pre">*symbols</span></code> and <code class="docutils literal"><span class="pre">**flags</span></code> have the special <code class="docutils literal"><span class="pre">*</span></code> and
-<code class="docutils literal"><span class="pre">**</span></code> characters discussed in <a class="reference internal" href="ME400_Lecture_13.html"><span class="doc">Lecture 13</span></a>.
+<code class="docutils literal"><span class="pre">**</span></code> characters discussed in <a class="reference external" href="ME400_Lecture_13.ipynb">Lecture 13</a>.
 Convention usually puts <code class="docutils literal"><span class="pre">*</span></code> with <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**</span></code> with
 <code class="docutils literal"><span class="pre">**kwargs</span></code>. However, the meaning is the same: <code class="docutils literal"><span class="pre">*symbols</span></code> is a
 sequence of position arguments that represent the symbols for which the
@@ -781,7 +786,7 @@ equations are to be solved, while <code class="docutils literal"><span class="pr
 </pre></div>
 </div>
 </div>
-<p>which, as you’ll note, is just an expression. When used in solvers, an
+<p>which, as you&#8217;ll note, is just an expression. When used in solvers, an
 expression <code class="docutils literal"><span class="pre">expr</span></code> is equivalent to the equation <code class="docutils literal"><span class="pre">Eq(expr,</span> <span class="pre">0)</span></code>. We
 can solve the two equations simultaneously via</p>
 <div class="nbinput docutils container">
@@ -801,7 +806,7 @@ can solve the two equations simultaneously via</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left \{ x : \frac{b}{a d - b c}, \quad y : \frac{a}{a d - b c}\right \}$$</div></div>
+\[$$\left \{ x : \frac{b}{a d - b c}, \quad y : \frac{a}{a d - b c}\right \}$$\]</div></div>
 </div>
 <p>Go ahead and verify this by hand, and then take a look to the full SymPy
 tutorial (link below) to check out what sorts of equations (and sets of
@@ -828,7 +833,7 @@ solution <span class="math">\(x_0\)</span>. Substitute <span class="math">\(b = 
 <div class="section" id="Numerical-Evaluation">
 <h2>Numerical Evaluation<a class="headerlink" href="#Numerical-Evaluation" title="Permalink to this headline">¶</a></h2>
 <p>The solution of one equation or a system of equations, linear or
-nonlinear, is generally not the end of one’s analysis. Often, the
+nonlinear, is generally not the end of one&#8217;s analysis. Often, the
 ultimate goal is to produce a final, numerical answer, with all
 problem-specific parameters substituted into the final result.</p>
 <p>Consider the expression</p>
@@ -850,7 +855,7 @@ problem-specific parameters substituted into the final result.</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\sin{\left (x^{3} \right )}$$</div></div>
+\[$$\sin{\left (x^{3} \right )}$$\]</div></div>
 </div>
 <p>Suppose we substitute <span class="math">\(x = 3\)</span>, which can be done via</p>
 <div class="nbinput docutils container">
@@ -871,9 +876,9 @@ $$\sin{\left (x^{3} \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\sin{\left (27 \right )}$$</div></div>
+\[$$\sin{\left (27 \right )}$$\]</div></div>
 </div>
-<p>As clean as this is, it’s not a <em>number</em>. The trick is to use <code class="docutils literal"><span class="pre">evalf</span></code>:</p>
+<p>As clean as this is, it&#8217;s not a <em>number</em>. The trick is to use <code class="docutils literal"><span class="pre">evalf</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [29]:
@@ -891,7 +896,7 @@ $$\sin{\left (27 \right )}$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$0.956375928404503$$</div></div>
+\[$$0.956375928404503$$\]</div></div>
 </div>
 </div>
 <div class="section" id="Other-Symbolic-Tools">
@@ -925,11 +930,11 @@ $$0.956375928404503$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1}{\tan{\left (t \right )}} \left(\left(\sin{\left (t \right )} + \tan{\left (t \right )}\right)^{2} + \cos^{2}{\left (t \right )} - \sec^{2}{\left (t \right )}\right)$$</div></div>
+\[$$\frac{1}{\tan{\left (t \right )}} \left(\left(\sin{\left (t \right )} + \tan{\left (t \right )}\right)^{2} + \cos^{2}{\left (t \right )} - \sec^{2}{\left (t \right )}\right)$$\]</div></div>
 </div>
-<p>Nope. SymPy didn’t simplify what looks to be a fairly formidable
-trigonometric expression. But then again, we didn’t tell it to do so.
-How’s this?</p>
+<p>Nope. SymPy didn&#8217;t simplify what looks to be a fairly formidable
+trigonometric expression. But then again, we didn&#8217;t tell it to do so.
+How&#8217;s this?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [32]:
@@ -947,9 +952,9 @@ How’s this?</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{1 - \frac{\cos{\left (3 t \right )}}{\cos{\left (t \right )}}}{2 \sin{\left (t \right )}}$$</div></div>
+\[$$\frac{1 - \frac{\cos{\left (3 t \right )}}{\cos{\left (t \right )}}}{2 \sin{\left (t \right )}}$$\]</div></div>
 </div>
-<p>That’s a bit cleaner. Exactly what “simplest” means as SymPy does this
+<p>That&#8217;s a bit cleaner. Exactly what &#8220;simplest&#8221; means as SymPy does this
 magic is not really concrete. In fact, SymPy does simplification via a
 sort of <em>heuristic</em> optimization (an area of active research).</p>
 <p>Another way to simplify (at least visually, perhaps) is to <code class="docutils literal"><span class="pre">collect</span></code>
@@ -973,7 +978,7 @@ define</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left(a x + b y\right)^{2} \left(c x + d y\right)$$</div></div>
+\[$$\left(a x + b y\right)^{2} \left(c x + d y\right)$$\]</div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -992,12 +997,12 @@ $$\left(a x + b y\right)^{2} \left(c x + d y\right)$$</div></div>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$a^{2} c x^{3} + a^{2} d x^{2} y + 2 a b c x^{2} y + 2 a b d x y^{2} + b^{2} c x y^{2} + b^{2} d y^{3}$$</div></div>
+\[$$a^{2} c x^{3} + a^{2} d x^{2} y + 2 a b c x^{2} y + 2 a b d x y^{2} + b^{2} c x y^{2} + b^{2} d y^{3}$$\]</div></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">expand</span></code> does exactly what its name suggests: it expands the
 product of sums to individual sums. But gosh, that output is
 complicated. Suppose we want to group together all terms with like
-powers of <span class="math">\(x\)</span>. That’s where <code class="docutils literal"><span class="pre">collect</span></code> comes in:</p>
+powers of <span class="math">\(x\)</span>. That&#8217;s where <code class="docutils literal"><span class="pre">collect</span></code> comes in:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [35]:
@@ -1015,7 +1020,7 @@ powers of <span class="math">\(x\)</span>. That’s where <code class="docutils 
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$a^{2} c x^{3} + b^{2} d y^{3} + x^{2} \left(a^{2} d y + 2 a b c y\right) + x \left(2 a b d y^{2} + b^{2} c y^{2}\right)$$</div></div>
+\[$$a^{2} c x^{3} + b^{2} d y^{3} + x^{2} \left(a^{2} d y + 2 a b c y\right) + x \left(2 a b d y^{2} + b^{2} c y^{2}\right)$$\]</div></div>
 </div>
 <p>With <code class="docutils literal"><span class="pre">simplify</span></code>, <code class="docutils literal"><span class="pre">expand</span></code>, and <code class="docutils literal"><span class="pre">collect</span></code>, one has substantial
 flexibility in manipulating expressions into forms more easily
@@ -1047,7 +1052,7 @@ and, hence, plotting.</p>
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$4.0$$</div></div>
+\[$$4.0$$\]</div></div>
 </div>
 <p>Note something important: the original expression was named <code class="docutils literal"><span class="pre">f</span></code>. To
 keep names straight, I recommend naming any <em>lambdified</em> expression
@@ -1108,7 +1113,7 @@ naming convention and the cool <code class="docutils literal"><span class="pre">
 <img alt="../_images/lectures_SymPy_Symbols_Expressions_and_Equations_80_0.png" src="../_images/lectures_SymPy_Symbols_Expressions_and_Equations_80_0.png" />
 </div>
 </div>
-<p>For those curious, here’s what that <code class="docutils literal"><span class="pre">latex</span></code> function does:</p>
+<p>For those curious, here&#8217;s what that <code class="docutils literal"><span class="pre">latex</span></code> function does:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [39]:
@@ -1133,7 +1138,7 @@ naming convention and the cool <code class="docutils literal"><span class="pre">
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
 <p>Much of what has been covered here is drawn from the <a class="reference external" href="http://docs.sympy.org/latest/tutorial/index.html">SymPy
-tutorial</a>. That’s a
+tutorial</a>. That&#8217;s a
 great resource (as is the rest of the <a class="reference external" href="http://docs.sympy.org/latest/index.html">SymPy
 documentation</a>. Because
 SymPy is a relatively young module, you can expect it to be updated
@@ -1175,15 +1180,15 @@ rather frequently.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/SymPy_Symbols_Expressions_and_Equations.ipynb.txt"
+      <li><a href="../_sources/lectures/SymPy_Symbols_Expressions_and_Equations.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -1194,14 +1199,14 @@ rather frequently.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/SymPy_Symbols_Expressions_and_Equations.ipynb.txt"
+      <a href="../_sources/lectures/SymPy_Symbols_Expressions_and_Equations.txt"
           rel="nofollow">Page source</a>
     </div>
 

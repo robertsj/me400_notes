@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Euler’s Method for Initial-Value Problems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Euler’s Method for Initial-Value Problems &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,10 +200,14 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Euler's-Method-for-Initial-Value-Problems">
-<h1>Euler’s Method for Initial-Value Problems<a class="headerlink" href="#Euler's-Method-for-Initial-Value-Problems" title="Permalink to this headline">¶</a></h1>
+<h1>Euler&#8217;s Method for Initial-Value Problems<a class="headerlink" href="#Euler's-Method-for-Initial-Value-Problems" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we review the basics of <em>first-order</em>, <em>ordinary
@@ -236,7 +241,7 @@ backward-Euler methods.</li>
 at the level covered in MATH 340 (now a pre-requisite for this course).
 That includes deducing general solutions, applying initial conditions,
 and determining complete solutions. In fact, you should also know
-something about Laplace transforms and Euler’s method, the latter
+something about Laplace transforms and Euler&#8217;s method, the latter
 technique which is the focus of this lesson. Specifically, you should,
 given a day or two of review, be able to sit down and complete a good
 chunk of an exam like <a class="reference external" href="https://www.math.ksu.edu/courses/exam-archive/math240/Math240fxS17.pdf">this
@@ -265,9 +270,9 @@ a function of only one variable, the derivatives are <em>ordinary</em> (as
 opposed to <em>partial</em>), and the equation is an <em>ordinary differential
 equation</em> (ODE). In compact notation, such an equation may be written</p>
 <div class="math">
-\begin{equation}
+\[\begin{equation}
     \mathcal{L}f(x) = q(x) \, ,
-\end{equation}</div><p>where <span class="math">\(\mathcal{L}\)</span> is a differential operator. If
+\end{equation}\]</div><p>where <span class="math">\(\mathcal{L}\)</span> is a differential operator. If
 <span class="math">\(\mathcal{L}\)</span> contains only <em>linear combinations</em> of <span class="math">\(f(x)\)</span>
 and its derivates, then <span class="math">\(\mathcal{L}\)</span> is a <em>linear operator</em>, and
 the equation is a <em>linear</em> ODE. If <span class="math">\(q(x) = 0\)</span>, the equation is
@@ -295,7 +300,7 @@ and numerical techniques.</p>
 <p>This is the canonical way to represent a <strong>first-order</strong>, <strong>linear</strong>,
 <strong>initial-value problem</strong> (IVP). It is first order because there is only
 a first derivative. It is an initial-value problem because the unknown
-(here, <span class="math">\(y(t)\)</span>) is specified at some “initial” time. It is linear
+(here, <span class="math">\(y(t)\)</span>) is specified at some &#8220;initial&#8221; time. It is linear
 because <span class="math">\(p(t)\)</span> does not depend on <span class="math">\(y(t)\)</span>.</p>
 <p>A first-order IVP can be used to represent of a number of physical
 phenomena. The first that comes to mind (to me, as a nuclear engineer)
@@ -321,7 +326,7 @@ A simple resistance model is <span class="math">\(F_r = cv\)</span>, where <span
 Hence, the downward force is</p>
 <div class="math">
 \[F(t) = -cv(t) + m g \, .\]</div>
-<p>From Newton’s second law, <span class="math">\(F = ma\)</span>, so we have</p>
+<p>From Newton&#8217;s second law, <span class="math">\(F = ma\)</span>, so we have</p>
 <div class="math">
 \[ma(t) = m \frac{dv}{dt} = -cv(t)  + mg \, ,\]</div>
 <p>or</p>
@@ -341,7 +346,7 @@ falling object to keep accelerating toward earth). The former happens
 when pythons (or neutrons) multiply in nature; thankfully, the <a class="reference external" href="https://en.wikipedia.org/wiki/April_10%E2%80%9311,_2001_tornado_outbreak#Tri-state_hailstorm">hail of
 northeastern
 Kansas</a>
-does reach a terminal velocity. Oh, and I’m not joking about pythons:
+does reach a terminal velocity. Oh, and I&#8217;m not joking about pythons:
 combine the <a class="reference external" href="https://en.wikipedia.org/wiki/Malthusian_growth_model">Malthusian
 model</a> with
 the fact there is an artificial source term due to pet owners releasing
@@ -374,9 +379,9 @@ memory. What I do remember is that we want to find some integration
 factor <span class="math">\(\mu(t)\)</span> such that</p>
 <div class="math">
 \[\frac{d}{dt}[\mu(t) y(t)]  = \mu(t) q\, .\]</div>
-<p><em>Why</em>? We’ve turned the original problem into one for which both sides
+<p><em>Why</em>? We&#8217;ve turned the original problem into one for which both sides
 (<span class="math">\(\mu q\)</span> and <span class="math">\(\frac{d}{dt}[\mu y]\)</span>) can be directly
-integrated like we did for <span class="math">\(y'=ay\)</span>! Let’s apply the product rule:</p>
+integrated like we did for <span class="math">\(y'=ay\)</span>! Let&#8217;s apply the product rule:</p>
 <div class="math">
 \[\frac{d}{dt}[\mu(t) y(t)] = \frac{d\mu}{dt} y(t) + \mu(t) \frac{dy}{dt} = \mu(t) q \, .\]</div>
 <p>By comparison to the original equation, we need</p>
@@ -416,11 +421,11 @@ not, go ahead and solve the IVP.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: My kid <em>hates</em> hot food, so if I make him my (absolute
 delicious grilled-cheese sandwich with 100% real Wisconsin cheese [of
-course]), I’ve got to let it cool down to approximately room temperature
+course]), I&#8217;ve got to let it cool down to approximately room temperature
 (say 70 <span class="math">\({}^{\circ}\)</span>F). If immediately after grilling it, the
 sandwich is 150 <span class="math">\({}^{\circ}\)</span>F, and 5 minutes later, it is
 100<span class="math">\({}^{\circ}\)</span>, <strong>how much longer do I have to let it cool?</strong>
-Assume that Newton’s law of cooling, <span class="math">\(T' = k(T-T_m)\)</span>, applies.
+Assume that Newton&#8217;s law of cooling, <span class="math">\(T' = k(T-T_m)\)</span>, applies.
 (Hint: you <em>do</em> have enough information to solve this problem.)</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Radio-carbon dating is a technique used to determine how
@@ -469,12 +474,12 @@ will be used exclusively.</p>
 prolific mathematician, perhaps second only to <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss">Carl
 Gauss</a>. I point
 him out because the simplest (and probably best known) approach for
-solving <span class="math">\(y' + py = q\)</span> has his name. (Point of trivia: he’s buried
+solving <span class="math">\(y' + py = q\)</span> has his name. (Point of trivia: he&#8217;s buried
 in St. Petersburg, I was quite surprised to learn while strolling
 through an old cemetery).</p>
 <p>The method bearing his name requires the numerical differentiation we
 learned previously. Specifically, we need one of the first-order,
-finite-difference approximations for <span class="math">\(dy/dt\)</span>. You’ll recall those
+finite-difference approximations for <span class="math">\(dy/dt\)</span>. You&#8217;ll recall those
 are the <em>forward difference</em></p>
 <div class="math">
 \[\frac{dy}{dt} = \frac{y(t+\Delta)-y(t)}{\Delta} + \mathcal{O}(\Delta) \, ,\]</div>
@@ -500,8 +505,8 @@ old information.</p>
 this case, that old information is <span class="math">\(y(t-\Delta)\)</span>. However, the
 value of <span class="math">\(y(t)\)</span> at time <span class="math">\(t\)</span> <em>also depends on itself</em> through
 the term <span class="math">\(f(y(t), t)\)</span>. This dependence can make the <em>backward
-Euler</em> method a bit more challenging to apply, but as we’ll see below,
-we’ll get a numerical solution with improved <em>stability</em>.</p>
+Euler</em> method a bit more challenging to apply, but as we&#8217;ll see below,
+we&#8217;ll get a numerical solution with improved <em>stability</em>.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Consider <span class="math">\(y' = q - py(t)\)</span> where <span class="math">\(p\)</span> and
 <span class="math">\(q\)</span> are constant. Given the value of <span class="math">\(y(t_0)\)</span>, determine
@@ -553,7 +558,7 @@ time step <span class="math">\(\Delta\)</span> is used, then <span class="math">
 points <span class="math">\(t_0, t_0+\Delta, t_0+2\Delta, \ldots\)</span>, or</p>
 <div class="math">
 \[t_n = t_0 + n\Delta, \qquad n = 0, 1, 2, \ldots\]</div>
-<p>We could allow for a <span class="math">\(\Delta\)</span> that changes, but we’ll keep it
+<p>We could allow for a <span class="math">\(\Delta\)</span> that changes, but we&#8217;ll keep it
 fixed for simplicity and leave the fancy stuff to SciPy in the next
 lesson. With this notation, the forward Euler method can be written as</p>
 <div class="math">
@@ -565,7 +570,7 @@ lesson. With this notation, the forward Euler method can be written as</p>
 (taking <span class="math">\(t\)</span> to represent time) we wish to evaluate the solution.
 Let that future time be denoted <span class="math">\(T\)</span>, and let the number of steps
 we wish to take be denoted <span class="math">\(N\)</span>. Consequently,
-<span class="math">\(\Delta = (T-t_0)/N\)</span>. We’ll always start at <span class="math">\(t=0\)</span>, so
+<span class="math">\(\Delta = (T-t_0)/N\)</span>. We&#8217;ll always start at <span class="math">\(t=0\)</span>, so
 <span class="math">\(\Delta = T/N\)</span>.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Solve <span class="math">\(y' + y(t) = 10\)</span> for <span class="math">\(y(0) = 0\)</span>,
@@ -637,7 +642,7 @@ with <span class="math">\(\Delta\)</span>? Does that seem reasonable?</p>
 </div>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Implement backward Euler following the exercise above.
-Note, because <span class="math">\(f(y(t), t)\)</span> can in general be nonlinear, you’ll
+Note, because <span class="math">\(f(y(t), t)\)</span> can in general be nonlinear, you&#8217;ll
 need to incorporate a root-finding algorithm, e.g., bisection or Newton.
 Alternatively, use <code class="docutils literal"><span class="pre">fsolve</span></code>.</p>
 <hr class="docutils" />
@@ -663,7 +668,7 @@ and <span class="math">\(f(t, y(t)) = a y(t)^2\)</span>. The latter case leads t
 determine <span class="math">\(y(\Delta)\)</span> using (a) forward Euler and (b) backward
 Euler.</p>
 <hr class="docutils" />
-<p><strong>Exercise</strong>: Consider the following twist on Euler’s method for
+<p><strong>Exercise</strong>: Consider the following twist on Euler&#8217;s method for
 <span class="math">\(\frac{dy}{dt} = f(t)\)</span> using fixed time steps <span class="math">\(\Delta\)</span>:</p>
 <div class="math">
 \[\tilde{y}_{n+1} = y_n + \Delta f(t_n)\]</div>
@@ -674,7 +679,7 @@ Euler.</p>
 method</a> and
 belongs to the famous
 <a class="reference external" href="http://mathworld.wolfram.com/Runge-KuttaMethod.html">Runge-Kutta</a>
-family of methods. This particular version is sometimes called <a class="reference external" href="https://en.wikipedia.org/wiki/Heun%27s_method">Heun’s
+family of methods. This particular version is sometimes called <a class="reference external" href="https://en.wikipedia.org/wiki/Heun%27s_method">Heun&#8217;s
 method</a>.</p>
 <p>Your task is to write a function <code class="docutils literal"><span class="pre">heun_method(f,</span> <span class="pre">y0,</span> <span class="pre">t)</span></code> where <code class="docutils literal"><span class="pre">f</span></code>
 is a callable function, <code class="docutils literal"><span class="pre">y0</span></code> is the initial condition, and <code class="docutils literal"><span class="pre">t</span></code> is an
@@ -768,7 +773,7 @@ question is how that global error at a fixed point in time depends on
 <p>For a given <span class="math">\(t\)</span> and <span class="math">\(\Delta\)</span>, the number of steps is
 <span class="math">\(n = t/\Delta\)</span>, and the global error is therefore</p>
 <div class="math">
-\[\varepsilon(t, \Delta) = y^{FE}(t) - y(t) = \frac{q}{p} [e^{-p t}-(1-\Delta p)^{\frac{t}{\Delta} - 1} ] \, .\]</div>
+\[\varepsilon(t, \Delta) = y \frac{q}{p} [e^{-p t}-(1-\Delta p)^{\frac{t}{\Delta} - 1} ] \, .\]</div>
 <p>Note first that</p>
 <div class="math">
 \[\lim_{\Delta \to 0} (1-\Delta p)^{t/\Delta} = e^{-p t} \, ,\]</div>
@@ -778,7 +783,7 @@ as <span class="math">\(\Delta \to 0\)</span>. That mean the approximate value <
 the correct value when the step size <span class="math">\(\Delta\)</span> vanishes.</p>
 <p>However, for fixed <span class="math">\(t\)</span>, how <em>fast</em> does the error decrease with
 <span class="math">\(\Delta\)</span>? And for fixed <span class="math">\(\Delta\)</span>, how does the error change
-with time? Let’s expand the error <span class="math">\(\varepsilon(t, \Delta)\)</span> about
+with time? Let&#8217;s expand the error <span class="math">\(\varepsilon(t, \Delta)\)</span> about
 <span class="math">\(\Delta = 0\)</span>:</p>
 <div class="math">
 \[\begin{split}\begin{split}
@@ -786,7 +791,7 @@ with time? Let’s expand the error <span class="math">\(\varepsilon(t, \Delta)\
              &amp;=  \Delta \left(\frac{p q}{2} t e^{- p t} - q e^{- p t}\right) + \mathcal{O}(\Delta^2) \\
              &amp;= \mathcal{O}(\Delta) \, .
 \end{split}\end{split}\]</div>
-<p>Evidently, the global error is of first order. However, it’s not clear
+<p>Evidently, the global error is of first order. However, it&#8217;s not clear
 (or easy to determine) exactly how the error depends on <span class="math">\(t\)</span> for
 fixed <span class="math">\(\Delta\)</span>. If we assume <span class="math">\(p &gt; 0\)</span> (i.e., radioactive
 decay and not multiplying pythons), then</p>
@@ -797,7 +802,7 @@ decay and not multiplying pythons), then</p>
 <span class="math">\(\Delta &lt; 2/p\)</span>. To summarize: the global error does not blow up as
 long as <span class="math">\(p &gt; 0\)</span> and <span class="math">\(\Delta &lt; 2/p\)</span>.</p>
 <p>Of course, simply stating such rules is never as exciting as seeing what
-happens when the rules are broken, so we’ll solve <span class="math">\(y' = 2 - y\)</span>
+happens when the rules are broken, so we&#8217;ll solve <span class="math">\(y' = 2 - y\)</span>
 with <span class="math">\(y(0) = 0\)</span> for <span class="math">\(N = 4\)</span>, <span class="math">\(N = 10\)</span>, and
 <span class="math">\(N = 20\)</span>:</p>
 <div class="nbinput docutils container">
@@ -856,7 +861,7 @@ given <span class="math">\(y(1) = 5\)</span> and estimate <span class="math">\(y
 this estimate for <span class="math">\(\Delta = 0.1, 0.01, 0.001, 0.0001\)</span>. How does
 this error depend on <span class="math">\(\Delta\)</span>?</p>
 <hr class="docutils" />
-<p><strong>Exercise</strong>: Repeat the previous exercise using Heun’s method (see a
+<p><strong>Exercise</strong>: Repeat the previous exercise using Heun&#8217;s method (see a
 previous exercise).</p>
 </div>
 <hr class="docutils" />
@@ -874,7 +879,7 @@ previous exercise).</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Euler’s Method for Initial-Value Problems</a><ul>
+<li><a class="reference internal" href="#">Euler&#8217;s Method for Initial-Value Problems</a><ul>
 <li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Prerequisites">Prerequisites</a></li>
@@ -901,15 +906,15 @@ previous exercise).</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/EulersMethodForIVPs.ipynb.txt"
+      <li><a href="../_sources/lectures/EulersMethodForIVPs.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -920,14 +925,14 @@ previous exercise).</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/EulersMethodForIVPs.ipynb.txt"
+      <a href="../_sources/lectures/EulersMethodForIVPs.txt"
           rel="nofollow">Page source</a>
     </div>
 

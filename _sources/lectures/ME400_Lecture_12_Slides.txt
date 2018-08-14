@@ -1,0 +1,378 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 12 - Basics of Functions\n",
+    " \n",
+    "With some simple programs under our belts, it is time to *modularize* our programs by using *functions*.  In this lecture and [Lecture 13](ME400_Lecture_13.ipynb), you will learn how to define your own functions to meet a variety of needs. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define a function that accepts (zero or more) input arguments and returns (zero or more) values.\n",
+    "- Explain the meaning of a named and default argument.\n",
+    "- Use *unpacking* to define multiple variable in a single statement.\n",
+    "- Document functions using appropriate \"docstrings.\"\n",
+    "- Include functions in flowcharts."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- function\n",
+    "- `def`\n",
+    "- call\n",
+    "- argument\n",
+    "- return value\n",
+    "- unpacking\n",
+    "- named (or keyword) argument\n",
+    "- default value\n",
+    "- docstring"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## What is a Function?\n",
+    "\n",
+    "A function is a block of code that can be independently executed (or \"called\") that is usually given input and usually produces output.   Basic structure:\n",
+    "\n",
+    "```python\n",
+    "def function_name(arg0, arg1, ...):  # 0 or more arguments\n",
+    "    \"\"\" A docstring, which is a string that\n",
+    "        explains what this function does.\n",
+    "    \"\"\"\n",
+    "    statement0                       # 0 or more lines of code that do something, but hard to\n",
+    "    statement1                       #   justify a function without at least one!\n",
+    "    # ...\n",
+    "    return rval0, rval1, ...         # 0 or more return values.  Skip return if no values to be returned.\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:  Write a function named `factorial` that computes and returns the factorial of an integer $n$, i.e., $n!$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Write a function named `dropped` that accepts a sequence (e.g., a `list` or `ndarray`) of numbers `a` and an integer `n`.  The function should return a `list` having the same elements as `a` but with the `n` lowest elements removed.  The original order of the elements should be the same.  An example use would be \n",
+    "```\n",
+    "In  [1]: dropped([5, 6, 4, 5, 3, 6], 2)\n",
+    "Out [1]: [5, 6, 5, 6]\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Don't forget a return value (if one is expected)!**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def buggy_sum_function(x):\n",
+    "    s = 0\n",
+    "    for i in range(len(x)):\n",
+    "        s += x[i]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "buggy_sum_function([1, 2]) + buggy_sum_function([3, 4]) # 10?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "In some applications, programs can be simplified by using functions with **multiple return values**.  \n",
+    "\n",
+    "**Example**: Write a function that returns the mean and median of an array of numbers `a`.  Example use case:\n",
+    "```\n",
+    "In  [1]: mean, median = mean_and_median([3, 4, 5, 10])\n",
+    "\n",
+    "In  [2]: mean, median\n",
+    "Out [2]: (5.5, 4.5)\n",
+    "```\n",
+    "\n",
+    "This multiple assignment is called **unpacking**.  See the reading for examples."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Functions with Multiple Arguments\n",
+    "\n",
+    "There is **no limit to the number of arguments** a Python function can accept. \n",
+    "\n",
+    "\n",
+    "Arguments can be made **optional** by providing **default values**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Write a function `adjust_time` that accepts any number of seconds, minutes, and hours and returns the number of seconds, minutes, and hours adjusted so that `m < 60` and `s < 60` as a formatted string like `12:34:16` for 12 hours, 34 minutes, and 16 seconds.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def adjust_time(s, m, h) :\n",
+    "\n",
+    "    return '{:02d}:{:02d}:{:02d}'.format(h, m, s)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "As defined, one *must* pass three values to `adjust_time` for `s`, `m`, and `h`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "adjust_time(67, 55, 100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example** Modify `adjust_time` to provide a default value of zero for `m` and `h`. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "adjust_time(61, 1, 1)\n",
+    "adjust_time(61, 1, 1)\n",
+    "adjust_time(61)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Arguments can be **named** to override a default value while leaving others unchanged."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "adjust_time(1, h=3) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "print(adjust_time(s=1, m=2, h=3))\n",
+    "print(adjust_time(m=2, s=1, h=3))\n",
+    "print(adjust_time(m=2, h=3, s=1))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "adjust_time(1, m=2, 3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to\n",
+    "\n",
+    "- Define a function that accepts (zero or more) input arguments and returns (zero or more) values.\n",
+    "- Explain the meaning of a named and default argument.\n",
+    "- Use *unpacking* to define multiple variable in a single statement.\n",
+    "- Document functions using appropriate \"docstrings.\"\n",
+    "- Include functions in flowcharts."
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

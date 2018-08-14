@@ -1,0 +1,363 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "# Lecture 22 - Optimization\n",
+    " \n",
+    "In [Lecture 21](ME400_Lecture_21.ipynb), the basics of solving nonlinear problems (i.e., \"root finding\") were covered.  Here, the related problem of minimizing (or maximizing) functions is studied, which allows us to find *optimal* solutions in a variety of applications.   "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define objective functions and constraints provided sufficient inputs\n",
+    "- Define examples of linear/nonlinear, constrained/unconstrained optimization problems\n",
+    "- Use `scipy.optimize.minimize` to solve a variety of optimization problems of interest"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- objective function\n",
+    "- unconstrained optimization\n",
+    "- constrained optimization\n",
+    "- linear program\n",
+    "- gradient vector\n",
+    "- Hessian matrix\n",
+    "- `scipy.optimize.minimize`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## When Have You *Optimized* Something?\n",
+    "\n",
+    "Describe one time when you had to determine an *optmimum* solution for some problem.  This could be a problem from any class or from a real-life situation.  If you can't think of something, describe a hypothetical problem.  In all cases, state (1) the feature or features being optimized  and (2) any constraints that apply. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Some Nomenclature\n",
+    "\n",
+    "Optimization problems often defined by minimizing an **objective function**\n",
+    "\n",
+    "$$\n",
+    "  \\min_{x} f(x) \\qquad \\text{or} \\qquad \\min_{\\mathbf{x}} f(\\mathbf{x}) \\\\\n",
+    "$$\n",
+    "\n",
+    "subject to the **inequality constraints**\n",
+    "\n",
+    "$$\n",
+    "  g(x) \\ge 0 \\qquad \\text{or} \\qquad \\mathbf{g(x)}  \\ge \\mathbf{0} \\\\\n",
+    "$$\n",
+    "\n",
+    "and/or the **equality constraints**\n",
+    "\n",
+    "$$\n",
+    "  h(x) = 0 \\qquad \\text{or} \\qquad \\mathbf{h(x)} = \\mathbf{0} \\\\\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Unconstrained Optimization\n",
+    "\n",
+    "When there are no constraints, the problem $\\min_x f(x)$ becomes one of finding *extrema*.  Remember, a function exhibits an extremum where its first derivative vanishes."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "**Example**: Solve $\\min_x f(x)$ where $f(x) = x^2(x-10)+(x+8)^2/1000$ using (1) Newton's method and (2) `minimize`.  This is a *nonlinear* optimization problem."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "x = np.linspace(-15, 15, 1000)\n",
+    "f = lambda z: z*(z-10)*(z**1+8)**2/1000\n",
+    "plt.plot(x, f(x));  plt.ylim(-8, 5); plt.xlabel('x'); plt.ylabel('f(x)')\n",
+    "plt.text(-12, -1, 'local minimum', fontsize=12)\n",
+    "plt.text(-5, 1.5, 'local maximum', fontsize=12)\n",
+    "plt.text(5, -6, 'global minimum', fontsize=12)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# For option 1, we need the first and second derivative of f(x), but\n",
+    "# I'm to lazy to do it by hand!\n",
+    "def diff(f, x, order=1, delta=2e-7):\n",
+    "    \"\"\"Recursively compute any order derivative using central difference\n",
+    "       approximation for the first derivative.  Here, `order` is the derivative\n",
+    "       order (e.g., 1 for first derivative, 2 for second derivative, etc.) and\n",
+    "       `delta` is the finite-difference step size.  Careful: `delta` probably\n",
+    "       should not be made smaller or round-off errors may cause issues!\"\"\"\n",
+    "    if order == 0:\n",
+    "        return f(x)\n",
+    "    else:\n",
+    "        a = diff(f, x+delta, order-1, delta)\n",
+    "        b = diff(f, x-delta, order-1, delta)\n",
+    "        return (a-b)/(2*delta)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# set initial guess\n",
+    "x = 5.0\n",
+    "for it in range(20):\n",
+    "    x = x - diff(f, x)/diff(f, x, 2)\n",
+    "    if abs(diff(f, x)) < 1e-8:\n",
+    "        print('converged at iteration {}'.format(it))\n",
+    "        break\n",
+    "print(\"minimum is at x = {:.4e}\".format(x))\n",
+    "print(\"minimum value is {:.4e}\".format(f(x)))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "#  Option 2 - scipy's minimize\n",
+    "from scipy.optimize import minimize"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Note we needed the *second derivative* of the objective function $f(x)$.  For multi-dimensional problems, compare the following:\n",
+    "\n",
+    "$$\n",
+    "\\begin{split}\n",
+    "  f(x) &\\longrightarrow f(\\mathbf{x})\\\\\n",
+    "  \\frac{df}{dx} &\\longrightarrow \\mathbf{g}(\\mathbf{x}) = \\left[ \\begin{array}{c} \n",
+    "   \\partial f/\\partial x_0 \\\\ \n",
+    "   \\partial f/\\partial x_1 \\\\\n",
+    "   \\vdots \\\\\n",
+    "   \\partial f/\\partial x_{n-1} \n",
+    "   \\end{array} \\right] = \\nabla f(\\mathbf{x}) \\qquad \\text{the gradient vector}  \\\\\n",
+    "  \\frac{d^2f}{dx^2} &\\longrightarrow \\mathbf{H}(\\mathbf{x}) \n",
+    "       = \\begin{bmatrix}\n",
+    "    \\frac{\\partial g_0}{\\partial x_0} & \\frac{\\partial g_0}{\\partial x_1} & \\ldots & \\frac{\\partial g_{0}}{\\partial x_{n-1}} \\\\\n",
+    "    \\frac{\\partial g_1}{\\partial x_0} & \\frac{\\partial g_1}{\\partial x_0} & \\ldots & \\frac{\\partial g_{1}}{\\partial x_{n-1}} \\\\\n",
+    "         &     &  \\ddots &  \\\\\n",
+    "    \\frac{\\partial g_{n-1}}{\\partial x_{n-1}} & \\frac{\\partial g_{n-1}}{\\partial x_{n-1}} & \\ldots & \\frac{\\partial g_{n-1}}{\\partial x_{n-1}} \n",
+    "\\end{bmatrix}  \\qquad \\text{the Hessian matrix} \n",
+    "\\end{split}\n",
+    "$$\n",
+    "\n",
+    "Newton applied with $\\mathbf{g}(\\mathbf{x})$ in place of the residual and $\\mathbf{H}(\\mathbf{x})$ in place of the Jacobian---otherwise, identical!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Constrained Optimization\n",
+    "\n",
+    "Real engineering problems almost always have constraints: maximum stresses allowed, limited resources, etc."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**: Consider the following minimization problem:\n",
+    "\n",
+    "$$\n",
+    "\\begin{split}\n",
+    "  \\min_{\\mathbf{x}} &= x_0^2 - 5 x_1 \\\\\n",
+    "   \\text{subject to:} & \\\\\n",
+    "   x_0 + x_1 & \\leq 5 \\\\\n",
+    "   x_0 & \\leq 10 \n",
+    "\\end{split}\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from scipy.optimize import minimize\n",
+    "f = lambda x:  x[0]**2 - 5*x[1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:    Consider a pet food company that makes two products with inputs summarize as follows:\n",
+    "\n",
+    "|   | Meaties  | Yummies  |\n",
+    "|---|---|---|\n",
+    "| Sales prices per package  | \\$2.80  | \\$2.00  |\n",
+    "| Raw materials per package  |   |   |\n",
+    "|  cereal  | 2 lb  |  3 lb |\n",
+    "|  meat     | 3 lb  |  1.5 lb |\n",
+    "| Variable cost-blending and packaging | \\$0.25/package | \\$0.20/package |\n",
+    "\n",
+    "| Resources |   |\n",
+    "|-----------|---|\n",
+    "| maximum Meaties production/month   | 90,000 |\n",
+    "| cereal/month | 400,000 lb |\n",
+    "|    cost    | \\$0.20/lb |\n",
+    "| meat/month | 300,000 lb |\n",
+    "|   cost     | \\$0.50/lb |\n",
+    "\n",
+    "How should the company allocate its resources each month?\n",
+    "\n",
+    "(From http://www.uky.edu/~dsianita/300/online/LP.pdf)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define objective functions and constraints provided sufficient inputs\n",
+    "- Define examples of linear/nonlinear, constrained/unconstrained optimization problems\n",
+    "- Use `scipy.optimize.minimize` to solve a variety of optimization problems of interest"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

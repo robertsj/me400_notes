@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 13 - More on Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 13 - More on Functions &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,11 +200,15 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-13---More-on-Functions">
 <h1>Lecture 13 - More on Functions<a class="headerlink" href="#Lecture-13---More-on-Functions" title="Permalink to this headline">¶</a></h1>
-<p>In <a class="reference internal" href="ME400_Lecture_12.html"><span class="doc">Lecture 12</span></a>, the basics of defining
+<p>In <a class="reference external" href="ME400_Lecture_12.ipynb">Lecture 12</a>, the basics of defining
 functions were presented. In this lecture, more advanced features of
 function definitions are presented, including the use of the special
 <code class="docutils literal"><span class="pre">*arg</span></code> and <code class="docutils literal"><span class="pre">**kwarg</span></code> structures. In addition, anonymous <code class="docutils literal"><span class="pre">lambda</span></code>
@@ -235,9 +240,9 @@ functions and the use of functions that call themselves (i.e.,
 </ul>
 <div class="section" id="*args-and-**kwargs">
 <h3><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code><a class="headerlink" href="#*args-and-**kwargs" title="Permalink to this headline">¶</a></h3>
-<p>What on earth are <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>? Before moving along, let’s
-look at a function introduced back in <a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lecture
-3</span></a>: <code class="docutils literal"><span class="pre">plt.plot</span></code>.</p>
+<p>What on earth are <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>? Before moving along, let&#8217;s
+look at a function introduced back in <a class="reference external" href="ME400_Lecture_3.ipynb">Lecture
+3</a>: <code class="docutils literal"><span class="pre">plt.plot</span></code>.</p>
 <p>Can we learn <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> by example?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -256,28 +261,8 @@ look at a function introduced back in <a class="reference internal" href="ME400_
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">demo_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
 </pre></div>
 </div>
 </div>
@@ -393,16 +378,6 @@ recursion is ending!
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p><strong>Exercise</strong>: Sum an array recursively.</p>
 </div>
 <div class="section" id="Recap">
@@ -449,15 +424,15 @@ recursion is ending!
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_13_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_13_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -468,14 +443,14 @@ recursion is ending!
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_13_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_13_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

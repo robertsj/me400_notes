@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 2 - Basic Operators and Built-In Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 2 - Basic Operators and Built-In Functions &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,16 +200,20 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-2---Basic-Operators-and-Built-In-Functions">
 <h1>Lecture 2 - Basic Operators and Built-In Functions<a class="headerlink" href="#Lecture-2---Basic-Operators-and-Built-In-Functions" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lesson, we’ll continue our study of basic types from <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture
-1</span></a>, incorporating operators (arithmetic and
+<p>In this lesson, we&#8217;ll continue our study of basic types from <a class="reference external" href="ME400_Lecture_1.ipynb">Lecture
+1</a>, incorporating operators (arithmetic and
 otherwise) along with some very useful built-in functions. By the end,
-we’ll construct our very first (albeit, simple)
+we&#8217;ll construct our very first (albeit, simple)
 <a class="reference external" href="https://en.wikipedia.org/wiki/Computer_program">program</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -255,7 +260,7 @@ and their values</em></li>
 </div>
 <div class="section" id="Python-Operators">
 <h2>Python Operators<a class="headerlink" href="#Python-Operators" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture 1</span></a>, we saw several examples of the
+<p>In <a class="reference external" href="ME400_Lecture_1.ipynb">Lecture 1</a>, we saw several examples of the
 form <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code>, where the variable <code class="docutils literal"><span class="pre">a</span></code> is <em>assigned</em> the value <code class="docutils literal"><span class="pre">1</span></code>.
 Here, <code class="docutils literal"><span class="pre">=</span></code> is the <em>assignment</em> operator. The entire line of code
 <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code> is a <em>statement</em>.</p>
@@ -512,7 +517,7 @@ computer programs.</p>
 </div>
 <p>A flowchart for computing the volume of a sphere,
 <span class="math">\(V = 4\pi r^3/3\)</span>.</p>
-<p>This simple flowchart highlights a few of the key features we’ll use
+<p>This simple flowchart highlights a few of the key features we&#8217;ll use
 later on in flowcharts:</p>
 <ul class="simple">
 <li><em>arrows</em> represent the flow of the program from one block to the next</li>
@@ -576,15 +581,15 @@ and their values</em></li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_2_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_2_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -595,14 +600,14 @@ and their values</em></li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_2_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_2_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -1,0 +1,357 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 14 - Searching\n",
+    " \n",
+    "In this lecture and [Lecture 15](ME400_Lecture_15.ipynb), we tackle two of the most important practical problems in computing: *searching* and *sorting*.  We'll start with *searching* in this lecture because it is the simpler problem, but efficient searching depends on sorted values.  Along the way, algorithms will be classified by their *order*, a way to describe how good (or bad) an algorithm is for problems of different sizes."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Search an array of numbers using a linear search.\n",
+    "- Search an array of numbers using a binary search.\n",
+    "- Conf what is meant by order and use it to compare algorithms\n",
+    "- Perform simple, numerical experiments to confirm the order of an algorithm"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- linear search\n",
+    "- binary search\n",
+    "- `time.time()`\n",
+    "- numerical experiment\n",
+    "- order\n",
+    "- $\\mathcal{O}$ (big-O) notation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## The Basic, Linear Search"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**The Problem**: given a sequence of values, find the location of the element in the sequence equal to some value of interest. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Question**: Does the order of the elements matter?  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```\n",
+    "\"\"\"Algorithm for linear search of an unsorted sequence\"\"\"\n",
+    "Input: a, n, v # sequence, number elements, value of interest\n",
+    "Set location = Not found\n",
+    "Set i = 0\n",
+    "While ________\n",
+    "    If ________ then\n",
+    "        Set ________\n",
+    "        Break  # could we do this without break?\n",
+    "Output: location\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## When Searching for Equality is Not Enough\n",
+    "\n",
+    "What if one wants to find\n",
+    "- The location of an element in a sequence equal to some value or, *if not found*,\n",
+    "- The location of the value that is closest to but less/greater than the value of interest.  **Sorted elements are needed---we'll cover these algorithms next time**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:  Modify the linear search algorithm to return the location of the first match or, if no match, then the element closest to but less than the target value. *Assume* that the sequence is sorted in *increasing* order."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "\n",
+    "```\n",
+    "\"\"\"Algorithm for linear search of a sorted sequence\"\"\"\n",
+    "Input: a, n, v # sequence, number elements, value of interest\n",
+    "Set location = Not found\n",
+    "Set i = 0\n",
+    "While i < n\n",
+    "    If a[i] == v then\n",
+    "        Set location = i\n",
+    "        Break  # could we do this without break?\n",
+    "Output: location\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## A Bit About Order\n",
+    "\n",
+    "Why call linear search *linear*? "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "- elements are looked at in order; usually, that's called *sequential* but *linear* seems okay"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "- the number of comparisons (e.g., `a[i] > v`) requires depends linearly on the number of elements, i.e., the number is proportional to $n$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The fancy way to say it: \n",
+    " - **order n** \n",
+    " - $\\mathcal{O}(n)$ (this is \"Big O\" notation)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The computational cost of an algorithm (time and, sometimes, memory) is often proportional to its order.  **Smaller order means a faster algorithm.**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Binary Search\n",
+    "\n",
+    "**Linear search** is easy to understand and easy to implement, but is it what you should use to search *sorted data*?\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Better approach for *sorted data*: check the middle of the sequence to decide in which half the value lives (if it does at all). Then, check the middle value of the new half, and repeat."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The process just described is the basic idea of **binary search** and is the simplest of **divide and conquer** algorithms."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### The basic algorithm\n",
+    "\n",
+    "```\n",
+    " 0. \"\"\"Algorithm for binary search of a sorted sequence\"\"\"\n",
+    " 1. Input: a, n, v # sorted sequence, its length, and value\n",
+    " 2. Set location = Not Found\n",
+    " 3. Set L = 0           \n",
+    " 4. Set R = n - 1\n",
+    " 5. While L <= R\n",
+    " 6.     Set C = (L + R) // 2 \n",
+    " 7.     If v == a[C] then\n",
+    " 8.         Set location = C\n",
+    " 9.         Break\n",
+    "10.     If v < a[C] then\n",
+    "11.         Set R = C - 1\n",
+    "12.     If v > a[C] then\n",
+    "13.         Set L = C + 1\n",
+    "14.  Output: location\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exercise**: Step through this algorithm for `a = [1, 3, 7, 9, 11]` and `v = 3`.  Do I have a volunteer to trace this algorithm for these inputs?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Back to Order\n",
+    "\n",
+    "Whereas linear search is $\\mathcal{O}(n)$, binary search is $\\mathcal{O}(\\log n)$ (i.e., \"log n\")."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Numerical experiments** are a great way to investigate algorithms and their performance.  To test search algorithms, we need:\n",
+    " - random arrays\n",
+    " - (and/or) random value to search\n",
+    " - arrays of different sizes\n",
+    " - a way to record how long it takes to search"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "By now, you should be able to\n",
+    "\n",
+    "- Search an array of numbers using a linear search.\n",
+    "- Search an array of numbers using a binary search.\n",
+    "- Describe what is meant by order and use it to compare algorithms\n",
+    "- Perform simple, numerical experiments to confirm the order of an algorithm"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

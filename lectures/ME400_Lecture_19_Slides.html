@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 19 - Numerical Integration &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 19 - Numerical Integration &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,13 +200,17 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-19---Numerical-Integration">
 <h1>Lecture 19 - Numerical Integration<a class="headerlink" href="#Lecture-19---Numerical-Integration" title="Permalink to this headline">¶</a></h1>
 <p>Last time, finite-difference approximations were developed and used to
-evaluate derivatives numerically. In this lecture, we’ll explore and
-implement our own numerical methods for evaluation of integrals. We’ll
+evaluate derivatives numerically. In this lecture, we&#8217;ll explore and
+implement our own numerical methods for evaluation of integrals. We&#8217;ll
 also use the SciPy module for the first time, which provides its own set
 of tools for numerical integration.</p>
 <div class="section" id="Objectives">
@@ -244,7 +249,7 @@ how we define the rectangles (or other shapes).</p>
    \overbrace{\frac{b-a}{n}}^{\Delta}\]</div>
 <p>for uniformly spaced points
 <span class="math">\(x_i = a + \Delta, a + 2\Delta, \ldots, b - \Delta\)</span>.</p>
-<p>If we <em>don’t take the limit</em>, we have the <strong>right-sided Riemann sum</strong>
+<p>If we <em>don&#8217;t take the limit</em>, we have the <strong>right-sided Riemann sum</strong>
 approximation</p>
 <div class="math">
 \[\int^b_a f(x) dx \approx \Delta \sum^{n}_{i=1} f \left ( i \Delta + a \right )\]</div>
@@ -254,7 +259,7 @@ approximation</p>
 <p>and <span class="math">\(n\)</span> is the number of rectangles.</p>
 <p><em>Note</em>: the formula is for <em>constant</em> step <span class="math">\(\Delta\)</span>! Put
 <span class="math">\(\Delta_i\)</span> inside the sum if not constant.</p>
-<p>Let’s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
+<p>Let&#8217;s look at this concretely for <span class="math">\(f(x) = x^2\)</span> over
 <span class="math">\(x\in[0, 1]\)</span> with <span class="math">\(n=5\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -270,8 +275,9 @@ approximation</p>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_19_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_19_Slides_7_0.png" />
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;Figure size 640x480 with 1 Axes&gt;
+</pre></div>
 </div>
 </div>
 <p>If instead we defined our sum to be</p>
@@ -425,28 +431,8 @@ quad(func, a, b, args=(), full_output=0, epsabs=1.49e-08, epsrel=1.49e-08, limit
 </div>
 <p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
 <span class="math">\(\int^2_0 e^x dx = e^2 - 1\)</span>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
 <span class="math">\(\int^1_0 (ax^2 + bx + c)dx\)</span> for <span class="math">\(a=b=c=1\)</span>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p><strong>Exercise</strong>: The entropy change of an ideal gas from <span class="math">\((T_1, p_1)\)</span>
 to <span class="math">\((T_2, p_2)\)</span> is</p>
 <div class="math">
@@ -470,16 +456,6 @@ Riemann sums, the mid-point rule, and the trapezoid rule.</li>
 of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
 <li>Establish the order of an integration scheme using graphical means</li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -515,15 +491,15 @@ of <code class="docutils literal"><span class="pre">scipy.integrate</span></code
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_19_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_19_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -534,14 +510,14 @@ of <code class="docutils literal"><span class="pre">scipy.integrate</span></code
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_19_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_19_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

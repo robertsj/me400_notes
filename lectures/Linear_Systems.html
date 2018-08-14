@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Linear Systems &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Linear Systems &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
     <link rel="next" title="Root Finding" href="Root_Finding.html" />
     <link rel="prev" title="Numerical Integration" href="Numerical_Integration.html" />
    
@@ -33,7 +34,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -201,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Linear-Systems">
 <h1>Linear Systems<a class="headerlink" href="#Linear-Systems" title="Permalink to this headline">¶</a></h1>
@@ -210,7 +215,7 @@ div.nboutput div.output_area.stderr {
 <p>In this lecture, we consider the linear system
 <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>, where <span class="math">\(\mathbf{A}\)</span> is a square
 <span class="math">\(n\times n\)</span> matrix, while both <span class="math">\(\mathbf{x}\)</span> and
-<span class="math">\(\mathbf{b}\)</span> are vectors of <span class="math">\(n\)</span> elements. We’ll examine the
+<span class="math">\(\mathbf{b}\)</span> are vectors of <span class="math">\(n\)</span> elements. We&#8217;ll examine the
 basic <em>elimination</em> algorithm and review how to set up and solve such
 systems with NumPy.</p>
 <div class="section" id="Objectives">
@@ -239,7 +244,7 @@ inputs.</li>
 </div>
 <div class="section" id="What-Is-A-Linear-System,-and-When-Can-It-Be-Solved?">
 <h2>What Is A Linear System, and When Can It Be Solved?<a class="headerlink" href="#What-Is-A-Linear-System,-and-When-Can-It-Be-Solved?" title="Permalink to this headline">¶</a></h2>
-<p>From an <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">earlier reading</span></a>, the basic mechanics
+<p>From an <a class="reference external" href="ME400_Lecture_4.ipynb">earlier reading</a>, the basic mechanics
 of vectors, matrices, and their products was reviewed using NumPy
 arrays. In addition, a very quick glance at solving small system was
 given. Here, it helps to review some fundamentals in a bit more depth
@@ -271,13 +276,13 @@ for the <span class="math">\(3\times 3\)</span> case, we have</p>
 <span class="math">\(\mathbf{w}\)</span>. The common way is to note that</p>
 <div class="math">
 \[w_i = a_{i0} v_0 + a_{i1} v_1 + a_{i2} v_2 = \mathbf{a}_{i:}^T \mathbf{v} = \mathbf{a}_{i:}\cdot \mathbf{v} \, .\]</div>
-<p>Here, I’m leveraging the idea of <em>slicing</em>, so that
+<p>Here, I&#8217;m leveraging the idea of <em>slicing</em>, so that
 <span class="math">\(\mathbf{a}_{i:}\)</span> represents the <span class="math">\(i\)</span>th row of the original
 matrix <span class="math">\(\mathbf{A}\)</span>. Viewed this way, the matrix-vector product is
 actually a series of dot products. Specifically, each element of
 <span class="math">\(\mathbf{w}\)</span> is the dot product of one row of <span class="math">\(\mathbf{A}\)</span>
-with the vector <span class="math">\(\mathbf{v}\)</span>, just like in the <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">previous
-reading</span></a>.</p>
+with the vector <span class="math">\(\mathbf{v}\)</span>, just like in the <a class="reference external" href="ME400_Lecture_4.ipynb">previous
+reading</a>.</p>
 <p>However, note the following way to represent <span class="math">\(\mathbf{w}\)</span>:</p>
 <div class="math">
 \[\begin{split}  \mathbf{w} =
@@ -302,17 +307,17 @@ v_2 \left[ \begin{array}{c}
 original matrix <span class="math">\(\mathbf{A}\)</span>. With this view of
 <span class="math">\(\mathbf{w}\)</span>, I hope you see that <span class="math">\(\mathbf{w}\)</span> is a <em>linear
 combination of the columns</em> of <span class="math">\(\mathbf{A}\)</span>. All possible linear
-combinations of <span class="math">\(\mathbf{A}\)</span>‘s columns has a special name: the
+combinations of <span class="math">\(\mathbf{A}\)</span>&#8216;s columns has a special name: the
 <em>column space</em> of <span class="math">\(\mathbf{A}\)</span>.</p>
 <blockquote>
 <div>The <em>column space</em> of a matrix <span class="math">\(\mathbf{A}\)</span> represents all
 possible linear combinations of its columns.</div></blockquote>
 <p>Now, what has the column space to do with linear systems? A lot, it
 turns out. Consider the linear system <span class="math">\(\mathbf{Ax} = \mathbf{b}\)</span>.
-We’ll take <span class="math">\(\mathbf{A}\)</span> to be a square, <span class="math">\(m\times m\)</span> matrix,
+We&#8217;ll take <span class="math">\(\mathbf{A}\)</span> to be a square, <span class="math">\(m\times m\)</span> matrix,
 with <span class="math">\(\mathbf{x}\)</span> and <span class="math">\(\mathbf{b}\)</span> each having <span class="math">\(m\)</span>
-elements. That’s <span class="math">\(m\)</span> equations for <span class="math">\(m\)</span> unknowns, and in
-theory, it can be solved. However, let’s view the system explicitly:</p>
+elements. That&#8217;s <span class="math">\(m\)</span> equations for <span class="math">\(m\)</span> unknowns, and in
+theory, it can be solved. However, let&#8217;s view the system explicitly:</p>
 <div class="math">
 \[\begin{split}\begin{split}
 \mathbf{Ax} &amp; =
@@ -341,8 +346,8 @@ columns space of <span class="math">\(\mathbf{A}\)</span>.</p>
 <span class="math">\(\mathbf{A}\)</span> has at least one column that is a linear combination
 of its other columns. That is to say, the columns of such an
 <span class="math">\(\mathbf{A}\)</span> are dependent. Moreover, <span class="math">\(\mathbf{A}\)</span> is <em>not
-invertible</em>, and <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> cannot be solved. Let’s
-hope for good <span class="math">\(\mathbf{A}\)</span>‘s, and we’ll handle cases when that’s
+invertible</em>, and <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> cannot be solved. Let&#8217;s
+hope for good <span class="math">\(\mathbf{A}\)</span>&#8216;s, and we&#8217;ll handle cases when that&#8217;s
 not true as needed.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Why does</p>
@@ -380,7 +385,7 @@ of the matrix, so <span class="math">\(x_0\)</span> could be 1 and <span class="
 If you look closely, <span class="math">\(x_0 = 0\)</span> and <span class="math">\(x_1 = 1/2\)</span> is also a
 solution, and there are infinitely more. The important thing to note is
 that the second column of <span class="math">\(\mathbf{A}\)</span> is equal to two times its
-first column—they are dependent, and in such cases, there are either
+first column&#8212;they are dependent, and in such cases, there are either
 an infinite number of solutions (as for <span class="math">\(\mathbf{b}=[1, 1]^T\)</span>) or
 no solution (as for <span class="math">\(\mathbf{b}=[1, 0]^T\)</span>). For the latter case,
 no combination of <span class="math">\([1, 1]^T\)</span> and <span class="math">\([2, 2]^T\)</span> can yield
@@ -499,7 +504,7 @@ the row we are adding to others. Often, 2 is called the <em>pivot</em>. More
 generally, the pivot is on the main diagonal, and everything below it in
 the same column is to be eliminated. Things go bad when the pivot is
 zero because anything divided by zero is undefined.</p>
-<p>Let’s formalize this elimination process using (some rather) loose
+<p>Let&#8217;s formalize this elimination process using (some rather) loose
 pseudocode for a square system of any size. Here, the output will be
 <span class="math">\(\mathbf{U}\)</span> (from <span class="math">\(\mathbf{A})\)</span> and the adjust right-hand
 side vector <span class="math">\(\mathbf{c}\)</span> (from <span class="math">\(\mathbf{b}\)</span>):</p>
@@ -744,7 +749,7 @@ using SciPy. Recall that the LU factorization of <span class="math">\(\mathbf{A}
 \[\mathbf{A} = \mathbf{LU} \, ,\]</div>
 <p>where <span class="math">\(\mathbf{U}\)</span> is an upper triangle matrix and
 <span class="math">\(\mathbf{L}\)</span> is a lower triangular matrix with ones on the main
-diagonal. It turns out, <span class="math">\(\mathbf{U}\)</span> is what we’ve computed all
+diagonal. It turns out, <span class="math">\(\mathbf{U}\)</span> is what we&#8217;ve computed all
 along during elimination, while the <code class="docutils literal"><span class="pre">multiple</span></code> defined in elimination
 used to adjust element <span class="math">\(u_{ij}\)</span> is actually <span class="math">\(1/l_{ij}\)</span>.
 Hence, we could define <span class="math">\(\mathbf{L}\)</span> as part of the elimination
@@ -806,8 +811,8 @@ using our own <code class="docutils literal"><span class="pre">eliminate</span><
 </pre></div>
 </div>
 </div>
-<p>What’s that matrix <span class="math">\(\mathbf{P}\)</span>? It’s a permutation matrix. Here,
-it’s just the identity, but watch what happens when we compute the LU
+<p>What&#8217;s that matrix <span class="math">\(\mathbf{P}\)</span>? It&#8217;s a permutation matrix. Here,
+it&#8217;s just the identity, but watch what happens when we compute the LU
 factorization of this matrix:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -877,20 +882,20 @@ Hence, we still have <span class="math">\(\mathbf{A}=\mathbf{LU}\)</span>, and t
 </pre></div>
 </div>
 </div>
-<p>You’ll see why we needed permutation of <span class="math">\(\mathbf{B}\)</span>. Look at that
+<p>You&#8217;ll see why we needed permutation of <span class="math">\(\mathbf{B}\)</span>. Look at that
 very first element: a zero pivot. (Try it yourself by modifying the code
 from above!). The trick is to find a better row. If there is a nonzero
 element below the zero pivot, then that row can be swapped with the row
 in question. If no such rows can be found, the game is over! No more
 pivots means not invertible.</p>
-<p>Even when a pivot exists, it’s not always the best one possible. Imagine
+<p>Even when a pivot exists, it&#8217;s not always the best one possible. Imagine
 a pivot equal to <span class="math">\(10^{-12}\)</span>. That means division by a small
 number, which leads to a big number. Addition of a big number to smaller
 numbers leads to something call <em>round-off error</em>, due to which
 precision of a result is lost. Hence, a different pivot might be better,
 and choosing the one of largest magnitude is the process called <em>partial
 pivoting</em>, which is pretty common in production-level solvers (like
-SciPy’s LU implementation).</p>
+SciPy&#8217;s LU implementation).</p>
 </div>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
@@ -931,15 +936,15 @@ SciPy’s LU implementation).</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Linear_Systems.ipynb.txt"
+      <li><a href="../_sources/lectures/Linear_Systems.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -950,14 +955,14 @@ SciPy’s LU implementation).</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/Linear_Systems.ipynb.txt"
+      <a href="../_sources/lectures/Linear_Systems.txt"
           rel="nofollow">Page source</a>
     </div>
 

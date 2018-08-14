@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 7 - More on Conditionals &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 7 - More on Conditionals &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,21 +200,25 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-7---More-on-Conditionals">
 <h1>Lecture 7 - More on Conditionals<a class="headerlink" href="#Lecture-7---More-on-Conditionals" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture 5</span></a>, the basics of programming
-logic were introduced, including the idea of <em>selection</em>. In <a class="reference internal" href="ME400_Lecture_6.html"><span class="doc">Lecture
-6</span></a>, those concepts were put into practice in
+<p>In <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 5</a>, the basics of programming
+logic were introduced, including the idea of <em>selection</em>. In <a class="reference external" href="ME400_Lecture_6.ipynb">Lecture
+6</a>, those concepts were put into practice in
 Python using the <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">elif</span></code>, and <code class="docutils literal"><span class="pre">else</span></code> structure. In this
 lesson, we dive into more complicated use cases, focusing on <em>nested</em>
 conditionals and the more complex code resulting from such conditionals.
-Along the way, we’ll apply the <em>graphical debugger</em> in Spyder to help
+Along the way, we&#8217;ll apply the <em>graphical debugger</em> in Spyder to help
 understand the flow of execution (and to catch bugs!).</p>
-<p><strong>Continue Monday’s example…</strong></p>
+<p><strong>Continue Monday&#8217;s example...</strong></p>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
@@ -264,7 +269,7 @@ divisible by 3. Produce a flowchart.</p>
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-0efe9b85c0d7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-243d3a5437cb&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>n <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter a number: &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">if</span> n <span class="ansi-blue-fg">%</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">:</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-red-fg">#234 &lt;-- 4 spaces for one indentation level</span>
@@ -272,18 +277,18 @@ divisible by 3. Produce a flowchart.</p>
 <span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
 
 <span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
-<span class="ansi-green-intense-fg ansi-bold">    698</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    699</span>             raise StdinNotImplementedError(
-<span class="ansi-green-fg">--&gt; 700</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">    701</span>             )
-<span class="ansi-green-intense-fg ansi-bold">    702</span>         return self._input_request(str(prompt),
+<span class="ansi-green-intense-fg ansi-bold">    697</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>             raise StdinNotImplementedError(
+<span class="ansi-green-fg">--&gt; 699</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    700</span>             )
+<span class="ansi-green-intense-fg ansi-bold">    701</span>         return self._input_request(str(prompt),
 
 <span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
 </pre></div></div>
 </div>
 <p><strong>Remember that indentation matters!</strong></p>
-<p><strong>Example</strong>: What’s the tax on $75000? Then rewrite <em>without</em> nested
-if’s.</p>
+<p><strong>Example</strong>: What&#8217;s the tax on $75000? Then rewrite <em>without</em> nested
+if&#8217;s.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
@@ -311,7 +316,7 @@ if’s.</p>
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-baba98be9240&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-2-eea96172ef49&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>income <span class="ansi-blue-fg">=</span> float<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter your income: &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> tax <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">if</span> income <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">13860</span><span class="ansi-blue-fg">:</span> <span class="ansi-red-fg"># poverty line</span>
@@ -319,11 +324,11 @@ if’s.</p>
 <span class="ansi-green-intense-fg ansi-bold">      5</span>         <span class="ansi-green-fg">if</span> income <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">250000</span><span class="ansi-blue-fg">:</span> <span class="ansi-red-fg"># average KSU college dean</span>
 
 <span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
-<span class="ansi-green-intense-fg ansi-bold">    698</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    699</span>             raise StdinNotImplementedError(
-<span class="ansi-green-fg">--&gt; 700</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">    701</span>             )
-<span class="ansi-green-intense-fg ansi-bold">    702</span>         return self._input_request(str(prompt),
+<span class="ansi-green-intense-fg ansi-bold">    697</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>             raise StdinNotImplementedError(
+<span class="ansi-green-fg">--&gt; 699</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    700</span>             )
+<span class="ansi-green-intense-fg ansi-bold">    701</span>         return self._input_request(str(prompt),
 
 <span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
 </pre></div></div>
@@ -332,9 +337,9 @@ if’s.</p>
 <div class="section" id="Debugging">
 <h2>Debugging<a class="headerlink" href="#Debugging" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>“Everyone knows that debugging is twice as hard as writing the code
+<div><p>&#8220;Everyone knows that debugging is twice as hard as writing the code
 in the first place. Therefore, if you write the code as cleverly as
-possible, you are, by definition, not smart enough to debug it.”</p>
+possible, you are, by definition, not smart enough to debug it.&#8221;</p>
 <p>-<a class="reference external" href="https://en.wikipedia.org/wiki/Brian_Kernighan">Brian W.
 Kernighan</a>, from
 <em>The Elements of Programming Style</em>, 2nd ed.</p>
@@ -360,7 +365,7 @@ these lead to <em>runtime errors</em>.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-1065f57b9b53&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-d3146b059444&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
 <span class="ansi-red-fg">    if True</span>
            ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -388,7 +393,7 @@ these lead to <em>runtime errors</em>.</p>
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-4-2eba6176732d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-4-98aadbb02f29&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span> a <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># define be to be 3 times the third element</span>
 <span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>b <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span>
@@ -419,7 +424,7 @@ print(instructor, &quot; teaches &quot;, class)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-cfa9639ac6fc&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-7578e6b410de&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
 <span class="ansi-red-fg">    class = &#34;ME 400&#34;</span>
           ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -495,7 +500,7 @@ lines</li>
 <div class="section" id="Pro-Tips">
 <h3>Pro Tips<a class="headerlink" href="#Pro-Tips" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li>Don’t make errors in the first place:<ul>
+<li>Don&#8217;t make errors in the first place:<ul>
 <li><strong>Design</strong> your code with flowcharts and pseudocode as applicable</li>
 <li><strong>Use defensive programming and unit testing</strong> (future topics)</li>
 </ul>
@@ -549,15 +554,15 @@ graphical debugger in Spyder to trace and debug a program</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_7_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_7_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -568,14 +573,14 @@ graphical debugger in Spyder to trace and debug a program</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_7_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_7_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

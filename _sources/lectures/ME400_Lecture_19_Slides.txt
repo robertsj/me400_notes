@@ -1,0 +1,480 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "# Lecture 19 - Numerical Integration\n",
+    "\n",
+    "Last time, finite-difference approximations were developed and used to evaluate derivatives numerically.  In this lecture, we'll explore and implement our own numerical methods for evaluation of integrals.  We'll also use the SciPy module for the first time, which provides its own set of tools for numerical integration."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Evaluate definite integrals numerically using left- and right-sided Riemann sums, the mid-point rule, and the trapezoid rule.\n",
+    "- Evaluate definite integrals numerically using the built-in functions of `scipy.integrate`\n",
+    "- Establish the order of an integration scheme using graphical means"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- Riemann sum\n",
+    "- left-sided Riemann sum\n",
+    "- right-sided Riemann sum\n",
+    "- mid-point rule\n",
+    "- trapezoid rule\n",
+    "- `scipy.integrate`\n",
+    "- `scipy.integrate.quad`\n",
+    "- $n$th-order approximation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Riemann Sums in Practice\n",
+    "\n",
+    "For $df/dx$, choose two or more values of $f$ (forward, backward, etc.) and take $\\Delta$ to some small but finite value.\n",
+    "\n",
+    "For $\\int^b_a f(x) dx$, we have analogs to these choices based on how we define the rectangles (or other shapes)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Recall the formal definition for a definite integral:\n",
+    "\n",
+    "$$\n",
+    "  \\int^b_a f(x) dx = \n",
+    "     \\lim_{n \\to \\infty} \\sum^{n}_{i=1} f \\left ( \\overbrace{i \\frac{b-a}{n} + a}^{x_i} \\right )\n",
+    "     \\overbrace{\\frac{b-a}{n}}^{\\Delta} \n",
+    "$$\n",
+    "\n",
+    "for uniformly spaced points $x_i =  a + \\Delta, a + 2\\Delta, \\ldots, b - \\Delta$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "If we *don't take the limit*, we have the **right-sided Riemann sum** approximation \n",
+    "\n",
+    "$$\n",
+    "  \\int^b_a f(x) dx \\approx \\Delta \\sum^{n}_{i=1} f \\left ( i \\Delta + a \\right )\n",
+    "$$\n",
+    "\n",
+    "where\n",
+    "\n",
+    "$$\n",
+    " \\Delta = \\frac{b-a}{n} \\, .\n",
+    "$$\n",
+    "\n",
+    "and $n$ is the number of rectangles.\n",
+    "\n",
+    "*Note*: the formula is for *constant* step $\\Delta$!  Put $\\Delta_i$ inside the sum if not constant.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Let's look at this concretely for $f(x) = x^2$ over $x\\in[0, 1]$ with $n=5$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import riemann_sum_plots\n",
+    "riemann_sum_plots.right_sided_sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "If instead we defined our sum to be\n",
+    "\n",
+    "$$\n",
+    "  S =\\frac{b-a}{n} \\sum^{n}_{i=1} f \\Bigg ( \\frac{ (i-1)(b-a) }{n} + a \\Bigg ) \n",
+    "$$\n",
+    "\n",
+    "the picture becomes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "riemann_sum_plots.left_sided_sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Use the left-sided sum to estimate $\\int^2_0 e^x dx$ for 10, 100, and 1000 evenly-spaced points.  What is the *absolute* error for each?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "I_ref = np.exp(2.0) - 1.0\n",
+    "I_10, I_100, I_1000 = 0.0, 0.0, 0.0\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**:  Consider the following two columns of data:\n",
+    "\n",
+    "| $x$   | $\\sqrt{x}$ |\n",
+    "|-------|------------|\n",
+    "|0.0000 | 0.0000     |\n",
+    "|0.3333 | 0.5774     |\n",
+    "|1.0000 | 1.0000     |\n",
+    "|1.5000 | 1.2247     |\n",
+    "|2.0000 | 1.4142     |\n",
+    "\n",
+    "Estimate $\\int^2_0 f(x) dx$ using the right-sided sum and left-sided sum.  Note that the $x$ points are **not evenly spaced**."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "x = np.array([0, 0.3333, 1.0000, 1.5000, 2.0000])\n",
+    "f = np.array([0, 0.5774, 1.0000, 1.2247, 1.4142])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Beyond the One-Side Sums\n",
+    "\n",
+    "We can do better.  As motivation, note that the central difference is nothing\n",
+    "but an *average* of the forward and backward differences:\n",
+    "\n",
+    "$$\n",
+    "  \\frac{1}{2} \\Bigg ( \\frac{f(x+h)-f(x)}{h} + \\frac{f(x)-f(x-h)}{h} \\Bigg ) = \\frac{f(x+h)-f(x-h)}{2h}\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Option I**: evaluate $f$ at the average (middle) $x$ points: \n",
+    "\n",
+    "$$\n",
+    " S = \\frac{b-a}{n} \\sum^{n}_{i=1} f \\Bigg ( \\frac{ (i-1/2)(b-a) }{n} + a \\Bigg ) \n",
+    "$$\n",
+    "  \n",
+    "for which the picture becomes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "riemann_sum_plots.midpoint_sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "This is the **midpoint rule**.  It is great if *you* get to choose your points, but hard to apply to tabulated data."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Option II**: Use the same points as one-sides sums, but *average* the $f$ values:\n",
+    "\n",
+    "$$\n",
+    "\\begin{split}\n",
+    "  S &= \\frac{b-a}{2n} \n",
+    "    \\Bigg [ \\sum^{n}_{i=1} f \\Bigg ( \\frac{ (i)(b-a) }{n} + a \\Bigg ) \n",
+    "         +  \\sum^{n}_{i=1} f \\Bigg ( \\frac{ (i-1)(b-a) }{n} + a \\Bigg ) \\Bigg ] \\\\\n",
+    "    &= \\frac{b-a}{2n} \n",
+    "    \\Bigg [ f(a) + f(b) + \\sum^{n-1}_{i=1} f \\Bigg ( \\frac{ i(b-a) }{n} + a \\Bigg ) \\Bigg ]  \n",
+    "\\end{split}\n",
+    "$$\n",
+    "\n",
+    "This is the **trapezoid rule** for uniformly-spaced points. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## What About Accuracy?\n",
+    "\n",
+    "It is possible to determine the *order* of various numerical integration rules.  The basic idea is to observe the (absolute) error between an exact, reference value for an integral and the approximation of that integral for various step sizes $\\Delta$.\n",
+    "\n",
+    " - The left- and right-sided sums are *first order*\n",
+    " - The midpoint and trapezoid rules are *second order*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Using `scipy.integrate`\n",
+    "\n",
+    "The module `scipy.integrate` provides several integration functions, including the powerful `quad` function:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "```\n",
+    "In [99]: help(quad)\n",
+    "Help on function quad in module scipy.integrate.quadpack:\n",
+    "\n",
+    "quad(func, a, b, args=(), full_output=0, epsabs=1.49e-08, epsrel=1.49e-08, limit=50, points=None, weight=None, wvar=None, wopts=None, maxp1=50, limlst=50)\n",
+    "    Compute a definite integral.\n",
+    "    \n",
+    "    Integrate func from `a` to `b` (possibly infinite interval) using a\n",
+    "    technique from the Fortran library QUADPACK.\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**:  Use `quad` to evaluate $\\int^2_0 e^x dx = e^2 - 1$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**:  Use `quad` to evaluate $\\int^1_0 (ax^2 + bx + c)dx$ for $a=b=c=1$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: The entropy change of an ideal gas from $(T_1, p_1)$ to $(T_2, p_2)$ is\n",
+    "\n",
+    "$$\n",
+    "s(T_2, p_2) - s(T_1, p1) = \\int^{T_2}_{T_1} \\frac{c_p(T)}{T} dT - R \\ln \\frac{p_2}{p_1}\n",
+    "$$\n",
+    "\n",
+    "where $s$ is entropy (kJ/kg-K), $p$ is pressure (kPa), $T$ is temperature (K), $c_p$ is the specific heat at constant pressure (kJ/kg-K), and $R$ is the gas constant (kJ/kg-K).  For a particular gas, $R = 0.18$, and \n",
+    "\n",
+    "$$\n",
+    " c_p = R(2.5 + 8.7\\cdot 10^{-3} T - 6.7\\cdot 10^{-4}T^2  + 2.0 \\cdot 10^{-5} T^3 + 1.1 \\cdot 10^{-7} T^4 \\, .\n",
+    "$$\n",
+    "\n",
+    "Determine the entropy change from $T_1 = 400$ K and $p_1 = 1$ atm to $T_2 = 900$K and $p_2 = 10$ atm."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Evaluate definite integrals numerically using left- and right-sided Riemann sums, the mid-point rule, and the trapezoid rule.\n",
+    "- Evaluate definite integrals numerically using the built-in functions of `scipy.integrate`\n",
+    "- Establish the order of an integration scheme using graphical means"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

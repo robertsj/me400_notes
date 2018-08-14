@@ -1,0 +1,429 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Unit Tests and Defensive Programming\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 7](ME400_Lecture_7.ipynb), errors were identified by debugging.  In this lesson, we look at ways to ensure bugs don't exist in the first place by using *unit tests* and *defensive programming* techniques.  Although the  extent to which these tools should be used depends quite a bit on the  magnitude of the program being developed, even their limited use should help you write better code.\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Write programs and functions that use `assert` statements to ensure correctness of inputs and/or outputs.\n",
+    "- Write unit tests for testing individual functions.\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- defensive programming\n",
+    "- `assert`\n",
+    "- test-driven development\n",
+    "- `unittest`\n",
+    "- `unittest.TestCase`\n",
+    "- `unittest.main`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Be on the Defensive\n",
+    "\n",
+    "Now that we've learned how to write functions and put them in modules for use by you and others, the probability that things go wrong is higher. When you write a function with inputs, those inputs generally have an acceptable range of types and values.  \n",
+    "\n",
+    "Often, use of incorrect types will result an exception.  Recall our function `mean_abs_error` from [Lecture 16](ME400_Lecture_16.ipynb).  If we pass that a single value, or anything else that is not a sequential type, we get an error that pretty clearly shows what is wrong:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "TypeError",
+     "evalue": "object of type 'float' has no len()",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-1-e3bca46ac261>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfrom\u001b[0m \u001b[0merror_metrics\u001b[0m \u001b[0;32mimport\u001b[0m \u001b[0mmean_abs_error\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mmean_abs_error\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m0.1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/Research/me400_notes/source/lectures/error_metrics.py\u001b[0m in \u001b[0;36mmean_abs_error\u001b[0;34m(e)\u001b[0m\n\u001b[1;32m      2\u001b[0m     \u001b[0;34m\"\"\"Mean, absolute error.\"\"\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m     \u001b[0mv\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 4\u001b[0;31m     \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mrange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      5\u001b[0m         \u001b[0mv\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0mabs\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      6\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mv\u001b[0m\u001b[0;34m/\u001b[0m\u001b[0mlen\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mTypeError\u001b[0m: object of type 'float' has no len()"
+     ]
+    }
+   ],
+   "source": [
+    "from error_metrics import mean_abs_error\n",
+    "mean_abs_error(0.1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That means that whoever called the function made an error: the function requires a sequential type like `list`.  A compiled language would rarely allow that; Python allows it to be written, but scolds us when executed.\n",
+    "\n",
+    "However, the chastising automated by run-time errors cannot account for  all  errors made by the caller, perhaps due to typos or a misunderstanding of the function (that's why we document things, right?).  A possible solution is to use *defensive programming*, which, sort of cheekily, is the art of making our programs \"idiot proof.\"  We stop the user before they get too far (by checking inputs, outputs, and intermediate values).  Most often, it turns out, the idiot is us, so any tool to help us from misusing our own code is a good one!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As an example (and one inspired by [this article](https://www.pluralsight.com/guides/python/defensive-programming-in-python)), suppose we need to write a function that accepts a sequence of numbers and maps them to the range 0 to 1.  Such *normalization* is quite common in data analysis when data ranges can span orders of magnitude while the algorithms used to analyze such data are tuned to smaller ranges.  Here's a first attempt:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def normalize(a):\n",
+    "    \"\"\"Normalize the elements of a to the range [0 1]\"\"\"\n",
+    "    b = []\n",
+    "    for i in a:\n",
+    "        b.append(i/max(a))\n",
+    "    return b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[0.3333333333333333, 0.6666666666666666, 1.0]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "normalize([1,2,3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That works: all three numbers are in the correct range. How about"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[-0.3333333333333333, 0.6666666666666666, 1.0]"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "normalize([-1,2,3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Whoops.  Something went wrong here.  That first value is *negative*.  The problem is simple, and the solution depends on our original intent.  Currently, for `normalize` to do what we say it does requires that the values in `a` are greater than or equal to zero.  Is that what we intended?  If not, we have a bug to fix, and the *unit tests* to be covered below will help us do that.  However, if we really do want to process non-negative numbers only, then we need to (1) make sure the user knows that limitation, and (2) provide a way to terminate the execution before the user is surprised by the wrong result.  Here's the solution, and it uses a new `assert` statement:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def normalize_defensive(a):\n",
+    "    \"\"\"Normalize the elements of a to the range [0 1].  Elements of a should be >= 0.\"\"\"\n",
+    "    b = []\n",
+    "    for i in a:\n",
+    "        assert i >= 0, 'Elements of a must be >= 0!'\n",
+    "        b.append(i/max(a))\n",
+    "    return b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[0.3333333333333333, 0.6666666666666666, 1.0]"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "normalize_defensive([1, 2, 3])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "AssertionError",
+     "evalue": "Elements of a must be >= 0!",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mAssertionError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-7-77598fd7f16e>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mnormalize_defensive\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m-\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m<ipython-input-5-26edd58ca715>\u001b[0m in \u001b[0;36mnormalize_defensive\u001b[0;34m(a)\u001b[0m\n\u001b[1;32m      3\u001b[0m     \u001b[0mb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m     \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0ma\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m         \u001b[0;32massert\u001b[0m \u001b[0mi\u001b[0m \u001b[0;34m>=\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'Elements of a must be >= 0!'\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      6\u001b[0m         \u001b[0mb\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mappend\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m/\u001b[0m\u001b[0mmax\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      7\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mb\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mAssertionError\u001b[0m: Elements of a must be >= 0!"
+     ]
+    }
+   ],
+   "source": [
+    "normalize_defensive([-1, 2, 3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We've updated the `docstring` and added the `assert` statement.  The general syntax for `assert` is\n",
+    "\n",
+    "```python\n",
+    "    assert condition, message\n",
+    "```\n",
+    "\n",
+    "where `condition` must have a `bool` equivalent, and `message` is a `str` value to print if the assertion fails.  One can skip the message, e.g.,"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "AssertionError",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mAssertionError\u001b[0m                            Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-8-34d369bab8db>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0;32massert\u001b[0m \u001b[0;36m1\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mAssertionError\u001b[0m: "
+     ]
+    }
+   ],
+   "source": [
+    "assert 1 == 0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "However, including a message helps a user know what went wrong and how to address it.\n",
+    "\n",
+    "> **Note**: Use `assert` statements to ensure (1) functions get proper inputs, (2) functions provide proper outputs, and (3) variables have correct values throughout program execution.\n",
+    "\n",
+    "You should find that `assert` statements are very useful as you develop longer Python programs, more complex functions, etc.  By asserting that values are correct (or within a range, of a given type, etc.) during midexecution, you can catch bugs much sooner than you might otherwise be able to do.\n",
+    "\n",
+    "> **Exercise**: Modify the functions of `error_metrics` so that only sequential types are allowed as inputs.  \n",
+    "\n",
+    ">> *Hint*: Look up the function `hasattr`.\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Testing, 1-2-3\n",
+    "\n",
+    "We already saw in [Lecture 16](ME400_Lecture_16.ipynb) how to include an executable block in a module (i.e., the `if __name__ == \"__main__\"` trick).  That's a pretty common place to put quick tests and demonstrations of a module. Sometimes, though, it is useful to write code specific for testing the logical correctness of your functions.  Enter unit tests.\n",
+    "\n",
+    "Let's go back to our error-metric functions.  Each one has a precise mathematical definition, and for a given input, we can compute the expected output.  For example, given `e = [0.1, -0.2, 0.3]`, the mean, absolute error is `0.2`.  However, remember that we're dealing with a floating-point number system that uses 1's and 0's, and it turns out 0.1, 0.2, and 0.3 cannot be exactly represented (go try representing 0.1 as a sum of powers of two!). Hence, when we expect the result to be 0.2, we should hope, at best, for it to satisfy something like \n",
+    "\n",
+    "$$\n",
+    "    |result - expected| < \\tau\n",
+    "$$\n",
+    "\n",
+    "\n",
+    "for some tolerance $\\tau$.  Here, we'll set that tolerance to $10^{-14}$ to account not only for the 0.2 not-being-in-the-system issue, but also to account for effects of rounding (since 0.1, 0.2, and 0.3, and their sum must be rounded along the way).\n",
+    "\n",
+    "\n",
+    "### `unittest`\n",
+    "\n",
+    "To automate this sort of test, we can use the built-in `unittest` module. Its use is straightforward to show by example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import unittest\n",
+    "from math import sqrt\n",
+    "\n",
+    "from error_metrics import mean_abs_error, rms_error, max_abs_error\n",
+    "\n",
+    "class TestErrorMetrics(unittest.TestCase) :\n",
+    "    \"\"\"The class name is TestErrorMetrics and should indicate in some way\n",
+    "       what is being tested.\"\"\"\n",
+    "          \n",
+    "    def test_mean_abs_error(self) :\n",
+    "        e = [0.1, -0.2, 0.3]\n",
+    "        # assertAlmostEqual comparse two values (here, \n",
+    "        # mean_abs_error(e) and 0.2) and ensures they are the same\n",
+    "        # out to 14 decimal places (i.e., 10^-14)\n",
+    "        self.assertAlmostEqual(mean_abs_error(e), 0.2, places=14)\n",
+    "\n",
+    "    def test_rms_error(self) :\n",
+    "        e = [0.1, -0.2, 0.3]\n",
+    "        self.assertAlmostEqual(rms_error(e), sqrt(0.14), places=14)\n",
+    "\n",
+    "    def test_max_abs_error(self) :\n",
+    "        e = [0.1, -0.2, 0.3]\n",
+    "        self.assertAlmostEqual(max_abs_error(e), 0.3, places=14)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "These contents can be located in a new file, e.g., `test_error_metrics.py`.  To run the tests, there are several options.  First, the following two lines can be added to the end of the file:\n",
+    "```python\n",
+    "if __name__ == '__main__':\n",
+    "    unittest.main()\n",
+    "```\n",
+    "Then, `test_error_metrics.py` can be executed using `python test_error_metrics.py` or from within an environment like Spyder.  (This approach is probably how you've been using the homework testers all along!)\n",
+    "\n",
+    "In this Jupyter notebook, a different approach is needed:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "test = TestErrorMetrics()\n",
+    "suite = unittest.TestLoader().loadTestsFromModule(test)\n",
+    "unittest.TextTestRunner().run(suite)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Of course, these unit tests are introducing some new syntax: what is `class`?  What is `self`?  Although object-oriented programming is outside our scope, a `class` is a user-defined type that can include attributes (values) and functions (a bit like modules), and the `self` variable is an *object* or *instance* of the `class`.  A simple example: `int` is actually a class, and the variable `a = 1` is an *object* of the `int` class:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = 1\n",
+    "a.__class__"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That said, you *are not responsible* for understanding any details of classes.  The true objective here is that you can adapt the example unit tests shown above for use in testing your own programs."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, in the tests above, just one function was used `assertAlmostEqual`, which is great for comparing two `float` values that may differ up to some tolerance (or, here, number of decimal `places`).  The following are some others:\n",
+    "\n",
+    "  - `assertEqual(a, b)` (are `a` and `b` equal?)\n",
+    "  - `assertTrue(condition)` (is `condition` true?)\n",
+    "  - `assertGreater(a, b)` (is `a > b`?)\n",
+    "  - `assertIn(item, seq)` (is `item in seq`?)\n",
+    "\n",
+    "There are others, to be found by `dir(unittest.TestCase)` and understood using `help`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Test-Driven Development\n",
+    "\n",
+    "Armed with `unittest`, may I propose a philosophy for solving programming problems?\n",
+    "\n",
+    "> **Note**: Before implementing a function, a module, or an entire program, **write the tests**.  Then, at every step of your development process, you can establish immediately whether your implementation is doing what you think it should be doing. \n",
+    "\n",
+    "This is philosophy is the basis for [test-driven development](https://en.wikipedia.org/wiki/Test-driven_development) (and, as you may note, has been encouraged all along with the homework testing files). Although test-driven development (or TDD) is a bonafide software development strategy, the basic concept of writing the test, failing the test, and then writing the code to pass the test is the important takeaway.\n",
+    "\n",
+    "The challenge, of course, is knowing what the tests should be.  Only after careful consideration of the requirements (whether from a homework problem statement, your boss, or a customer) can you begin to define the tests.  Over time, these tests might change (understanding improves) or grow in number (scope creep is real).  The important thing is to define tests sufficient in number and breadth so that every line of code can be shown to do what it is supposed to do. \n",
+    "\n",
+    "\n",
+    "> **Exercise**:  Implement unit tests for a linear search function that given a sorted sequence `a` returns the first location of `v` in the array.  If `v` is not found, the location returned should be the (last) location of the element nearest to but smaller than `v`.   The goal here is to test for normal cases and *edge* cases, those particular cases that may break otherwise reasonable logic (think empty sequences, unordered sequences, sequences of just one element, `v` smaller than the smallest value in `a`, etc.)  Then, implement that linear search function to pass the tests.\n",
+    "\n",
+    "> **Exercise**: So the same for *binary search*.  *Hint*: Do you actually need to write new tests?\n",
+    "\n",
+    "> **Exercise**: Write unit tests for a module with functions that analyze strings.  Specifically, write the tests for three functions: (1) `is_palindrome(s)` (that checks whether `s` is a [palindrome](https://en.wikipedia.org/wiki/Palindrome)), (2) `longest_palindrome(s)` that returns the largest palindrome in `s`, and (3) `longest_common_sequence(s1, s2)` that returns the longest common substring shared by `s1` and `s2`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "None at this time."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

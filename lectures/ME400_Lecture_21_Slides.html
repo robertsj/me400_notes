@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 21 - Root Finding &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 21 - Root Finding &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,11 +200,15 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-21---Root-Finding">
 <h1>Lecture 21 - Root Finding<a class="headerlink" href="#Lecture-21---Root-Finding" title="Permalink to this headline">¶</a></h1>
-<p>We’ve now seen finite-difference approximations for derivatives, Riemann
+<p>We&#8217;ve now seen finite-difference approximations for derivatives, Riemann
 sums for integration, and elimination for solving
 <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>. Now, we turn to solving <span class="math">\(f(x) = 0\)</span>
 and <span class="math">\(\mathbf{f(x)} = \mathbf{0}\)</span>, i.e., nonlinear systems.</p>
@@ -226,12 +231,12 @@ graphical, or symbolic means.</li>
 <li>transcendental equation</li>
 <li>graphical solution</li>
 <li>bisection method</li>
-<li>Newton’s method</li>
+<li>Newton&#8217;s method</li>
 <li>quadratic convergence</li>
 <li>second-order convergence</li>
 <li>order of convergence</li>
 <li>secant method</li>
-<li>Steffensen’s method</li>
+<li>Steffensen&#8217;s method</li>
 <li>nonlinear systems</li>
 <li>Jacobian matrix</li>
 <li><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></li>
@@ -263,7 +268,7 @@ numerically</p>
 </div>
 <div class="section" id="Graphical-Solutions">
 <h2>Graphical Solutions<a class="headerlink" href="#Graphical-Solutions" title="Permalink to this headline">¶</a></h2>
-<p>Can’t solve it? <strong>Plot it!</strong></p>
+<p>Can&#8217;t solve it? <strong>Plot it!</strong></p>
 <p>For single equation <span class="math">\(f(x) = g(x)\)</span>: - plot <span class="math">\(f(x)\)</span> and
 <span class="math">\(g(x)\)</span> over the range of interest to identify intersections - plot
 <span class="math">\(f(x)-g(x)\)</span> to identify roots</p>
@@ -299,9 +304,9 @@ Assume <span class="math">\(L = 5\)</span> and <span class="math">\(\text{Bi}=0.
 <h3>Determining Roots Numerically<a class="headerlink" href="#Determining-Roots-Numerically" title="Permalink to this headline">¶</a></h3>
 <p>The numerical solution of <span class="math">\(f(x) = 0\)</span> can be challenging since it
 requires we know at least a little about the desired solution,
-particularly the range in which the root is contained. We’ll explore
+particularly the range in which the root is contained. We&#8217;ll explore
 three basic schemes for solving <span class="math">\(f(x)\)</span>: the <a class="reference external" href="http://mathworld.wolfram.com/Bisection.html">bisection
-method</a>, <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton’s
+method</a>, <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton&#8217;s
 method</a>, and the
 secant method.</p>
 </div>
@@ -355,12 +360,12 @@ secant method.</p>
 </div>
 </div>
 <div class="section" id="Newton's-Method">
-<h2>Newton’s Method<a class="headerlink" href="#Newton's-Method" title="Permalink to this headline">¶</a></h2>
-<p>Often, a better way to find roots of <span class="math">\(f(x) = 0\)</span> is <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton’s
+<h2>Newton&#8217;s Method<a class="headerlink" href="#Newton's-Method" title="Permalink to this headline">¶</a></h2>
+<p>Often, a better way to find roots of <span class="math">\(f(x) = 0\)</span> is <a class="reference external" href="http://mathworld.wolfram.com/NewtonsMethod.html">Newton&#8217;s
 method</a>.</p>
-<p>Like bisection, Newton’s method produces a sequence of approximations.</p>
+<p>Like bisection, Newton&#8217;s method produces a sequence of approximations.</p>
 <p>Unlike bisection, require an <em>initial guess</em> <span class="math">\(x_0\)</span> for the root
-<span class="math">\(x_r\)</span> (and it should be “close”).</p>
+<span class="math">\(x_r\)</span> (and it should be &#8220;close&#8221;).</p>
 <p>Quick motivation for Newton <em>from the math</em> by recalling</p>
 <div class="math">
 \[f(x) = f(x_0) + \Delta f'(x_0) + \mathcal{O}(\Delta^2) = 0 \, .\]</div>
@@ -369,7 +374,7 @@ method</a>.</p>
 <div class="math">
 \[x_{\text{true root}} \approx x_1 = x_0 + \Delta = x_0 \overbrace{- f(x_0)/f'(x_0)}^{\Delta} \, ,\]</div>
 <p>and do this for <span class="math">\(x_2\)</span> in terms of <span class="math">\(x_1\)</span>, <span class="math">\(x_3\)</span> in
-terms of <span class="math">\(x_2\)</span>, etc. until <span class="math">\(f(x_i)\)</span> is “small enough”.</p>
+terms of <span class="math">\(x_2\)</span>, etc. until <span class="math">\(f(x_i)\)</span> is &#8220;small enough&#8221;.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Newton&#39;s method for finding the root f given x_0&#39;&#39;&#39;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
 <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
@@ -381,7 +386,7 @@ terms of <span class="math">\(x_2\)</span>, etc. until <span class="math">\(f(x_
 <span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>Quick motivation of Newton <em>from the geometry</em>…</p>
+<p>Quick motivation of Newton <em>from the geometry</em>...</p>
 <p><strong>Exercise</strong>: Solve <span class="math">\(f(x) = \sin(x)-2/5 = 0\)</span> starting with
 <span class="math">\(x_0 = 0.5\)</span> until <span class="math">\(|f(x)| &lt; 10^{-5}\)</span>.</p>
 </div>
@@ -410,8 +415,8 @@ to use :math:`x` and :math:`x+\delta` for finite difference where
 </div>
 <div class="section" id="Solving-Systems-of-Nonlinear-Equations-Numerically">
 <h3>Solving Systems of Nonlinear Equations Numerically<a class="headerlink" href="#Solving-Systems-of-Nonlinear-Equations-Numerically" title="Permalink to this headline">¶</a></h3>
-<p>From <span class="math">\(f(x) = 0\)</span> to <span class="math">\(\mathbf{f}(\mathbf{x}) = \mathbf{0}\)</span>…</p>
-<p>…and from <span class="math">\(f'(x)\)</span> to the <strong>Jacobian</strong> matrix <span class="math">\(\mathbf{J}\)</span>:</p>
+<p>From <span class="math">\(f(x) = 0\)</span> to <span class="math">\(\mathbf{f}(\mathbf{x}) = \mathbf{0}\)</span>...</p>
+<p>...and from <span class="math">\(f'(x)\)</span> to the <strong>Jacobian</strong> matrix <span class="math">\(\mathbf{J}\)</span>:</p>
 <div class="math">
 \[\begin{split}  \mathbf{J}(\mathbf{x}) = \begin{bmatrix}
     \frac{\partial f_0}{\partial x_0} &amp; \frac{\partial f_0}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_{0}}{\partial x_{n-1}} \\
@@ -420,10 +425,10 @@ to use :math:`x` and :math:`x+\delta` for finite difference where
     \frac{\partial f_0}{\partial x_{n-1}} &amp; \frac{\partial f_1}{\partial x_{n-1}} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_{n-1}}
 \end{bmatrix}\end{split}\]</div>
 <p>(here, partial derivatives evaluated at <span class="math">\(\mathbf{x}\)</span>)</p>
-<p>Newton’s method leads to the sequence</p>
+<p>Newton&#8217;s method leads to the sequence</p>
 <div class="math">
 \[\mathbf{x}_{n+1} = \mathbf{x}_{n} - \mathbf{J}^{-1}(\mathbf{x}_n) \mathbf{f}(\mathbf{x}_n) \, .\]</div>
-<p>But that’s like solving
+<p>But that&#8217;s like solving
 <span class="math">\(\overbrace{\mathbf{J}(\mathbf{x}_{n})}^{\mathbf{A}} \times \overbrace{[\mathbf{x}_{n} - \mathbf{x}_{n+1}]}^{\mathbf{x}} = \overbrace{\mathbf{f}(\mathbf{x}_n)}^{\mathbf{b}}\)</span>!</p>
 </div>
 </div>
@@ -475,7 +480,7 @@ Newton methods.</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#Bisection">Bisection</a></li>
-<li><a class="reference internal" href="#Newton's-Method">Newton’s Method</a></li>
+<li><a class="reference internal" href="#Newton's-Method">Newton&#8217;s Method</a></li>
 <li><a class="reference internal" href="#Secant-Method">Secant Method</a><ul>
 <li><a class="reference internal" href="#Solving-Systems-of-Nonlinear-Equations-Numerically">Solving Systems of Nonlinear Equations Numerically</a></li>
 </ul>
@@ -497,15 +502,15 @@ Newton methods.</li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_21_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_21_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -516,14 +521,14 @@ Newton methods.</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_21_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_21_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

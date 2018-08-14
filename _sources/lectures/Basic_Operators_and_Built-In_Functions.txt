@@ -1,0 +1,1549 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "# Lecture 2 - Basic Operators and Built-In Functions\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    "\n",
+    "In this lesson, we'll continue our study of basic types from [Lecture 1](ME400_Lecture_1.ipynb), incorporating operators (arithmetic and otherwise) along with some very useful built-in functions.  By the end, we'll construct our very first (albeit, simple) [program](https://en.wikipedia.org/wiki/Computer_program).\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- *add, subtract, multiply, and divide* two quantities\n",
+    "- *use the `help()` function to understand how to use another function*\n",
+    "- *use `dir()` and the `variable explorer` to see defined variables and their values*\n",
+    "- *explain the difference between statement and expression*\n",
+    "- *write a short, well-commented program*\n",
+    "\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- statement\n",
+    "- expression\n",
+    "- variable explorer\n",
+    "- keywords\n",
+    "- `import`\n",
+    "- `math` module\n",
+    "- `dir()`\n",
+    "- `help()`\n",
+    "- `print()`\n",
+    "- `type()`\n",
+    "- `+`, `-`, `*`, `/`, `**`, `//`, `^`\n",
+    "- flowchart\n",
+    "- comments and the `#` symbol"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# These two lines modify the Jupyter notebook behavior\n",
+    "# a bit.  Now, all lines in a cell with only an expression \n",
+    "# will be printed, not just the last one.  I've included \n",
+    "# an example.  This feature lets us use just one cell for\n",
+    "# lots of simple output without using print\n",
+    "from IPython.core.interactiveshell import InteractiveShell \n",
+    "InteractiveShell.ast_node_interactivity = \"all\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = 1\n",
+    "b = 2\n",
+    "a # a will be printed\n",
+    "b # b will also be printed"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Python Operators \n",
+    "\n",
+    "In  [Lecture 1](ME400_Lecture_1.ipynb), we saw several examples of the form `a = 1`, where the variable `a` is *assigned* the value `1`.  Here, `=` is the *assignment* operator.  The entire line of code `a = 1` is a *statement*.  A statement represents an instruction that is performed by the computer (and, in this case, the Python interpreter). \n",
+    "\n",
+    "### Arithmetic Operators\n",
+    "\n",
+    "There are several other operators in the Python language, including those known as the arithmetic operators summarized in the table below.  In the table, `a` and `b` can assumed to be `int` variables (though all but the last operator can be used for `float` variables).  One example is the addition operator, which can be used as `a + b`.  This fragment of code is an [expression](https://docs.python.org/3/reference/expressions.html), which is any combination of values, operators, and function calls that can be evaluated, i.e., has a value.  Expressions are distinct from statements.  For example, `a + b` is an expression (defines a value), but `c = a + b` is a statement (in this case, assignment of a value to a variable `c`).\n",
+    "\n",
+    "| symbol | example use | definition | \n",
+    "|--------|-------------|------------|\n",
+    "| `+`    | `a + b`     | add `b` to `a`         |\n",
+    "| `-`    | `a - b`     | subtract `b` from `a`  |\n",
+    "| `*`    | `a * b`     | multiply `a` by `b`    |\n",
+    "| `/`    | `a / b`     | divide `a` by `b`      |\n",
+    "| `//`   | `a // b`    | divide `a` by `b` *using integer arithmetic* |\n",
+    "| `%`    | `a % b`     | remainder of `a / b` |\n",
+    "| `**`   | `a**b`      | raise `a` to the power of `b` |\n",
+    "| `^`    | `a^b`       | [bitwise exclusive or](https://docs.python.org/3/reference/expressions.html?highlight=xor#binary-bitwise-operations) |\n",
+    "\n",
+    "The first four operators are pretty straightforward and are the same symbols used in a variety of programming languages and other tools (e.g., common spreadsheets).  The remaining four warrant some elaboration.  The operator `//` corresponds to integer division.   Integer division rounds the final result *down* to the nearest integral value.  Here's a quick example for illustration:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.3333333333333333\n",
+      "1\n"
+     ]
+    }
+   ],
+   "source": [
+    "a = 4\n",
+    "b = 3\n",
+    "print(a/b)\n",
+    "print(a//b)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The first value printed is what we expect (i.e., 4/3 cast in decimal notation), while the second printed value is obviously rounded.  \n",
+    "\n",
+    "> **Warning**: In case you ever use Python 2, `/` was implemented as integer division by default \n",
+    "> for `a` and `b` of type `int`.\n",
+    "\n",
+    "The symbol `%` represents the modulus (or remainder) operation.  Often written $a \\mod b$, the modulus operation yields the *remainder* after integer division.  For example, $10/3$ has a remainder of 1, so $10 \\mod 3 = 1$ and, in Python, that is written as `10 % 3`.\n",
+    "\n",
+    "\n",
+    "The final two operators listed may also cause some confusion.  Here, `**` represents the exponentiation (or power) operation.  In some languages/tools (notably MATLAB and Excel), `^` is the symbol for exponentiation, but in Python, `^` is for the probably foreign-sounding *bitwise exclusive or* (and, hence, is not actually an arithmetic operator). To understand *bitwise* operators, we'll need to dive into binary numbers (but we'll skip that for the moment).\n",
+    "\n",
+    "> **Warning**: Do not use `^` when you want to take `a` to the power of `b`.  Instead, use `a**b`.\n",
+    "\n",
+    "Sometimes, an arithmetic operator can be used in situations that do not involved numbers.  For instance, strings can be concatenated (i.e., joined) using addition:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'go wildcats!'"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "s = \"go \"\n",
+    "t = \"wildcats!\"\n",
+    "u = s + t\n",
+    "u"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Strings can also be multiplied by integers, which leads to a repeated sequence of the original string.  For example, we could turn `'xo'` into `'xoxoxo'` via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'xoxoxo'"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'xo' * 3 # or 3 * 'xo'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Assignment Operators\n",
+    "\n",
+    "Corresponding to each arithmetic operator is a combined arithmetic and assignment operator.  Recall that the assignment operator `=` can be used to assign the value of `b` to the variable `a`, i.e., `a = b`.  However, perhaps we have `a` defined already and we want to increase it by `b`.  We could execute `a = a + b`.  However, a shorter and logically equivalent approach is to execute `a += b`.  The table below summarizes all of these combined assignment operators.\n",
+    "\n",
+    "| symbol | example use | definition | \n",
+    "|--------|-------------|------------|\n",
+    "| `=`    | `a = b`     | assign the value of `a` to the variable `a` |\n",
+    "| `+=`   | `a += b`    | equivalent to `a = a + b` |\n",
+    "| `-=`   | `a -= b`    | equivalent to `a = a - b` |\n",
+    "| `*=`   | `a *= b`    | equivalent to `a = a * b` |\n",
+    "| `/=`   | `a /= b`    | equivalent to `a = a / b` |\n",
+    "| `//=`  | `a //= b`   | equivalent to `a = a // b` |\n",
+    "| `%=`   | `a %= b`    | equivalent to `a = a % b` |\n",
+    "| `**=`  | `a = a**b`  | equivalent to `a = a**b` |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Relational Operators\n",
+    "\n",
+    "In  [Lecture 1](ME400_Lecture_1.ipynb), the `bool` type was introduced, with `bool` variables having one of two values `True` or `False`.  Sometimes, we need to know whether some expression is either `True` or `False`.  For instance, is it true that \"`a` is greater than `b`?\"  To evaluate whether or not this is true, we need a *relational operator*, in this case, the *greater than* operator `>`.  Here it is in action:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a > b"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Of course, we had defined `a = 4` and `b = 3` above, so `a` it is true that `a` is greater than `b`.  Also note a useful behavior of interactive Python (whether using IDLE or IPython): whenever a line of code is an *expression* and not a *statement*, evaluation of that line of code leads to output that contains the *value* of the expression.  Here, `a > b` is the expression, and `True` is its value.  \n",
+    "\n",
+    "> **Note**: Executing a line of code containing only an expression in IDLE or IPython leads to an output line containing the value of that expression.\n",
+    "\n",
+    "\n",
+    "The table below summarizes the  relational operators.\n",
+    "\n",
+    "| symbol | example use | definition | \n",
+    "|--------|-------------|------------|\n",
+    "| `==`    | `a == b`     | `a` equal to `b` yields `True` |\n",
+    "| `!=`    | `a != b`     | `a` not equal to `b` yields `True` |\n",
+    "| `>`    | `a > b`     | `a` greater than `b` yields `True` |\n",
+    "| `>=`   | `a >= b`    | `a` greater than or equal to `b` yields `True` |\n",
+    "| `<`   | `a < b`    | `a` less than `b` yields `True` |\n",
+    "| `<=`   | `a <= b`    | `a` less than or equal to `b` yields `True` |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Logical Operators\n",
+    "\n",
+    "Related to relational operators are the logical operators `not`, `and`, and `or`.  When applied to any boolean value, the `not` operator flips the original value.  In other words, `not True` is equal to `False`, and `not False` is equal to `True`.  The `not` operator can be used on any expression whose value is a `bool`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "v = 1 > 2 # surely False\n",
+    "not v"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `and` and `or` operators are used in the form `a and b` and `a or b`, respectively.  If `a` and `b` are `bool` variables, the `and` and `or` operators work just like we'd expect: `and` requires that both `a` and `b` are `True` for the entire expression to be `True`, while `or` leads to `True` for three cases: `a` is `True` and b is `False`, `a` is `False` and `b` is `True`, and `a` is `True` and `b` is `False`.  In other words, `a or b` is `False` only if both `a` and `b` are `False`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "False and True\n",
+    "True and False\n",
+    "True or True\n",
+    "True or False\n",
+    "False or True\n",
+    "False or False"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When `a` and `b` are not `bool` variables, the behavior of `and` and `or` is a bit more complex (but consistent with the behavior observed above).  Consider specifically the case `a and b`.  To evaluate this expression, `a` is first converted into a `bool` value (and if that's not possible, an error would arise).  Do non-`bool` values have an associated `bool` value?  In many cases, yes.  For example, the integer `0` is logically `False`, while any other integer is `True`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bool(0)\n",
+    "bool(1234)\n",
+    "bool(-23)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `bool` value of a `str` is `False` only for the empty string `''`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bool('')\n",
+    "bool('not empty')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When `a and b` is evaluated, the value is the first `False` or `False`-equivalent (e.g., `''`) encountered.  Otherwise, the value is the last `True` or `True`-equivalent (e.g., `1`) encountered.  When `a or b` is evaluated, the value is the first `True`-equivalent encountered or the second `False`-equivalent encountered.  Some examples:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "''"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "'a'"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "'a'"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "''"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "'a'"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "1 and 0 # 1 is True, but 0 is False, so the value is 0\n",
+    "'' and 0.0 # both '' and 0.0 are False, but '' is encountered first\n",
+    "1 and 'a' # 1 and 'a' are True, but 'a' is encountered last\n",
+    "1 or 'a' # 1 and 'a' are True, but 1 is encountered first\n",
+    "0 or 'a' # 0 is False, but 'a' is True \n",
+    "0 or '' # 0 and '' are False, but '' is encountered last\n",
+    "1 and ('a' or 'b') # 1 and 'a' is True and evaluates to 'a'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Order of Operations\n",
+    "\n",
+    "Several arithmetic and other operators can be used in one expression, and the order in which they are applied is important to understand.  The basic arithmetic operators are applied using the same rules applied in mathematics: exponentiation is performed before multiplication and division, and addition and subtraction happen last.  For example, consider $2 + 3 \\times 4^2$.  First, $4^2$ is evaluated, leaving $2 + 3\\times 16$.  Then $3\\times 16$ is evaluated, leaving $2 + 48$.  Finally, the addition is evaluated, leaving $50$.  \n",
+    "\n",
+    "One way to modify the order of operations is by using parentheses, e.g., $(2 + 3)\\times 4^2$, which is evaluated as $5 \\times 4^2 = 5 \\times 16 = 80$.  Just to verify:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "50"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "80"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "2 + 3 * 4**2\n",
+    "(2 + 3) * 4**2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The order in which operations are performed can be categorized as follows, from first to last evaluated:\n",
+    "\n",
+    "1. `()`'s \n",
+    "2. `*`, `/`, `//`, and `%`\n",
+    "3. `+`, `-`\n",
+    "4. `<`, `<=`, etc.\n",
+    "5. `not`\n",
+    "6. `and`\n",
+    "7. `or`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Exploring Built-In Functions\n",
+    "\n",
+    "Armed with the operators described above, you've got the start to a powerful, interactive calculator using Python.  What we need next is some of the typical mathematical *functions*.  We'll get to defining our own functions later on, but Python has several built-in functions that are useful, we can get access to a whole bunch of useful functions just by using  powerful `import` statements.\n",
+    "\n",
+    "You've actually already seen your first function: `print`.  A function has a name (e.g., `print`) and accepts zero, one, or more *arguments* enclosed in parentheses.  For example, we can *call* the `print` function in several different ways:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Hello, world\n",
+      "1 2 3\n",
+      "What's my age again? 18\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"Hello, world\") # one argument, a str\n",
+    "print(1, 2, 3) # three, int arguments\n",
+    "print(\"What's my age again?\", 18) # mixed arguments (and, I'm lying)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> *Notice*: Any call to a function must include parentheses.\n",
+    "\n",
+    "### `help()`\n",
+    "\n",
+    "A second function everyone ought to know is `help`.  Let's call it, and when it prompts us for further input, let's enter \"symbols.\"  After that, we'll enter \"quit.\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "Welcome to Python 3.6's help utility!\n",
+      "\n",
+      "If this is your first time using Python, you should definitely check out\n",
+      "the tutorial on the Internet at http://docs.python.org/3.6/tutorial/.\n",
+      "\n",
+      "Enter the name of any module, keyword, or topic to get help on writing\n",
+      "Python programs and using Python modules.  To quit this help utility and\n",
+      "return to the interpreter, just type \"quit\".\n",
+      "\n",
+      "To get a list of available modules, keywords, symbols, or topics, type\n",
+      "\"modules\", \"keywords\", \"symbols\", or \"topics\".  Each module also comes\n",
+      "with a one-line summary of what it does; to list the modules whose name\n",
+      "or summary contain a given string such as \"spam\", type \"modules spam\".\n",
+      "\n",
+      "help> symbols\n",
+      "\n",
+      "Here is a list of the punctuation symbols which Python assigns special meaning\n",
+      "to. Enter any symbol to get more help.\n",
+      "\n",
+      "!=                  *=                  <<                  ^\n",
+      "\"                   +                   <<=                 ^=\n",
+      "\"\"\"                 +=                  <=                  _\n",
+      "%                   ,                   <>                  __\n",
+      "%=                  -                   ==                  `\n",
+      "&                   -=                  >                   b\"\n",
+      "&=                  .                   >=                  b'\n",
+      "'                   ...                 >>                  j\n",
+      "'''                 /                   >>=                 r\"\n",
+      "(                   //                  @                   r'\n",
+      ")                   //=                 J                   |\n",
+      "*                   /=                  [                   |=\n",
+      "**                  :                   \\                   ~\n",
+      "**=                 <                   ]                   \n",
+      "\n",
+      "help> quit\n",
+      "\n",
+      "You are now leaving help and returning to the Python interpreter.\n",
+      "If you want to ask for help on a particular object directly from the\n",
+      "interpreter, you can type \"help(object)\".  Executing \"help('string')\"\n",
+      "has the same effect as typing a particular string at the help> prompt.\n"
+     ]
+    }
+   ],
+   "source": [
+    "help() # remember, parentheses are needed even if we have nothing in them!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also use help directly to learn about a variable or function.  For example, how can we use `print`?  Let's use `help` to figure that out:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Help on built-in function print in module builtins:\n",
+      "\n",
+      "print(...)\n",
+      "    print(value, ..., sep=' ', end='\\n', file=sys.stdout, flush=False)\n",
+      "    \n",
+      "    Prints the values to a stream, or to sys.stdout by default.\n",
+      "    Optional keyword arguments:\n",
+      "    file:  a file-like object (stream); defaults to the current sys.stdout.\n",
+      "    sep:   string inserted between values, default a space.\n",
+      "    end:   string appended after the last value, default a newline.\n",
+      "    flush: whether to forcibly flush the stream.\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "help(print)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When we work in IPython, another way to obtain help is by using the question mark `?` placed immediately after whatever name about which we need information, e.g., `print?`.  The output is slightly different in format but equivalent to the output of `help`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "### `dir` and `type`\n",
+    "\n",
+    "Another very useful function is `dir`.  If we call it without arguments, it gives us the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['In',\n",
+       " 'InteractiveShell',\n",
+       " 'Out',\n",
+       " '_',\n",
+       " '_10',\n",
+       " '_11',\n",
+       " '_12',\n",
+       " '_16',\n",
+       " '_17',\n",
+       " '_18',\n",
+       " '_2',\n",
+       " '_4',\n",
+       " '_5',\n",
+       " '_6',\n",
+       " '_7',\n",
+       " '_8',\n",
+       " '_9',\n",
+       " '__',\n",
+       " '___',\n",
+       " '__builtin__',\n",
+       " '__builtins__',\n",
+       " '__doc__',\n",
+       " '__loader__',\n",
+       " '__name__',\n",
+       " '__package__',\n",
+       " '__spec__',\n",
+       " '_dh',\n",
+       " '_i',\n",
+       " '_i1',\n",
+       " '_i10',\n",
+       " '_i11',\n",
+       " '_i12',\n",
+       " '_i13',\n",
+       " '_i14',\n",
+       " '_i15',\n",
+       " '_i16',\n",
+       " '_i17',\n",
+       " '_i18',\n",
+       " '_i19',\n",
+       " '_i2',\n",
+       " '_i20',\n",
+       " '_i21',\n",
+       " '_i3',\n",
+       " '_i4',\n",
+       " '_i5',\n",
+       " '_i6',\n",
+       " '_i7',\n",
+       " '_i8',\n",
+       " '_i9',\n",
+       " '_ih',\n",
+       " '_ii',\n",
+       " '_iii',\n",
+       " '_oh',\n",
+       " '_sh',\n",
+       " 'a',\n",
+       " 'b',\n",
+       " 'exit',\n",
+       " 'get_ipython',\n",
+       " 'keyword',\n",
+       " 'quit',\n",
+       " 's',\n",
+       " 't',\n",
+       " 'u',\n",
+       " 'v']"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dir()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This output shows all of the names (variables and functions) currently defined, including `a` and `b` from the examples above.  Most of the items shown are not important for users, but `__builtin__` provides us a way to see the names of all functions and other things defined by default.  Again, we turn to `dir`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['ArithmeticError',\n",
+       " 'AssertionError',\n",
+       " 'AttributeError',\n",
+       " 'BaseException',\n",
+       " 'BlockingIOError',\n",
+       " 'BrokenPipeError',\n",
+       " 'BufferError',\n",
+       " 'BytesWarning',\n",
+       " 'ChildProcessError',\n",
+       " 'ConnectionAbortedError',\n",
+       " 'ConnectionError',\n",
+       " 'ConnectionRefusedError',\n",
+       " 'ConnectionResetError',\n",
+       " 'DeprecationWarning',\n",
+       " 'EOFError',\n",
+       " 'Ellipsis',\n",
+       " 'EnvironmentError',\n",
+       " 'Exception',\n",
+       " 'False',\n",
+       " 'FileExistsError',\n",
+       " 'FileNotFoundError',\n",
+       " 'FloatingPointError',\n",
+       " 'FutureWarning',\n",
+       " 'GeneratorExit',\n",
+       " 'IOError',\n",
+       " 'ImportError',\n",
+       " 'ImportWarning',\n",
+       " 'IndentationError',\n",
+       " 'IndexError',\n",
+       " 'InterruptedError',\n",
+       " 'IsADirectoryError',\n",
+       " 'KeyError',\n",
+       " 'KeyboardInterrupt',\n",
+       " 'LookupError',\n",
+       " 'MemoryError',\n",
+       " 'ModuleNotFoundError',\n",
+       " 'NameError',\n",
+       " 'None',\n",
+       " 'NotADirectoryError',\n",
+       " 'NotImplemented',\n",
+       " 'NotImplementedError',\n",
+       " 'OSError',\n",
+       " 'OverflowError',\n",
+       " 'PendingDeprecationWarning',\n",
+       " 'PermissionError',\n",
+       " 'ProcessLookupError',\n",
+       " 'RecursionError',\n",
+       " 'ReferenceError',\n",
+       " 'ResourceWarning',\n",
+       " 'RuntimeError',\n",
+       " 'RuntimeWarning',\n",
+       " 'StopAsyncIteration',\n",
+       " 'StopIteration',\n",
+       " 'SyntaxError',\n",
+       " 'SyntaxWarning',\n",
+       " 'SystemError',\n",
+       " 'SystemExit',\n",
+       " 'TabError',\n",
+       " 'TimeoutError',\n",
+       " 'True',\n",
+       " 'TypeError',\n",
+       " 'UnboundLocalError',\n",
+       " 'UnicodeDecodeError',\n",
+       " 'UnicodeEncodeError',\n",
+       " 'UnicodeError',\n",
+       " 'UnicodeTranslateError',\n",
+       " 'UnicodeWarning',\n",
+       " 'UserWarning',\n",
+       " 'ValueError',\n",
+       " 'Warning',\n",
+       " 'ZeroDivisionError',\n",
+       " '__IPYTHON__',\n",
+       " '__build_class__',\n",
+       " '__debug__',\n",
+       " '__doc__',\n",
+       " '__import__',\n",
+       " '__loader__',\n",
+       " '__name__',\n",
+       " '__package__',\n",
+       " '__spec__',\n",
+       " 'abs',\n",
+       " 'all',\n",
+       " 'any',\n",
+       " 'ascii',\n",
+       " 'bin',\n",
+       " 'bool',\n",
+       " 'bytearray',\n",
+       " 'bytes',\n",
+       " 'callable',\n",
+       " 'chr',\n",
+       " 'classmethod',\n",
+       " 'compile',\n",
+       " 'complex',\n",
+       " 'copyright',\n",
+       " 'credits',\n",
+       " 'delattr',\n",
+       " 'dict',\n",
+       " 'dir',\n",
+       " 'divmod',\n",
+       " 'dreload',\n",
+       " 'enumerate',\n",
+       " 'eval',\n",
+       " 'exec',\n",
+       " 'filter',\n",
+       " 'float',\n",
+       " 'format',\n",
+       " 'frozenset',\n",
+       " 'get_ipython',\n",
+       " 'getattr',\n",
+       " 'globals',\n",
+       " 'hasattr',\n",
+       " 'hash',\n",
+       " 'help',\n",
+       " 'hex',\n",
+       " 'id',\n",
+       " 'input',\n",
+       " 'int',\n",
+       " 'isinstance',\n",
+       " 'issubclass',\n",
+       " 'iter',\n",
+       " 'len',\n",
+       " 'license',\n",
+       " 'list',\n",
+       " 'locals',\n",
+       " 'map',\n",
+       " 'max',\n",
+       " 'memoryview',\n",
+       " 'min',\n",
+       " 'next',\n",
+       " 'object',\n",
+       " 'oct',\n",
+       " 'open',\n",
+       " 'ord',\n",
+       " 'pow',\n",
+       " 'print',\n",
+       " 'property',\n",
+       " 'range',\n",
+       " 'repr',\n",
+       " 'reversed',\n",
+       " 'round',\n",
+       " 'set',\n",
+       " 'setattr',\n",
+       " 'slice',\n",
+       " 'sorted',\n",
+       " 'staticmethod',\n",
+       " 'str',\n",
+       " 'sum',\n",
+       " 'super',\n",
+       " 'tuple',\n",
+       " 'type',\n",
+       " 'vars',\n",
+       " 'zip']"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dir(__builtin__)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The list is long, but a few to look up (on your own) include `abs`, `bin`, `eval`, and `pow`.  Notice that when you type these names in IPython, they are given a different color from the other text you type.  This coloring means the names are built-in and that you *should not use them as variable names*.  \n",
+    "\n",
+    "> **Warning**: Avoid using the name of built-in functions for variables\n",
+    "\n",
+    "Further, there are other words defined in Python called *keywords* that are *reserved* and *cannot be used as variable names*.  The entire list of keywords can be generated as follows (how else could you find them? *Hint*: Look at `help` again):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['False',\n",
+       " 'None',\n",
+       " 'True',\n",
+       " 'and',\n",
+       " 'as',\n",
+       " 'assert',\n",
+       " 'break',\n",
+       " 'class',\n",
+       " 'continue',\n",
+       " 'def',\n",
+       " 'del',\n",
+       " 'elif',\n",
+       " 'else',\n",
+       " 'except',\n",
+       " 'finally',\n",
+       " 'for',\n",
+       " 'from',\n",
+       " 'global',\n",
+       " 'if',\n",
+       " 'import',\n",
+       " 'in',\n",
+       " 'is',\n",
+       " 'lambda',\n",
+       " 'nonlocal',\n",
+       " 'not',\n",
+       " 'or',\n",
+       " 'pass',\n",
+       " 'raise',\n",
+       " 'return',\n",
+       " 'try',\n",
+       " 'while',\n",
+       " 'with',\n",
+       " 'yield']"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import keyword\n",
+    "keyword.kwlist"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Seriously, these words are *reserved*, and use of them as variable names leads to nasty business like the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "invalid syntax (<ipython-input-24-a1f8f2799a67>, line 1)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-24-a1f8f2799a67>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    class = \"ME 400\"\u001b[0m\n\u001b[0m          ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+     ]
+    }
+   ],
+   "source": [
+    "class = \"ME 400\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> **Warning**: The keywords of Python cannot be used as variable names.\n",
+    "\n",
+    "Another built-in function that is of significant value is the `type` function.  How does it work?  Just call it with a variable as its argument to figure out the type of the variable.  For example, we can easily confirm that `a` is an `int` by doing the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "int"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "type(a)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A functionality similar to the combination of `dir` and `type` exists by using the *variable explorer* of Spyder, which was first mentioned in [Lecture 1](ME400_Lecture_1.ipynb).  Shown below is the variable explorer populated with three variables (`a`, `b`, and `c`), which have been defined in the IPython console to the lower right.\n",
+    "\n",
+    "![Variable explore](variable_explorer.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### `math`\n",
+    "\n",
+    "We just saw above an example of an `import` statement.  Various tools are available by default in Python or through add-on packages but need to be explicitly brought into your program using `import`.  Here, we'll use the built-in `math` module to get access to a variety of standard mathematical functions.\n",
+    "\n",
+    "First, let's import math."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import math"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "How do we use it?  Of course, we can use `help`, but the output is too long to show here, but `dir` gives a nice list of what `math` contains:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['__doc__',\n",
+       " '__file__',\n",
+       " '__loader__',\n",
+       " '__name__',\n",
+       " '__package__',\n",
+       " '__spec__',\n",
+       " 'acos',\n",
+       " 'acosh',\n",
+       " 'asin',\n",
+       " 'asinh',\n",
+       " 'atan',\n",
+       " 'atan2',\n",
+       " 'atanh',\n",
+       " 'ceil',\n",
+       " 'copysign',\n",
+       " 'cos',\n",
+       " 'cosh',\n",
+       " 'degrees',\n",
+       " 'e',\n",
+       " 'erf',\n",
+       " 'erfc',\n",
+       " 'exp',\n",
+       " 'expm1',\n",
+       " 'fabs',\n",
+       " 'factorial',\n",
+       " 'floor',\n",
+       " 'fmod',\n",
+       " 'frexp',\n",
+       " 'fsum',\n",
+       " 'gamma',\n",
+       " 'gcd',\n",
+       " 'hypot',\n",
+       " 'inf',\n",
+       " 'isclose',\n",
+       " 'isfinite',\n",
+       " 'isinf',\n",
+       " 'isnan',\n",
+       " 'ldexp',\n",
+       " 'lgamma',\n",
+       " 'log',\n",
+       " 'log10',\n",
+       " 'log1p',\n",
+       " 'log2',\n",
+       " 'modf',\n",
+       " 'nan',\n",
+       " 'pi',\n",
+       " 'pow',\n",
+       " 'radians',\n",
+       " 'sin',\n",
+       " 'sinh',\n",
+       " 'sqrt',\n",
+       " 'tan',\n",
+       " 'tanh',\n",
+       " 'tau',\n",
+       " 'trunc']"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dir(math)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A lot of these names ought to look familiar, like `sin`, `exp`, and `log`.  All of them live in the `math` module, and to access them, we can use these functions with the `.` operator, e.g., `math.sin`.  Here are some examples:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "7.38905609893065"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "math.exp(2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.0"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "math.sin(math.pi/2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "120"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "math.factorial(5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## A First Program\n",
+    "\n",
+    "At this point, we have nearly enough to put together a meaningful program that takes some input information and provides some useful output.  Two final ingredients we need are *[flowcharts](https://en.wikipedia.org/wiki/Flowchart)* and the `input` function.  As our example, we'll compute the volume of a sphere, which, if you recall, is given by $V = 4\\pi r^3/3$.\n",
+    "\n",
+    "### Flowcharts\n",
+    "\n",
+    "A flowchart is a visual design tool for creating and understanding computer programs.  Here, the goal is simply to introduce them as a concept: the program ahead is simple, and so too will be its flowchart.  A flowchart for a program to compute the volume of a sphere is shown below.\n",
+    "\n",
+    "![Flowchart for Computing Volume of a Sphere](img/volume_flowchart.png)\n",
+    "\n",
+    "This simple flowchart highlights a few of the key features we'll use later on in flowcharts:\n",
+    "\n",
+    "- *arrows* represent the flow of the program from one block to the next\n",
+    "- *ovals* represent the beginning and ending of a program\n",
+    "- *parallelograms* represent input from a user or output to a user\n",
+    "- *rectangles* represent an action taken by the program (which might correspond to several, executed instructions)\n",
+    "\n",
+    "We'll introduce other features of flowcharts as needed throughout the rest of the course.  You can create your own flowcharts pretty easily using the online tool [draw.io](https://www.draw.io), which was used for the image shown."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Simple Input\n",
+    "\n",
+    "All computer programs need some form of input to perform useful tasks.  One way to provide a Python program with input directly is by using the `input` function.  The `input` function can be used to prompt a user to enter information.  The information entered is stored as a `str` and can be assigned to a variable.  Here is an example:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Enter your info: 123\n"
+     ]
+    }
+   ],
+   "source": [
+    "my_info = input('Enter your info: ')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, `my_info` is a variable with the value `'123'`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'123'"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "my_info"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If we intended to store `my_info` as an integer value, we would need to modify our code to the following:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Enter your info: 123\n"
+     ]
+    }
+   ],
+   "source": [
+    "my_info_int = int(input('Enter your info: '))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "123"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "my_info_int"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The Program\n",
+    "\n",
+    "Now, we have what we need and can construct the entire program. Here it is all in one IPython line:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Please enter a radius: 2.0\n",
+      "The volume is  33.510321638291124\n"
+     ]
+    }
+   ],
+   "source": [
+    "# A short program that computes the volume of a \n",
+    "# sphere given a radius entered by the user.\n",
+    "\n",
+    "# Have the user enter the radius and store it as a float\n",
+    "radius = float(input('Please enter a radius: '))\n",
+    "\n",
+    "# Import the math module so that we have Pi\n",
+    "import math\n",
+    "\n",
+    "# Compute the volume of the sphere\n",
+    "volume = (4/3)*math.pi*radius**3\n",
+    "\n",
+    "# Print the volume\n",
+    "print(\"The volume is \", volume)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "One feature of this (and all good programs) is the use of *comments*, which are lines that start with the `#` symbol.  These lines are not executed by the Python interpreter and, therefore, can be used to describe what various parts of the program do so that a user (or another programmer) can understand the program.\n",
+    "\n",
+    "> **Note:** Use comments thoroughly to help you and others understand what your program does."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, we can execute the same program over and over again by saving it as a Python file.  Python files are regular text files that, by convention, have the extension `.py`.  Here is a screen capture of this program saved as `sphere_volume.py` in Spyder.  To run the file, one needs to press the green \"play\" button toward the top, center part of Spyder indicated by the cursor.  The results of running the program are shown in the lower right IPython console.\n",
+    "\n",
+    "![Running Our First Program](img/sphere_volume.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "This lesson is chalk pretty full of resources linked to throughout and, hence, there are no additional reading required."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

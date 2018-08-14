@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 11 - Processing Text Data &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 11 - Processing Text Data &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,19 +200,23 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-11---Processing-Text-Data">
 <h1>Lecture 11 - Processing Text Data<a class="headerlink" href="#Lecture-11---Processing-Text-Data" title="Permalink to this headline">¶</a></h1>
-<p>Lectures <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">5</span></a> through
-<a class="reference internal" href="ME400_Lecture_10.html"><span class="doc">9</span></a> covered the basic logical structures used
-in programming and their implementation in Python. <a class="reference internal" href="ME400_Lecture_10.html"><span class="doc">Lecture
-10</span></a> presented Python’s built-in container
+<p>Lectures <a class="reference external" href="ME400_Lecture_5.ipynb">5</a> through
+<a class="reference external" href="ME400_Lecture_10.ipynb">9</a> covered the basic logical structures used
+in programming and their implementation in Python. <a class="reference external" href="ME400_Lecture_10.ipynb">Lecture
+10</a> presented Python&#8217;s built-in container
 types. In this lecture, we turn to the practical problem of processing
 text data. Often, such data starts life in <em>files</em> on our machines.
 Ultimately, that data is represented as one (or more) strings that can
 be processed using a combination of the structures already covered
-(particularly, loops) and more specialized string functions. We’ll wrap
+(particularly, loops) and more specialized string functions. We&#8217;ll wrap
 up with ways in which we can output existing data into useful text-based
 formats.</p>
 <div class="section" id="Objectives">
@@ -422,11 +427,11 @@ newlines</em>:</p>
 </div>
 <p>Other useful functions: <code class="docutils literal"><span class="pre">str.find</span></code>, <code class="docutils literal"><span class="pre">str.replace</span></code>, and
 <code class="docutils literal"><span class="pre">str.strip</span></code>. Try them!</p>
-<p>That’s all about <em>parsing</em> strings (i.e., getting data from them). How
+<p>That&#8217;s all about <em>parsing</em> strings (i.e., getting data from them). How
 to put data <em>into</em> string format?</p>
 <p><strong>Example</strong>: A common technique for filling out forms is to start from a
 template and to use substitution to insert values of interest. Consider
-a program that accepts a user’s first and last name, both <code class="docutils literal"><span class="pre">str</span></code>
+a program that accepts a user&#8217;s first and last name, both <code class="docutils literal"><span class="pre">str</span></code>
 values. Use a template to print, e.g., <code class="docutils literal"><span class="pre">&quot;Hello</span> <span class="pre">Bill</span> <span class="pre">Gates!&quot;</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -449,18 +454,8 @@ Hello {} {}!
 </pre></div></div>
 </div>
 <p><strong>Example</strong>: Given <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">np.pi</span></code>, produce the string <code class="docutils literal"><span class="pre">'3.14159'</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p><code class="docutils literal"><span class="pre">&quot;{:7.4f}&quot;.format(np.pi)</span></code> yields <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">3.1416&quot;</span></code> (note the space).</p>
-<p>Let’s dissect <code class="docutils literal"><span class="pre">&quot;{:T.Df}&quot;.format(x)</span></code>. Here, - <code class="docutils literal"><span class="pre">{}</span></code> indicates
+<p>Let&#8217;s dissect <code class="docutils literal"><span class="pre">&quot;{:T.Df}&quot;.format(x)</span></code>. Here, - <code class="docutils literal"><span class="pre">{}</span></code> indicates
 substitution - <code class="docutils literal"><span class="pre">:</span></code> indicates a special format - <code class="docutils literal"><span class="pre">f</span></code> indicates a
 float format - <code class="docutils literal"><span class="pre">T</span></code> is the total number of characters of the formatted
 number (may yield white-space padding to left) - <code class="docutils literal"><span class="pre">D</span></code> is the number of
@@ -484,18 +479,8 @@ digits after the decimal point.</p>
 </pre></div>
 </div>
 </div>
-<p>You could read the file via <code class="docutils literal"><span class="pre">np.loadtxt</span></code>, etc. But what’s the other
+<p>You could read the file via <code class="docutils literal"><span class="pre">np.loadtxt</span></code>, etc. But what&#8217;s the other
 option? Open the file and parse the <code class="docutils literal"><span class="pre">str</span></code> contents.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="Saving-to-Text">
 <h3>Saving to Text<a class="headerlink" href="#Saving-to-Text" title="Permalink to this headline">¶</a></h3>
@@ -503,16 +488,6 @@ option? Open the file and parse the <code class="docutils literal"><span class="
 The challenge is in defining <code class="docutils literal"><span class="pre">s</span></code>. Templates help!</p>
 <p><strong>Example</strong>: Write <code class="docutils literal"><span class="pre">t</span></code> and <code class="docutils literal"><span class="pre">x</span></code> to file in two columns without using
 NumPy and using just two decimal places.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="A-Challenging-Problem">
 <h3>A Challenging Problem<a class="headerlink" href="#A-Challenging-Problem" title="Permalink to this headline">¶</a></h3>
@@ -561,15 +536,15 @@ NumPy and using just two decimal places.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_11_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_11_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -580,14 +555,14 @@ NumPy and using just two decimal places.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_11_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_11_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

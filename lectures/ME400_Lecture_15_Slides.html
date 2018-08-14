@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 15 - Sorting &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 15 - Sorting &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,15 +200,19 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-15---Sorting">
 <h1>Lecture 15 - Sorting<a class="headerlink" href="#Lecture-15---Sorting" title="Permalink to this headline">¶</a></h1>
-<p>In this lecture and <a class="reference internal" href="ME400_Lecture_14.html"><span class="doc">Lecture 14</span></a>, we tackle
+<p>In this lecture and <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture 14</a>, we tackle
 two of the most important practical problems in computing: <em>searching</em>
 and <em>sorting</em>. In this lecture, we turn to <em>sorting</em>, the more
 challenging problem and one that was a focus of much research in the
-early years of computing for making searching easier. We’ll flex our
+early years of computing for making searching easier. We&#8217;ll flex our
 knowledge of functions to help write clean and clear sorting programs.</p>
 <div class="section" id="Objectives">
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
@@ -445,7 +450,7 @@ schemes like <em>selection sort</em>.</li>
 <span class="math">\(\mathcal{O}(n\log n)\)</span> schemes like <em>merge sort</em>.</li>
 <li>Apply built-in Python functions to sort sequences.</li>
 </ul>
-<p>Office hours today 2:30–4 intermixed with advising. John should be
+<p>Office hours today 2:30&#8211;4 intermixed with advising. John should be
 available for part of that time.</p>
 </div>
 </div>
@@ -486,15 +491,15 @@ available for part of that time.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_15_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_15_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -505,14 +510,14 @@ available for part of that time.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_15_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_15_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

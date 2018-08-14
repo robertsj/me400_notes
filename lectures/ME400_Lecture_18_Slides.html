@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 18 - Numerical Differentiation &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 18 - Numerical Differentiation &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,22 +200,26 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-18---Numerical-Differentiation">
 <h1>Lecture 18 - Numerical Differentiation<a class="headerlink" href="#Lecture-18---Numerical-Differentiation" title="Permalink to this headline">¶</a></h1>
-<p>From <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture 1</span></a> through <a class="reference internal" href="ME400_Lecture_17.html"><span class="doc">Lecture
-17</span></a>, the focus has been squarely on the
+<p>From <a class="reference external" href="ME400_Lecture_1.ipynb">Lecture 1</a> through <a class="reference external" href="ME400_Lecture_17.ipynb">Lecture
+17</a>, the focus has been squarely on the
 fundamentals of programming, with some basic numerical tools (like
 numerical arrays and plotting) and best practices (like unit testing)
 included along the way. Our focus now shifts to the use of programming
-to solve problems <em>numerically</em>. We still need the basic tools we’ve
+to solve problems <em>numerically</em>. We still need the basic tools we&#8217;ve
 acquired (loops, functions, etc.), but our purpose is in <em>application</em>.
-In this lesson, we’ll review the basics of Taylor series and how they
+In this lesson, we&#8217;ll review the basics of Taylor series and how they
 can be used to define <em>finite-difference</em> approximations for
-derivatives. We’ll need these later in <a class="reference internal" href="Root_Finding.html"><span class="doc">Root
-Finding</span></a> and <a class="reference external" href="Numerical_Solution_of_BVPs.ipynb">Numerical Solution of
-BVPs</a>.</p>
+derivatives. We&#8217;ll need these later in <a class="reference internal" href="Root_Finding.html"><span class="doc">Root
+Finding</span></a> and <a class="reference internal" href="Numerical_Solution_of_BVPs.html"><span class="doc">Numerical Solution of
+BVPs</span></a>.</p>
 <div class="section" id="Objectives">
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
@@ -227,11 +232,11 @@ the right behavior.</li>
 <li>Evaluate derivatives numerically</li>
 </ul>
 <div class="section" id="If,-in-the-beginning,--didn't-go-to-0...">
-<h3>If, in the beginning, <span class="math">\(\Delta\)</span> didn’t go to 0…<a class="headerlink" href="#If,-in-the-beginning,--didn't-go-to-0..." title="Permalink to this headline">¶</a></h3>
+<h3>If, in the beginning, <span class="math">\(\Delta\)</span> didn&#8217;t go to 0...<a class="headerlink" href="#If,-in-the-beginning,--didn't-go-to-0..." title="Permalink to this headline">¶</a></h3>
 <p>Recall that the derivative of <span class="math">\(f(x)\)</span> can be defined as</p>
 <div class="math">
 \[\frac{df}{dx} = \lim_{\Delta \to 0} \frac{f(x+\Delta)-f(x)}{\Delta} \, .\]</div>
-<p>What if that limit is not taken and, instead, a “small” value of
+<p>What if that limit is not taken and, instead, a &#8220;small&#8221; value of
 <span class="math">\(\Delta\)</span> is used?</p>
 <p>The result is our first <strong>finite-difference</strong> approximation, the
 <strong>forward difference</strong>:</p>
@@ -242,7 +247,7 @@ the right behavior.</li>
 \[f'(x) \approx  \frac{f(x)-f(x-\Delta)}{\Delta} \, .\]</div>
 <p><strong>Exercise</strong>: Show that the backward difference correctly differentiates
 <span class="math">\(f(x) = ax^2 + bx + c\)</span> in the limit that <span class="math">\(\Delta \to 0\)</span>.</p>
-<p><strong>Example</strong>: A rocket’s velocity is described by</p>
+<p><strong>Example</strong>: A rocket&#8217;s velocity is described by</p>
 <div class="math">
 \[v(t) = 2000 \ln \frac{10^{5}}{10^{5}-1500t} - 10t \, \quad t \in [0, 20~\text{s}]\]</div>
 <p>Use the <em>backward difference</em> approximation with <span class="math">\(\Delta = 2\)</span>
@@ -281,7 +286,7 @@ seconds to estimate the acceleration at <span class="math">\(t = 10\)</span> s. 
 <div class="line">Note: - <span class="math">\(\mathcal{O}(\Delta^n)\)</span> represents any and all terms
 proportional to <span class="math">\(\Delta^n\)</span> or higher powers of <span class="math">\(\Delta\)</span>.</div>
 <div class="line">- Often, terms represented by <span class="math">\(\mathcal{O}(\Delta^n)\)</span> are called
-“order <span class="math">\(n\)</span>” terms or are said to be “order <span class="math">\(n\)</span>“.</div>
+&#8220;order <span class="math">\(n\)</span>&#8221; terms or are said to be &#8220;order <span class="math">\(n\)</span>&#8221;.</div>
 </div>
 <p><strong>Example</strong>: What <em>order</em> is the error of the forward difference method?</p>
 <p><strong>Example</strong>: Expand both <span class="math">\(f(x+\Delta)\)</span> and <span class="math">\(f(x-\Delta)\)</span>
@@ -308,20 +313,10 @@ the right behavior.</li>
 </ul>
 <p><strong>Exam 2</strong>: - median=68% (average lower due to skipped exams) - max=100%
 - Problem 1 average about 50% (those 2.5 points separate the two exams)
-- if today’s numbers were final, 20 A’s, 27 B’s, 29 C’s, 9 D’s (94
-total) - today’s Canvas grades should represent your Phase 1 score (your
+- if today&#8217;s numbers were final, 20 A&#8217;s, 27 B&#8217;s, 29 C&#8217;s, 9 D&#8217;s (94
+total) - today&#8217;s Canvas grades should represent your Phase 1 score (your
 grade could still improve (up to a C) or go down depending on your
 semester-end, formative/lab scores)</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -336,7 +331,7 @@ semester-end, formative/lab scores)</p>
   <ul>
 <li><a class="reference internal" href="#">Lecture 18 - Numerical Differentiation</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a><ul>
-<li><a class="reference internal" href="#If,-in-the-beginning,--didn't-go-to-0...">If, in the beginning, <span class="math">\(\Delta\)</span> didn’t go to 0…</a></li>
+<li><a class="reference internal" href="#If,-in-the-beginning,--didn't-go-to-0...">If, in the beginning, <span class="math">\(\Delta\)</span> didn&#8217;t go to 0...</a></li>
 <li><a class="reference internal" href="#Better-Approximations-via-Taylor-Series">Better Approximations via Taylor Series</a></li>
 <li><a class="reference internal" href="#Putting-it-altogether">Putting it altogether</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
@@ -355,15 +350,15 @@ semester-end, formative/lab scores)</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_18_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_18_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -374,14 +369,14 @@ semester-end, formative/lab scores)</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_18_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_18_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

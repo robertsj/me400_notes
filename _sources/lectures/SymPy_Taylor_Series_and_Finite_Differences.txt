@@ -1,0 +1,180 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Developing New Schemes\n",
+    "\n",
+    "Finite-difference schemes of arbitrary order can always be determined directly from Taylor series, but the work involved can be tedious and requires intuition that one builds over time working with such schemes.  Hence, to develop such approximations from scratch is outside our scope, but we can turn again to SymPy for some help using its `as_finite_difference` function.  For example, we can recreate our forward difference scheme via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAM8AAAAqBAMAAADmJhJdAAAAMFBMVEX///8AAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEM3dMlTvq5l2ZkSJ\nIru7VuKIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADJUlEQVRYCe2Vv2tUQRDHv++SZy53l3hEMAYt\nwmkhiBIUERvJf+CJiJVE7cTCVAHFwIGFIgqXygQED60UQgRJYWXERisP0iloOkEQL6KgRNGZ2523\nv94zeTY2Gbjdne98Zvfd7Ls54H9YfG7jp+Zh/V2Hr6/6Uqafhw036d/4QcjDBiflSc7Dbh7kVGCz\ndP9cjs3S2aUrTn25YvsDLeWV2raq1umsTgjw+UARYccsbf5OvGlZpM6G7f2RCgB9KY+q0KsTdWC/\npA3JInU2bPFSNZVANJquI1rbCZQaEq001SrWs+jd2WIXF5Yk5KGvRPfmuENCT1vU6KxaedlaNGxj\nS9L+PXS7bOXNlTESlo24Ty29bCUatlwv/ZQcDy08loAzl6aONIBZ0kbuvL3bBF6qsJfdFQ2LIpBc\nkqDR3PRTqluF9kuzrbQ5PgLRUulozyhwX0GS7aQICywCySUJugsPmgfpvmmTNHs/TuphepBqZTVu\nAycVJNlOirDAJJBckqDP8bp6BojHMHSIbQ/wW4y2meCtLtI3QmGFl8fpU6nVdp+v1Wi3dBZxnZ78\nO4cttIoDrPR2eAztBUt0ENAtTPcgcuQxOZBYwvaxJJdk0O6POOugD5xDpaPvMs7jEx4yDkrYU4ws\nNHi00N6v7JbHeAztAkv0MsTVe+iv/v1lEJaviC7pF4/moBP9HcxkvgzRGrP0Tj+rf8YbWt5i32Qr\nT40JG++9QXate0kJWv422BloAcUlOwcgia3c/YFTvYbnRm62SKB3hc0UnpwWKxbbo18mKgCZRqPL\nM7OPyC2M02BMum9lhTXTggZ0he2Dsli9m42StKxlPenue7rQYiFsqlFbgzRlsZqwUZKoOdimu++x\nbUr8JLG0v4ksVnKcORp1XOju+/C2kpM/vuREC89iLcQsB61SkGp3X4b4dWFL+yvPYlWGP867QtH8\nsN1AipeHDdLt7hsEPSEP66W63TcIesKk1am90Lqu6b7rolanXp8NCKf7BlFXyMO6meQ53TeIukIe\n1s0kj8puum8QdYU8rJtJbdDpvn7U9fOwbiZ5bvcNwo6Qh9WJfwAas/vZbIz3LgAAAABJRU5ErkJg\ngg==\n",
+      "text/latex": [
+       "$$- \\frac{1}{\\Delta} f{\\left (x \\right )} + \\frac{1}{\\Delta} f{\\left (\\Delta + x \\right )}$$"
+      ],
+      "text/plain": [
+       "  f(x)   f(Δ + x)\n",
+       "- ──── + ────────\n",
+       "   Δ        Δ    "
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import sympy as sy\n",
+    "sy.init_printing()\n",
+    "f, x, Delta = sy.symbols('f x Delta')\n",
+    "fp = sy.diff(f(x), x)\n",
+    "fp.as_finite_difference([x, x+Delta])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The syntax is straightforward.  Given an expression `expr` that represents a derivative (e.g., `sy.diff(f(x), x)`), then `expr.as_finite_difference(list)` accepts a `list` of symbolic points.  To follow our development above, these points should be some subsequence of $x \\pm i\\Delta$ where $i = \\ldots, -2, -1, 0, 1, 2, \\ldots$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Apply the rule-of-thumb to determine a third-order definition for $f'(x)$ and *verify the order* numerically.  (Hint: if the method is second order, that means it goes as $\\Delta^2$.  Hence, a reduction of $\\Delta$ by two should lead to what reduction in the error?)\n",
+    "\n",
+    "*Solution*:  A quick attempt will show that the points $x-\\Delta$, $x$, and $x+\\Delta$ do not work. Can you work out why using the Taylor series from above?.  Alternatively, choose a fourth point $x+2\\Delta$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\frac{1}{\\Delta} \\left(- \\frac{1}{2} f{\\left (x \\right )} - \\frac{1}{3} f{\\left (- \\Delta + x \\right )} + f{\\left (\\Delta + x \\right )} - \\frac{1}{6} f{\\left (2 \\Delta + x \\right )}\\right)$$"
+      ],
+      "text/plain": [
+       "  f(x)   f(-Δ + x)              f(2⋅Δ + x)\n",
+       "- ──── - ───────── + f(Δ + x) - ──────────\n",
+       "   2         3                      6     \n",
+       "──────────────────────────────────────────\n",
+       "                    Δ                     "
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "expr = fp.as_finite_difference([x-Delta, x, x+Delta, x+2*Delta]).simplify()\n",
+    "expr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'2.360e-04 2.274e-07 2.271e-10'"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from math import exp, log10\n",
+    "ref = exp(1)\n",
+    "err = lambda x, d: abs(ref - (-exp(x-d)/3-exp(x)/2+exp(x+d)-exp(x+2*d)/6)/d)\n",
+    "err_0_100 = err(1.0, 0.1)\n",
+    "err_0_010 = err(1.0, 0.01)\n",
+    "err_0_001 = err(1.0, 0.001)\n",
+    "\"{:.3e} {:.3e} {:.3e}\".format(err_0_100, err_0_010, err_0_001)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Reduction of $\\Delta$ by a a factor of 10 leads to a reduction in the error of approximately 1000 (i.e., $10^3$), exactly as expected if the error were proportional to $\\Delta^3$.  To confirm, check the logarithm of each ratio:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\left ( 3.0160082311842182, \\quad 3.0005824517909137\\right )$$"
+      ],
+      "text/plain": [
+       "(3.0160082311842182, 3.0005824517909137)"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "log10(err_0_100/err_0_010), log10(err_0_010/err_0_001)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "These values are very close to three, therefore confirming the third order expected.  Note that the second ratio is even closer to 3 than the first. Recall, the notion of order (here, $\\mathcal{O}(\\Delta^3)$) is defined specifically as $\\Delta$ goes to zero.  Hence, only as $\\Delta$ becomes very small will the $\\Delta^3$ terms dominate, making any other contributions to the error appear to be negligible.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Use `sympy.series` to show that that the finite-difference scheme $\\frac{1}{\\Delta} \\left(- \\frac{1}{2} f{\\left (x \\right )} - \\frac{1}{3} f{\\left (- \\Delta + x \\right )} + f{\\left (\\Delta + x \\right )} - \\frac{1}{6} f{\\left (2 \\Delta + x \\right )}\\right)$ is, in fact, third order.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Develop a second-order finite-difference approximation for $d^3 f/dx^3$ using just four points and confirm its order numerically, graphically, or symbolically.\n",
+    "\n",
+    "***"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

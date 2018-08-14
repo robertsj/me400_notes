@@ -1,0 +1,589 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#  Searching\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lecture and [Lecture 15](ME400_Lecture_15.ipynb), we tackle two of the most important practical problems in computing: *searching* and *sorting*.  We'll start with *searching* in this lecture because it is the simpler problem, but efficient searching depends on sorted values.  Along the way, algorithms will be classified by their *order*, a way to describe how good (or bad) an algorithm is for problems of different sizes.\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Search an array of numbers using a linear search.\n",
+    "- Search an array of numbers using a binary search.\n",
+    "- Describe what is meant by order and use it to compare algorithms\n",
+    "- Perform simple, numerical experiments to confirm the order of an algorithm\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- linear search\n",
+    "- binary search\n",
+    "- `time.time()`\n",
+    "- numerical experiment\n",
+    "- order\n",
+    "- $\\mathcal{O}$ (big-O) notation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The Basic, Linear Search\n",
+    "\n",
+    "A search algorithm solves the following problem: given a sequence of values, find the location of the element in the sequence equal to some value of interest.  If all we want is equality, then the order of the elements does not matter, and a simple solution is a **linear search** of the unsorted sequence.  Linear search algorithms represent the brute-force approach: search every element in the sequence, from one end to the other, until the match is found.  The algorithm can be summarized in pseudocode as follows:\n",
+    "\n",
+    "```\n",
+    "\"\"\"Algorithm for linear search of an unsorted sequence\"\"\"\n",
+    "Input: a, n, v # sequence, number elements, value of interest\n",
+    "Set location = Not found\n",
+    "Set i = 0\n",
+    "While i < n\n",
+    "    If a[i] == v then\n",
+    "        Set location = i\n",
+    "        Break  # stealing an idea from the Python we've learned\n",
+    "    Set i = i + 1\n",
+    "Output: location\n",
+    "```\n",
+    "\n",
+    "Searching requires that an expression line `a[i] == v` has meaning.  For `int`, `float`, and `str` values, it does.  For more complicated types, it might not be so obvious.  Are the lists `[1, 2, 3]` and `[2, 2, 2]` equal?  In total, no, but some elements are, and maybe that's what matters.\n",
+    "\n",
+    "\n",
+    "> **Exercise**: Implement this algorithm in Python and test with sequence `[2, 6, 1, 7, 3]` and value `7`.\n",
+    "\n",
+    "One does not need to sort values before searching them with a linear search if *equality* is to be checked.  However, what if one wants to find (1) the location of an element in a sequence equal to some value or, if not found, (2) the location of the value that is closest to but less than the value of interest.  For this latter case, values need to be sorted.  Those algorithms will be studied next time, but an easy way to sort a sequence is with the `sorted()` function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 3, 6, 7]"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = [2, 6, 1, 7, 3]\n",
+    "sorted(a)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hence, we can modify somewhat the pseudocode to search sorted values and to find the first element equal to (or the first element greater than) a value of interest.\n",
+    "\n",
+    "```\n",
+    "\"\"\"Algorithm for linear search of a sorted sequence\"\"\"\n",
+    "Input: a, n, v # sorted sequence, number elements, value of interest\n",
+    "Set location = n - 1\n",
+    "Set i = 0\n",
+    "While i < n \n",
+    "    If a[i] >= v then\n",
+    "        Set location = i\n",
+    "        Break\n",
+    "    Set i = i + 1\n",
+    "Output: location\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lets implement this algorithm as a function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def linear_search(a, v):\n",
+    "    \"\"\"Search a sorted sequence for value v. Return nearest \n",
+    "       index to right (or last position) if not found.\n",
+    "    \"\"\"\n",
+    "    location = len(a) - 1\n",
+    "    i = 0\n",
+    "    while i < len(a):   \n",
+    "        if a[i] >= v:\n",
+    "            location = i\n",
+    "            break\n",
+    "        i += 1\n",
+    "    return location"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, let's test it on a sorted array and search for a few values:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = [1, 5, 8, 11, 18]\n",
+    "linear_search(a, 8) # expect 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "linear_search(a, 1) # expect 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "linear_search(a, 18) # expect 4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "linear_search(a, 17) # expect 4 again"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "So far, so good.  Does it work for all values of `v`?\n",
+    "\n",
+    "> **Exercise**: Produce a flow chart for the linear search algorithm (for sorted sequences).\n",
+    "\n",
+    "> **Exercise**: Modify the `linear_search` algorithm to accept a third argument `compare`, which should be a function that accepts two arguments.  For a sequence `a` and value `v`, `compare(a[i], v)` should return `True` if `a[i]` is greater than or equal to `v` and `False` otherwise.  Test your modified search function with `compare = lambda x, y: x[1] > y[1]`,  `a = [(1, 2), (4, 3), (1, 9), (4, 11)]` and `v = (1, 9)`.\n",
+    "\n",
+    ">> *Solution*:\n",
+    ">>\n",
+    "```python\n",
+    "def linear_search(a, v, compare=lambda x, y: x >= y):\n",
+    "    \"\"\"Search a sorted sequence for value v. Return nearest \n",
+    "       index to left if not found.\n",
+    "    \"\"\"\n",
+    "    location = len(a) - 1\n",
+    "    i = 0\n",
+    "    while i < len(a):\n",
+    "        if compare(a[i], v):\n",
+    "            location = i\n",
+    "            break\n",
+    "        i += 1\n",
+    "    return location\n",
+    "# Now test it\n",
+    "a = [(1, 2), (4, 3), (1, 9), (4, 11)]\n",
+    "v = (1, 9)\n",
+    "result = linear_search(a, v, compare=lambda x, y: x[1] >= y[1])\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## A Bit About Order\n",
+    "\n",
+    "Why call linear search *linear*?  One reason might be that the process is pretty linear in that each element is checked one after another (i.e., no skipping around the elements to find the proverbial needle).  Another reason is that the number of times elements have to be compared (i.e., the number of times `a[i] > v` is evaluated) is proportional (and, in the worst, case *equal*) to the number of elements.  Any time we have a proportional relationship, that relationship is *linear*.  The familiar $y = ax + b$ is linear, because $y$ varies linearly with $x$.  For an array of $n$ elements, the number of comparisons is linear with $n$.  The exact number of comparisons depends on the value for which one is searching and the sequence of values.\n",
+    "\n",
+    "Generically, this linear relationship is given the fancy name *order $n$*, written compactly in the [big O](https://en.wikipedia.org/wiki/Big_O_notation) notation $\\mathcal{O}(n)$.  Quite frequently, the computational cost of an algorithm (i.e., how long it takes to run) is directly proportional to its order.  Hence, the time it takes for linear search to find its match should grow, roughly linearly, with the number of elements being searched.\n",
+    "\n",
+    "This fact may be intuitive, but it's always nice to see things demonstrated.  Here's what we'll do.  We'll write a little loop that goes from $n = 10$ to $n = 10^6$.  At each size of $n$, we'll draw a random number from 1 to $10^6$ and search for it in the `np.arange(1, n+1)`, a sorted sequence for sure.  For each step, we'll time things.  All together, these steps form the basis for a **numerical experiment**.  Here it all is:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nmvaiUzahgGEAAAAASUVORK5CYII=\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7f2841255240>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "\"\"\"Program to show time as a function of size for linear search.\"\"\"\n",
+    "from time import time\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "# Set the seed to keep the output fixed\n",
+    "np.random.seed(12345)\n",
+    "\n",
+    "# Set the n values and initialize a list for times\n",
+    "n_values = np.logspace(1, 6, 10)\n",
+    "t_values = []\n",
+    "\n",
+    "for n in n_values:\n",
+    "    n = int(n)\n",
+    "    # Generate the array 1, 2, ..., n\n",
+    "    a = np.arange(1, n+1)\n",
+    "    # Get a random int from [1, n]\n",
+    "    v = np.random.randint(1,n+1)\n",
+    "    # Start the timer\n",
+    "    t_start = time()\n",
+    "    # Do the search\n",
+    "    location = linear_search(a, v)\n",
+    "    # Determine the elapsed time (in seconds) and save it\n",
+    "    t_elapsed = time() - t_start\n",
+    "    t_values.append(t_elapsed)\n",
+    "    \n",
+    "# Plot the times vs values on a log log plot.\n",
+    "# Also, an expected \"trend\" line is included.\n",
+    "plt.figure(1)\n",
+    "plt.loglog(n_values, t_values, 'k-o', label='times') \n",
+    "plt.loglog(n_values, 1e-7*n_values, 'r--', label='$\\mathcal{O}(n)$')\n",
+    "plt.xlabel('n')\n",
+    "plt.ylabel('time (s)')\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Based on the figure, the times are not perfectly linear with $n$, but then again, the experiment is based on searching for a random value (which could be at the very beginning or the very end of the sorted array).  A more complete approach would be to do the search *at each $n$ several times* and average the resulting elapsed times.\n",
+    "\n",
+    "> **Exercise**: Modify the program above so that five different values of `v` are selected for each value of `n`.  Then, average the times and plot the results."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Such **numerical experiments** based on randome numbers are great ways to explore the behavior of algorithms for a variety of inputs.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Binary Search\n",
+    "\n",
+    "**Linear search** is easy to understand and easy to implement, but it is not the fastest way to search, and it's probably not what you use when searching ordered data.  \n",
+    "\n",
+    "Think about real-life scenarios in which ordered data is searched by hand.  One such scenario is when looking up a word in a dictionary (an actual, dead-tree book, not the website with the search tool).  Surely, you don't flip through, page by page, from \"a\" to \"z,\" until the item is found.  Rather, you likely take a large jump to the letter of interest (a bonafide search algorithm for things organized into smaller collections like alphabetized words).  If you're like me, you then quickly identify a page near to but *before* the one of interest and a page near to but *after* the one of interest.  Next, you check some page between those.  If it contains the word of interest, great, your job is done.  If it is before (or after) the word of interest, you have just reduced the number of pages to search by about two.\n",
+    "\n",
+    "The process just described is the basic idea of **binary search**: always divide the search domain in half.  One can consider binary search to be the simplest of **divide and conquer** techniques.  [Lecture 15](ME400_Lecture_15.ipynb) will show how divide and conquer applies to the problem of sorting."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The basic algorithm\n",
+    "\n",
+    "For a sorted sequence `a` of `n` values, a simple, binary search algorithm is defined by the following pseudocode:\n",
+    "\n",
+    "```octave\n",
+    "\"\"\"Algorithm for binary search of a sorted sequence\"\"\"\n",
+    "Input: a, n, v # Sorted sequence, number elements, value of interest\n",
+    "\n",
+    "# Initialize the location\n",
+    "Set location = Not Found\n",
+    "# Set the left and right search bounds\n",
+    "Set L = 0           \n",
+    "Set R = n - 1\n",
+    "While L <= R\n",
+    "    # Set the central point (use integer division!)\n",
+    "    Set C = (L + R) // 2 \n",
+    "    If v == a[C] then\n",
+    "        # Our search is successful, so we set\n",
+    "        # the location and call it quits early.\n",
+    "        Set location = C\n",
+    "        Break\n",
+    "    If v < a[C] then\n",
+    "        # V is in the first half of a[L:R],\n",
+    "        # so modify the right bound\n",
+    "        Set R = C - 1\n",
+    "    If v > a[C] then\n",
+    "        # V is in the second half of a[L:R]\n",
+    "        # so modify the left bound\n",
+    "        Set L = C + 1\n",
+    "```\n",
+    "\n",
+    "This algorithm is substantially more complex than linear search.  Notice what happens at each step: either (1) the value `v` is found or (2) one of the bounds (`L` or `R`) are changed, reducing the range to be searched by half.\n",
+    "\n",
+    "\n",
+    "> **Exercise**: Step through this algorithm for `a = [1, 3, 7, 9, 11]` and `v = 3`.  We know that `L = 0` and `R = 4` before the loop begins.  What are `L` and `R` after one time through the loop?  Twice?  Three times?  If it helps, you can add `Set counter = 0` before the `While` and increment it.  Then, trace the values of `counter`, `L`, `R`, and `C` at each iteration.\n",
+    "\n",
+    "> **Exercise**: Do the same for `v = 2` (which is not in `a`).\n",
+    "\n",
+    "> **Exercise**: Develop a flowchart for the binary search algorithm shown above in pseudocode.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Back to Order\n",
+    "\n",
+    "Linear search is $\\mathcal{O}(n)$, i.e., order $n$.  Binary search is faster.  It requires fewer comparisons.  Think about it this way: apply both search algorithms to find `9` in `[1, 3, 7, 9, 11]`.  At each step, the elements left to search are as follows (where the bolded entry indicates the element is found at that step):\n",
+    "\n",
+    "| Step  | Linear              |  Binary             |\n",
+    "|-------|---------------------|---------------------|\n",
+    "| 0     | `[1, 3, 7, 9, 11]`  |  `[1, 3, 7, 9, 11]` |\n",
+    "| 1     | `[3, 7, 9, 11]`     |  **[9, 11]**        |\n",
+    "| 2     | `[7, 9, 11]`        |                     |\n",
+    "| 3     | **[9, 11]**         |                     |\n",
+    "\n",
+    "\n",
+    "Here, it appears binary search outperforms linear search by about a factor of two, but in general it is *much better*.  In fact, binary search is $\\mathcal{O}(\\log n)$.  More specifically, the number of comparisons required is proportional to $\\log_2 n$, but remember that $\\log_x n = \\alpha \\log_y n$ for $\\alpha = \\log_x(y)$.  How *much* better is $\\mathcal{O}(\\log n)$ than $\\mathcal{O}(n)$? "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "For n =      10, binary is better by about a factor of 4.3e+00\n",
+      "For n =     100, binary is better by about a factor of 2.2e+01\n",
+      "For n =    1000, binary is better by about a factor of 1.4e+02\n",
+      "For n =   10000, binary is better by about a factor of 1.1e+03\n",
+      "For n =  100000, binary is better by about a factor of 8.7e+03\n",
+      "For n = 1000000, binary is better by about a factor of 7.2e+04\n"
+     ]
+    }
+   ],
+   "source": [
+    "for n in np.logspace(1, 6, 6) :\n",
+    "    print(\"For n = {:7.0f}, binary is better by about a factor of {:.1e}\".format(n, n/np.log(n)))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That's a huge savings when $n$ is greater than about 10!  The savings just get better with larger $n$.\n",
+    "\n",
+    "> **Exercise**: Implement the binary search algorithm above as a Python function `binary_search_basic`.\n",
+    "\n",
+    "> **Exercise**:  Implement a *modified* binary search algorithm in Python as a function `binary_search` that returns the location of the element nearest to but less than `v` when `v` is not found.\n",
+    "\n",
+    "> **Exercise**: Repeat the numerical experiment performed above using `binary_search` in place of `linear_search`.  Make sure to replace the trend line with what you expect.\n",
+    "\n",
+    "> **Exercise**: Implement the binary search function using recursion."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## A Comment on Built-In Functions\n",
+    "\n",
+    "Given `a = [1, 3, 7, 9, 11]`, Python already has a way to find the location of `v = 9`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = [1, 3, 7, 9, 11]\n",
+    "a.index(9)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Help on built-in function index:\n",
+      "\n",
+      "index(...) method of builtins.list instance\n",
+      "    L.index(value, [start, [stop]]) -> integer -- return first index of value.\n",
+      "    Raises ValueError if the value is not present.\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "help(a.index)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ValueError",
+     "evalue": "2 is not in list",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-11-8e455ff4af22>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0ma\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mindex\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m2\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m: 2 is not in list"
+     ]
+    }
+   ],
+   "source": [
+    "a.index(2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `index` function does not require that the elements of `a`  be sorted:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "[3, 11, 7, 9, 1].index(9)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Based on the documentation, it's not clear what sort of search is powering the `index` function.  You could dig in to the underlying code, or you could try a numerical experiment!\n",
+    "\n",
+    "> **Exercise**:  Adapt the numerical experiment above to determine whether the `index` function is linear or binary.  Does its behavior change if `a` is unsorted?  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "None at this time."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

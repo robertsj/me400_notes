@@ -1,0 +1,579 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 7 - More on Conditionals\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In [Lecture 5](ME400_Lecture_5.ipynb), the basics of programming logic were introduced, including the idea of *selection*. In [Lecture 6](ME400_Lecture_6.ipynb), those concepts were put into practice in Python using the `if`, `elif`, and `else` structure.  In this lesson, we dive into more complicated use cases, focusing on *nested* conditionals and the more complex code resulting from such conditionals.  Along the way, we'll apply the *graphical debugger* in Spyder to help understand the flow of execution (and to catch bugs!).  \n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Read and write nested `if` statements\n",
+    "- Explain the difference between syntactical and logical errors\n",
+    "- Use the graphical debugger in Spyder to trace and debug a program\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- nested conditional\n",
+    "- bug\n",
+    "- debugger\n",
+    "- breakpoint\n",
+    "- syntactical error\n",
+    "- logical error\n",
+    "- trace code"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Motivating Nested Conditionals - Life Insurance\n",
+    "\n",
+    "Life insurance is one of those things that should be on your radar within the next ten years.  Although such insurance comes in various forms, a popular modality is *term life insurance*, for which you pay a fixed monthly (or annual) premium over the period (term) of coverage.  Common terms are 10, 20, and 30 years.  The cost of a policy depends on several factors.  The premium is larger for plans with a larger payout and for plans with longer terms.  Of course, one expects to pay more in total for a longer period, but the increased premium of longer terms accounts for the increased risk of your demise with age---macabre, surely, but understandable.  Two other important factors are one's present age and, in most states, one's sex.  Older individuals purchasing a plan are viewed as higher risks than younger individuals, all else equal.  Likewise, females are lower risks than males, all else equal, because they tend to live longer (expected lifetimes of 82 and 77 years, respectively, says [WHO](http://www.who.int/gho/publications/world_health_statistics/2016/en/)).\n",
+    "\n",
+    "The table below shows some representative annual premiums for males and females of different ages for a \\$100,000 plan.  Assume that the age indicates the upper limit for the values listed in a given row; in other words, a 29-year old male seeking a 10-year plan will pay \\$84/year, whereas a 34-year old female would pay \\$125/year for a 20-year plan. Notice, neither males nor females are able to acquire a 30-year term policy if they are already 60 years in age.\n",
+    "\n",
+    "\n",
+    "| Term | Age | Premium (\\$, male) | Premium (\\$, female) |\n",
+    "|------|-----|-----------------|-------------------|\n",
+    "| 10 | 30 | 84  | 81  |\n",
+    "| 10 | 40 | 99  | 94  |\n",
+    "| 10 | 50 | 168 | 151 |\n",
+    "| 10 | 60 | 330 | 277 |\n",
+    "| 20 | 30 | 111 | 101 |\n",
+    "| 20 | 40 | 131 | 125 |\n",
+    "| 20 | 50 | 270 | 225 |\n",
+    "| 20 | 60 | 639 | 466 |\n",
+    "| 30 | 30 | 148 | 124 |\n",
+    "| 30 | 40 | 205 | 169 |\n",
+    "| 30 | 50 | 405 | 317 |\n",
+    "| 30 | 60 | n/a | n/a |\n",
+    "\n",
+    "With this data, we can now motivate nested conditionals with the simple question: define an algorithm for computing one's premium based on this data.  Surely, it's easy for us all to look at the table and do some mental math, but just as was emphasized in [Lecture 5](ME400_Lecture_5.ipynb), instructions must be very specific if a computer is to be expected to complete a task.\n",
+    "\n",
+    "For this problem, there are three implicit levels of selection: the premium depends on *term*, *age*, and *sex*.  Selecting between the options in any category is easy with the `if`, `elif`, and `else` construct, but how do we select between options in two categories?  Three?  \n",
+    "\n",
+    "The answer is by using a nested conditional.  For simplicity, let's limit our attention to 10-year plans.  To compute our premium therefore requires our age and sex.  Here's a start to our solution:\n",
+    "\n",
+    "```python\n",
+    "age = int(input('input age: '))\n",
+    "sex = input('input sex: ')\n",
+    "premium = None \n",
+    "if age < 30:\n",
+    "    pass # next handle male or female\n",
+    "elif age < 40:\n",
+    "    pass # next handle male or female\n",
+    "elif age < 50:\n",
+    "    pass # next handle male or female\n",
+    "elif age < 60:\n",
+    "    pass # next handle male or female\n",
+    "else:\n",
+    "    print('Hmm, maybe call an agent?')\n",
+    "print('Annual premium is', premium)\n",
+    "```\n",
+    "\n",
+    "Notice, for ages 60 or higher, a message is printed because no data exists for that age range.\n",
+    "\n",
+    "Now, for each age range, `pass` was used as a \"place holder.\"  It's useful in practice to sketch out some features of a program before filling out all the details.  Here, the age selection is implemented, but nothing is done yet about sex (although I've helpfully left some comments to myself as a reminder).  If the age provided to the program were 35, then we know that there are two possible values for the premium: 125 for females and 131 for males.  That's a simple `if`/`else` decision whose form in Python is\n",
+    "\n",
+    "```python\n",
+    "# if 30 <= age < 40 \n",
+    "if sex == 'female':\n",
+    "    premium = 125\n",
+    "else:\n",
+    "    premium = 131\n",
+    "```\n",
+    "\n",
+    "The question is, how do we put that conditional statement into our original program?  We do so by (1) placing it under the appropriate `if`, `elif`, or `else` statement and (2) indenting it a proper number of spaces as follows:\n",
+    "\n",
+    "```python\n",
+    "age = int(input('input age: '))\n",
+    "sex = input('input sex: ')\n",
+    "premium = None \n",
+    "if age < 30:\n",
+    "    pass # next handle male or female\n",
+    "elif age < 40:\n",
+    "    # Note, this has been inserted below the appropriate\n",
+    "    # elif clause (corresponding to 30 <= age < 40) and\n",
+    "    # indented four spaces to the right.  \n",
+    "    if sex == 'female':\n",
+    "        premium = 125\n",
+    "    else:\n",
+    "        premium = 131\n",
+    "elif age < 50:\n",
+    "    pass # next handle male or female\n",
+    "elif age < 60:\n",
+    "    pass # next handle male or female\n",
+    "else:\n",
+    "    print('Hmm, maybe call an agent?')\n",
+    "print('Annual premium is', premium)\n",
+    "```\n",
+    "\n",
+    "Use this as a starting point to tackle the following:\n",
+    "\n",
+    "> **Exercise**: Finish this program with additional nested `if` statements.\n",
+    "\n",
+    "> **Exercise**: Develop a flowchart for the completed program.\n",
+    "\n",
+    "It is absolutely essential that you understand the indentation used above.  The basic structure (with some illustrative comments) is as follows: \n",
+    "```python\n",
+    "# this is the outermost if, so it needs no indentation\n",
+    "if condition_outer:\n",
+    "#234 the nested if is inside the outer if, so indent by 4 spaces\n",
+    "    if condition_inner:\n",
+    "#2345678 this is inside the inner if, so indent another 4 spaces (8 in total)\n",
+    "        print('condition_inner is True')\n",
+    "#234 this else is part of the inner if and must be indented the same amount (4 spaces)\n",
+    "    else:\n",
+    "#2345678 this print is inside the inner else, so indent another 4 spaces (8 in total)\n",
+    "        print('condition_inner is False')\n",
+    "#234 this print is inside the outer if but outside the inner if so indent by 4 spaces\n",
+    "    print('condition_outer is True')\n",
+    "# this else is part of the outer if, so it doesn't need to be indented       \n",
+    "else:\n",
+    "#234 this pass is inside the outer else, so indent just 4\n",
+    "    print('condition_outer is False')\n",
+    "```\n",
+    "\n",
+    "\n",
+    "\n",
+    "Indentation defines the structure of Python code.\n",
+    "\n",
+    "> **Warning**:  Always, always, always make sure to use correct indentation.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## But Do We Need Them?\n",
+    "\n",
+    "Nested `if` statements are useful because they map pretty nicely onto our own logic for applications like the insurance example above.  That said, all nested `if` statements can be converted to the `if`/`elif`/`else` structure (albeit with difficulty in some cases) by using the logical operators `and`, `or`, and `not`.  \n",
+    "\n",
+    "For example, consider the following nested conditional:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "123  is greater than 10 and odd\n"
+     ]
+    }
+   ],
+   "source": [
+    "n = 123\n",
+    "if n > 10:\n",
+    "    if n % 2:\n",
+    "        print(n, \" is greater than 10 and odd\")\n",
+    "    else:\n",
+    "        print(n, \" is greater than 10 and even\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This is equivalent to"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "123  is greater than 10 and odd\n"
+     ]
+    }
+   ],
+   "source": [
+    "n = 123\n",
+    "if n > 10 and n % 2:\n",
+    "    print(n, \" is greater than 10 and odd\")\n",
+    "elif n > 10 and not n % 2:\n",
+    "    print(n, \" is greater than 10 and even\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Part of learning programming (and the logic behind it all) is to identify the right approach for the job.  Here, both examples are about equal in effort and performance.  For other applications, it might be much more work to reduce a multi-level, nested conditional statement to one with fewer levels of nesting."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Debugging\n",
+    "\n",
+    "> \"Everyone knows that debugging is twice as hard as writing the code in the first place. \n",
+    "> Therefore, if you write the code as cleverly as possible, you are, by \n",
+    "> definition, not smart enough to debug it.\"  \n",
+    "> \n",
+    ">  -[Brian W. Kernighan](https://en.wikipedia.org/wiki/Brian_Kernighan), \n",
+    ">   from *The Elements of Programming Style*, 2nd ed.\n",
+    "\n",
+    "\n",
+    "### Bugs\n",
+    "\n",
+    "In days of old, when computers were large and quite mechanical, *bugs* \n",
+    "of the living kind were an actual threat that could down a system.  Today,\n",
+    "the term lives on as the moniker for errors in one's code.  Programming\n",
+    "errors can be categorized as *syntactical* and *logical*.  Syntactical\n",
+    "errors result from misuse of a programming language.  For instance,\n",
+    "the following code results in a Python error:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "invalid syntax (<ipython-input-3-1065f57b9b53>, line 1)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-3-1065f57b9b53>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    if True\u001b[0m\n\u001b[0m           ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+     ]
+    }
+   ],
+   "source": [
+    "if True\n",
+    "    print(\"we forgot our colon!\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Python is interpreted, so it can alert users to errors right away.  Here, it's reminding us that an `if` statement needs its colon (it doesn't tell us what we're missing, but it does point to where it thinks we should look). Were\n",
+    "we to have a syntactical error in a compiled language (e.g., C++), it would never compile in the first place.\n",
+    "\n",
+    "Logical errors, on the other hand, can arise in code that is syntactically correct.  Consider the following issue:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "IndexError",
+     "evalue": "index 3 is out of bounds for axis 0 with size 3",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mIndexError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-4-2eba6176732d>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0ma\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0marray\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# define be to be 3 times the third element\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m \u001b[0mb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m3\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mIndexError\u001b[0m: index 3 is out of bounds for axis 0 with size 3"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "# make an array of three numbers\n",
+    "a = np.array([1, 2, 3])\n",
+    "# define be to be 3 times the third element\n",
+    "b = 3*a[3]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Whoops! Remember that Python is based on [zero indexing](https://en.wikipedia.org/wiki/Zero-based_numbering), so the third element should really be `a[2]` and not `a[3]`.   However, because `a[3]` is perfectly valid Python code, the error is one of logic: we were careless with our index values.   Such logical errors can be really, really tough to figure out because they don't always lead to things like `IndexError`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The Graphical Debugger\n",
+    "\n",
+    "Spyder has a built-in capability for **debugging** and, along the way, **tracing** programs graphically. Debugging a program is the art of removing bugs.  Tracing a program is the process of walking through its execution line by line, keeping track of all variables along the way.  Of course, we already saw that Spyder provides the *Variable explorer*, which shows the names and values of variables defined after we run a program or execute statements in the console.  However, by using the debugger, we can watch, step by step, how those variables change.\n",
+    "\n",
+    "Consider the following problem.  Given integers `a` and `b`, define a new variable `c` equal to the sum of the rounded values of `a` and `b`.  Here, rounding is to the nearest 10, and we round up if the ones digit is 5 or greater and down otherwise.  For instance, given `a = 16` and `b = 21`, we should have `c == 40`.  \n",
+    "\n",
+    "In a mad dash before class, I wrote the following solution:\n",
+    "```python\n",
+    "a = 16\n",
+    "b = 21\n",
+    "if a % 10 > 5:\n",
+    "    a += a % 10 \n",
+    "else:\n",
+    "    a - a % 10\n",
+    "if b % 10 > 5:\n",
+    "    b += b % 10\n",
+    "else:\n",
+    "    b -= b % 10\n",
+    "c = a + b\n",
+    "```\n",
+    "But it fails for `a = 16` and `b = 21`!  \n",
+    "\n",
+    "> **Exercise**: Run this program and determine the final values of `a` and `b`.  If they are not correct, what should they be?\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Before we try to identify any of the issues (and there are several), let's use Spyder and its graphical debugger to trace the program.  First, let's open Spyder and load (or write) the program:\n",
+    "\n",
+    "![Step 1 - Load the Program](img/debug_step_1.png)\n",
+    "\n",
+    "Now, notice that six (blue) icons at the top are highlighted.  One can hover over each of these for a brief description of what it does.  From left to right, these five icons allow one to \n",
+    "\n",
+    " 1. Debug a file \n",
+    " 2. Run current line\n",
+    " 3. Step into function or method of current line\n",
+    " 4. Run until current method or function returns\n",
+    " 5. Continue execution until next breakpoint\n",
+    " 6. Stop debugging\n",
+    " \n",
+    "Each of these icons should also have a keyboard shortcut defined for your machine; these shortcuts may prove useful to you.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To begin the debugging process, click on the first of the icons (i.e., the one one that looks like a play and pause symbol joined together).  Here's the output:\n",
+    "\n",
+    "![Step 2 - Begin to debug](img/debug_step_2.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All the action happened in the console to the lower right.  The command executed is `debugfile`, and the output is\n",
+    "```\n",
+    "> /Users/robertsj/sum_rounded.py(1)<module>()\n",
+    "----> 1 a = 16\n",
+    "      2 b = 21\n",
+    "      3 a, b = 16, 21\n",
+    "      4 if a % 10 > 5:\n",
+    "      5     a += a % 10\n",
+    "\n",
+    "\n",
+    "ipdb>\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This output is informative.  The program has been loaded, and the debugger is sitting at the very first line of code (marked here with an arrow).  Further more, the next several lines of code are also provided.  Finally, the console now says `ipdb>` rather than the default `In [2]` we might expect after having already executed `In [1]`.  Here, `ipdb` stands for the IPython debugger.  One can debug right from within the console using `ipdb` directly, but we'll focus on its use through the graphical interface provided by Spyder."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Next, let's click on the second blue icon (with an arrow connecting two dots):\n",
+    "\n",
+    "![Step 3 - Run the first line](img/debug_step_3.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "By clicking the second icon, we've run the line that was last highlighted (here, line 1), and now line 2 is highlighted.  Moreover, since `a` is assigned on line 1, its name and value (`16`) show up in the variable explorer.  Finally, the same 5 lines of code are printed in the console, with an arrow now pointing to line 2.  Note, however, that line 2 has not yet been executed.\n",
+    "\n",
+    "One could continue like this, one line at a time, to trace a program from start to finish (assuming no errors emerge along the way).  However, sometimes we know where in our program to focus our search for problems.  For `a = 16` and `b = 21`, we know (from the exercise above) that `a` is wrong.  By setting a **breakpoint** at line 5 and at line 7, we can jump immediately to whichever statement is modifying `a`.  To set a breakpoint in Spyder, one must double click on (or to the left of) the line number of interest.  Here, a breakpoint is set for line 5:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "![Step 4 - Enable a Breakpoint](img/debug_step_4.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If we then click the fifth blue icon (two triangles, i.e., \"fast forward), we get the following:\n",
+    "\n",
+    "![Step 5 - Jump to the Breakpoint](img/debug_step_5.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that we've jumped from line 2 to line 5 in one click (which means that, as expected, `a % 10 > 5` is `True`).  Were this a more complex program, the jump could be much larger (and lead to much quicker tracing and debugging).\n",
+    "\n",
+    "Now, if we run the current line (line 5), we get:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "![Step 6 - Run the Offending Line](img/debug_step_6.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "With line 5 executed, the value of `a` is now `22`.  That's not right!  Lines 5, 7, 9, and 11 are supposed to round `a` and `b` to their nearest 10.  But we've found the location of one bug, and now we can analyze it in more depth.  Let's break down the logic step by step.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = 16\n",
+    "a % 10 > 5"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Okay, so as we observed, we satisfy the condition of the `if` on line 4 and move on to line 5."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "6"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a % 10"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "22"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a + a % 10"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Wait.  If `a` is 16, then `a % 10` is 6.  Adding 6 gives us 22 and not the 20 we expect.  While `a % 10` picks out the 6 we need to know to round up,  we should add a 4, not a 6, to do that rounding.  That 4 comes from `10 - a % 10`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "20"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a + (10 - a % 10)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, looking at the rest of the program, there are several, similar errors.\n",
+    "\n",
+    "> **Exercise:** Find and fix the remaining bugs in the example program."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "For those wishing to learn more about debugging in Python without the graphical interface, checkout out the `pdb` [documentation](https://docs.python.org/3/library/pdb.html) documentation."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

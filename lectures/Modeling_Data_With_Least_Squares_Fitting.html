@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Data Analysis via Least-Squares Fitting &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Data Analysis via Least-Squares Fitting &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
     <link rel="next" title="Data Analysis via Interpolation" href="Modeling_Data_With_Interpolation.html" />
     <link rel="prev" title="Optimization" href="Optimization.html" />
    
@@ -33,7 +34,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -201,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Data-Analysis-via-Least-Squares-Fitting">
 <h1>Data Analysis via Least-Squares Fitting<a class="headerlink" href="#Data-Analysis-via-Least-Squares-Fitting" title="Permalink to this headline">¶</a></h1>
@@ -210,9 +215,9 @@ div.nboutput div.output_area.stderr {
 <p>A ubiquitous task in engineering and other technical disciplines is the
 analysis of data. Data comes from many sources, including measurements
 in the laboratory and numerical simulations. In this lecture and the
-next, we’ll apply what we’ve learned so far to produce <em>models</em> from
+next, we&#8217;ll apply what we&#8217;ve learned so far to produce <em>models</em> from
 data that we can use to explore trends and make conclusions.
-Specifically, in this lecture, we’ll develop models based on
+Specifically, in this lecture, we&#8217;ll develop models based on
 <strong>least-squares</strong> fitting of model parameters to existing data. Such
 fitting may be the right choice when the data in contaminated by noise
 or when the model need only capture the main features of the observed
@@ -245,7 +250,7 @@ data to models</li>
 </div>
 <div class="section" id="Noisy-Data-and-">
 <h2>Noisy Data and <span class="math">\(y = at + b\)</span><a class="headerlink" href="#Noisy-Data-and-" title="Permalink to this headline">¶</a></h2>
-<p>We’ll start simple and explore a task with which most students ought to
+<p>We&#8217;ll start simple and explore a task with which most students ought to
 be familiar: running a line through some scattered points of the form
 <span class="math">\(y = at+b\)</span> through several, scattered points
 <span class="math">\((t_i, y_i),\, i = 0, 1, \ldots\)</span>. To illustrate the problem,
@@ -269,7 +274,7 @@ times <span class="math">\(t_0, t_1, \ldots\)</span>, as show below.</p>
 <img alt="../_images/lectures_Modeling_Data_With_Least_Squares_Fitting_2_0.png" src="../_images/lectures_Modeling_Data_With_Least_Squares_Fitting_2_0.png" />
 </div>
 </div>
-<p>We’ll <em>assume</em> that the observed quantity <span class="math">\(y(t)\)</span> varies <em>linearly</em>
+<p>We&#8217;ll <em>assume</em> that the observed quantity <span class="math">\(y(t)\)</span> varies <em>linearly</em>
 with <span class="math">\(t\)</span>, i.e., we define <span class="math">\(y(t) = at + b\)</span>. The goal is to
 find the model parameters <span class="math">\(a\)</span> and <span class="math">\(b\)</span> yielding a model that
 <em>best</em> matches the observed values <span class="math">\(y_i\)</span>.</p>
@@ -306,8 +311,8 @@ the intercept to be <span class="math">\(b = y[0]\)</span> and the slope to be
 </div>
 </div>
 <div class="section" id="What-&quot;Best&quot;-Means">
-<h2>What “Best” Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
-<p>To define a “best” line, however, requires we define what “best” means.
+<h2>What &#8220;Best&#8221; Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
+<p>To define a &#8220;best&#8221; line, however, requires we define what &#8220;best&#8221; means.
 In general, any values of <span class="math">\(a\)</span> and <span class="math">\(b\)</span> will result in a model
 that differs from the measured values. This difference is the error.
 More formally, let the error be defined as</p>
@@ -378,7 +383,7 @@ following:</p>
 <p>Now, remember (e.g., from <a class="reference external" href="ME400_Lecture_23.ipynb">Lecture 23</a>) that
 the minimum of a function <span class="math">\(f(x)\)</span> (nonlinear or otherwise) can be
 found when its <em>derivative</em> is zero. In this case, that function is
-<span class="math">\(f(\mathbf{c})\)</span>, and the “derivative” is the <em>gradient</em>
+<span class="math">\(f(\mathbf{c})\)</span>, and the &#8220;derivative&#8221; is the <em>gradient</em>
 <span class="math">\(\nabla ||\mathbf{e}||\)</span>. Thus, differentiation leads to</p>
 <div class="math">
 \[\nabla \mathbf{e}^T \mathbf{e} = 2 \mathbf{M}^T \mathbf{M} \mathbf{c} - 2\mathbf{M}^T \mathbf{y} = \mathbf{0} \, ,\]</div>
@@ -421,7 +426,7 @@ that <span class="math">\(y(x) = ax+b\)</span> best fits the three points.</p>
 </pre></div>
 </div>
 </div>
-<p>Finally, solve the system (review <a class="reference internal" href="ME400_Lecture_4.html"><span class="doc">Lecture 4</span></a>
+<p>Finally, solve the system (review <a class="reference external" href="ME400_Lecture_4.ipynb">Lecture 4</a>
 for <span class="math">\(\mathbf{c}\)</span> and define the approximation for
 <span class="math">\(\mathbf{y}\)</span> via <span class="math">\(a\mathbf{x} + b\)</span> (equivalent to
 <span class="math">\(\mathbf{M}\mathbf{c}\)</span>). For sanity, plot the result with the
@@ -464,7 +469,7 @@ evaluate
 <span class="math">\(\mathbf{e}^T \mathbf{y}_a = \mathbf{e}\cdot \mathbf{y}_a\)</span>.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Using pen and paper (or SymPy), convince yourself that
-<span class="math">\(\nabla ||\mathbf{e}||_2\)</span> leads to the normal equation. (I’ll
+<span class="math">\(\nabla ||\mathbf{e}||_2\)</span> leads to the normal equation. (I&#8217;ll
 point out this has been a previous exam question. Hardly worth using a
 method unless you know how it works.)</p>
 <hr class="docutils" />
@@ -485,7 +490,7 @@ power <em>is</em> linear (which you should also confirm). Fit <span class="math"
 the model <span class="math">\(a t + b\)</span>, and then plot <span class="math">\(P\)</span> and its approximation
 from the model versus time.</p>
 <p><em>Solution</em>:</p>
-<p>First, let’s confirm the nonlinearity of <span class="math">\(P\)</span> and the linearity of
+<p>First, let&#8217;s confirm the nonlinearity of <span class="math">\(P\)</span> and the linearity of
 <span class="math">\(\log P\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -748,7 +753,7 @@ careful to extract it properly).</p>
 </div>
 </div>
 <p>Finally, use <code class="docutils literal"><span class="pre">model</span></code> to construct <code class="docutils literal"><span class="pre">y_a</span></code> using <code class="docutils literal"><span class="pre">c</span></code> and plot. In
-addition to the original <span class="math">\(t\)</span> points, we’ll use a much finer set of
+addition to the original <span class="math">\(t\)</span> points, we&#8217;ll use a much finer set of
 times to illustrate the continuous model.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -809,7 +814,7 @@ times to illustrate the continuous model.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#Noisy-Data-and-">Noisy Data and <span class="math">\(y = at + b\)</span></a></li>
-<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What “Best” Means</a></li>
+<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What &#8220;Best&#8221; Means</a></li>
 <li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
 <li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
 <li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
@@ -828,15 +833,15 @@ times to illustrate the continuous model.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Modeling_Data_With_Least_Squares_Fitting.ipynb.txt"
+      <li><a href="../_sources/lectures/Modeling_Data_With_Least_Squares_Fitting.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -847,14 +852,14 @@ times to illustrate the continuous model.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/Modeling_Data_With_Least_Squares_Fitting.ipynb.txt"
+      <a href="../_sources/lectures/Modeling_Data_With_Least_Squares_Fitting.txt"
           rel="nofollow">Page source</a>
     </div>
 

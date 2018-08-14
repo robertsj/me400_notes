@@ -1,0 +1,444 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 3 - Basic Data Processing with NumPy and Matplotlib\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lesson, we'll explore some core features of NumPy and Matplotlib and extend our Python based \"calculator\" to include processing of *arrays* of data.  [NumPy](http://www.numpy.org/) is the basic numerical package for Python.  A lot of its utility comes from its numerical, multidimensional array type, `ndarray`. Use of these arrays in a *vectorized* way often leads to significantly faster (and much more compact) code.  Moreover, the array-valued results of numerical computations are  easily visualized using Matplotlib, which was originally developed to provide MATLAB-like graphics in the Python environment.   \n",
+    "\n",
+    "I think it's so important that students can create, process, and display data that I highlight it early in the course and revisit it throughtout.  NumPy and Matplotlib together provide about the easiest way to work with data."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- *define and manipulate one-dimensional NumPy arrays*\n",
+    "- *produce plots of data following best practices*\n",
+    "- *load data from text files*\n",
+    "- *save data to text files*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- `numpy`\n",
+    "- `ndarray` \n",
+    "- `np.array`\n",
+    "- `np.ones`\n",
+    "- `np.zeros`\n",
+    "- `np.linspace`\n",
+    "- `np.sin`\n",
+    "- `np.mean` (or `v.mean` where `v` is of type `ndarray`)\n",
+    "- `max` (or `np.max` or `v.max`)\n",
+    "- `sum` (or `np.sum` or `v.sum`) \n",
+    "- `matplotlib.pyplot`\n",
+    "- `np.loadtxt`\n",
+    "- `np.savetxt`\n",
+    "- `v.T`, where `v` is a two-dimensional `ndarray`\n",
+    "- `str` formats"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from IPython.core.interactiveshell import InteractiveShell \n",
+    "InteractiveShell.ast_node_interactivity = \"all\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## NumPy and One-Dimensional Arrays"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np # very common\n",
+    "dir(np)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### A Motivating Example\n",
+    "\n",
+    "A common task is to evaluate $f(x)$ at *discrete points* for tabulating or plotting."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**: evaluate $f(x) = \\sin(x)$ at $x \\in [0, 1]$ using 10 evenly-spaced points.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "x = np.linspace(0, 1, 10)\n",
+    "f = "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Why not `math.sin(x)`?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Summary of Creating and Manipulating 1-D Arrays\n",
+    "\n",
+    "\n",
+    "| function      | example use                     | what it creates creates     | \n",
+    "|---------------|---------------------------------|-----------------------------|\n",
+    "| `np.array(sequence)`    | `np.array([1.5, 2.7, 3.1])`     | `array([ 1.5,  2.7,  3.1])` |\n",
+    "| `np.linspace(start, stop, num)` | `np.linspace(0, 1, 3)`          | `array([ 0. ,  0.5,  1. ])` |\n",
+    "| `np.ones(shape)`     | `np.ones(3)`                    | `array([ 1.,  1.,  1.])`    |\n",
+    "| `np.zeros(shape)`    | `np.zeros(3)`                   | `array([ 0.,  0.,  0.])`    |\n",
+    "| `np.arange(start, end, step)`   | `np.arange(1, 7, 2)`               | ` array([1, 3, 5])`         |\n",
+    "\n",
+    "What's the difference between `linspace` and `arange`?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "NumPy arrays support **vectorized** arithmetic operations.  For those who speak MATLAB®, that means\n",
+    "\n",
+    "```octave\n",
+    "a = [1 2 3]; % define two arrays\n",
+    "b = [2 3 4]; % with 3 elements\n",
+    "s = a + b;   % add them\n",
+    "p = a .* b;  % multiple element by element\n",
+    "q = a ./ b;  % divide ...\n",
+    "e = a .^ b;  % exponentiate ...\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "With NumPy, the same can be done via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a = # define two arrays\n",
+    "b = # with 3 elements\n",
+    "s = # add them\n",
+    "p = # multiple element by element\n",
+    "q = # divide ...\n",
+    "e = # exponentiate ..."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Inspecting Arrays and Their Elements\n",
+    "\n",
+    "Access elements of an array (called *indexing*) using `[]` (square \"brackets)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "x = np.array([11, 22, 33, 44])\n",
+    "# how to get 33?  44?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# how to set 33 to 99?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "We can also determine an array's length (or, more generically, size):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "len(x)\n",
+    "x.size\n",
+    "x.shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "What else do `ndarray` (i.e., NumPy array) variables have?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Diving into `pyplot`\n",
+    "\n",
+    "We have an array `x` and the array `y = np.sin(x)`.  How to plot?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt # just like np is used for NumPy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "x = np.linspace(0, 1, 10)\n",
+    "f = np.sin(x)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Good Practice**: All plots should use **axis labels**, **legends**, **line styles**, and **line colors** as needed.  This is a **rule** for all plots you produce in this class."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Data Input and Output via NumPy\n",
+    "\n",
+    "The two key functions:\n",
+    "- `np.loadtxt(input_file, ...)`\n",
+    "- `np.loadtxt(output_file, data, ...)`\n",
+    "\n",
+    "Here, `input_file` and `output_file` are `str` names, and `data` is the data to write (usually a `ndarray`).  Both functions have *optional arguments*.\n",
+    "\n",
+    "**Pro Tip**: If data is numerical and stored in a simple, collimated format, use `np.loadtxt` and `np.savetxt`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to\n",
+    "\n",
+    "- *define and manipulate one-dimensional NumPy arrays*\n",
+    "- *produce plots of data following best practices*\n",
+    "- *load data from text files*\n",
+    "- *save data to text files*"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

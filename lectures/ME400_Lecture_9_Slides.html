@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 9 - More on Loops &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 9 - More on Loops &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,18 +200,22 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-9---More-on-Loops">
 <h1>Lecture 9 - More on Loops<a class="headerlink" href="#Lecture-9---More-on-Loops" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference internal" href="ME400_Lecture_8.html"><span class="doc">Lecture 8</span></a>, the use of <code class="docutils literal"><span class="pre">while</span></code> loops in
+<p>In <a class="reference external" href="ME400_Lecture_8.ipynb">Lecture 8</a>, the use of <code class="docutils literal"><span class="pre">while</span></code> loops in
 Python introduced to solve problems requiring iteration. The <code class="docutils literal"><span class="pre">while</span></code>
 loop structure in Python is very similar to structure introduced via
-pseudocode in <a class="reference internal" href="ME400_Lecture_5.html"><span class="doc">Lecture_5</span></a>. In this lecture,
+pseudocode in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture_5</a>. In this lecture,
 an additional <code class="docutils literal"><span class="pre">for</span></code>-loop construct is introduced, which reduces the
-amount of “bookkeeping” required in some cases. All loops can also be
+amount of &#8220;bookkeeping&#8221; required in some cases. All loops can also be
 <em>nested</em>, which provides substantial flexibility when processing data,
 defining multidimensional arrays, and performing similar, potentially
 multidimensional tasks.</p>
@@ -224,7 +229,7 @@ respectively.</p>
 <div class="line">Exam 1 on Friday.</div>
 <div class="line">- Half written, half coded. - Past exam on Canvas is a reasonable
 example of my exam style. - You can use: a pen/pencil and one <strong>hand
-written</strong> 11’’ by 8.5’’ sheet, front and back. No internet. No talking
+written</strong> 11&#8217;&#8217; by 8.5&#8217;&#8217; sheet, front and back. No internet. No talking
 between labs. - For those with accomodations: Ward 133 at the
 scheduled exam time. <strong>Send me an email to confirm by 5 pm</strong> so I know
 who to expect.</div>
@@ -249,7 +254,7 @@ array.</li>
 <div class="section" id="Key-Terms">
 <h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>infinite (or “event”) loop</li>
+<li>infinite (or &#8220;event&#8221;) loop</li>
 <li><code class="docutils literal"><span class="pre">for</span></code></li>
 <li><code class="docutils literal"><span class="pre">range</span></code></li>
 <li><code class="docutils literal"><span class="pre">continue</span></code></li>
@@ -265,7 +270,7 @@ array.</li>
 </pre></div>
 </div>
 <p><strong>Exercise</strong>: Write a program that uses an infinite loop. It should ask
-the user to enter something. If the user enters “quit,” then the program
+the user to enter something. If the user enters &#8220;quit,&#8221; then the program
 should exit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -286,17 +291,17 @@ should exit.</p>
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-b60b422a2626&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-1-97b15b7bdfcf&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">while</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">:</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-red-fg"># get user input</span>
 <span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">     </span>something <span class="ansi-blue-fg">=</span> input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter something: &#39;</span><span class="ansi-blue-fg">)</span>
 
 <span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
-<span class="ansi-green-intense-fg ansi-bold">    698</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    699</span>             raise StdinNotImplementedError(
-<span class="ansi-green-fg">--&gt; 700</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">    701</span>             )
-<span class="ansi-green-intense-fg ansi-bold">    702</span>         return self._input_request(str(prompt),
+<span class="ansi-green-intense-fg ansi-bold">    697</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>             raise StdinNotImplementedError(
+<span class="ansi-green-fg">--&gt; 699</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">    700</span>             )
+<span class="ansi-green-intense-fg ansi-bold">    701</span>         return self._input_request(str(prompt),
 
 <span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
 </pre></div></div>
@@ -358,7 +363,7 @@ should exit.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-70674336de5f&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">6</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-2a4e3568739d&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">6</span>
 <span class="ansi-red-fg">    print(a[i]) # indented 4 spaces</span>
     ^
 <span class="ansi-red-fg">IndentationError</span><span class="ansi-red-fg">:</span> unexpected indent
@@ -382,8 +387,8 @@ bound, and <code class="docutils literal"><span class="pre">stride</span></code>
 </div>
 <div class="section" id="A-Pythonic-Quirk">
 <h2>A Pythonic Quirk<a class="headerlink" href="#A-Pythonic-Quirk" title="Permalink to this headline">¶</a></h2>
-<p>Python’s <code class="docutils literal"><span class="pre">while</span></code> and <code class="docutils literal"><span class="pre">for</span></code> loops are not quite the same “under the
-hood.”</p>
+<p>Python&#8217;s <code class="docutils literal"><span class="pre">while</span></code> and <code class="docutils literal"><span class="pre">for</span></code> loops are not quite the same &#8220;under the
+hood.&#8221;</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
@@ -439,7 +444,7 @@ j =  4
 <p>Just like <code class="docutils literal"><span class="pre">if</span></code> statements can be nested, so, too, can <code class="docutils literal"><span class="pre">for</span></code> (and
 <code class="docutils literal"><span class="pre">while</span></code>) loops be nested. While nested <code class="docutils literal"><span class="pre">if</span></code> statements can always be
 written as (potentially much) more complicated, single statements, there
-are some tasks for which nested loops are truly required—but I have
+are some tasks for which nested loops are truly required&#8212;but I have
 not proven that!</p>
 <p><strong>Exercise</strong>: Use nested <code class="docutils literal"><span class="pre">for</span></code> loops to find the sum of the elements
 of <span class="math">\(5\times 5\)</span> array of random numbers. (At home: repeat with
@@ -514,15 +519,15 @@ with iteration</li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_9_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_9_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -533,14 +538,14 @@ with iteration</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_9_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_9_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

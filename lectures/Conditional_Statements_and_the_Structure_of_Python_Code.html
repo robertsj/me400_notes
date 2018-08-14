@@ -1,0 +1,748 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lecture 6 - Conditional Statements and the Structure of Python Code &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2018',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <link rel="next" title="Lecture 7 - More on Conditionals" href="More_on_Conditionals.html" />
+    <link rel="prev" title="Lecture 5 - Algorithms, flowcharts, and pseudocode." href="Algorithms_Flowcharts_and_Pseudocode.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="section" id="Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code">
+<h1>Lecture 6 - Conditional Statements and the Structure of Python Code<a class="headerlink" href="#Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Overview,-Objectives,-and-Key-Terms">
+<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
+<p>In this lesson, we turn back to Python and begin the development of more
+complicated programs. The emphasis here and in <a class="reference external" href="ME400_Lecture_7.ipynb">Lecture
+7</a> is on the logic of <em>selection</em> and its
+implementation via conditional statements in Python. Effective use of
+conditional statements requires a thorough understanding of the
+relational and logical operators defined in <a class="reference external" href="ME400_Lecture_2.ipynb">Lesson
+2</a>. Of course, one must also first be
+comfortable with the theoretical coverage of selection presented in
+<a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 5</a>.</p>
+<div class="section" id="Objectives">
+<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<p>By the end of this lesson, you should be able to</p>
+<ul class="simple">
+<li>explain the importance of indentation in Python programs</li>
+<li>write a program with conditional statements containing <code class="docutils literal"><span class="pre">if</span></code>,
+<code class="docutils literal"><span class="pre">else</span></code>, and <code class="docutils literal"><span class="pre">elif</span></code></li>
+<li>predict the outcome of a Python program with <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">else</span></code>, and
+<code class="docutils literal"><span class="pre">elif</span></code> statements</li>
+</ul>
+</div>
+<div class="section" id="Key-Terms">
+<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">if</span></code></li>
+<li><code class="docutils literal"><span class="pre">else</span></code></li>
+<li><code class="docutils literal"><span class="pre">elif</span></code></li>
+<li>suite</li>
+<li><code class="docutils literal"><span class="pre">NameError</span></code></li>
+<li>ternary operation</li>
+<li><code class="docutils literal"><span class="pre">SyntaxError</span></code></li>
+<li><code class="docutils literal"><span class="pre">pass</span></code></li>
+</ul>
+</div>
+</div>
+<div class="section" id="The-Simplest-if">
+<h2>The Simplest <code class="docutils literal"><span class="pre">if</span></code><a class="headerlink" href="#The-Simplest-if" title="Permalink to this headline">¶</a></h2>
+<p>Recall the basic conditional statement from <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture
+5</a>, repeated graphically here:</p>
+<div class="figure" id="id1">
+<img alt="Flowchart fragment for a simple conditional statement" src="../_images/simple_if.png" />
+<p class="caption"><span class="caption-text">Flowchart fragment for a simple conditional statement</span></p>
+</div>
+<p>In pseudocode, that same statement could be written as</p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">If</span> <span class="n">the</span> <span class="n">condition</span> <span class="n">is</span> <span class="n">satisfied</span> <span class="n">then</span>
+    <span class="n">Do</span> <span class="n">something</span>
+</pre></div>
+</div>
+<p>Very nearly the same structure is used in Python. Consider as a simple
+example a program that accepts as input a number and prints a message to
+the user if that number is negative. In Python, that&#8217;s easy:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+enter your number -3
+the number is negative
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+enter your number 7
+</pre></div></div>
+</div>
+<p>This example illustrates the basic syntax of <code class="docutils literal"><span class="pre">if</span></code> statements, and four
+key observations can be made:</p>
+<ol class="arabic simple">
+<li>The <code class="docutils literal"><span class="pre">if</span></code> statement begins with the keyword <code class="docutils literal"><span class="pre">if</span></code>. Because <code class="docutils literal"><span class="pre">if</span></code>
+is a keyword, we can&#8217;t use it as a name for variables. Rather, <code class="docutils literal"><span class="pre">if</span></code>
+can only be used for <code class="docutils literal"><span class="pre">if</span></code> statements.</li>
+<li>The <em>condition</em> is <code class="docutils literal"><span class="pre">number</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>, which is an expression relating
+<code class="docutils literal"><span class="pre">number</span></code> and <code class="docutils literal"><span class="pre">0</span></code> by the <code class="docutils literal"><span class="pre">&lt;</span></code> relational operator. In other
+words, <code class="docutils literal"><span class="pre">number</span> <span class="pre">&lt;</span> <span class="pre">0</span></code> is either <code class="docutils literal"><span class="pre">True</span></code> or <code class="docutils literal"><span class="pre">False</span></code>. When <code class="docutils literal"><span class="pre">True</span></code>,
+the statement immediately following the <code class="docutils literal"><span class="pre">if</span></code> statement is executed.
+Otherwise, that line (here, the one with <code class="docutils literal"><span class="pre">print</span></code>) is skipped.</li>
+<li>Immediately after the condition is a <code class="docutils literal"><span class="pre">:</span></code> (i.e., a colon). This
+<strong>colon is required</strong> and indicates the end of the <code class="docutils literal"><span class="pre">if</span></code> statement.
+There <strong>is no then</strong> in Python.</li>
+<li>The line immediately after the <code class="docutils literal"><span class="pre">if</span></code> statement (the one with
+<code class="docutils literal"><span class="pre">print</span></code>) is <strong>indented</strong>. Here, that indentation consists of four
+spaces. At least one space is required, but <strong>four spaces is most
+common and recommended for all indentation</strong>. Moreover, all lines in
+the same block of code (e.g., the lines optionally executed if the
+condition of an <code class="docutils literal"><span class="pre">if</span></code> statement is satisfied) must have the same
+indentation. Such a block of code is called a &#8220;suite&#8221; in the <a class="reference external" href="https://docs.python.org/3/reference/compound_stmts.html">Python
+documentation</a>.</li>
+</ol>
+<p>To get comfortable with the basic <code class="docutils literal"><span class="pre">if</span></code>-statement structure, it is
+worth exploring a few examples:</p>
+<p><strong>Exercise</strong>: Suppose <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are numbers already defined. Use
+an <code class="docutils literal"><span class="pre">if</span></code> statement to swap their values when <code class="docutils literal"><span class="pre">b</span></code> is less than <code class="docutils literal"><span class="pre">a</span></code>.</p>
+<p><em>Solution</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">:</span>
+      <span class="n">tmp</span> <span class="o">=</span> <span class="n">b</span> <span class="c1"># tmp is a very common abbreviation for temporary</span>
+      <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+      <span class="n">a</span> <span class="o">=</span> <span class="n">tmp</span>
+</pre></div>
+</div>
+<p><strong>Exercise</strong>: What does the following code do?</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;Harry Potter&#39;</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">d</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The answer is 42.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Solution</em>: It prints out &#8220;The answer is 42.&#8221; To know that, however,
+requires you can evaluate the condition. Remember that the order of
+operations is important. First <code class="docutils literal"><span class="pre">not</span></code>, then <code class="docutils literal"><span class="pre">and</span></code>, and finally <code class="docutils literal"><span class="pre">or</span></code>
+is applied. The result is <code class="docutils literal"><span class="pre">True</span></code> (since <code class="docutils literal"><span class="pre">not</span> <span class="pre">0</span></code> equals <code class="docutils literal"><span class="pre">True</span></code>).</p>
+<p><strong>Exercise</strong>: What does this code do?</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span> <span class="c1"># one can import single functions</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="c1"># what does this statement do?</span>
+<span class="k">if</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span>
+      <span class="n">root1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+     <span class="n">root2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">root1</span><span class="p">,</span> <span class="n">root2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Solution</em>: Actually, it doesn&#8217;t do anything but lead to errors! First,
+the Python interpreter catches that the <code class="docutils literal"><span class="pre">if</span></code> statement is missing its
+colon. If that gets fixed, the interpreter then catches that the
+indentation is not uniform in the block of code immediately following
+the <code class="docutils literal"><span class="pre">if</span></code>. Both <code class="docutils literal"><span class="pre">root1</span></code> and <code class="docutils literal"><span class="pre">root2</span></code> should start in the same
+column, but <code class="docutils literal"><span class="pre">root2</span></code> starts one column before <code class="docutils literal"><span class="pre">root1</span></code>. Finally, for
+the particular values of <code class="docutils literal"><span class="pre">a</span></code>, <code class="docutils literal"><span class="pre">b</span></code>, and <code class="docutils literal"><span class="pre">c</span></code>, <code class="docutils literal"><span class="pre">b**2</span></code> is less than
+<code class="docutils literal"><span class="pre">4*a*c</span></code>, and the condition is <em>not</em> satisfied. Hence, neither
+<code class="docutils literal"><span class="pre">root1</span></code> nor <code class="docutils literal"><span class="pre">root2</span></code> are defined, and the <code class="docutils literal"><span class="pre">print</span></code> statement is
+therefore using undefined names.</p>
+<blockquote>
+<div><strong>Warning</strong>: Variables must be defined (i.e., assigned a value)
+before they can be used. Otherwise, a <code class="docutils literal"><span class="pre">NameError</span></code> will occur.</div></blockquote>
+</div>
+<div class="section" id="The-else-Clause">
+<h2>The <code class="docutils literal"><span class="pre">else</span></code> Clause<a class="headerlink" href="#The-else-Clause" title="Permalink to this headline">¶</a></h2>
+<p>The basic <code class="docutils literal"><span class="pre">if</span></code> statement provides a way to skip certain lines of code.
+However, often one wants to choose between two alternative lines of
+code. Perhaps for our example above, we would like to let the user also
+know when a <code class="docutils literal"><span class="pre">number</span></code> is nonnegative, i.e., a separate <code class="docutils literal"><span class="pre">print</span></code>
+statement should be executed when <code class="docutils literal"><span class="pre">number</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>. In Python, we can use
+the <code class="docutils literal"><span class="pre">else</span></code> clause to define an optional block of code to be executed
+when the condition is not satisfied. For our <code class="docutils literal"><span class="pre">number</span></code> example, the
+updated program is</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is nonnegative&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+enter your number 123
+the number is nonnegative
+</pre></div></div>
+</div>
+<p>Note, the <code class="docutils literal"><span class="pre">else</span></code> clause is not something built explicitly into the
+flowcharts we have seen, but it is possible to do so by adding a process
+block (rectangle) between the conditional block (diamond) and subsequent
+blocks along the arrow labeled &#8220;false.&#8221;</p>
+<blockquote>
+<div><strong>Exercise</strong>: Modify the flowchart for the basic conditional
+statement to include processes performed when the condition is not
+satisfied.</div></blockquote>
+<p>As has been mentioned, all <code class="docutils literal"><span class="pre">if</span></code> statements (including those with the
+<code class="docutils literal"><span class="pre">else</span></code> clause) can be rewritten in terms of basic <code class="docutils literal"><span class="pre">if</span></code> statements.
+In some cases, the resulting code is more complicated. For our modified
+<code class="docutils literal"><span class="pre">number</span></code> example, we could use two basic <code class="docutils literal"><span class="pre">if</span></code> statements to achieve
+the same behavior as the <code class="docutils literal"><span class="pre">if</span></code>/<code class="docutils literal"><span class="pre">else</span></code> structure:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is nonnegative&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+enter your number 123
+the number is nonnegative
+</pre></div></div>
+</div>
+<p>This solution is logically equivalent to the <code class="docutils literal"><span class="pre">if</span></code>/<code class="docutils literal"><span class="pre">else</span></code> version,
+but it is a bit more complex. First, the total amount of code is a bit
+larger because we need to explicitly define a second condition.
+Moreover, because we have to define that condition explicitly, we have
+increased the chance of introducing a logical error (or &#8220;bug&#8221;) into our
+program. For instance, if we accidentally had set the second condition
+to <code class="docutils literal"><span class="pre">number</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, which might seem right at first glance, the result
+would not be equivalent because the case in which <code class="docutils literal"><span class="pre">number</span> <span class="pre">==</span> <span class="pre">0</span></code> would
+be missed.</p>
+<p><strong>Exercise</strong>. Are the following equivalent?</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Option 1</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="k">if</span> <span class="n">a</span><span class="o">%</span><span class="mi">2</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">-=</span> <span class="n">a</span><span class="o">%</span><span class="mi">2</span>
+<span class="k">else</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Option 2</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="k">if</span> <span class="n">a</span><span class="o">%</span><span class="mi">2</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">-=</span> <span class="n">a</span><span class="o">%</span><span class="mi">2</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">a</span><span class="o">%</span><span class="mi">2</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p><em>Solution</em>: They might look equivalent, but they are not. In Option 1,
+<code class="docutils literal"><span class="pre">a%2</span></code> is 1, so <code class="docutils literal"><span class="pre">a</span> <span class="pre">-=</span> <span class="pre">a%2</span></code> is executed, and with the result that
+<code class="docutils literal"><span class="pre">a</span> <span class="pre">==</span> <span class="pre">8</span></code>. The <code class="docutils literal"><span class="pre">else</span></code> block is skipped. In Option 2, <code class="docutils literal"><span class="pre">a%2</span></code> is again
+1, and so <code class="docutils literal"><span class="pre">a</span> <span class="pre">-=</span> <span class="pre">a%2</span></code> is executed and <code class="docutils literal"><span class="pre">a</span> <span class="pre">==</span> <span class="pre">8</span></code> after the first
+<code class="docutils literal"><span class="pre">if</span></code>. However, now the second condition <code class="docutils literal"><span class="pre">not</span> <span class="pre">a%2</span></code> is <em>also
+satisfied</em>, meaning that <code class="docutils literal"><span class="pre">a</span> <span class="pre">+=</span> <span class="pre">1</span></code> is executed, and <code class="docutils literal"><span class="pre">a</span> <span class="pre">==</span> <span class="pre">9</span></code> at the
+end. Hence, any time the variables that show up in the condition of an
+<code class="docutils literal"><span class="pre">if</span></code> statement are modified, future conditions involving those same
+variables may have different values. We could make Option 2 equivalent
+to Option 1 by using a temporary variable, e.g., <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">-</span> <span class="pre">a%2</span></code> and
+<code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">1</span></code>, in each <code class="docutils literal"><span class="pre">if</span></code> statement, and then set <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">b</span></code> after
+both statements. Kind of ugly, no? But possible!</p>
+</div>
+<div class="section" id="The-elif-Clause">
+<h2>The <code class="docutils literal"><span class="pre">elif</span></code> Clause<a class="headerlink" href="#The-elif-Clause" title="Permalink to this headline">¶</a></h2>
+<p>Consider again the <code class="docutils literal"><span class="pre">number</span></code> example explored above. The <code class="docutils literal"><span class="pre">else</span></code>
+clause lets us tell the user that the number is negative or nonnegative.
+What if insteady we wanted to know whether <code class="docutils literal"><span class="pre">number</span></code> is negative,
+positive, or neither (i.e., zero)? In Python, that can be decided by
+using the <code class="docutils literal"><span class="pre">elif</span></code> clause:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is positive&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is zero&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+enter your number 0
+the number is zero
+</pre></div></div>
+</div>
+<p>In English, <code class="docutils literal"><span class="pre">elif</span></code> can be translated as &#8220;else if&#8221;. There is no limit
+to the number of <code class="docutils literal"><span class="pre">elif</span></code> clauses added.</p>
+<blockquote>
+<div><strong>Exercise</strong>: Create a flowchart for the <code class="docutils literal"><span class="pre">number</span></code> example that
+shows whether the <code class="docutils literal"><span class="pre">number</span></code> is positive, negative, or zeros.</div></blockquote>
+<p>Just as can be done for the <code class="docutils literal"><span class="pre">if</span></code>/<code class="docutils literal"><span class="pre">else</span></code> construct, the
+<code class="docutils literal"><span class="pre">if</span></code>/<code class="docutils literal"><span class="pre">elif</span></code>/<code class="docutils literal"><span class="pre">else</span></code> construct can be rewritten with basic <code class="docutils literal"><span class="pre">if</span></code>
+statements:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;enter your number &#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is negative&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is positive&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;the number is zero&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+enter your number 0
+the number is zero
+</pre></div></div>
+</div>
+<p>Of course, there will be certain cases that are much harder to represent
+with only basic <code class="docutils literal"><span class="pre">if</span></code> statements.</p>
+</div>
+<div class="section" id="Other-Tidbits">
+<h2>Other Tidbits<a class="headerlink" href="#Other-Tidbits" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Ternary-Operation">
+<h3>Ternary Operation<a class="headerlink" href="#Ternary-Operation" title="Permalink to this headline">¶</a></h3>
+<p>A basic if-then statement can be written as a compact, <em>ternary</em>
+operation (with three inputs, as opposed to the two required for
+<em>binary</em> operations like addition), e.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="k">else</span> <span class="s2">&quot;b&quot;</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;b&#39;
+</pre></div>
+</div>
+</div>
+<p>This is equivalent to the more traditional <code class="docutils literal"><span class="pre">if</span></code>-<code class="docutils literal"><span class="pre">else</span></code> construct</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;b&quot;</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;b&#39;
+</pre></div>
+</div>
+</div>
+<p>The ternary operation is presented here for completeness. Its compact
+form makes it useful in some situations, but for most applications, the
+more traditional <code class="docutils literal"><span class="pre">if</span></code> statement with the <code class="docutils literal"><span class="pre">else</span></code> clause is much
+easier to read.</p>
+<blockquote>
+<div><strong>Note</strong>: A regular <code class="docutils literal"><span class="pre">if</span></code> statement with the <code class="docutils literal"><span class="pre">else</span></code> clause is
+preferred to the ternary operation for almost all applications.</div></blockquote>
+</div>
+<div class="section" id="The-pass-Placeholder">
+<h3>The <code class="docutils literal"><span class="pre">pass</span></code> Placeholder<a class="headerlink" href="#The-pass-Placeholder" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes in writing Python programs, you know that you will need a
+block of code to be executed as part of an <code class="docutils literal"><span class="pre">if</span></code> statement (or, later
+on, within loops and functions) but you are not yet read to define it.
+You might try the following:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># eventually I&#39;ll do something here but I have to get to class</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-9-bbd7c5da3fed&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">3</span>
+<span class="ansi-red-fg">    # eventually I&#39;ll do something here but I have to get to class</span>
+                                                                  ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> unexpected EOF while parsing
+
+</pre></div></div>
+</div>
+<p>Whoops! A nasty <code class="docutils literal"><span class="pre">SyntaxError</span></code> has popped up, which means we broke the
+rules of Python. The rule we broke is that every &#8220;suite&#8221; (block of code)
+following things like <code class="docutils literal"><span class="pre">if</span></code> must have at least one line of code.
+Comments do not count.</p>
+<blockquote>
+<div><strong>Warning</strong>: All blocks of code in <code class="docutils literal"><span class="pre">if</span></code> and other constructs must
+contain at least one line of code.</div></blockquote>
+<p>To help in these situations, Python offers the <code class="docutils literal"><span class="pre">pass</span></code> statement, which
+can be used as follows:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># eventually I&#39;ll do something here but I have to get to class</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Further-Reading">
+<h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
+<p>Nothing for now.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lecture 6 - Conditional Statements and the Structure of Python Code</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#The-Simplest-if">The Simplest <code class="docutils literal"><span class="pre">if</span></code></a></li>
+<li><a class="reference internal" href="#The-else-Clause">The <code class="docutils literal"><span class="pre">else</span></code> Clause</a></li>
+<li><a class="reference internal" href="#The-elif-Clause">The <code class="docutils literal"><span class="pre">elif</span></code> Clause</a></li>
+<li><a class="reference internal" href="#Other-Tidbits">Other Tidbits</a><ul>
+<li><a class="reference internal" href="#Ternary-Operation">Ternary Operation</a></li>
+<li><a class="reference internal" href="#The-pass-Placeholder">The <code class="docutils literal"><span class="pre">pass</span></code> Placeholder</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Algorithms_Flowcharts_and_Pseudocode.html" title="previous chapter">Lecture 5 - Algorithms, flowcharts, and pseudocode.</a></li>
+      <li>Next: <a href="More_on_Conditionals.html" title="next chapter">Lecture 7 - More on Conditionals</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/Conditional_Statements_and_the_Structure_of_Python_Code.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/Conditional_Statements_and_the_Structure_of_Python_Code.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

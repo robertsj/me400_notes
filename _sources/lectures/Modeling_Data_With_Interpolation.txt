@@ -1,0 +1,386 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Data Analysis via Interpolation \n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lecture, we continue the theme of data analysis initiated in [Lecture 24](ME400_Lecture_24.ipynb), focusing now on the process of **interpolation**.  Whereas the fitted models of [Lecture 24](ME400_Lecture_24.ipynb) allow one to produce simple models from noisy (or otherwise complicated) data, interpolation allows one to estimate new values from known discrete points that are assumed to be noise free.\n",
+    "\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Apply linear interpolation to evaluate $f(x)$ given discrete points $(x_i, f(x_i))$ for $i = 0, 1 \\ldots$.\n",
+    "- Apply linear interpolation to evaluate $f(x, y)$ given discrete points $(x_i, y_j, f(x_i, y_j))$ for $\\, i = 0, 1, \\ldots$ and $j = 0, 1,\\ldots$.\n",
+    "- Apply tools from NumPy and SciPy to perform high-order (e.g., cubine-spline) interpolation \n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- linear interpolation\n",
+    "- `np.interp`\n",
+    "- `scipy.interpolate`\n",
+    "- `interp1d`\n",
+    "- `interp2d`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "## Simple Linear Interpolation\n",
+    "\n",
+    "A common task in many thermal engineering courses is to use tabulated physical properties.  Often, the value needed is not in the table, and *linear interpolation* is required to estimate the missing value.  \n",
+    "\n",
+    "Let the quantity of interest be $y(x)$, for which values $y_0, y_1, \\ldots$ are provided at $x_0, x_1, \\ldots$.  Suppose the value of $y$ at $x = \\tilde{x} $ is desired.  The first step is to determine which two values $x_i$ and $x_{i+1}$ contain the point $\\tilde{x} $.  This step is accomplished using the linear or binary search algorithms developed in [Lecture 14](ME400_Lecture_14.ipynb). \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Apply linear search to find $i$ such that $\\tilde{x} \\in [x_i, x_{i+1}]$ for $\\tilde{x}$ = 3.5$ and $x = [0, 1, 2, 3, 4, 5]$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "\n",
+    "**Exercise**: Repeat the exercise using binary search. \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: For the same $\\tilde{x} $ and points $x$, evaluate `np.array(x) < x_tilde` and `sum(np.array(x) < x_tilde)`.  What can you conclude?   \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Use `help` to learn about `np.searchsorted`. Then, for the same $\\tilde{x} $ and points $x$, evaluate `np.searchsorted(x, x_tilde)`.  What can you conclude?\n",
+    "\n",
+    "***\n",
+    "\n",
+    "Once $i$ is determined, $(x_i, y(x_i))$ and $(x_{i+1}, y(x_{i+1}))$ are connected by a line of the form $ax + b$, and $y(\\tilde{x})$ is evaluated from $a\\tilde{x} + b$.  The trick is to determine $a$ and $b$, but that's easy: we have two equations $y_i = ax_i + b$ and $y_{i+1} = a x_{i+1} + b$.  Just solve for $a$ and $b$:\n",
+    "\n",
+    "$$\n",
+    "   a = \\frac{y_{i+1}-y_i}{x_{i+1}-x_i} \\quad \\text{and} \\quad b = y_i - \\frac{y_{i+1}-y_i}{x_{i+1}-x_i} x_i \\, .\n",
+    "$$\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**:  Consider the following table of thermodynamic data for saturated steam (saved as [thermo_data.txt](thermo_data.txt)):\n",
+    "\n",
+    "```\n",
+    "  T [K]   P [MPa]  h_l [kJ/kg] h_v [kJ/kg]\n",
+    " 373.150   0.101    2675.572     419.099\n",
+    " 389.817   0.179    2701.054     489.625\n",
+    " 406.483   0.298    2724.633     560.634\n",
+    " 423.150   0.476    2745.919     632.252\n",
+    " 439.817   0.730    2764.528     704.626\n",
+    " 456.483   1.082    2780.059     777.934\n",
+    " 473.150   1.555    2792.062     852.393\n",
+    " 489.817   2.175    2800.004     928.269\n",
+    " 506.483   2.972    2803.247    1005.893\n",
+    " 523.150   3.976    2801.012    1085.687\n",
+    " 539.817   5.222    2792.314    1168.202\n",
+    " 556.483   6.745    2775.820    1254.194\n",
+    " 573.150   8.588    2749.574    1344.771\n",
+    "```\n",
+    "\n",
+    "Evaluate $h_l$ at 515 K using linear interpolation.\n",
+    "\n",
+    "*Solution*\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2802.1048931421374"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# first load the data\n",
+    "import numpy as np\n",
+    "T, P, h_l, h_v = np.loadtxt('thermo_data.txt', unpack=True, skiprows=1)\n",
+    "# find i such that T[i-1] <= 500 <= T[i]\n",
+    "T_tilde = 515\n",
+    "for i in range(len(T)):\n",
+    "    if T[i] > T_tilde:\n",
+    "        break\n",
+    "# compute slope and intercept\n",
+    "a = (h_l[i]-h_l[i-1])/(T[i]-T[i-1]) \n",
+    "b = h_l[i-1] - a*T[i-1]\n",
+    "# compute approximation\n",
+    "h_l_tilde = a*T_tilde + b\n",
+    "h_l_tilde"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Adapt the solution above to produce a function that returns $h_l$ at *any* temperature *T*.  However, add assertions to ensure the user does not request $h_l$ at temperatures outside the range of the data.  In other words, limit the function to *interpolation* and exclude any *extrapolation*.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Suppose $\\tilde{x}$ is beyond $x_{n-1}$, the last of the $n$ values of $x$ in the tabulated data.  How would one linearly *extrapolate* the data to obtain $y(\\tilde{x})$?\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Execute `help(np.interp)`.  Use it to interpolate $x = [1, 2, 3]$ and $y = [2, 8, 18]$ for $\\tilde{x} = 1.5$ and $\\tilde{x} = 2.5$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Interpolation In Two Dimensions\n",
+    "\n",
+    "Some applications require interpolation of two-dimensional data evaluated at $(x_i, y_j)$ for $i=0,1,\\ldots$ and $j=0,1,\\ldots$.  Linear interpolation of such data is based on the model $f(x, y) \\approx ax + by + c$ for $x \\in [x_i, x_{i+1}]$ and $y \\in [y_j, y_{j+1}]$.  \n",
+    "\n",
+    "The trick now is to find $i$ and $j$ for values $\\tilde{x}$ and $\\tilde{y}$ for which $f(x, y)$ is desired.  However, the *same* ideas applied for one dimension work for this two-dimensional problem. To do so requires an extra step: \n",
+    "\n",
+    "  1. Again, first assume that $i$ and $j$ are found by an appropriate search.\n",
+    "  2. Then, find $f(\\tilde{x}, y_{j})$ and $f(\\tilde{x}, y_{j+1})$ via *two separate* interpolations.  \n",
+    "  3. Finally, find $f(\\tilde{x}, \\tilde{y})$ by linearly interpolating the two values $f(\\tilde{x}, y_{j})$ and $f(\\tilde{x}, y_{j+1})$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Given $f(1, 1) = 6$, $f(1, 2) = 9$, $f(2, 1) = 8$, and $f(2, 2) = 11$, estimate $f(4/3, 7/4)$ by linear interpolation.  \n",
+    "\n",
+    "*Solution*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "8.9166666666666661"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# define the given data\n",
+    "x = [1, 2]\n",
+    "y = [1, 2]\n",
+    "f = np.array([[6, 9],\n",
+    "              [8, 11]])\n",
+    "xtilde = 4/3\n",
+    "ytilde = 7/4\n",
+    "# interpolate to get f(xtilde, 1)\n",
+    "a = (f[1, 0]-f[0, 0])/(x[1] - x[0]) \n",
+    "b = f[0, 0] - a*x[0]\n",
+    "f_xt_1 = a*xtilde + b\n",
+    "# interpolate to get f(xtilde, 2)\n",
+    "a = (f[1, 1]-f[0, 1])/(x[1] - x[0]) \n",
+    "b = f[0, 1] - a*x[0]\n",
+    "f_xt_2 = a*xtilde + b\n",
+    "# interpolate to get f(xtilde, ytilde)\n",
+    "a = (f_xt_2 - f_xt_1)/(y[1] - y[0])\n",
+    "b = f_xt_1 - a*y[0]\n",
+    "f_xt_yt = a*ytilde + b\n",
+    "f_xt_yt"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: It turns out the previous exercise produces a perfect value for $f(4/3, 7/4)$ when $f(x, y) = 2x + 3y + 1$.  Can you recover $a=2$, $b=3$, and $c=1$ from your interpolation process?\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Suppose $f(1, 1) = 7$, $f(1, 2) = 11$, $f(2, 1)=10$, and $f(2, 2)=15$.  Compute $f(4/3, 7/4)$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Consider the following table of water densities ($\\rho$) for different temperatures [K] and pressures [MPa] (from [thermodata_2.txt](thermodata_2.txt)):\n",
+    "\n",
+    "```\n",
+    "  T [K]   P [MPa]  rho [kg/m^3]\n",
+    " 293.150   2.000    999.073\n",
+    " 293.150   4.000    999.982\n",
+    " 293.150   6.000   1000.888\n",
+    " 293.150   8.000   1001.791\n",
+    " 313.150   2.000    993.053\n",
+    " 313.150   4.000    993.924\n",
+    " 313.150   6.000    994.790\n",
+    " 313.150   8.000    995.653\n",
+    " 333.150   2.000    984.037\n",
+    " 333.150   4.000    984.903\n",
+    " 333.150   6.000    985.766\n",
+    " 333.150   8.000    986.625\n",
+    " 353.150   2.000    972.650\n",
+    " 353.150   4.000    973.538\n",
+    " 353.150   6.000    974.422\n",
+    " 353.150   8.000    975.301\n",
+    " 373.150   2.000    959.242\n",
+    " 373.150   4.000    960.172\n",
+    " 373.150   6.000    961.097\n",
+    " 373.150   8.000    962.017\n",
+    "```\n",
+    "Use linear interpolation to estimate $\\rho(300, 3)$, $\\rho(330, 5)$, and $\\rho(360, 7)$. \n",
+    "\n",
+    "***\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Higher-Order Interpolation\n",
+    "\n",
+    "Linear interpolation is conceptually straightforward, but it helps to use tools like `np.interp` (see the exercises above).  However, interpolation that is *better* than linear is more challenging to implement, and we'll turn to the `scipy.interpolate` module and its `interp1d` and `interp2d` utilities.  \n",
+    "\n",
+    "The syntax for `interp1d` is quite simple: `f = interp1d(x, y, kind)`, where `x` and `y` are the points to interpolate, and `kind` is a `str` argument equal to `'linear'` (default), `'quadratic'`, `'cubic'`, among other possibilities.  Here, `linear` leads to linear interpolation equivalent to the method introduced above.  Quadratic and cubic interpolation involve defined quadratic curves over sets of three points or cubic functions over sets of four points.  Of course, if the underlying data were actually quadratic or cubic, these higher-order interpolation schemes should be expected to do better.  The resulting `f` is a callable function that accepts $\\tilde{x}$, the point at which the data is to be estimated. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "***\n",
+    "\n",
+    "**Example**: Interpolate $x = [1, 2, 3, 4, 5]$ and $y = [1, 4, 9, 16, 25]$ for $\\tilde{x} = 4.5$ \n",
+    "\n",
+    "*Solution*:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array(20.5), array(20.25), 20.25)"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from scipy.interpolate import interp1d\n",
+    "f_lin = interp1d([1,2,3,4,5], [1,4,9,16,25], kind='linear')\n",
+    "f_quad = interp1d([1,2,3,4,5], [1,4,9,16,25], kind='quadratic')\n",
+    "f_lin(4.5), f_quad(4.5), 4.5**2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": true
+   },
+   "source": [
+    "***\n",
+    "\n",
+    "The syntax for `interp2d` is equally simple: `f = interp2d(x, y, f, kind)`.  Here, `x` and `y` are individual arrays, while `f` is a 2-D array representing $f(x_i, y_j)$ for $i = 0, 1, \\ldots$ and $j = 0, 1, \\ldots$.  Any easy way to evaluate `f` is to use `np.meshgrid`.  Finally, `kind` is a `str` argument that can be `'linear'` and`'cubic'` (among others, but *not* `'quadratic'`).\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Given `x = np.linspace(0, 10, 11)`, `y = np.linspace(0, 10, 11)`, and `z = lambda x, y: 1 + x + y + x**2 + y**2 + x**4*y**4` (a decidely nonlinear function), evaluate `f(4.5, 6.5)` using linea and cubic interpolation.\n",
+    "\n",
+    "*Solution*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([ 814339.25]), array([ 731923.8169771]), 732061.69140625)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x = np.linspace(0, 10, 11)\n",
+    "y = np.linspace(0, 10, 11)\n",
+    "xx, yy  = np.meshgrid(x, y)\n",
+    "z = lambda x, y: 1 + x + y + x**2 + y**2 + x**4*y**4\n",
+    "from scipy.interpolate import interp2d\n",
+    "f_lin = interp2d(x, y, z(xx, yy), kind='linear')\n",
+    "f_cub = interp2d(x, y, z(xx, yy), kind='cubic')\n",
+    "f_lin(4.5, 6.5), f_cub(4.5, 6.5), z(4.5, 6.5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "In this lecture, interpolation has been limited to regular grids of points along the $x$ and $y$ axes.  When points are more than one dimension are *not* on such grids, different methods are needed.  [Barycentric interpolation](https://en.wikipedia.org/wiki/Barycentric_coordinate_system) is one option.  In 2-D, points can be organized as triangles, and linear interpolation can be applied within a single triangle.  In 3-D, triangles become pyramids, and in higher dimensions, one interpolates over general *n-simplices*."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

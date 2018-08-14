@@ -1,0 +1,666 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "\n",
+    "  # ME 400 Lecture 1 - Getting Started\n",
+    "\n",
+    "First, a brief overview of the [Syllabus](../administrivia/ME400_Syllabus.ipynb)!  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<!-- \n",
+       "\n",
+       "The changes here do the following:\n",
+       "  - Make table fonts bigger (and consistent with body fonts)\n",
+       "  - Make all fonts bigger\n",
+       "-->\n",
+       "\n",
+       "<style>\n",
+       "\n",
+       "\n",
+       ".container {\n",
+       "    width: 99% !important;\n",
+       "}\n",
+       "\n",
+       "\n",
+       ".rendered_html {\n",
+       "  font-size:100%;\n",
+       "}\n",
+       ".rendered_html table, .rendered_html th, .rendered_html tr, .rendered_html td {\n",
+       "     font-size: 100%;\n",
+       "}\n",
+       "\n",
+       "</style>\n"
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from IPython.display import HTML\n",
+    "HTML(filename='slides_formatting.html')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from IPython.core.interactiveshell import InteractiveShell \n",
+    "InteractiveShell.ast_node_interactivity = \"all\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Contact Information\n",
+    "\n",
+    "- **Lecture** MW 1:30--2:20pm, DUR 1073\n",
+    "- **Instructor**: Jeremy Roberts\n",
+    "  - *Phone*: 785-532-7182\n",
+    "  - *Email*: jaroberts@ksu.edu\n",
+    "  - *Office*: Ward 137D\n",
+    "  - *Office Hours*: M/W, 2:30-4:00pm or by appointment; refer to my [calendar](https://calendar.google.com/calendar/embed?src=j.alyn.roberts%40gmail.com&ctz=America/Chicago) before suggesting a time.\n",
+    "- **GTAs**: Richard Reed and John Boyington\n",
+    "- **UTAs**: Aimee Neilsen, Halle Kutsche, and Gabriel Orndorff"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**From the catalog**: The development and application of computer techniques to the problems of design and analysis in mechanical engineering, including computer programming (abstraction and problem solving; algorithms; control structures; input/output; functions; arrays and array processing).\n",
+    "\n",
+    "**My informal description**: ME 400 is all about teaching you, the student, how to use programming to solve problems. We’ll use the Python programming language, which is as easy a language to learn as any I’ve encountered. The Python language offers much more with all of the add-on packages available, all for free. What you will come out of the class with, at the least, is (1) a basic ability to understand, implement, and debug computer programs and (2) knowledge of tools (symbolic and numerical) within the Python ecosystem that can be used to solve engineering problems."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Textbook\n",
+    "\n",
+    "**No book required**\n",
+    "\n",
+    "Online readings and lecture slides: [robertsj.github.io/me400_notes](http://robertsj.github.io/me400_notes).\n",
+    "\n",
+    "These are **free** for you and supported by the Open Textbook Initiative.\n",
+    "\n",
+    "Suggestions **welcome**: create an [issue](https://github.com/robertsj/me400_notes/issues) on the GitHub site."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Amount of Study Required\n",
+    "\n",
+    "**6 to 9 hours per week** of active study outside class for the average student to earn the average grade."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Lectures\n",
+    "\n",
+    "Your job is to **come to lecture prepared** to learn and to engage in any in-class activities.  \n",
+    "\n",
+    "Many (all?) lectures have a **pre-lecture activity** (Canvas quiz) due one hour before lecture.  Some (but not all) lectures will have **in-class activities**.  Always comes with a **pen/pencil** and **paper without fringes**.\n",
+    "\n",
+    "**No phones**, but laptops **strongly encouraged** for examples."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Assessment\n",
+    "\n",
+    "- Pre-Lecture Activities (10%)\n",
+    "- Laboratory Exercises (10%)\n",
+    "- Homework Exercises (20%)\n",
+    "- Examinations (60%)\n",
+    "\n",
+    "Baseline grade cutoffs are 90/80/70/60% for A/B/C/D."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:  Suppose Ada scores 85% on every homework, completes all labs and lecture activities (i.e., 100%), and scores 75%, 85%, 85%, and 95% on the exams.  What would her Option 1, 2, and 3 *scores* be?  Her Option 1, 2, and 3 *letter grades*?  Recall that\n",
+    "\n",
+    " - Option 1 includes Exam 1 and 2 and is capped at a C\n",
+    " - Option 2 includes Exams 1, 2, and 3 and is capped at a B\n",
+    " - Option 3 is the whole darn class "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Ada's score is 0.85\n"
+     ]
+    }
+   ],
+   "source": [
+    "# PHASE 1 <-- the \"#\" means \"comment\"\n",
+    "hw = 0.85\n",
+    "ex = (0.75+0.85)/2\n",
+    "lab = 1.0\n",
+    "act = 1.0\n",
+    "score = 0.2*hw + 0.6*ex + 0.1*lab + 0.1*act\n",
+    "print(\"Ada's score is\", score)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "## Course Schedule\n",
+    "\n",
+    "| Lecture   | Topics                                                                      | \n",
+    "|-----------|-----------------------------------------------------------------------------| \n",
+    "| 1         | Administrivia. Overview of Python. Spyder and Jupyter. Basic types.         | \n",
+    "| 2         | Basic operators and common, built-in functions.                             | \n",
+    "| 3         | Basic data processing with NumPy and Matplotlib.                            | \n",
+    "| 4         | More on NumPy arrays.  Slicing operations.  np.linalg                       | \n",
+    "\n",
+    "Thereafter:\n",
+    "- lectures 5-11 on elementary programming concepts (e.g., algorithms, `if` statements, `for` loops, and container types)\n",
+    "- lectures 12-17 on modular programming (e.g., `function` definitions and `modules`)\n",
+    "- lectures 18-29 on applications (e.g., root finding, optimization, curve fitting)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Overview, Objectives, and Key Terms\n",
+    "\n",
+    "In this lesson, we'll walk through the installation of, access to, and use \n",
+    "of Python."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson$^*$, you should be able to\n",
+    "\n",
+    "- *access Python in three, different ways*\n",
+    "- *define variables using basic Python types*\n",
+    "- *explain what a variable is*\n",
+    "\n",
+    "(*Lecture slides and other content used in class may (1) include only parts of the required, online reading and (2) provide materials beyond the reading.  In this class, \"lesson\" refers to the coupled reading/lecture pair.)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- interpreted programming language\n",
+    "- compiled programming language\n",
+    "- integrated development environment\n",
+    "- Spyder\n",
+    "- Jupyter notebook\n",
+    "- variable\n",
+    "- `int`\n",
+    "- `float`\n",
+    "- `str`\n",
+    "- `bool`\n",
+    "- assignment "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Overview of Python\n",
+    "\n",
+    "Python is a scripting language, which means \n",
+    "it is [interpreted](https://en.wikipedia.org/wiki/Interpreted_language)\n",
+    "and not [compiled](https://en.wikipedia.org/wiki/Compiled_language).\n",
+    "\n",
+    "Interpreted languages are converted from human-readable text files to binary \n",
+    "(i.e., the 1's and 0's a computer understands) on-the-fly.  \n",
+    "\n",
+    "A compiled language is converted to binary once-and-for all by an \n",
+    "explicit compilation step.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Several versions of Python are in current use, but the most popular versions \n",
+    "are 2.7 and 3.6.  Despite the numbering, both versions are current \n",
+    "(but [not forever](https://pythonclock.org/)).  \n",
+    "\n",
+    "In this class, **we will work exclusively with Python 3.6**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Accessing Python\n",
+    "\n",
+    "For folks who want to install Python on their own machines, I recommend the\n",
+    "[Anaconda](https://www.anaconda.com/download/) distribution, which packages Python and all the goodies we'll need for this class.\n",
+    "\n",
+    "Anaconda is installed on MNE machines!  Go try it out (see the online notes) or wait for Lab 1."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Interactive Python via IDLE\n",
+    "\n",
+    "In the CMD window (or, on OS X, the terminal), type \"python\" and press enter to open Python.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Spyder\n",
+    "\n",
+    "The recommended way to use Python in ME 400 is Spyder, an [integrated development environment](https://en.wikipedia.org/wiki/Integrated_development_environment)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Jupyter Notebook\n",
+    "\n",
+    "Another way to interact with Python is through use of [Jupyter notebooks](http://jupyter.org/).  Jupyter allows one to produce documents within a web browser that contain text, images, links, and, of course, Python code.  In fact, the online materials and these slides were all produced using the notebook format and converted to the form you are now seeing! "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Download these slides and open them in Jupyter notebook."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Basic Types\n",
+    "\n",
+    "\n",
+    "Python uses [variables](https://en.wikipedia.org/wiki/Variable_%28computer_science%29), which consist of a **name** to which a **value** can be **assigned** (e.g., `i = 1`).\n",
+    "\n",
+    "The four \"basic\" types are `int`, `float`, `str`, and `bool`.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "source": [
+    "**Example**: Define three variables `a`, `b`, and `c` equal to the number of days in January, the number of cm per in, and this course's full name, respectively."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Example**:  What's wrong with this assignment of a `bool` variable?\n",
+    "\n",
+    "```python\n",
+    "b = false\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Python is a *dynamically* typed language, so a variable's value *and* type may change"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:  Consider\n",
+    "\n",
+    "```python\n",
+    "a = 99\n",
+    "a = 123\n",
+    "```\n",
+    "\n",
+    "Is this allowed?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "99"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "123"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = 99\n",
+    "a # if a variable is defined, typing it like this will lead to it being printed out\n",
+    "a = 123\n",
+    "a # yes! no error, and a has the value 123"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**:  Consider\n",
+    "\n",
+    "```python\n",
+    "a = \"1.0\"\n",
+    "a = 123\n",
+    "```\n",
+    "\n",
+    "Is this allowed?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'1.0'"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "123"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = \"1.0\"\n",
+    "a\n",
+    "a = 123\n",
+    "a"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Likewise, a *value* can be converted to one of another *type*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.0"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = float('1.0')\n",
+    "a"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "For conversion to `bool`, `0` and its cousins like `0.0`, the empty string `''`, and the special `None` value all evaluate to `False`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Throughout, use of `=` is as the *assignment operator*, which gives *values* to *names* (i.e., defines **variables**)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "By this time, you should be able to\n",
+    "\n",
+    "- *access Python in three, different ways* \n",
+    "- *define variables using basic Python types*\n",
+    "- *explain what a variable is*\n",
+    "\n",
+    "**Questions?**"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  },
+  "livereveal": {
+   "scroll": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 20 - Taylor Series and the Root of Numerical Methods &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 20 - Taylor Series and the Root of Numerical Methods &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods">
 <h1>Lecture 20 - Taylor Series and the Root of Numerical Methods<a class="headerlink" href="#Lecture-20---Taylor-Series-and-the-Root-of-Numerical-Methods" title="Permalink to this headline">¶</a></h1>
@@ -208,7 +213,7 @@ div.nboutput div.output_area.stderr {
 <p>At this point, the reader is equipped with the basic symbolic tools
 needed to perform algebraic, differential, and integral operations. In
 this lecture, another topic from basic calculus is revisited: <strong>Taylor
-series</strong>. Along the way, we’ll see how truncated series expansions lead
+series</strong>. Along the way, we&#8217;ll see how truncated series expansions lead
 to useful approximations and how those approximations pave the way for
 numerical methods.</p>
 <div class="section" id="Objectives">
@@ -246,7 +251,7 @@ point <span class="math">\(x_0\)</span> is defined by</p>
 requires that each derivative of <span class="math">\(f\)</span> exist at <span class="math">\(x_0\)</span>. In
 other words, <span class="math">\(f(x)\)</span> must be infinitely differentiable at
 <span class="math">\(x_0\)</span>. A common phrase in analysis is to say such functions are
-“well behaved.”</p>
+&#8220;well behaved.&#8221;</p>
 <p><strong>Exercise</strong>: Use the differential tools from <a class="reference external" href="ME400_Lecture_19.ipynb">Lecture
 19</a> to define the <span class="math">\(n\)</span>th term of the
 Taylor series of <span class="math">\(e^x\)</span> about <span class="math">\(x_0\)</span>.</p>
@@ -273,7 +278,7 @@ Taylor series of <span class="math">\(e^x\)</span> about <span class="math">\(x_
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\left ( e^{x_{0}}, \quad \left(x - x_{0}\right) e^{x_{0}}, \quad \frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2}\right )$$</div></div>
+\[$$\left ( e^{x_{0}}, \quad \left(x - x_{0}\right) e^{x_{0}}, \quad \frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2}\right )$$\]</div></div>
 </div>
 <p>Although one could apply such a solution to construct (partial) series
 representations of a function <span class="math">\(f(x)\)</span>, SymPy can do it all at once
@@ -296,7 +301,7 @@ with the <code class="docutils literal"><span class="pre">series</span></code> f
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$e^{x_{0}} + \left(x - x_{0}\right) e^{x_{0}} + \frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2} + \mathcal{O}\left(\left(x - x_{0}\right)^{3}; x\rightarrow x_{0}\right)$$</div></div>
+\[$$e^{x_{0}} + \left(x - x_{0}\right) e^{x_{0}} + \frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2} + \mathcal{O}\left(\left(x - x_{0}\right)^{3}; x\rightarrow x_{0}\right)$$\]</div></div>
 </div>
 <p>The syntax is easy enough: <code class="docutils literal"><span class="pre">sy.series(expr,</span> <span class="pre">x,</span> <span class="pre">x_0,</span> <span class="pre">n)</span></code>, where
 <code class="docutils literal"><span class="pre">expr</span></code> is the symbolic expression to expand in series form, <code class="docutils literal"><span class="pre">x</span></code> is
@@ -306,7 +311,7 @@ with <span class="math">\((x-x_0)^p\)</span> for <span class="math">\(p &lt; n\)
 <p>The result has the same three terms computed explicitly in the solved
 exercise aboe, but it includes the additional term
 <span class="math">\(\mathcal{O} \left ( (x-x_0)^3; x\to x_0 \right )\)</span>.</p>
-<p>We’ll get to what that means in a bit, but for now, we can remove it via</p>
+<p>We&#8217;ll get to what that means in a bit, but for now, we can remove it via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -324,7 +329,7 @@ exercise aboe, but it includes the additional term
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2} + \left(x - x_{0}\right) e^{x_{0}} + e^{x_{0}}$$</div></div>
+\[$$\frac{e^{x_{0}}}{2} \left(x - x_{0}\right)^{2} + \left(x - x_{0}\right) e^{x_{0}} + e^{x_{0}}$$\]</div></div>
 </div>
 <p><strong>Exercise</strong> Find the first 5 terms of the Maclaurin series for (a)
 <span class="math">\(f(x) = \sin(x)\)</span>, (b) <span class="math">\(f(x) = J_1(x)\)</span> (the <a class="reference external" href="http://mathworld.wolfram.com/BesselFunctionoftheFirstKind.html">Bessel function
@@ -462,7 +467,7 @@ applications in which series expansions can make an otherwise difficult
 <div class="math">
 \[\int^1_0 \cos(x^2) dx\]</div>
 <p>Go ahead: try to evaluate it with pen and paper. Stuck? Of course,
-here’s the answer using <code class="docutils literal"><span class="pre">sympy.integrate</span></code>:</p>
+here&#8217;s the answer using <code class="docutils literal"><span class="pre">sympy.integrate</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
@@ -480,7 +485,7 @@ here’s the answer using <code class="docutils literal"><span class="pre">sympy
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$\frac{\sqrt{2} \sqrt{\pi} C\left(\frac{\sqrt{2}}{\sqrt{\pi}}\right) \Gamma{\left(\frac{1}{4} \right)}}{8 \Gamma{\left(\frac{5}{4} \right)}}$$</div></div>
+\[$$\frac{\sqrt{2} \sqrt{\pi} C\left(\frac{\sqrt{2}}{\sqrt{\pi}}\right) \Gamma{\left(\frac{1}{4} \right)}}{8 \Gamma{\left(\frac{5}{4} \right)}}$$\]</div></div>
 </div>
 <p>The <a class="reference external" href="http://mathworld.wolfram.com/GammaFunction.html">gamma function</a>
 is not so rare, but the <a class="reference external" href="http://mathworld.wolfram.com/FresnelIntegrals.html">Fresnel
@@ -505,7 +510,7 @@ non-vanishing terms of the Taylor series of the integrand
 </div>
 <div class="output_area docutils container">
 <div class="math">
-$$1 - \frac{x^{4}}{2} + \frac{x^{8}}{24} - \frac{x^{12}}{720} + \frac{x^{16}}{40320} + \mathcal{O}\left(x^{20}\right)$$</div></div>
+\[$$1 - \frac{x^{4}}{2} + \frac{x^{8}}{24} - \frac{x^{12}}{720} + \frac{x^{16}}{40320} + \mathcal{O}\left(x^{20}\right)$$\]</div></div>
 </div>
 <p>In other words, the <span class="math">\(i\)</span>th nonzero term is
 <span class="math">\((-1)^i\frac{x^{4i}}{2i!}\)</span> for <span class="math">\(i = 0, 1, \ldots\)</span>. Each term
@@ -567,15 +572,15 @@ does application of <code class="docutils literal"><span class="pre">sympy.simpl
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_20.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_20.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -586,14 +591,14 @@ does application of <code class="docutils literal"><span class="pre">sympy.simpl
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_20.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_20.txt"
           rel="nofollow">Page source</a>
     </div>
 

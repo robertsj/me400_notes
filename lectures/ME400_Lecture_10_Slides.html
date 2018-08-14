@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 10 - Pythonic Containers &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 10 - Pythonic Containers &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,14 +200,18 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-10---Pythonic-Containers">
 <h1>Lecture 10 - Pythonic Containers<a class="headerlink" href="#Lecture-10---Pythonic-Containers" title="Permalink to this headline">¶</a></h1>
-<p>All the way back in <a class="reference internal" href="ME400_Lecture_1.html"><span class="doc">Lecture 1</span></a>, the simplest
+<p>All the way back in <a class="reference external" href="ME400_Lecture_1.ipynb">Lecture 1</a>, the simplest
 of variable types were presented (namely, <code class="docutils literal"><span class="pre">int</span></code>, <code class="docutils literal"><span class="pre">float</span></code>, and
 <code class="docutils literal"><span class="pre">bool</span></code>) along with the more complex but indespensable <code class="docutils literal"><span class="pre">str</span></code> type. In
-<a class="reference internal" href="ME400_Lecture_3.html"><span class="doc">Lecture 3</span></a>, NumPy was introduced, with its
+<a class="reference external" href="ME400_Lecture_3.ipynb">Lecture 3</a>, NumPy was introduced, with its
 <code class="docutils literal"><span class="pre">ndarray</span></code> type serving as the workhorse for a variety of applications,
 particularly those with a numerical flavor. In this lecture, the
 built-in Python types <code class="docutils literal"><span class="pre">list</span></code>, <code class="docutils literal"><span class="pre">tuple</span></code>, and <code class="docutils literal"><span class="pre">dict</span></code> are presented,
@@ -247,7 +252,7 @@ sequential?</div></blockquote>
 </div>
 <div class="section" id="The-list-type">
 <h3>The <code class="docutils literal"><span class="pre">list</span></code> type<a class="headerlink" href="#The-list-type" title="Permalink to this headline">¶</a></h3>
-<p>The most versatile of Python’s sequential types is <code class="docutils literal"><span class="pre">list</span></code>. A <code class="docutils literal"><span class="pre">list</span></code>
+<p>The most versatile of Python&#8217;s sequential types is <code class="docutils literal"><span class="pre">list</span></code>. A <code class="docutils literal"><span class="pre">list</span></code>
 variable can be defined using comma-separated values within square
 brackets <code class="docutils literal"><span class="pre">[]</span></code>.</p>
 <p><strong>Examples</strong>:</p>
@@ -323,16 +328,6 @@ online readings for more details.</p>
 </div>
 </div>
 <p><strong>Example</strong>: Add a fourth element to c with the value <code class="docutils literal"><span class="pre">[99,</span> <span class="pre">100]</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p>What else does <code class="docutils literal"><span class="pre">list</span></code> provide us?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -464,7 +459,7 @@ count
 index
 </pre></div></div>
 </div>
-<p>Not much! Tuple is <em>immutable</em> and therefore good when you don’t want it
+<p>Not much! Tuple is <em>immutable</em> and therefore good when you don&#8217;t want it
 (or its elements) to change.</p>
 </div>
 <div class="section" id="The-dict-Type">
@@ -507,16 +502,6 @@ values) and the values <code class="docutils literal"><span class="pre">'a'</spa
 </div>
 </div>
 <p><strong>Example</strong>: What happens if we execute <code class="docutils literal"><span class="pre">print(d['c'])</span></code>?</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p>What do dictionaries offer?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -686,7 +671,7 @@ median =  76.25%
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_10_Slides_51_0.png" src="../_images/lectures_ME400_Lecture_10_Slides_51_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_10_Slides_49_0.png" src="../_images/lectures_ME400_Lecture_10_Slides_49_0.png" />
 </div>
 </div>
 </div>
@@ -725,15 +710,15 @@ median =  76.25%
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_10_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_10_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -744,14 +729,14 @@ median =  76.25%
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_10_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_10_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

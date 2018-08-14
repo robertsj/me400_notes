@@ -1,0 +1,390 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 5 - Algorithms, flowcharts, and pseudocode. \n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "In this lesson, we'll dive right into the basic logic needed to plan one's program, significantly extending the process identified in [Lesson 2](ME400_Lecture_2.ipynb).  We'll examine *algorithms* for several applications and illustrate solutions using **flowcharts** and **pseudocode**.  Along the way, we'll see for the first time the three principal structures in programming logic: **sequence**, **selection**, and **iteration**.  Throughout, specialized syntax (Python or otherwise) is avoided (with the exception of the handy slicing syntax introduced in [Lesson 3](ME400_Lecture_3.ipynb)), but variables and simple operators are used.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- *explain the three basic logical structures in programming*\n",
+    "- *decompose problems into small, well defined steps*\n",
+    "- *describe those steps graphically using flowcharts*\n",
+    "- *describe those steps in words using pseudocode*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- algorithm\n",
+    "- sequence\n",
+    "- selection \n",
+    "- iteration\n",
+    "- counter variable\n",
+    "- index variable\n",
+    "- condition\n",
+    "- conditional statement\n",
+    "- loop"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Algorithm\n",
+    "\n",
+    "An *algorithm* is procedure by which a problem is solved following a certain set of rules.\n",
+    "\n",
+    "We *implement* algorithms using logical structures: **sequence**, **selection**, and **iteration**.\n",
+    "\n",
+    "For now, only *pseudocode* and *flowcharts* -- **no Python** until next week!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Sequence by Example: Computing Grades\n",
+    "\n",
+    " 1. homework - 20%\n",
+    " 2. laboratories - 10%\n",
+    " 3. quizzes - 10%\n",
+    " 4. examinations - 60%\n",
+    " \n",
+    "Look familiar?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Break down the grade problem into smaller parts and tackle the homework score by developing an appropriate algorithm."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```octave\n",
+    "'''Algorithm for computing homework percentage'''\n",
+    "# Get the inputs needed to compute the homework percentage\n",
+    "Input hw_scores, number_hw, points_per_hw\n",
+    "# Initialize the total homework score    \n",
+    "Set total_score to 0\n",
+    "# Increment the total homework score by each of the \n",
+    "# homework scores.  Assume there are 5 total for brevity.\n",
+    "Increase total_score by hw_scores[0]\n",
+    "Increase total_score by hw_scores[1]\n",
+    "Increase total_score by hw_scores[2]\n",
+    "Increase total_score by hw_scores[3]\n",
+    "Increase total_score by hw_scores[4]\n",
+    "# Determine the total number of points possible\n",
+    "Set total_possible to points_per_hw * number_hw\n",
+    "# Compute the homework percentage\n",
+    "Set hw_percent to 100 * total_score / total_possible\n",
+    "# Provide the homework percentage\n",
+    "Output hw_percent\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "source": [
+    "```\n",
+    "digraph G {\n",
+    "\tstart [shape=oval];\n",
+    "\tinput [label=<Input <I>hw_scores</I>,  <I>number_hw</I>,  <I>points_per_hw</I>>, shape=parallelogram];\n",
+    "\tinit [label=<Set <I>total_score </I> to 0>, shape=rectangle];\n",
+    "\tinc0 [label=<Increase <I>total_score </I>by <I>hw_scores[0]</I>>, shape=rectangle];\n",
+    "\tinc1 [label=<Increase <I>total_score </I> by <I>hw_scores[1]</I>>, shape=rectangle];\n",
+    "\tinc2 [label=<Increase <I>total_score </I> by <I>hw_scores[2]</I>>, shape=rectangle];\n",
+    "\tinc3 [label=<Increase <I>total_score </I> by <I>hw_scores[3]</I>>, shape=rectangle];\n",
+    "\tinc4 [label=<Increase <I>total_score </I> by <I>hw_scores[4]</I>>, shape=rectangle];\n",
+    "    possible [label=<Set <I>total_possible </I> to <I>points_per_hw * number_hw</I>>, shape=rectangle];\n",
+    "    percentage [label=<Set <I>hw_percent </I> to <I>100 * total_score / total_possible</I>>, shape=rectangle];\n",
+    "    output [label=<Output <I>hw_percent </I>>, shape=parallelogram];\n",
+    "\tstop [shape=oval];\n",
+    "\tstart->input;\n",
+    "    input->init;\n",
+    "    init->inc0;\n",
+    "    inc0->inc1;\n",
+    "    inc1->inc2;\n",
+    "    inc2->inc3;\n",
+    "    inc3->inc4;\n",
+    "    inc4->possible;\n",
+    "    possible->percentage;\n",
+    "    percentage->output;\n",
+    "    output->stop;\n",
+    "}\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "<img src=\"img/homework_sequence2.png\" alt=\"Flowchart for Computing Homework Percentage\" style=\"width: 600px;\"/>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Selection\n",
+    "\n",
+    "Suppose we computed `hw_percent`, `lab_percent`, `quiz_percent`, and `exam_percent`.  Given the weight of each category, one could, using **sequence** compute a `final_percent`.  But how to assign the letter grade?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Simplest selection: \n",
+    "      \n",
+    "```html\n",
+    "If some condition is true, then \n",
+    "    do something.\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "\n",
+    "Graphically:\n",
+    "\n",
+    "<img src=\"img/simple_if2.png\" alt=\"Flowchart fragment for a simple conditional statement\" style=\"width: 300px;\"/>\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```octave\n",
+    "'''Algorithm to compute the final grade'''\n",
+    "# Get the final percentage\n",
+    "Input final_percent\n",
+    "# Check if the grade is an A\n",
+    "If final_percent >= 90 then\n",
+    "    Set final_grade to A # Indentation helps tie the statement to the condition\n",
+    "\n",
+    "...\n",
+    "\n",
+    "# Provide the final grade\n",
+    "Output final_grade\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Iteration\n",
+    "\n",
+    "Think back to the homeworks:\n",
+    "\n",
+    "```octave\n",
+    "Increase total_score by hw_scores[0]\n",
+    "Increase total_score by hw_scores[1]\n",
+    "Increase total_score by hw_scores[2]\n",
+    "Increase total_score by hw_scores[3]\n",
+    "Increase total_score by hw_scores[4]\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### The Basic Idea\n",
+    "\n",
+    "Weed language to describe the process of *iterating* through several identical steps, array elements, etc.\n",
+    "\n",
+    "Possible ways to describe iteration for the homework problem in English:\n",
+    "\n",
+    "  - For each score in an array of homework scores, add it to the total score\n",
+    "  - While there are still homework scores, add each one to the total score."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "In pseudocode:\n",
+    "\n",
+    "```octave\n",
+    "While the condition is satisfied\n",
+    "  Do something\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Graphically:\n",
+    "\n",
+    "![Flowchart fragment for a simple loop](img/simple_loop.png)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "```octave\n",
+    "'''Algorithm for computing homework percentage'''\n",
+    "# Get the inputs needed to compute the homework percentage\n",
+    "Input hw_scores, number_hw, points_per_hw\n",
+    "# Initialize the total homework score    \n",
+    "Set total_score to 0\n",
+    "# Increment the total homework score by each of the \n",
+    "# homework scores. \n",
+    "Set counter = 0\n",
+    "While counter < number_hw \n",
+    "    Increase total_score by hw_scores[counter]\n",
+    "    Set counter = counter + 1\n",
+    "# Determine the total number of points possible\n",
+    "Set total_possible to points_per_hw * number_hw\n",
+    "# Compute the homework percentage\n",
+    "Set hw_percent to 100 * total_score / total_possible\n",
+    "# Provide the homework percentage\n",
+    "Output hw_percent\n",
+    "```\n",
+    "\n",
+    "**What is the iteration condition?**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should now be able to\n",
+    "\n",
+    "- *explain the three basic logical structures in programming*\n",
+    "- *decompose problems into small, well defined steps*\n",
+    "- *describe those steps graphically using flowcharts*\n",
+    "- *describe those steps in words using pseudocode*"
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

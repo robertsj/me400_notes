@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 22 - Optimization &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 22 - Optimization &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,12 +200,16 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-22---Optimization">
 <h1>Lecture 22 - Optimization<a class="headerlink" href="#Lecture-22---Optimization" title="Permalink to this headline">¶</a></h1>
 <p>In <a class="reference external" href="ME400_Lecture_21.ipynb">Lecture 21</a>, the basics of solving
-nonlinear problems (i.e., “root finding”) were covered. Here, the
+nonlinear problems (i.e., &#8220;root finding&#8221;) were covered. Here, the
 related problem of minimizing (or maximizing) functions is studied,
 which allows us to find <em>optimal</em> solutions in a variety of
 applications.</p>
@@ -234,7 +239,7 @@ problems of interest</li>
 <h3>When Have You <em>Optimized</em> Something?<a class="headerlink" href="#When-Have-You-Optimized-Something?" title="Permalink to this headline">¶</a></h3>
 <p>Describe one time when you had to determine an <em>optmimum</em> solution for
 some problem. This could be a problem from any class or from a real-life
-situation. If you can’t think of something, describe a hypothetical
+situation. If you can&#8217;t think of something, describe a hypothetical
 problem. In all cases, state (1) the feature or features being optimized
 and (2) any constraints that apply.</p>
 </div>
@@ -257,7 +262,7 @@ function</strong></p>
 one of finding <em>extrema</em>. Remember, a function exhibits an extremum
 where its first derivative vanishes.</p>
 <p><strong>Example</strong>: Solve <span class="math">\(\min_x f(x)\)</span> where
-<span class="math">\(f(x) = x^2(x-10)+(x+8)^2/1000\)</span> using (1) Newton’s method and (2)
+<span class="math">\(f(x) = x^2(x-10)+(x+8)^2/1000\)</span> using (1) Newton&#8217;s method and (2)
 <code class="docutils literal"><span class="pre">minimize</span></code>. This is a <em>nonlinear</em> optimization problem.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -280,8 +285,9 @@ where its first derivative vanishes.</p>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_22_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_22_Slides_7_0.png" />
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;Figure size 640x480 with 1 Axes&gt;
+</pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -367,7 +373,7 @@ minimum value is -4.7839e+00
 \end{split}\end{split}\]</div>
 <p>Newton applied with <span class="math">\(\mathbf{g}(\mathbf{x})\)</span> in place of the
 residual and <span class="math">\(\mathbf{H}(\mathbf{x})\)</span> in place of the
-Jacobian—otherwise, identical!</p>
+Jacobian&#8212;otherwise, identical!</p>
 </div>
 <div class="section" id="Constrained-Optimization">
 <h3>Constrained Optimization<a class="headerlink" href="#Constrained-Optimization" title="Permalink to this headline">¶</a></h3>
@@ -401,7 +407,7 @@ inputs summarize as follows:</p>
 <col width="23%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">&#160;</th>
+<tr class="row-odd"><th class="head">&nbsp;</th>
 <th class="head">Meaties</th>
 <th class="head">Yummies</th>
 </tr>
@@ -412,8 +418,8 @@ inputs summarize as follows:</p>
 <td>$2.00</td>
 </tr>
 <tr class="row-odd"><td>Raw materials per package</td>
-<td>&#160;</td>
-<td>&#160;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
 </tr>
 <tr class="row-even"><td>cereal</td>
 <td>2 lb</td>
@@ -436,7 +442,7 @@ inputs summarize as follows:</p>
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Resources</th>
-<th class="head">&#160;</th>
+<th class="head">&nbsp;</th>
 </tr>
 </thead>
 <tbody valign="top">
@@ -470,16 +476,6 @@ optimization problems</li>
 <li>Use <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> to solve a variety of optimization
 problems of interest</li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -515,15 +511,15 @@ problems of interest</li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_22_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_22_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -534,14 +530,14 @@ problems of interest</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_22_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_22_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

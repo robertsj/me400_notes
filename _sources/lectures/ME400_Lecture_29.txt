@@ -1,0 +1,503 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Lecture 29 - Numerical Solutions of Two-Point BVPs\n",
+    "\n",
+    "## Overview, Objectives, and Key Terms\n",
+    " \n",
+    "This lesson is all about solving two-point boundary-value problems numerically.  We'll apply the finite-difference approximations [Lecture 21](ME400_Lecture_21.ipynb) to convert BVPs into matrix systems.  Both inhomogeneous cases (e.g., heat conduction with a driving source) and homogeneous (a critical nuclear reactor) will be considered.\n",
+    "\n",
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Solve two-point, heterogeneous BVPs.\n",
+    "- Solve two-point, homogeneous BVPs.\n",
+    "\n",
+    "### Prerequisites\n",
+    "\n",
+    "You should already be able to\n",
+    "\n",
+    "- Solve systems of IVPs using Euler's method based on the material of [Lecture 28](ME400_Lecture_28.ipynb)\n",
+    "- Define one- and two-dimensional arrays using NumPy arrays based on the material of [Lecture 4](ME400_Lecture_4.ipynb).  \n",
+    "- Use `np.linalg.solve` to solve $\\mathbf{Ax = b}$ based on the material of [Lecture 4](ME400_Lecture_4.ipynb).\n",
+    "\n",
+    "Please review these topics (and resources) as needed.\n",
+    "\n",
+    "### Key Terms\n",
+    "\n",
+    "- Dirichlet boundary condition\n",
+    "- Neumann boundary condition\n",
+    "- Robin (or mixed) boundary condition\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Chopping Up the BVP\n",
+    "\n",
+    "Our focus is again on the second-order BVP\n",
+    "\\begin{equation}\n",
+    "    \\frac{d^2 y}{dx^2} + p(x) \\frac{dy}{dx} + q(x) y(x) = f(x), \\qquad y(a) = y_a, \\qquad y(b) = y_b \\, .\n",
+    "\\end{equation}\n",
+    "The goal is to apply [Numerical Differentiation](../../../courses/pythonic_apps_1/module_4/numerical_differentiation.rst) to this equation, leading to a linear system.  \n",
+    "\n",
+    "Observe that there are two derivatives in the BVP, one second order, and one first order.  There are numerous ways to approximate these by finite differences, but we'll opt for a method with second-order errors.  For the first derivative, we already analyzed the central difference:\n",
+    "\\begin{equation}\n",
+    "    \\frac{dy}{dx} = \\frac{y(x+\\Delta)-y(x-\\Delta)}{2\\Delta} + \\mathcal{O}(\\Delta^2) \\, .\n",
+    "\\end{equation}\n",
+    "For the second derivative, we saw (but did not analyze) another central difference:\n",
+    "\\begin{equation}\n",
+    "    \\frac{d^2y}{dx^2} = \\frac{y(x+\\Delta)-2y(x)+y(x-h)}{\\Delta^2} + \\mathcal{O}(\\Delta^2) \\, .\n",
+    "\\end{equation}\n",
+    "\n",
+    "Given these differencing schemes, let us chop the domain $x\\in [a, b]$ into discrete points $x_i = a + \\Delta i,\\, i = 0, 1, \\ldots, n$, where $\\Delta = (b-a)/n$.  For all but $i=0$ and $i=n$, we have \n",
+    "\\begin{equation}\n",
+    "    \\frac{y_{i+1} - 2y_i + y_{i-1}}{\\Delta^2}\n",
+    "      + p_i \\frac{y_{i+1}-y_{i-1}}{2 \\Delta}\n",
+    "        + q_i y_i \n",
+    "          = f_i\n",
+    "\\end{equation}\n",
+    "where, for example, $y_i = y(x_i)$.\n",
+    "\n",
+    "At the boundaries, we need to be more careful.  For the given boundary conditions, our equations are as simple as \n",
+    "\\begin{equation}\n",
+    "    y_0 = y_a\n",
+    "\\end{equation}\n",
+    "and\n",
+    "\\begin{equation}\n",
+    "    y_n = y_b \\, .\n",
+    "\\end{equation}\n",
+    "\n",
+    "The boundary conditions used here are known as *Dirichlet* boundary conditions, in which the unknown function itself is defined at the boundary.  *Neumann* boundary conditions specify a value of the *derivative* of the function, e.g., $y'(a) = \\alpha$.  *Robin* or *mixed* boundary conditions specify a value of some linear combination of the function and its derivative, e.g., $\\gamma y'(a) + \\beta y(a) = \\alpha$.  *Dirichlet* and *Neumann* conditions can be defined in terms of the *Robin* condition using appropriate values of $\\gamma$, $\\beta$, and $\\alpha$.\n",
+    "\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Develop an equation to represent the Neumann condition $y'(a) = \\alpha$ based on finite differences.  Here, $x=a$ is the left boundary.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Develop an equation to represent the Neumann condition $y'(b) = \\alpha$ based on finite differences.  Here, $x=b$ is the right boundary.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Develop an equation to represent the Robin condition $\\gamma y'(a) + \\beta y(a) = \\alpha$ based on finite differences.  Here, $x=a$ is the left boundary.\n",
+    "\n",
+    "*Solution*: Let $y_0 = y(a)$ and $y_1 = y(a+\\Delta)$.  Then approximate $y'(a)$ as $[y_1 - y_0]/\\Delta$ from which the boundary condition becomes \n",
+    "\n",
+    "$$\n",
+    "\\frac{\\gamma}{\\Delta} y_1 + \\left ( \\beta - \\frac{\\gamma}{\\Delta} \\right ) y_0 = \\alpha \\, .\n",
+    "$$\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Develop an equation to represent the Robin condition $\\gamma y'(b) + \\beta y(b) = \\alpha$ based on finite differences.  Here, $x=b$ is the right boundary.\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## A Simple Example\n",
+    "\n",
+    "To illustrate the approach just described, let us consider our previous example for which $p(x)=0$, $q(x)=f(x)=-1$, and $y(0) = y(10) = 0$.  The analytic solution is $y(x) = 1 - e^{10-x}/(1+e^{10}) - e^{x}/(1+e^{10})$.\n",
+    "We'll keep it simple and let $n = 4$, which gives us five equations:\n",
+    "\n",
+    "$$\n",
+    "    \\begin{aligned}\n",
+    "    y_0  &= 0 \\\\\n",
+    "    \\frac{y_2 - 2y_1 + y_0}{\\Delta^2} - y_1 &= -1 \\\\\n",
+    "    \\frac{y_3 - 2y_2 + y_1}{\\Delta^2} - y_1 &= -1 \\\\\n",
+    "    \\frac{y_4 - 2y_3 + y_2}{\\Delta^2} - y_1 &= -1 \\\\    \n",
+    "    y_4  &= 0\n",
+    "    \\end{aligned} \\, .\n",
+    "$$\n",
+    "\n",
+    "In matrix form, these become\n",
+    "\n",
+    "$$\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      1          & 0           & 0           & 0           & 0 \\\\\n",
+    "      1/\\Delta^2 & -2/\\Delta^2 -1 & 1/\\Delta^2  & 0           & 0 \\\\\n",
+    "      0          & 1/\\Delta^2  & -2/\\Delta^2 -1 & 1/\\Delta^2  & 0 \\\\\n",
+    "      0          & 0           & 1/\\Delta^2  & -2/\\Delta^2 -1 & 1/\\Delta^2  \\\\      \n",
+    "      0          & 0           & 0           & 0           & 1 \\\\      \n",
+    "   \\end{matrix}\n",
+    " \\right ]\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      y_0 \\\\\n",
+    "      y_1 \\\\\n",
+    "      y_2 \\\\\n",
+    "      y_3 \\\\\n",
+    "      y_4 \\\\\n",
+    "   \\end{matrix}\n",
+    " \\right ]\n",
+    " =\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      0 \\\\\n",
+    "     -1 \\\\\n",
+    "     -1 \\\\\n",
+    "     -1 \\\\\n",
+    "      0 \\\\\n",
+    "   \\end{matrix}\n",
+    " \\right ] \\, .\n",
+    "$$\n",
+    "\n",
+    "In fact, we can simplify this system somewhat.  Because we *already know* the values $y_0$ and $y_4$ from the boundary conditions, we can subsitute them into the equations for $y_1$ and $y_3$, which leads to \n",
+    "\n",
+    "$$\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      -2/\\Delta^2 -1 & 1/\\Delta^2  & 0          \\\\\n",
+    "      1/\\Delta^2  & -2/\\Delta^2 -1 & 1/\\Delta^2   \\\\\n",
+    "      0           & 1/\\Delta^2  & -2/\\Delta^2 -1  \\\\      \n",
+    "   \\end{matrix}\n",
+    " \\right ]\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      y_1 \\\\\n",
+    "      y_2 \\\\\n",
+    "      y_3 \\\\\n",
+    " \\end{matrix}\n",
+    " \\right ]\n",
+    " =\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "     -1 \\\\\n",
+    "     -1 \\\\\n",
+    "     -1 \\\\\n",
+    "   \\end{matrix}\n",
+    " \\right ] \\, .\n",
+    "$$\n",
+    "\n",
+    "Personally, I like introducing the first version first since it puts all the equations together in a very transparent form.   The second approach, however, leads to a somewhat simpler system.  Note, though, this second approach is only applicable when the boundary condition is a Dirichlet condition.\n",
+    "\n",
+    "Let's solve this numerically:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7fb2fcca0a58>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "Delta = 2.5\n",
+    "A = np.array([[1, 0, 0, 0, 0], \n",
+    "              [1/Delta**2, -2/Delta**2-1, 1/Delta**2, 0, 0],\n",
+    "              [0, 1/Delta**2, -2/Delta**2-1, 1/Delta**2, 0],\n",
+    "              [0, 0, 1/Delta**2, -2/Delta**2-1, 1/Delta**2],\n",
+    "              [0, 0, 0, 0, 1]])\n",
+    "b = np.array([0, -1, -1, -1, 0])\n",
+    "y_numerical = np.linalg.solve(A, b)\n",
+    "x = np.linspace(0, 10)\n",
+    "y_exact =  1.0 - np.exp(10-x)/(1+np.exp(10)) - np.exp(x)/(1+np.exp(10))\n",
+    "plt.plot(x, y_exact, 'k', [0, 2.5, 5.0, 7.5, 10], y_numerical, 'bo')\n",
+    "plt.legend(['exact', 'numerical'], loc=0, numpoints=1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The approximation is not perfect, but then again, we used only five points!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Apply the approach outlined above to solve $y'' + y(x) = 1$, subject to $y(0) = y(10) = 0$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Solve the convection-diffusion problem from [Lecture 26](ME400_Lecture_26.ipynb) using finite differences.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Apply the approach outlined above to solve $y'' + y(x) = 1$, subject to $y'(0) = y(10) = 0$.  Note, that's a Neumann condition at the left boundary.  \n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**:  Use the finite-difference method to solve $y'' + y(x) = x$, subject to $y'(0) = y(10) = 0$.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Implement the following function for solving arbitrary, second-order BVPs of the form $y'' + p(x)y' + q(x)y(x) = s(x)$ subject to $\\gamma_a y(a) + \\beta_a y'(a) = \\alpha_a$ and $\\gamma_b y(b) + \\beta_b y'(b) = \\alpha_b$:\n",
+    "\n",
+    "```python\n",
+    "def bvp2(a, b, n, bc_a, bc_r, p, q, s):\n",
+    "    \"\"\" Solve y'' + p(x)y' + q(x)y(x) = s(x).\n",
+    "    \n",
+    "    Inputs:\n",
+    "        a - left boundary (float)\n",
+    "        b - right boundary (float)\n",
+    "        n - number of evenly spaced points (int)\n",
+    "        bc_a - tuple of three values \n",
+    "               (alpha, beta, gamma) for left condition\n",
+    "        bc_b - tuple of three values \n",
+    "               (alpha, beta, gamma) for right condition\n",
+    "        p - callable function for p(x)\n",
+    "        q - callable function for q(x)\n",
+    "        s - callable function for s(x)\n",
+    "    Returns:\n",
+    "        y - approximate function\n",
+    "        x - points at which y(x) is evaluated\n",
+    "```\n",
+    "\n",
+    "***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Eigenvalue Problems\n",
+    "\n",
+    "You may previously have studied the discrete, matrix eigenvalue problem:\n",
+    "\n",
+    "$$\n",
+    "\\mathbf{Ax}=\\lambda\\mathbf{x} \\, .\n",
+    "$$\n",
+    "\n",
+    "The eigenvalues $\\lambda$ are the roots of $|\\mathbf{A} - \\lambda \\mathbf{I}|$, where $|\\cdot|$ is the determinant.  Here, that determinant leads to a polynomial equation for $\\lambda$.  As long as $\\mathbf{A}$ is 4 by 4 or smaller, $\\lambda$ can be found directly.  For larger matrices, we need numerical techniques (as was discussed in [Lecture 23](ME400_Lecture_23.ipynb).\n",
+    "\n",
+    "\n",
+    "Eigenvalue problems are not limited to discrete systems, however.  For example, consider the following BVP:\n",
+    "\\begin{equation}\n",
+    "   - \\frac{d^2 y}{dx^2} = \\lambda y(x), \\qquad y(0)=y(10)=0 \\, .\n",
+    "\\end{equation}\n",
+    "This is really the homogeneous equation $y'' - \\lambda y = 0$, for which $y(x) = a \\cos(\\sqrt{\\lambda}x) + b \\sin(\\sqrt{\\lambda}x)$.  The left boundary condition $y(0)=0$ gives $a = 0$.  However, the right condition leaves us with a somewhat strange situation:\n",
+    "\\begin{equation}\n",
+    "    b \\sin(\\sqrt{\\lambda}10) = 0 \\, .\n",
+    "\\end{equation}\n",
+    "Why is this strange?  All it says about $b$ is that $b=0$, the trivial solution.  But if $b\\ne 0$, then it can be divided from both sides, leaving \n",
+    "\\begin{equation}\n",
+    "    \\sin(\\sqrt{\\lambda}10) = 0 \\, .\n",
+    "\\end{equation}\n",
+    "Perhaps now our situation is a bit more obvious: the left boundary is not able to determine $b$, but it is able to determine those values of $\\lambda$ for which the BVP and its boundary conditions are satisfied.  Here, those values are\n",
+    "\\begin{equation}\n",
+    "    \\lambda = \\frac{n^2 \\pi^2}{100} \\, .\n",
+    "\\end{equation}\n",
+    "\n",
+    "Now, to solve such an equation, we can employ the same discretization used above, which leads to the following matrix eigenvalue problem:\n",
+    "\\begin{equation}\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      1          & 0           & 0           & 0           & 0 \\\\\n",
+    "      -1/\\Delta^2 & 2/\\Delta^2 & -1/\\Delta^2  & 0           & 0 \\\\\n",
+    "      0          & -1/\\Delta^2  & 2/\\Delta^2 & -1/\\Delta^2  & 0 \\\\\n",
+    "      0          & 0           & -1/\\Delta^2  & 2/\\Delta^2 & -1/\\Delta^2  \\\\      \n",
+    "      0          & 0           & 0           & 0           & 1 \\\\      \n",
+    "   \\end{matrix}\n",
+    " \\right ]\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      y_0 \\\\\n",
+    "      y_1 \\\\\n",
+    "      y_2 \\\\\n",
+    "      y_3 \\\\\n",
+    "      y_4 \\\\\n",
+    "   \\end{matrix}\n",
+    " \\right ]\n",
+    " =\n",
+    " \\lambda\n",
+    " \\left [\n",
+    "   \\begin{matrix}\n",
+    "      y_0 \\\\\n",
+    "      y_1 \\\\\n",
+    "      y_2 \\\\\n",
+    "      y_3 \\\\\n",
+    "      y_4 \\\\\n",
+    "   \\end{matrix}\n",
+    " \\right ] \\, .\n",
+    "\\end{equation}\n",
+    "We can solve this numerically via"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 0.54627417  0.32        0.09372583  1.          1.        ]\n"
+     ]
+    }
+   ],
+   "source": [
+    "A = np.array([[1, 0, 0, 0, 0], \n",
+    "               [-1/Delta**2, 2/Delta**2, -1/Delta**2, 0, 0],\n",
+    "               [0, -1/Delta**2, 2/Delta**2, -1/Delta**2, 0],\n",
+    "               [0, 0, -1/Delta**2, 2/Delta**2, -1/Delta**2],\n",
+    "               [0, 0, 0, 0, 1]])\n",
+    "l, v = np.linalg.eig(A)\n",
+    "print(l)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The smallest eigenvalue of the original equation comes with $n=1$ ($n=0$ is the trivial solution): $\\lambda_1 = \\pi^2/100 \\approx 0.0986960$, and the corresponding *eigenfunction* is $y_1(x) = \\sin(\\pi x/10)$.  Just as eigenvectors are defined only to within a multiplicative constant, so too are eigenfunctions.  \n",
+    "\n",
+    "The smallest eigenvalue found numerically is $0.09372583$, which is pretty close to $\\pi^2/100$.  Let's look at the corresponding eigenvector compared to the analytic solution.  We can make sure to pick out the correct eigenvector by finding the index of the lowest eigenvalue:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2\n"
+     ]
+    }
+   ],
+   "source": [
+    "index_lowest = np.argmin(l)\n",
+    "print(index_lowest)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "With that index, we can get the eigenvector and plot it with the analytic one (scaled so both have a maximum of one):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\nN28ezz//vBa7Uspm9erVo0+fPkyfPt0lrjnjceU+duxYRETn2pVSBRYaGuoy71r1qHJPSkoiOjqa\n5557Tq8ho5QqsICAAHr37s306dOd/nrvHlXu48aNIycnR89rV0oVWmhoKGlpaU6/WpPHlPvJkyeZ\nO3cu/fr10+u1K6UKrUGDBvTs2ZNp06Y59VqrHlPuV9dG1VG7UqqowsLCSE1NZfLkyVZHuSWPKPdf\nfvmFqKgonn32WV0bVSlVZA0bNqRnz55MnTrVaUfvHlHu48aNIzMzU6/XrpSym7CwMC5cuMCUKVOs\njnJTbl/uv/76K3PmzOGZZ57RUbtSym4aNWrEU089RWRkJL/99pvVcf7A7ct94sSJZGRk6KhdKWV3\noaGhXLhwgalTp1od5Q/cutxPnz7NrFmzCAkJoXbt2lbHUUq5maZNm9K9e3cmT57MhQsXrI7zO25d\n7pMmTeLSpUs6aldKOUxoaCi//fYb06dPtzrK77htuZ85c4bp06fTp08f6tata3UcpZSbat68OV27\ndiUiIoLU1FSr41zjtuU+ZcoU0tPTddSulHK40NBQUlJSmDVrltVRrnHLcj937hxTp06lZ8+eNGjQ\nwOo4Sik317JlSzp16sTEiRNJS0uzOg7gpuUeGRlJamoqw4YNszqKUspDDB8+nOTkZObMmWN1FMAN\nF+s4f/48vr6+dOjQgeXLl9v9+EopdSsdO3bk559/5siRI5QpU8Yh9+Gxi3VMmzaN8+fPExoaanUU\npZSHCQsL49SpU8ydO9fqKO41ck9NTcXX15e2bduycqVTL+OqlHJT7du35+DBgxw+fJjSpUvb/fge\nOXKfMWMG586d01G7UsoyYWFhnDx5kvnz51uaw21G7hcvXsTf358WLVrw9ddf2+24SilVECLCww8/\nzNGjRzl06BClSpWy6/E9buQ+e/Zszpw5o6N2pZSljDGEhYWRlJTE+++/b10Odxi5p6en4+/vT5Mm\nTfjmm2/sckyllCosEaF169b8+uuvxMfH4+PjY7dje9TIPSoqitOnT+uoXSnlFK6O3o8dO8bChQut\nyeDqI/fLly9Tq1Yt6taty4YNG+yQTCmlik5EaNGiBb/99hv79++nRIkSdjmux4zc582bxy+//KKj\ndqWUUzHGEBoayuHDh/n444+L//5deeR+5coVateuja+vL1u2bMEYY6d0SilVdCJC06ZNuXLlCrGx\n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\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x7f33d06d8710>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x = np.linspace(0, 10)\n",
+    "y_exact = np.sin(np.pi/10.*x)\n",
+    "y_numerical = v.T[index_lowest]\n",
+    "y_numerical = y_numerical/np.max(y_numerical)\n",
+    "plt.plot(x, y_exact, 'k', [0, 2.5, 5, 7.5, 10], y_numerical, 'bo')\n",
+    "plt.legend(['exact', 'numerical'], loc=0, numpoints=1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For the other eigenvalues and eigenvectors, the numerical results are less impressive.  For example, the next four eigenvalues are "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.3947841760435743\n",
+      "0.8882643960980423\n",
+      "1.5791367041742972\n",
+      "2.4674011002723395\n"
+     ]
+    }
+   ],
+   "source": [
+    "for i in range(2, 6) :\n",
+    "    print(np.pi**2 * i**2 / 100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "and the list keeps going because $n$ has no upper limit.  The only way we can capture these *higher modes* is to have more points in our numerical solution.  If the eigenvalues are viewed as frequencies, and the eigenfunctions as waves, it becomes obvious that too few points will prevent us from observing all the oscillations.  However, usually our interest is in $\\lambda_1$ and $y_1(x)$, for these correspond (in physical systems) to the *fundamental* or *fundamental mode*.  That could be the critical spatial distribution of neutrons in a reactor, or the natural frequency of a cantileaver beam.  Engineers (of one type of another) must analyze such systems, and numerical eigenvalues often play a role."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Comment on FDM and Alternatives\n",
+    "\n",
+    "The finite-difference method is easy to understand, often simple to implement, and useful for a variety of real-world applications.  However, it isn't the only option and it's often not the best option.  [Finite-volume methods](https://en.wikipedia.org/wiki/Finite_volume_method) (FVM's) integrate the differential equation first, and the resulting $\\mathbf{Ax}=\\mathbf{b}$ represents a discretetized conservation law.  [Finite-element methods](https://en.wikipedia.org/wiki/Finite_element_method) (FEM's) also integrate the differential equation first (albeit in a slightly different form).  Then, the solutions are assumed to take simple piece-wise continuous form (lines, parabolas, or even cubics), and the integral balance over the whole domain becomes a linear system.  Lots of details, but powerfully successful results. \n",
+    "\n",
+    "These are two examples.  Others include spectral methods, discontinuous-Galerkin methods, and boundary-element methods.  There is a whole world to explore that goes well beyond the present scope (which, of course, is to solve problems)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Further Reading\n",
+    "\n",
+    "Make sure to review the numerical differentiation and linear solver material previously covered.  "
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

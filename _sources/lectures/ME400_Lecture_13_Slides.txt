@@ -1,0 +1,371 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Lecture 13 - More on Functions\n",
+    " \n",
+    "In [Lecture 12](ME400_Lecture_12.ipynb), the basics of defining functions were presented.  In this lecture, more advanced features of function definitions are presented, including the use of the special `*arg` and `**kwarg` structures.  In addition, anonymous `lambda` functions are presented for quick, in-line applications.  Finally, some interesting (and possibly suprising) applications of functions are considered, which include use of functions as arguments to other functions and the use of functions that call themselves (i.e., *recursion*). "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Objectives\n",
+    "\n",
+    "By the end of this lesson, you should be able to\n",
+    "\n",
+    "- Define a function using `*args` and `**kwargs`.\n",
+    "- Define a `lambda` function (see the reading)\n",
+    "- Define a recursive function."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Key Terms\n",
+    "\n",
+    "- `*args`\n",
+    "- `**kwargs`\n",
+    "- anonymous function\n",
+    "- `lambda`\n",
+    "- `filter`\n",
+    "- recursion\n",
+    "- recursive function\n",
+    "- recursive sequence"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## `*args` and `**kwargs`\n",
+    "\n",
+    "What on earth are `*args` and `**kwargs`?  Before moving along, let's look at a function introduced back in [Lecture 3](ME400_Lecture_3.ipynb): `plt.plot`. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Can we learn `*args` and `**kwargs` by example?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def demo_args(*args) :\n",
+    "    print(args)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def demo_kwargs(**kwargs):\n",
+    "    print(kwargs)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Some Conclusions:\n",
+    "\n",
+    "1. `*args` packages all **positional unnamed) arguments** into a `tuple`\n",
+    "2. `**kwargs` packages all **keyword (named) arguments** into a `dict`\n",
+    "3. All positional arguments must come before keyword arguments\n",
+    "4. `*args` and `**kwargs` help make functions super flexible"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Define a function `true_or_false(*args, **kwargs)` that returns a `list` whose length is equal to the number of positional arguments passed and a `dict` whose length is equal to the number of keyword arguments passed.  The `i`th element of this `list` is `True` if the `i`th argument is (logically equal to) `True` and is otherwise `False`.  The `dict` should have keys equal to the named arguments and similar `True`/`False` values."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def true_or_false(*args, **kwargs):\n",
+    "    L = []\n",
+    "    D = {}\n",
+    "    pass"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recursive Functions"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "The topic of **recursion** is challenging, and recurssion can often (not always) be replaced by loops. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "A **recursive process** gives output (say, a particular value) at one step using as input the output from one or more previous steps **based on a fixed relationship**.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Example**: The Fibonacci sequence $a_{n} = a_{n-1} + a_{n-2}$ with $a_0 = a_1 = 1$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The basic recursive function in Python:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def a_basic_recursive_function(n):\n",
+    "    \"\"\"This function does something simple, but it\n",
+    "       might not be immediately obvious.\"\"\"\n",
+    "    if n == 1:  # <--- ALWAYS NEED SOMETHING TO STOP RECURSION!!\n",
+    "        print('recursion is ending!')\n",
+    "        return 1\n",
+    "    else:\n",
+    "        print('n = ', n)\n",
+    "        return n + a_basic_recursive_function(n-1)\n",
+    "    \n",
+    "a_basic_recursive_function(5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Infinite recursion is bad:\n",
+    "\n",
+    "```python\n",
+    "def infinite_recursion(n):\n",
+    "    return n + infinite_recursion(n-1)\n",
+    "print(infinite_recursion(5))\n",
+    "```\n",
+    "\n",
+    "How would this stop?  From $n = 5$, to $n = -10$, to $n = -\\infty$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Example**:  Trace (by hand) the following code:\n",
+    "\n",
+    "```python\n",
+    "1. def foo(n):\n",
+    "2.     if n == 1:\n",
+    "3.         return 1\n",
+    "4.     return n * foo(n-1)\n",
+    "5. foo(4)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Fibonacci (in Python and using recursion)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def fibo_recursive(n):\n",
+    "    pass"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Sum an array recursively."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Recap\n",
+    "\n",
+    "You should  now be able to\n",
+    "\n",
+    "- Define a function using `*args` and `**kwargs`.\n",
+    "- Define a `lambda` function.\n",
+    "- Define a recursive function."
+   ]
+  }
+ ],
+ "metadata": {
+  "celltoolbar": "Slideshow",
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  },
+  "livereveal": {
+   "scroll": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

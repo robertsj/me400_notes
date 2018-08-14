@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 23 - Data Analysis via Least-Squares Fitting &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 23 - Data Analysis via Least-Squares Fitting &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,16 +200,20 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-23---Data-Analysis-via-Least-Squares-Fitting">
 <h1>Lecture 23 - Data Analysis via Least-Squares Fitting<a class="headerlink" href="#Lecture-23---Data-Analysis-via-Least-Squares-Fitting" title="Permalink to this headline">¶</a></h1>
 <p>A ubiquitous task in engineering and other technical disciplines is the
 analysis of data. Data comes from many sources, including measurements
 in the laboratory and numerical simulations. In this lecture and the
-next, we’ll apply what we’ve learned so far to produce <em>models</em> from
+next, we&#8217;ll apply what we&#8217;ve learned so far to produce <em>models</em> from
 data that we can use to explore trends and make conclusions.
-Specifically, in this lecture, we’ll develop models based on
+Specifically, in this lecture, we&#8217;ll develop models based on
 <strong>least-squares</strong> fitting of model parameters to existing data. Such
 fitting may be the right choice when the data in contaminated by noise
 or when the model need only capture the main features of the observed
@@ -240,7 +245,7 @@ data to models</li>
 </ul>
 <div class="section" id="Noisy-Data">
 <h2>Noisy Data<a class="headerlink" href="#Noisy-Data" title="Permalink to this headline">¶</a></h2>
-<p>A familiar task: draw a line of “best fit” through noisy data
+<p>A familiar task: draw a line of &#8220;best fit&#8221; through noisy data
 <span class="math">\((x_i, y_i)\)</span></p>
 <p>Alternative description: find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> so that the
 <em>linear model</em> <span class="math">\(y(x) = ax + b\)</span> best matches the data.</p>
@@ -291,7 +296,7 @@ data to models</li>
 </div>
 </div>
 <div class="section" id="What-&quot;Best&quot;-Means">
-<h2>What “Best” Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
+<h2>What &#8220;Best&#8221; Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
 <p>The error is the difference between the model and data:</p>
 <div class="math">
 \[e_i = y(t_i) - y_i = a t_i + b - y_i \, \quad i = 0, 1, \ldots\]</div>
@@ -299,7 +304,7 @@ data to models</li>
 <div class="math">
 \[|| \mathbf{e} ||_2 = \sqrt{ |e_0|^2 + |e_1|^2 + \ldots} = \sqrt{\sum_{i=0} |e_i|^2} \,  ,\]</div>
 <p>the <span class="math">\(L_2\)</span> norm (or euclidean norm) of the error. Similar to other
-error metrics we’ve seen?</p>
+error metrics we&#8217;ve seen?</p>
 <p><strong>Exercise</strong>: Compute and plot the errors from example, and compute
 their L2-norms.</p>
 <div class="nbinput docutils container">
@@ -325,7 +330,7 @@ their L2-norms.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-05a1610cbc18&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-3a72ebb0971c&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
 <span class="ansi-red-fg">    e_1 =</span>
          ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -341,16 +346,6 @@ their L2-norms.</p>
 <span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
 <p><strong>Exercise</strong>: Determine the best-fit parameters <span class="math">\(a\)</span> and <span class="math">\(b\)</span>
 for the example data above.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="Beyond-Linear-Models">
 <h2>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h2>
@@ -404,7 +399,7 @@ can be used (just like for <span class="math">\(y(x) = ax+b\)</span>). For a qua
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-8d4399594022&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-5-af3d3e9f1ce4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> plt.plot(x, y, &#39;k&#39;, x, y_lin, &#39;b-.&#39;,
 </span><span class="ansi-green-intense-fg ansi-bold">      2</span>          x, y_quad, &#39;g--&#39;, x, y_cub, &#39;r:&#39;)
 <span class="ansi-green-intense-fg ansi-bold">      3</span> plt<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;y&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;linear&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;quadratic&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;cubic&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
@@ -503,7 +498,7 @@ data to models</li>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
 <li><a class="reference internal" href="#Noisy-Data">Noisy Data</a></li>
-<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What “Best” Means</a></li>
+<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What &#8220;Best&#8221; Means</a></li>
 <li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
 <li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
@@ -520,15 +515,15 @@ data to models</li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_23_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_23_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -539,14 +534,14 @@ data to models</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_23_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_23_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 

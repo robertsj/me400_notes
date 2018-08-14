@@ -1,29 +1,30 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Lecture 12 - Basics of Functions &#8212; ME 400 Course Notes Fall 2017 documentation</title>
+    
+    <title>Lecture 12 - Basics of Functions &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'Fall 2017',
+        VERSION:     'Fall 2018',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -31,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body>
+  <body role="document">
   
 
     <div class="document">
@@ -199,13 +200,17 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-12---Basics-of-Functions">
 <h1>Lecture 12 - Basics of Functions<a class="headerlink" href="#Lecture-12---Basics-of-Functions" title="Permalink to this headline">¶</a></h1>
 <p>With some simple programs under our belts, it is time to <em>modularize</em>
-our programs by using <em>functions</em>. In this lecture and <a class="reference internal" href="ME400_Lecture_13.html"><span class="doc">Lecture
-13</span></a>, you will learn how to define your own
+our programs by using <em>functions</em>. In this lecture and <a class="reference external" href="ME400_Lecture_13.ipynb">Lecture
+13</a>, you will learn how to define your own
 functions to meet a variety of needs.</p>
 <div class="section" id="Objectives">
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
@@ -215,7 +220,7 @@ functions to meet a variety of needs.</p>
 returns (zero or more) values.</li>
 <li>Explain the meaning of a named and default argument.</li>
 <li>Use <em>unpacking</em> to define multiple variable in a single statement.</li>
-<li>Document functions using appropriate “docstrings.”</li>
+<li>Document functions using appropriate &#8220;docstrings.&#8221;</li>
 <li>Include functions in flowcharts.</li>
 </ul>
 </div>
@@ -235,7 +240,7 @@ returns (zero or more) values.</li>
 <div class="section" id="What-is-a-Function?">
 <h3>What is a Function?<a class="headerlink" href="#What-is-a-Function?" title="Permalink to this headline">¶</a></h3>
 <p>A function is a block of code that can be independently executed (or
-“called”) that is usually given input and usually produces output. Basic
+&#8220;called&#8221;) that is usually given input and usually produces output. Basic
 structure:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">arg0</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>  <span class="c1"># 0 or more arguments</span>
     <span class="sd">&quot;&quot;&quot; A docstring, which is a string that</span>
@@ -249,16 +254,6 @@ structure:</p>
 </div>
 <p><strong>Example</strong>: Write a function named <code class="docutils literal"><span class="pre">factorial</span></code> that computes and
 returns the factorial of an integer <span class="math">\(n\)</span>, i.e., <span class="math">\(n!\)</span>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <p><strong>Example</strong>: Write a function named <code class="docutils literal"><span class="pre">dropped</span></code> that accepts a sequence
 (e.g., a <code class="docutils literal"><span class="pre">list</span></code> or <code class="docutils literal"><span class="pre">ndarray</span></code>) of numbers <code class="docutils literal"><span class="pre">a</span></code> and an integer <code class="docutils literal"><span class="pre">n</span></code>.
 The function should return a <code class="docutils literal"><span class="pre">list</span></code> having the same elements as <code class="docutils literal"><span class="pre">a</span></code>
@@ -268,7 +263,7 @@ elements should be the same. An example use would be</p>
 <span class="n">Out</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 </pre></div>
 </div>
-<p><strong>Don’t forget a return value (if one is expected)!</strong></p>
+<p><strong>Don&#8217;t forget a return value (if one is expected)!</strong></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -299,7 +294,7 @@ elements should be the same. An example use would be</p>
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-21997234837f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-2-119d52d80d04&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>buggy_sum_function<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span> buggy_sum_function<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg"># 10?</span>
 
 <span class="ansi-red-fg">TypeError</span>: unsupported operand type(s) for +: &#39;NoneType&#39; and &#39;NoneType&#39;
@@ -363,16 +358,6 @@ string like <code class="docutils literal"><span class="pre">12:34:16</span></co
 </div>
 <p><strong>Example</strong> Modify <code class="docutils literal"><span class="pre">adjust_time</span></code> to provide a default value of zero
 for <code class="docutils literal"><span class="pre">m</span></code> and <code class="docutils literal"><span class="pre">h</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
@@ -392,7 +377,7 @@ for <code class="docutils literal"><span class="pre">m</span></code> and <code c
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-9683c5787a59&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-5-c9eb6635157b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-intense-fg ansi-bold">      1</span> adjust_time<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">61</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> adjust_time<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">61</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>adjust_time<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">61</span><span class="ansi-blue-fg">)</span>
@@ -419,7 +404,7 @@ others unchanged.</p>
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-6-f1e65be3f129&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-6-f6f172c692e6&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>adjust_time<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> h<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span>
 
 <span class="ansi-red-fg">TypeError</span>: adjust_time() missing 1 required positional argument: &#39;m&#39;
@@ -462,7 +447,7 @@ others unchanged.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-8-0d95b976b576&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-8-67ec66d28541&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
 <span class="ansi-red-fg">    adjust_time(1, m=2, 3)</span>
                        ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> positional argument follows keyword argument
@@ -478,7 +463,7 @@ others unchanged.</p>
 returns (zero or more) values.</li>
 <li>Explain the meaning of a named and default argument.</li>
 <li>Use <em>unpacking</em> to define multiple variable in a single statement.</li>
-<li>Document functions using appropriate “docstrings.”</li>
+<li>Document functions using appropriate &#8220;docstrings.&#8221;</li>
 <li>Include functions in flowcharts.</li>
 </ul>
 </div>
@@ -514,15 +499,15 @@ returns (zero or more) values.</li>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/ME400_Lecture_12_Slides.ipynb.txt"
+      <li><a href="../_sources/lectures/ME400_Lecture_12_Slides.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -533,14 +518,14 @@ returns (zero or more) values.</li>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Jeremy Roberts.
+      &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="../_sources/lectures/ME400_Lecture_12_Slides.ipynb.txt"
+      <a href="../_sources/lectures/ME400_Lecture_12_Slides.txt"
           rel="nofollow">Page source</a>
     </div>
 
