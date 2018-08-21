@@ -12,7 +12,7 @@
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     "\n",
-    "In this lesson, we'll continue our study of basic types from [Lecture 1](ME400_Lecture_1.ipynb), incorporating operators (arithmetic and otherwise) along with some very useful built-in functions.  By the end, we'll construct our very first (albeit, simple) [program](https://en.wikipedia.org/wiki/Computer_program)."
+    "In this lesson, we'll continue our study of basic types from [Lecture 1](Getting_Started.ipynb), incorporating operators (arithmetic and otherwise) along with some very useful built-in functions.  By the end, we'll construct our very first (albeit, simple) [program](https://en.wikipedia.org/wiki/Computer_program)."
    ]
   },
   {
@@ -89,7 +89,7 @@
     "\n",
     "**A statement is a complete line of code that leads to an action.** \n",
     "\n",
-    "Recall: **An expression is a piece of code that evaluates to some value.**"
+    "**An expression is a piece of code that evaluates to some value.**"
    ]
   },
   {
@@ -360,14 +360,22 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
     "A computer *program* is a sequence of instruction statements to perform a task."
    ]
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "source": [
     "A good programmer *designs* a program"
    ]

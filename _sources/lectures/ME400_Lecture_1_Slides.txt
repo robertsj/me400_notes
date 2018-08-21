@@ -22,56 +22,6 @@
      "slide_type": "skip"
     }
    },
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "<!-- \n",
-       "\n",
-       "The changes here do the following:\n",
-       "  - Make table fonts bigger (and consistent with body fonts)\n",
-       "  - Make all fonts bigger\n",
-       "-->\n",
-       "\n",
-       "<style>\n",
-       "\n",
-       "\n",
-       ".container {\n",
-       "    width: 99% !important;\n",
-       "}\n",
-       "\n",
-       "\n",
-       ".rendered_html {\n",
-       "  font-size:100%;\n",
-       "}\n",
-       ".rendered_html table, .rendered_html th, .rendered_html tr, .rendered_html td {\n",
-       "     font-size: 100%;\n",
-       "}\n",
-       "\n",
-       "</style>\n"
-      ],
-      "text/plain": [
-       "<IPython.core.display.HTML object>"
-      ]
-     },
-     "execution_count": 1,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "from IPython.display import HTML\n",
-    "HTML(filename='slides_formatting.html')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 2,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "skip"
-    }
-   },
    "outputs": [],
    "source": [
     "from IPython.core.interactiveshell import InteractiveShell \n",
@@ -125,7 +75,7 @@
     "\n",
     "Online readings and lecture slides: [robertsj.github.io/me400_notes](http://robertsj.github.io/me400_notes).\n",
     "\n",
-    "These are **free** for you and supported by the Open Textbook Initiative.\n",
+    "These are supported by the Open Textbook Initiative.\n",
     "\n",
     "Suggestions **welcome**: create an [issue](https://github.com/robertsj/me400_notes/issues) on the GitHub site."
    ]
@@ -140,7 +90,9 @@
    "source": [
     "## Amount of Study Required\n",
     "\n",
-    "**6 to 9 hours per week** of active study outside class for the average student to earn the average grade."
+    "**6 to 9 hours per week** of active study outside class for the average student to earn the average grade.\n",
+    "\n",
+    "...but how to study?"
    ]
   },
   {
@@ -195,7 +147,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": 1,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -296,7 +248,8 @@
     "- `float`\n",
     "- `str`\n",
     "- `bool`\n",
-    "- assignment "
+    "- assignment \n",
+    "- `input`"
    ]
   },
   {
@@ -394,7 +347,7 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
-     "slide_type": "subslide"
+     "slide_type": "fragment"
     }
    },
    "source": [
@@ -421,7 +374,7 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
-     "slide_type": "skip"
+     "slide_type": "subslide"
     }
    },
    "source": [
@@ -429,8 +382,23 @@
    ]
   },
   {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
     "**Example**:  What's wrong with this assignment of a `bool` variable?\n",
     "\n",
@@ -470,7 +438,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 3,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -483,7 +451,7 @@
        "99"
       ]
      },
-     "execution_count": 4,
+     "execution_count": 3,
      "metadata": {},
      "output_type": "execute_result"
     },
@@ -493,7 +461,7 @@
        "123"
       ]
      },
-     "execution_count": 4,
+     "execution_count": 3,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -525,7 +493,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
+   "execution_count": 4,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -538,7 +506,7 @@
        "'1.0'"
       ]
      },
-     "execution_count": 5,
+     "execution_count": 4,
      "metadata": {},
      "output_type": "execute_result"
     },
@@ -548,7 +516,7 @@
        "123"
       ]
      },
-     "execution_count": 5,
+     "execution_count": 4,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -573,7 +541,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 5,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -586,7 +554,7 @@
        "1.0"
       ]
      },
-     "execution_count": 6,
+     "execution_count": 5,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -600,12 +568,25 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
-     "slide_type": "fragment"
+     "slide_type": "subslide"
     }
    },
    "source": [
-    "For conversion to `bool`, `0` and its cousins like `0.0`, the empty string `''`, and the special `None` value all evaluate to `False`."
+    "For conversion to `bool`, `0` and its cousins like `0.0`, the empty string `''`, and the special `None` value all evaluate to `False`.\n",
+    "\n",
+    "**Example**:  What is `bool(0)`?  `bool(1)`?"
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
   },
   {
    "cell_type": "markdown",

@@ -209,50 +209,9 @@ div.nboutput div.output_area.stderr {
 <p># ME 400 Lecture 1 - Getting Started</p>
 <p>First, a brief overview of the
 <a class="reference internal" href="../administrivia/ME400_Syllabus.html"><span class="doc">Syllabus</span></a>!</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
-<span class="n">HTML</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;slides_formatting.html&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[1]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<!--
-
-The changes here do the following:
-  - Make table fonts bigger (and consistent with body fonts)
-  - Make all fonts bigger
--->
-
-<style>
-
-
-.container {
-    width: 99% !important;
-}
-
-
-.rendered_html {
-  font-size:100%;
-}
-.rendered_html table, .rendered_html th, .rendered_html tr, .rendered_html td {
-     font-size: 100%;
-}
-
-</style></div>
-</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -295,8 +254,7 @@ engineering problems.</p>
 <p><strong>No book required</strong></p>
 <p>Online readings and lecture slides:
 <a class="reference external" href="http://robertsj.github.io/me400_notes">robertsj.github.io/me400_notes</a>.</p>
-<p>These are <strong>free</strong> for you and supported by the Open Textbook
-Initiative.</p>
+<p>These are supported by the Open Textbook Initiative.</p>
 <p>Suggestions <strong>welcome</strong>: create an
 <a class="reference external" href="https://github.com/robertsj/me400_notes/issues">issue</a> on the GitHub
 site.</p>
@@ -305,6 +263,7 @@ site.</p>
 <h1>Amount of Study Required<a class="headerlink" href="#Amount-of-Study-Required" title="Permalink to this headline">¶</a></h1>
 <p><strong>6 to 9 hours per week</strong> of active study outside class for the average
 student to earn the average grade.</p>
+<p>...but how to study?</p>
 </div>
 <div class="section" id="Lectures">
 <h1>Lectures<a class="headerlink" href="#Lectures" title="Permalink to this headline">¶</a></h1>
@@ -336,7 +295,7 @@ Option 1, 2, and 3 <em>letter grades</em>? Recall that</p>
 </ul>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -423,6 +382,7 @@ reading/lecture pair.)</p>
 <li><code class="docutils literal"><span class="pre">str</span></code></li>
 <li><code class="docutils literal"><span class="pre">bool</span></code></li>
 <li>assignment</li>
+<li><code class="docutils literal"><span class="pre">input</span></code></li>
 </ul>
 </div>
 </div>
@@ -493,7 +453,7 @@ type may change</p>
 <p>Is this allowed?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -506,7 +466,7 @@ type may change</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
+<span></span>Out[3]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -516,7 +476,7 @@ type may change</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
+<span></span>Out[3]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -532,7 +492,7 @@ type may change</p>
 <p>Is this allowed?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -545,7 +505,7 @@ type may change</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
+<span></span>Out[4]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -555,7 +515,7 @@ type may change</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
+<span></span>Out[4]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -566,7 +526,7 @@ type may change</p>
 <p>Likewise, a <em>value</em> can be converted to one of another <em>type</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -577,7 +537,7 @@ type may change</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
+<span></span>Out[5]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -588,6 +548,7 @@ type may change</p>
 <p>For conversion to <code class="docutils literal"><span class="pre">bool</span></code>, <code class="docutils literal"><span class="pre">0</span></code> and its cousins like <code class="docutils literal"><span class="pre">0.0</span></code>, the
 empty string <code class="docutils literal"><span class="pre">''</span></code>, and the special <code class="docutils literal"><span class="pre">None</span></code> value all evaluate to
 <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p><strong>Example</strong>: What is <code class="docutils literal"><span class="pre">bool(0)</span></code>? <code class="docutils literal"><span class="pre">bool(1)</span></code>?</p>
 <p>Throughout, use of <code class="docutils literal"><span class="pre">=</span></code> is as the <em>assignment operator</em>, which gives
 <em>values</em> to <em>names</em> (i.e., defines <strong>variables</strong>).</p>
 </div>

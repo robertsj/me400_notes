@@ -10,7 +10,7 @@
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     "\n",
-    "In this lesson, we'll continue our study of basic types from [Lecture 1](ME400_Lecture_1.ipynb), incorporating operators (arithmetic and otherwise) along with some very useful built-in functions.  By the end, we'll construct our very first (albeit, simple) [program](https://en.wikipedia.org/wiki/Computer_program).\n",
+    "In this lesson, we'll continue our study of basic types from [Lecture 1](Getting_Started.ipynb), incorporating operators (arithmetic and otherwise) along with some very useful built-in functions.  By the end, we'll construct our very first (albeit, simple) [program](https://en.wikipedia.org/wiki/Computer_program).\n",
     "\n",
     "### Objectives\n",
     "\n",
@@ -43,9 +43,7 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "# These two lines modify the Jupyter notebook behavior\n",
@@ -183,7 +181,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Strings can also be multiplied by integers, which leads to a repeated sequence of the original string.  For example, we could turn `'xo'` into `'xoxoxo'` via"
+    "Strings can also be multiplied by integers, which leads to a repeated sequence of the original string.  For example, we could turn `'xo'` into `'xoxoxo'` using"
    ]
   },
   {
@@ -310,7 +308,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "The `and` and `or` operators are used in the form `a and b` and `a or b`, respectively.  If `a` and `b` are `bool` variables, the `and` and `or` operators work just like we'd expect: `and` requires that both `a` and `b` are `True` for the entire expression to be `True`, while `or` leads to `True` for three cases: `a` is `True` and b is `False`, `a` is `False` and `b` is `True`, and `a` is `True` and `b` is `False`.  In other words, `a or b` is `False` only if both `a` and `b` are `False`."
+    "One can also apply the `not` operator to values that are not `bool` values but that can be converted to `bool` values:"
    ]
   },
   {
@@ -327,72 +325,35 @@
      "execution_count": 8,
      "metadata": {},
      "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "False"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "True"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "True"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "True"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "False"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
     }
    ],
    "source": [
-    "False and True\n",
-    "True and False\n",
-    "True or True\n",
-    "True or False\n",
-    "False or True\n",
-    "False or False"
+    "v = 1 # an int, not a bool, but logically equivalent to True\n",
+    "not v"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "When `a` and `b` are not `bool` variables, the behavior of `and` and `or` is a bit more complex (but consistent with the behavior observed above).  Consider specifically the case `a and b`.  To evaluate this expression, `a` is first converted into a `bool` value (and if that's not possible, an error would arise).  Do non-`bool` values have an associated `bool` value?  In many cases, yes.  For example, the integer `0` is logically `False`, while any other integer is `True`:"
+    "The `and` and `or` operators are used in the form `a and b` and `a or b`, respectively.  If `a` and `b` are `bool` variables, the `and` and `or` operators work just like we'd expect: `and` requires that both `a` and `b` are `True` for the entire expression to be `True`, while `or` leads to `True` for three cases: \n",
+    "\n",
+    "  1. `a` is `True` and b is `False`\n",
+    "  2. `a` is `False` and `b` is `True`\n",
+    "  3. `a` is `True` and `b` is `False`\n",
+    "  \n",
+    "In other words, `a or b` is `False` only if  `a` is `False` *and* `b` is `False`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "**Exercise**:  Confirm the values of all combinations of `a and b` where `a` and `b` are `bool` values by evaluating each expression in Python.\n",
+    "\n",
+    "*Solution*:  "
    ]
   },
   {
@@ -403,26 +364,6 @@
     {
      "data": {
       "text/plain": [
-       "False"
-      ]
-     },
-     "execution_count": 9,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "True"
-      ]
-     },
-     "execution_count": 9,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
        "True"
       ]
      },
@@ -432,16 +373,9 @@
     }
    ],
    "source": [
-    "bool(0)\n",
-    "bool(1234)\n",
-    "bool(-23)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The `bool` value of a `str` is `False` only for the empty string `''`:"
+    "a = True\n",
+    "b = True\n",
+    "a and b"
    ]
   },
   {
@@ -458,6 +392,90 @@
      "execution_count": 10,
      "metadata": {},
      "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = True\n",
+    "b = False\n",
+    "a and b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = False\n",
+    "b = True\n",
+    "a and b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "a = False\n",
+    "b = False\n",
+    "a and b"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "**Exercise**:  Confirm all the values of all combinations of `a and b` where `a` and `b` are `bool` values.\n",
+    "\n",
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When `a` and `b` are not `bool` variables, the behavior of `and` and `or` is a bit more complex (but consistent with the behavior observed above).  Consider specifically the case `a and b`.  To evaluate this expression, `a` is first converted into a `bool` value (and if that's not possible, an error would arise).  Do non-`bool` values have an associated `bool` value?  In many cases, yes.  For example, the integer `0` is logically `False`, while any other integer is `True`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
     },
     {
      "data": {
@@ -465,7 +483,56 @@
        "True"
       ]
      },
-     "execution_count": 10,
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bool(0)\n",
+    "bool(1234)\n",
+    "bool(-23)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `bool` value of a `str` value is `False` only for the empty string `''`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "True"
+      ]
+     },
+     "execution_count": 14,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -479,12 +546,36 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "When `a and b` is evaluated, the value is the first `False` or `False`-equivalent (e.g., `''`) encountered.  Otherwise, the value is the last `True` or `True`-equivalent (e.g., `1`) encountered.  When `a or b` is evaluated, the value is the first `True`-equivalent encountered or the second `False`-equivalent encountered.  Some examples:"
+    "When `a and b` is evaluated, the value is the first `False` or `False`-equivalent (e.g., `''`) encountered.  Otherwise, the value is the last `True` or `True`-equivalent (e.g., `1`) encountered.  When `a or b` is evaluated, the value is the first `True`-equivalent encountered or the second `False`-equivalent encountered.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "**Exercise**: Evaluate the following logical expressions and explain each result..  Try to do so without using Python first, and then check your answer by evaluating the expression in Python.\n",
+    "\n",
+    " - `1 and 0` \n",
+    " - `'' and 0.0` \n",
+    " - `1 and 'a'` \n",
+    " - `1 or 'a'`  \n",
+    " - `0 or 'a'` \n",
+    " - `0 or ''` \n",
+    " "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*Solution*:  For `1 and 0`, note that `1`is logically equivalent to `True`, but `0` is logically equivalent to `False`.  Hence, the result is `0`, as is easily verified:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [
     {
@@ -493,79 +584,76 @@
        "0"
       ]
      },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "''"
-      ]
-     },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "'a'"
-      ]
-     },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "1"
-      ]
-     },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "'a'"
-      ]
-     },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "''"
-      ]
-     },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "'a'"
-      ]
-     },
-     "execution_count": 11,
+     "execution_count": 4,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "1 and 0 # 1 is True, but 0 is False, so the value is 0\n",
-    "'' and 0.0 # both '' and 0.0 are False, but '' is encountered first\n",
-    "1 and 'a' # 1 and 'a' are True, but 'a' is encountered last\n",
-    "1 or 'a' # 1 and 'a' are True, but 1 is encountered first\n",
-    "0 or 'a' # 0 is False, but 'a' is True \n",
-    "0 or '' # 0 and '' are False, but '' is encountered last\n",
-    "1 and ('a' or 'b') # 1 and 'a' is True and evaluates to 'a'"
+    "1 and 0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Consider now `'' and 0.0`.  Both `''` and `0.0` are logically equivalent to `False`.  Since `''` is the first value, it makes the `and` expression `False` and, hence, it's the final result:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "''"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'' and 0.0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, consider `1 and 'a'`.  Both `1` and `'a'` evaluate to `True`.  Hence, the `and` expression is `True`, and it's the *second* value `'a'` that makes it so:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'a'"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "1 and 'a'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The other expressions can be analyzed in similar fashion.  Evaluate them in Python to double-check your result!\n",
+    "\n",
+    "***"
    ]
   },
   {
@@ -581,7 +669,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 18,
    "metadata": {},
    "outputs": [
     {
@@ -590,23 +678,32 @@
        "50"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 18,
      "metadata": {},
      "output_type": "execute_result"
-    },
+    }
+   ],
+   "source": [
+    "2 + 3 * 4**2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
     {
      "data": {
       "text/plain": [
        "80"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 19,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "2 + 3 * 4**2\n",
     "(2 + 3) * 4**2"
    ]
   },
@@ -622,7 +719,64 @@
     "4. `<`, `<=`, etc.\n",
     "5. `not`\n",
     "6. `and`\n",
-    "7. `or`"
+    "7. `or`\n",
+    "\n",
+    "This list indicates that parentheses are evaluated first, while the `or` operator is evaluated last."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**:  Evaluate the following arithmetic expressions *by hand* (and then check with Python):\n",
+    "\n",
+    " - `17 / 2 * 3 + 2`\n",
+    " - `2 + 17 / 2 * 3`\n",
+    " - `19 % 4 + 15 // 2  * 3`\n",
+    " - `(15 + 6) - 10 * 4`\n",
+    " - `17 / 2 % 2 * 3**3`\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "***\n",
+    "\n",
+    "**Exercise**: Evaluate the following expressions *by hand* (and then check with Python):\n",
+    "\n",
+    "  - `2 * 3 < 4`\n",
+    "  - `3 < 6 < 9`\n",
+    "  - `3 < 6 <= 1 + 2 + 3`\n",
+    "  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "\n",
+    "**Exercise**:  What is the value of the the expression `3 > 4 or 5`?\n",
+    "\n",
+    "*Solution*: You might be tempted to read this expression as \"is 3 greater than either 4 or 5?\"  Of course, 3 is less than both 4 or 5.  However, the order of operations requires the `3 > 4` to be evaluated first.  Broken down step by step, the evaluation is\n",
+    "\n",
+    " 0. `3 > 4 or 5`\n",
+    " 1. `False or 5` (because `3 > 4` is `False`)\n",
+    " 2. `5` (the final result, which you should verify!)\n",
+    " \n",
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Exercise**: The rules of operation order can trick the most seasoned programmers.  Come up with your own expressions involving at least three types of operators and try to stump your friends!\n",
+    "\n",
+    "***\n"
    ]
   },
   {
@@ -638,7 +792,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": 20,
    "metadata": {},
    "outputs": [
     {
@@ -670,7 +824,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": null,
    "metadata": {},
    "outputs": [
     {
@@ -681,7 +835,7 @@
       "Welcome to Python 3.6's help utility!\n",
       "\n",
       "If this is your first time using Python, you should definitely check out\n",
-      "the tutorial on the Internet at http://docs.python.org/3.6/tutorial/.\n",
+      "the tutorial on the Internet at https://docs.python.org/3.6/tutorial/.\n",
       "\n",
       "Enter the name of any module, keyword, or topic to get help on writing\n",
       "Python programs and using Python modules.  To quit this help utility and\n",
@@ -691,33 +845,7 @@
       "\"modules\", \"keywords\", \"symbols\", or \"topics\".  Each module also comes\n",
       "with a one-line summary of what it does; to list the modules whose name\n",
       "or summary contain a given string such as \"spam\", type \"modules spam\".\n",
-      "\n",
-      "help> symbols\n",
-      "\n",
-      "Here is a list of the punctuation symbols which Python assigns special meaning\n",
-      "to. Enter any symbol to get more help.\n",
-      "\n",
-      "!=                  *=                  <<                  ^\n",
-      "\"                   +                   <<=                 ^=\n",
-      "\"\"\"                 +=                  <=                  _\n",
-      "%                   ,                   <>                  __\n",
-      "%=                  -                   ==                  `\n",
-      "&                   -=                  >                   b\"\n",
-      "&=                  .                   >=                  b'\n",
-      "'                   ...                 >>                  j\n",
-      "'''                 /                   >>=                 r\"\n",
-      "(                   //                  @                   r'\n",
-      ")                   //=                 J                   |\n",
-      "*                   /=                  [                   |=\n",
-      "**                  :                   \\                   ~\n",
-      "**=                 <                   ]                   \n",
-      "\n",
-      "help> quit\n",
-      "\n",
-      "You are now leaving help and returning to the Python interpreter.\n",
-      "If you want to ask for help on a particular object directly from the\n",
-      "interpreter, you can type \"help(object)\".  Executing \"help('string')\"\n",
-      "has the same effect as typing a particular string at the help> prompt.\n"
+      "\n"
      ]
     }
    ],
@@ -734,28 +862,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Help on built-in function print in module builtins:\n",
-      "\n",
-      "print(...)\n",
-      "    print(value, ..., sep=' ', end='\\n', file=sys.stdout, flush=False)\n",
-      "    \n",
-      "    Prints the values to a stream, or to sys.stdout by default.\n",
-      "    Optional keyword arguments:\n",
-      "    file:  a file-like object (stream); defaults to the current sys.stdout.\n",
-      "    sep:   string inserted between values, default a space.\n",
-      "    end:   string appended after the last value, default a newline.\n",
-      "    flush: whether to forcibly flush the stream.\n",
-      "\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "help(print)"
    ]
@@ -780,83 +889,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 21,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['In',\n",
-       " 'InteractiveShell',\n",
-       " 'Out',\n",
-       " '_',\n",
-       " '_10',\n",
-       " '_11',\n",
-       " '_12',\n",
-       " '_16',\n",
-       " '_17',\n",
-       " '_18',\n",
-       " '_2',\n",
-       " '_4',\n",
-       " '_5',\n",
-       " '_6',\n",
-       " '_7',\n",
-       " '_8',\n",
-       " '_9',\n",
-       " '__',\n",
-       " '___',\n",
-       " '__builtin__',\n",
-       " '__builtins__',\n",
-       " '__doc__',\n",
-       " '__loader__',\n",
-       " '__name__',\n",
-       " '__package__',\n",
-       " '__spec__',\n",
-       " '_dh',\n",
-       " '_i',\n",
-       " '_i1',\n",
-       " '_i10',\n",
-       " '_i11',\n",
-       " '_i12',\n",
-       " '_i13',\n",
-       " '_i14',\n",
-       " '_i15',\n",
-       " '_i16',\n",
-       " '_i17',\n",
-       " '_i18',\n",
-       " '_i19',\n",
-       " '_i2',\n",
-       " '_i20',\n",
-       " '_i21',\n",
-       " '_i3',\n",
-       " '_i4',\n",
-       " '_i5',\n",
-       " '_i6',\n",
-       " '_i7',\n",
-       " '_i8',\n",
-       " '_i9',\n",
-       " '_ih',\n",
-       " '_ii',\n",
-       " '_iii',\n",
-       " '_oh',\n",
-       " '_sh',\n",
-       " 'a',\n",
-       " 'b',\n",
-       " 'exit',\n",
-       " 'get_ipython',\n",
-       " 'keyword',\n",
-       " 'quit',\n",
-       " 's',\n",
-       " 't',\n",
-       " 'u',\n",
-       " 'v']"
-      ]
-     },
-     "execution_count": 21,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "dir()"
    ]
@@ -870,171 +905,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['ArithmeticError',\n",
-       " 'AssertionError',\n",
-       " 'AttributeError',\n",
-       " 'BaseException',\n",
-       " 'BlockingIOError',\n",
-       " 'BrokenPipeError',\n",
-       " 'BufferError',\n",
-       " 'BytesWarning',\n",
-       " 'ChildProcessError',\n",
-       " 'ConnectionAbortedError',\n",
-       " 'ConnectionError',\n",
-       " 'ConnectionRefusedError',\n",
-       " 'ConnectionResetError',\n",
-       " 'DeprecationWarning',\n",
-       " 'EOFError',\n",
-       " 'Ellipsis',\n",
-       " 'EnvironmentError',\n",
-       " 'Exception',\n",
-       " 'False',\n",
-       " 'FileExistsError',\n",
-       " 'FileNotFoundError',\n",
-       " 'FloatingPointError',\n",
-       " 'FutureWarning',\n",
-       " 'GeneratorExit',\n",
-       " 'IOError',\n",
-       " 'ImportError',\n",
-       " 'ImportWarning',\n",
-       " 'IndentationError',\n",
-       " 'IndexError',\n",
-       " 'InterruptedError',\n",
-       " 'IsADirectoryError',\n",
-       " 'KeyError',\n",
-       " 'KeyboardInterrupt',\n",
-       " 'LookupError',\n",
-       " 'MemoryError',\n",
-       " 'ModuleNotFoundError',\n",
-       " 'NameError',\n",
-       " 'None',\n",
-       " 'NotADirectoryError',\n",
-       " 'NotImplemented',\n",
-       " 'NotImplementedError',\n",
-       " 'OSError',\n",
-       " 'OverflowError',\n",
-       " 'PendingDeprecationWarning',\n",
-       " 'PermissionError',\n",
-       " 'ProcessLookupError',\n",
-       " 'RecursionError',\n",
-       " 'ReferenceError',\n",
-       " 'ResourceWarning',\n",
-       " 'RuntimeError',\n",
-       " 'RuntimeWarning',\n",
-       " 'StopAsyncIteration',\n",
-       " 'StopIteration',\n",
-       " 'SyntaxError',\n",
-       " 'SyntaxWarning',\n",
-       " 'SystemError',\n",
-       " 'SystemExit',\n",
-       " 'TabError',\n",
-       " 'TimeoutError',\n",
-       " 'True',\n",
-       " 'TypeError',\n",
-       " 'UnboundLocalError',\n",
-       " 'UnicodeDecodeError',\n",
-       " 'UnicodeEncodeError',\n",
-       " 'UnicodeError',\n",
-       " 'UnicodeTranslateError',\n",
-       " 'UnicodeWarning',\n",
-       " 'UserWarning',\n",
-       " 'ValueError',\n",
-       " 'Warning',\n",
-       " 'ZeroDivisionError',\n",
-       " '__IPYTHON__',\n",
-       " '__build_class__',\n",
-       " '__debug__',\n",
-       " '__doc__',\n",
-       " '__import__',\n",
-       " '__loader__',\n",
-       " '__name__',\n",
-       " '__package__',\n",
-       " '__spec__',\n",
-       " 'abs',\n",
-       " 'all',\n",
-       " 'any',\n",
-       " 'ascii',\n",
-       " 'bin',\n",
-       " 'bool',\n",
-       " 'bytearray',\n",
-       " 'bytes',\n",
-       " 'callable',\n",
-       " 'chr',\n",
-       " 'classmethod',\n",
-       " 'compile',\n",
-       " 'complex',\n",
-       " 'copyright',\n",
-       " 'credits',\n",
-       " 'delattr',\n",
-       " 'dict',\n",
-       " 'dir',\n",
-       " 'divmod',\n",
-       " 'dreload',\n",
-       " 'enumerate',\n",
-       " 'eval',\n",
-       " 'exec',\n",
-       " 'filter',\n",
-       " 'float',\n",
-       " 'format',\n",
-       " 'frozenset',\n",
-       " 'get_ipython',\n",
-       " 'getattr',\n",
-       " 'globals',\n",
-       " 'hasattr',\n",
-       " 'hash',\n",
-       " 'help',\n",
-       " 'hex',\n",
-       " 'id',\n",
-       " 'input',\n",
-       " 'int',\n",
-       " 'isinstance',\n",
-       " 'issubclass',\n",
-       " 'iter',\n",
-       " 'len',\n",
-       " 'license',\n",
-       " 'list',\n",
-       " 'locals',\n",
-       " 'map',\n",
-       " 'max',\n",
-       " 'memoryview',\n",
-       " 'min',\n",
-       " 'next',\n",
-       " 'object',\n",
-       " 'oct',\n",
-       " 'open',\n",
-       " 'ord',\n",
-       " 'pow',\n",
-       " 'print',\n",
-       " 'property',\n",
-       " 'range',\n",
-       " 'repr',\n",
-       " 'reversed',\n",
-       " 'round',\n",
-       " 'set',\n",
-       " 'setattr',\n",
-       " 'slice',\n",
-       " 'sorted',\n",
-       " 'staticmethod',\n",
-       " 'str',\n",
-       " 'sum',\n",
-       " 'super',\n",
-       " 'tuple',\n",
-       " 'type',\n",
-       " 'vars',\n",
-       " 'zip']"
-      ]
-     },
-     "execution_count": 22,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "dir(__builtin__)"
    ]
@@ -1052,52 +925,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['False',\n",
-       " 'None',\n",
-       " 'True',\n",
-       " 'and',\n",
-       " 'as',\n",
-       " 'assert',\n",
-       " 'break',\n",
-       " 'class',\n",
-       " 'continue',\n",
-       " 'def',\n",
-       " 'del',\n",
-       " 'elif',\n",
-       " 'else',\n",
-       " 'except',\n",
-       " 'finally',\n",
-       " 'for',\n",
-       " 'from',\n",
-       " 'global',\n",
-       " 'if',\n",
-       " 'import',\n",
-       " 'in',\n",
-       " 'is',\n",
-       " 'lambda',\n",
-       " 'nonlocal',\n",
-       " 'not',\n",
-       " 'or',\n",
-       " 'pass',\n",
-       " 'raise',\n",
-       " 'return',\n",
-       " 'try',\n",
-       " 'while',\n",
-       " 'with',\n",
-       " 'yield']"
-      ]
-     },
-     "execution_count": 23,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "import keyword\n",
     "keyword.kwlist"
@@ -1112,18 +942,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "ename": "SyntaxError",
-     "evalue": "invalid syntax (<ipython-input-24-a1f8f2799a67>, line 1)",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-24-a1f8f2799a67>\"\u001b[0;36m, line \u001b[0;32m1\u001b[0m\n\u001b[0;31m    class = \"ME 400\"\u001b[0m\n\u001b[0m          ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "class = \"ME 400\""
    ]
@@ -1139,20 +960,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 25,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "int"
-      ]
-     },
-     "execution_count": 25,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "type(a)"
    ]
@@ -1179,10 +989,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 26,
-   "metadata": {
-    "collapsed": true
-   },
+   "execution_count": null,
+   "metadata": {},
    "outputs": [],
    "source": [
     "import math"
@@ -1197,74 +1005,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 27,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['__doc__',\n",
-       " '__file__',\n",
-       " '__loader__',\n",
-       " '__name__',\n",
-       " '__package__',\n",
-       " '__spec__',\n",
-       " 'acos',\n",
-       " 'acosh',\n",
-       " 'asin',\n",
-       " 'asinh',\n",
-       " 'atan',\n",
-       " 'atan2',\n",
-       " 'atanh',\n",
-       " 'ceil',\n",
-       " 'copysign',\n",
-       " 'cos',\n",
-       " 'cosh',\n",
-       " 'degrees',\n",
-       " 'e',\n",
-       " 'erf',\n",
-       " 'erfc',\n",
-       " 'exp',\n",
-       " 'expm1',\n",
-       " 'fabs',\n",
-       " 'factorial',\n",
-       " 'floor',\n",
-       " 'fmod',\n",
-       " 'frexp',\n",
-       " 'fsum',\n",
-       " 'gamma',\n",
-       " 'gcd',\n",
-       " 'hypot',\n",
-       " 'inf',\n",
-       " 'isclose',\n",
-       " 'isfinite',\n",
-       " 'isinf',\n",
-       " 'isnan',\n",
-       " 'ldexp',\n",
-       " 'lgamma',\n",
-       " 'log',\n",
-       " 'log10',\n",
-       " 'log1p',\n",
-       " 'log2',\n",
-       " 'modf',\n",
-       " 'nan',\n",
-       " 'pi',\n",
-       " 'pow',\n",
-       " 'radians',\n",
-       " 'sin',\n",
-       " 'sinh',\n",
-       " 'sqrt',\n",
-       " 'tan',\n",
-       " 'tanh',\n",
-       " 'tau',\n",
-       " 'trunc']"
-      ]
-     },
-     "execution_count": 27,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "dir(math)"
    ]
@@ -1278,60 +1021,27 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 28,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "7.38905609893065"
-      ]
-     },
-     "execution_count": 28,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "math.exp(2)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 29,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "1.0"
-      ]
-     },
-     "execution_count": 29,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "math.sin(math.pi/2)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "120"
-      ]
-     },
-     "execution_count": 30,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "math.factorial(5)"
    ]
@@ -1371,17 +1081,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 31,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Enter your info: 123\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "my_info = input('Enter your info: ')"
    ]
@@ -1395,20 +1097,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 32,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "'123'"
-      ]
-     },
-     "execution_count": 32,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "my_info"
    ]
@@ -1422,37 +1113,18 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 33,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Enter your info: 123\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "my_info_int = int(input('Enter your info: '))"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 34,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "123"
-      ]
-     },
-     "execution_count": 34,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "my_info_int"
    ]
@@ -1468,18 +1140,9 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Please enter a radius: 2.0\n",
-      "The volume is  33.510321638291124\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "# A short program that computes the volume of a \n",
     "# sphere given a radius entered by the user.\n",
