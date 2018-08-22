@@ -19,7 +19,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "skip"
     }
@@ -129,7 +128,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "subslide"
     }
@@ -144,7 +142,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -190,7 +187,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "subslide"
     }
@@ -200,6 +196,77 @@
     "a = 5 \n",
     "b = 7\n",
     "a == b # What is printed?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Logical Operations\n",
+    "\n",
+    "`not`, `and`, `or`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a = True\n",
+    "b = False\n",
+    "a and b"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### The Order of Operations\n",
+    "\n",
+    "1. `()`'s \n",
+    "2. `*`, `/`, `//`, and `%`\n",
+    "3. `+`, `-`\n",
+    "4. `<`, `<=`, etc.\n",
+    "5. `not`\n",
+    "6. `and`\n",
+    "7. `or`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Use parentheses to make the order of operations explicit in the following expression:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "1 + 2 * 3 or 3**2 % 2 / 2 + 1"
    ]
   },
   {
@@ -228,78 +295,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "['__doc__',\n",
-       " '__file__',\n",
-       " '__loader__',\n",
-       " '__name__',\n",
-       " '__package__',\n",
-       " '__spec__',\n",
-       " 'acos',\n",
-       " 'acosh',\n",
-       " 'asin',\n",
-       " 'asinh',\n",
-       " 'atan',\n",
-       " 'atan2',\n",
-       " 'atanh',\n",
-       " 'ceil',\n",
-       " 'copysign',\n",
-       " 'cos',\n",
-       " 'cosh',\n",
-       " 'degrees',\n",
-       " 'e',\n",
-       " 'erf',\n",
-       " 'erfc',\n",
-       " 'exp',\n",
-       " 'expm1',\n",
-       " 'fabs',\n",
-       " 'factorial',\n",
-       " 'floor',\n",
-       " 'fmod',\n",
-       " 'frexp',\n",
-       " 'fsum',\n",
-       " 'gamma',\n",
-       " 'gcd',\n",
-       " 'hypot',\n",
-       " 'inf',\n",
-       " 'isclose',\n",
-       " 'isfinite',\n",
-       " 'isinf',\n",
-       " 'isnan',\n",
-       " 'ldexp',\n",
-       " 'lgamma',\n",
-       " 'log',\n",
-       " 'log10',\n",
-       " 'log1p',\n",
-       " 'log2',\n",
-       " 'modf',\n",
-       " 'nan',\n",
-       " 'pi',\n",
-       " 'pow',\n",
-       " 'radians',\n",
-       " 'sin',\n",
-       " 'sinh',\n",
-       " 'sqrt',\n",
-       " 'tan',\n",
-       " 'tanh',\n",
-       " 'tau',\n",
-       " 'trunc']"
-      ]
-     },
-     "execution_count": 1,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "import math\n",
     "dir(math)"
@@ -307,7 +309,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 3,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "subslide"
@@ -333,7 +335,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
