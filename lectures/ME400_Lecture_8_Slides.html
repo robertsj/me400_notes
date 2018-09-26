@@ -217,6 +217,20 @@ here and in <a class="reference external" href="ME400_Lecture_9.ipynb">Lecture 9
 Python. To proceed, one must be comfortable with the theoretical
 coverage of iteration presented in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture
 5</a>.</p>
+<div class="section" id="Quick-Announcements-(Less-I-Forget!)">
+<h3>Quick Announcements (Less I Forget!)<a class="headerlink" href="#Quick-Announcements-(Less-I-Forget!)" title="Permalink to this headline">¶</a></h3>
+<p>HW3 graded. See John or Richard in office hours (1-5pm T) with requests.
+Requests due within 48 hours (so we&#8217;ll say 5 pm Wednesday).</p>
+<p>HW4 will be graded early Thursday. You may still have through 5 pm
+Wednesday for requests.</p>
+<div class="line-block">
+<div class="line">Exam 1 on Friday.</div>
+<div class="line">- Half written, half coded. - Past exam on Canvas is a reasonable
+example of my exam style. - You can use: a pen/pencil and one <strong>hand
+written</strong> 11&#8217;&#8217; by 8.5&#8217;&#8217; sheet, front and back. No calculator. No
+internet. No talking between labs.</div>
+</div>
+</div>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
@@ -243,8 +257,8 @@ with iteration</li>
 <p>A prototypical problem: <em>add the integers from 1 through n</em>.</p>
 <p><strong>Exercise</strong> Develop a program using pseudocode or a flowchart to solve
 this problem.</p>
-<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&#39;&#39;&#39;Program to add the integers from 1 through n&#39;&#39;&#39;</span>
-<span class="n">Input</span><span class="p">:</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Program to add the integers from 1 through n&#39;&#39;&#39;</span>
+<span class="n">Input</span><span class="p">:</span> <span class="n">n</span>
 
 
 <span class="n">Output</span><span class="p">:</span> <span class="n">s</span>
@@ -268,33 +282,24 @@ this problem.</p>
 </div>
 </div>
 <p><strong>Question</strong>: Why not use <code class="docutils literal"><span class="pre">sum</span></code> in place of <code class="docutils literal"><span class="pre">s</span></code>?</p>
+<p>Similar problems:</p>
+<ul class="simple">
+<li>Compute <span class="math">\(n!\)</span></li>
+<li>Compute the product of all elements of an array</li>
+<li>Compute the mean of an array <span class="math">\(\mu = (\sum^N_{i=1} a_i)/N\)</span></li>
+<li>Compute the variance of an array
+(<span class="math">\(\sigma^2 = \sum_{i=1}^N (a_i - \mu)^2/N\)</span>)</li>
+</ul>
 </div>
 <div class="section" id="Connecting-Dots">
 <h2>Connecting Dots<a class="headerlink" href="#Connecting-Dots" title="Permalink to this headline">¶</a></h2>
 <p><strong>Exercise</strong>: Write a Python program to find the two smallest numbers of
 an array and trace it for <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">np.array([1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">8,</span> <span class="pre">2,</span> <span class="pre">4])</span></code> and
 <code class="docutils literal"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">6</span></code>.</p>
-<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&#39;&#39;&#39;Algorithm to find the two largest numbers in an array a of n &gt;= 2 elements&#39;&#39;&#39;</span>
-<span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span>
-<span class="n">Set</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">0</span> <span class="c"># index of largest</span>
-<span class="n">Set</span> <span class="n">j</span> <span class="p">=</span> <span class="mi">1</span> <span class="c"># index of second largest</span>
-<span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">then</span>
-    <span class="n">Set</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span>
-    <span class="n">Set</span> <span class="n">j</span> <span class="p">=</span> <span class="mi">0</span>
-<span class="n">Set</span> <span class="n">c</span> <span class="p">=</span> <span class="mi">2</span> <span class="c"># counter</span>
-<span class="n">While</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">n</span>
-    <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="n">then</span>
-        <span class="n">Set</span> <span class="n">j</span> <span class="p">=</span> <span class="n">c</span>
-    <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">then</span>
-        <span class="n">Set</span> <span class="n">j</span> <span class="p">=</span> <span class="n">i</span>
-        <span class="n">Set</span> <span class="n">i</span> <span class="p">=</span> <span class="n">c</span>
-    <span class="n">Set</span> <span class="n">c</span> <span class="p">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">Output</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-</pre></div>
-</div>
 <p><strong>Iteration is challenging</strong>: a little code yields many operations.</p>
 <p><strong>Common features</strong>: - <em>termination criterion</em> - <em>counter variable</em> -
-<em>aggregate variable</em> modified at each iteration (like the sum <code class="docutils literal"><span class="pre">s</span></code>)</p>
+<em>aggregate variable</em> modified at each iteration (like the sum <code class="docutils literal"><span class="pre">s</span></code>) -
+<em>placeholder variable</em> that stores a value (or its location) of interest</p>
 </div>
 <div class="section" id="The-break-Clause">
 <h2>The <code class="docutils literal"><span class="pre">break</span></code> Clause<a class="headerlink" href="#The-break-Clause" title="Permalink to this headline">¶</a></h2>
@@ -309,13 +314,12 @@ to be terminated any time.</p>
 <p>Simplest example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;this line will now be displayed just once!&quot;</span><span class="p">)</span>
-    <span class="k">break</span>
 </pre></div>
 </div>
 </div>
@@ -348,6 +352,8 @@ case?</strong></p>
 <p><strong>Exercise</strong>: Write a program to determine <span class="math">\(n\)</span> such that
 <span class="math">\(\Big |(1-x)^{-1} - \sum^{n}_{i=0} x^i \Big| &lt; 10^{-4}\)</span>, and trace
 the program graphically.</p>
+<p><strong>Exercise</strong>: Extend this idea to automate generation of the 2-D contour
+plot from the Lecture 4 example.</p>
 </div>
 <div class="section" id="Recap">
 <h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
@@ -371,6 +377,7 @@ with iteration</li>
   <ul>
 <li><a class="reference internal" href="#">Lecture 8 - Loops in Python</a><ul>
 <li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Quick-Announcements-(Less-I-Forget!)">Quick Announcements (Less I Forget!)</a></li>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>

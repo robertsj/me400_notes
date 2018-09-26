@@ -25,65 +25,13 @@
     }
    },
    "source": [
-    "### Quick Announcements (Less I Forget!)\n",
-    "\n",
-    "HW3 graded as of Monday.  Pseudocode was given little feedback; rather, compare to solutions for P2 and P3 from my announcement and Lab 4, respectively.\n",
-    "\n",
-    "HW4 will be graded early Thursday.  Check it over.\n",
-    "\n",
-    "Exam 1 on Friday.  \n",
-    "- Half written, half coded.\n",
-    "- Past exam on Canvas is a reasonable example of my exam style.\n",
-    "- You can use: a pen/pencil and one **hand written** 11'' by 8.5'' sheet, front and back.  No internet.  No talking between labs.\n",
-    "- For those with accomodations: Ward 133 at the scheduled exam time.  **Send me an email to confirm by 5 pm** so I know who to expect. "
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Quick Recap and Lecture 4 Revisited\n",
-    "\n",
-    "**Example**: Automate computation of the 2-D temperature profile, stopping when the maximum, absolute change in $T(x, y)$ is less than $10^{-4}$."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
     "### Objectives\n",
     "\n",
     "By the end of this lesson, you should be able to\n",
     "\n",
-    "- State what an infinite/event loop is and why it matters.\n",
+    "- Explain how to converge to a numerical answer given some series (Taylor, geometric, etc.)\n",
     "- Use a `for` loop to solve simple problems using iteration\n",
     "- Use nested `for` loops to fill the elements of a multidimensional array.\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "### Key Terms\n",
-    "\n",
-    "- infinite (or \"event\") loop\n",
-    "- `for`\n",
-    "- `range`\n",
-    "- `continue`\n",
-    "- loop variable\n",
-    "- dependent loop variable"
    ]
   },
   {
@@ -94,30 +42,79 @@
     }
    },
    "source": [
-    "## The Infinite Loop\n",
+    "## Numerical Convergence\n",
     "\n",
-    "```python\n",
-    "while True:\n",
-    "    print(\"I am printed over and over again.  Try Ctl-D...\")\n",
-    "```\n",
+    "The integer summation problem covered last time is one of the canonical examples to use iteration, and it serves as a template for many other tasks.  An equally important example is that of  **numerical convergence**."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "The **Taylor series** expansion of $\\sin(x)$ about $x=0$ is given by\n",
     "\n",
-    "**Exercise**: Write a program that uses an infinite loop.  It should ask the user to enter something.  If the user enters \"quit,\" then the program should exit."
+    "$$\n",
+    "  \\sin(x) = x - \\frac{1}{3!} x^3 + \\frac{1}{5!} x^5 - \\ldots = \\sum^{\\infty}_{i=0} (-1)^i \\frac{x^{2i+1}}{(2i+1)!} \\, .\n",
+    "$$\n",
+    "\n",
+    "Using just the first few terms often gives a good approximation near $x = 0$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Goal**: Approximate $\\sin(x)$ using a **truncated** expansion of just $n$ terms. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "But, **how good is good enough?** and **what does good mean in this case?**\n",
+    "\n",
+    "Need to define the **convergence criterion**."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
-     "slide_type": "fragment"
+     "slide_type": "subslide"
     }
    },
    "outputs": [],
    "source": [
-    "while True:\n",
-    "    # get user input\n",
-    "    something = input('enter something: ')"
+    "import math\n",
+    "x = 0.5 # the value at which to compute sin(x)\n",
+    "s = 0.0 # the approximate sin(x)\n",
+    "tol = 1e-5 # tolerance\n",
+    "e = 1.0 # error initialized > tol\n",
+    "n = 0   # a counter"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Revisit Lecture 4's examples and automate with loops!"
    ]
   },
   {
@@ -356,7 +353,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.3"
+   "version": "3.6.5"
   }
  },
  "nbformat": 4,

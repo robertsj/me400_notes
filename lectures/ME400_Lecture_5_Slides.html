@@ -88,15 +88,11 @@ certain set of rules.</p>
 <p>For now, only <em>pseudocode</em> and <em>flowcharts</em> &#8211; <strong>no Python</strong> until next
 week!</p>
 </div>
-<div class="section" id="Sequence-by-Example:-Computing-Grades">
-<h2>Sequence by Example: Computing Grades<a class="headerlink" href="#Sequence-by-Example:-Computing-Grades" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>homework - 20%</li>
-<li>laboratories - 10%</li>
-<li>quizzes - 10%</li>
-<li>examinations - 60%</li>
-</ol>
-<p>Look familiar?</p>
+<div class="section" id="Sequence">
+<h2>Sequence<a class="headerlink" href="#Sequence" title="Permalink to this headline">¶</a></h2>
+<p>Sequence is <em>basically what we&#8217;ve been doing!</em></p>
+<p>In plain English: <strong>A set of steps, when done in the right order, that
+gets something done.</strong></p>
 <p><strong>Example</strong>: Break down the grade problem into smaller parts and tackle
 the homework score by developing an appropriate algorithm.</p>
 <div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&#39;&#39;&#39;Algorithm for computing homework percentage&#39;&#39;&#39;</span>
@@ -172,9 +168,20 @@ letter grade?</p>
 <span class="n">Output</span> <span class="n">final_grade</span>
 </pre></div>
 </div>
+<p><strong>Example</strong> Consider the following pseudocode:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="n">n</span>
+<span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="n">If</span> <span class="n">n</span> <span class="ow">is</span> <span class="n">even</span> <span class="n">then</span>
+    <span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="n">If</span> <span class="n">m</span> <span class="ow">is</span> <span class="n">odd</span> <span class="n">then</span>
+   <span class="n">Set</span> <span class="n">n</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="n">Output</span> <span class="n">n</span>
+</pre></div>
 </div>
-<div class="section" id="Iteration">
-<h2>Iteration<a class="headerlink" href="#Iteration" title="Permalink to this headline">¶</a></h2>
+<p>What does it do? Turn it into a flowchart!</p>
+</div>
+<div class="section" id="Iteration-is-Repetition">
+<h2>Iteration is <strong>Repetition</strong><a class="headerlink" href="#Iteration-is-Repetition" title="Permalink to this headline">¶</a></h2>
 <p>Think back to the homeworks:</p>
 <div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">Increase</span> <span class="n">total_score</span> <span class="n">by</span> <span class="n">hw_scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -185,8 +192,8 @@ letter grade?</p>
 </div>
 <div class="section" id="The-Basic-Idea">
 <h3>The Basic Idea<a class="headerlink" href="#The-Basic-Idea" title="Permalink to this headline">¶</a></h3>
-<p>Weed language to describe the process of <em>iterating</em> through several
-identical steps, array elements, etc.</p>
+<p>Need language to describe the process of <em>iterating</em> through array
+elements or <em>repeating</em> a &#8220;cookie-cutter&#8221; task.</p>
 <p>Possible ways to describe iteration for the homework problem in English:</p>
 <ul class="simple">
 <li>For each score in an array of homework scores, add it to the total
@@ -224,6 +231,114 @@ score.</li>
 </pre></div>
 </div>
 <p><strong>What is the iteration condition?</strong></p>
+<div class="line-block">
+<div class="line"><strong>Example</strong>: Turn the following flowchart into pseudocode. What is the
+resulting value of <code class="docutils literal"><span class="pre">c</span></code>?</div>
+<div class="line"><img alt="What is the resulting value of ``c`` in the flowchart" src="../_images/lec5_quiz_2.png" /></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="32%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">step</th>
+<th class="head"><code class="docutils literal"><span class="pre">c</span></code></th>
+<th class="head">comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong>: Given the following pseudocode, what are the resulting
+values of <code class="docutils literal"><span class="pre">b</span></code> for <code class="docutils literal"><span class="pre">n</span></code> equal to 4, 5, and 6?</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="n">n</span>
+<span class="n">Set</span> <span class="n">a</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="n">Set</span> <span class="n">b</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="mi">2</span>
+<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
+    <span class="n">Set</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span>
+    <span class="n">Set</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">Set</span> <span class="n">a</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">Output</span> <span class="n">b</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">step</th>
+<th class="head"><code class="docutils literal"><span class="pre">n</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">a</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">b</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">c</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">i</span></code></th>
+<th class="head">comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong>: Develop an algorithm for finding the heaviest rock in a
+pile of 10 rocks assuming that you are blindfolded, no two rocks have
+the same mass, and you can tell which of any two rocks is heavier.</p>
 </div>
 </div>
 <div class="section" id="Recap">
@@ -253,9 +368,9 @@ score.</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#Algorithm">Algorithm</a></li>
-<li><a class="reference internal" href="#Sequence-by-Example:-Computing-Grades">Sequence by Example: Computing Grades</a></li>
+<li><a class="reference internal" href="#Sequence">Sequence</a></li>
 <li><a class="reference internal" href="#Selection">Selection</a></li>
-<li><a class="reference internal" href="#Iteration">Iteration</a><ul>
+<li><a class="reference internal" href="#Iteration-is-Repetition">Iteration is <strong>Repetition</strong></a><ul>
 <li><a class="reference internal" href="#The-Basic-Idea">The Basic Idea</a></li>
 </ul>
 </li>

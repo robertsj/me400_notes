@@ -208,8 +208,6 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code">
 <h1>Lecture 6 - Conditional Statements and the Structure of Python Code<a class="headerlink" href="#Lecture-6---Conditional-Statements-and-the-Structure-of-Python-Code" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In this lesson, we turn back to Python and begin the development of more
 complicated programs. The emphasis here and in <a class="reference external" href="ME400_Lecture_7.ipynb">Lecture
 7</a> is on the logic of <em>selection</em> and its
@@ -219,7 +217,7 @@ relational and logical operators defined in <a class="reference external" href="
 2</a> and the theoretical coverage of selection
 presented in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 5</a>.</p>
 <div class="section" id="Quick-Recap-of-Last-Week">
-<h3>Quick Recap of Last Week<a class="headerlink" href="#Quick-Recap-of-Last-Week" title="Permalink to this headline">¶</a></h3>
+<h2>Quick Recap of Last Week<a class="headerlink" href="#Quick-Recap-of-Last-Week" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -235,7 +233,6 @@ presented in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 
               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span> <span class="c1"># makes x and y axes have equal dimensions</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -248,21 +245,24 @@ presented in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 
 </pre></div>
 </div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Program to sum every other element in an array</span>
-<span class="c1"># &quot;a&quot; of length &quot;n&quot;</span>
-<span class="mf">1.</span> <span class="n">Input</span><span class="p">:</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">n</span>
-<span class="mf">2.</span> <span class="n">Set</span> <span class="n">s</span> <span class="n">to</span> <span class="mi">0</span>
-<span class="mf">3.</span> <span class="n">Set</span> <span class="n">counter</span> <span class="n">to</span> <span class="mi">0</span>
-<span class="mf">4.</span> <span class="n">While</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="n">n</span>
-<span class="mf">5.</span>     <span class="n">If</span> <span class="n">counter</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span>
-<span class="mf">6.</span>         <span class="n">Set</span> <span class="n">s</span> <span class="n">to</span> <span class="n">s</span> <span class="o">+</span> <span class="n">array</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
-<span class="mf">7.</span>     <span class="n">Set</span> <span class="n">counter</span> <span class="n">to</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="mf">8.</span> <span class="n">Output</span><span class="p">:</span> <span class="nb">sum</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">0.</span> <span class="n">Input</span><span class="p">:</span> <span class="n">a</span> <span class="ow">and</span> <span class="n">n</span> <span class="c1"># here, a is an array with n numbers</span>
+<span class="mf">1.</span> <span class="n">Set</span> <span class="n">s</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="mf">2.</span> <span class="n">Set</span> <span class="n">counter</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="mf">3.</span> <span class="n">While</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="n">n</span>
+<span class="mf">4.</span>     <span class="n">If</span> <span class="n">counter</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span>
+<span class="mf">5.</span>         <span class="n">Set</span> <span class="n">s</span> <span class="n">to</span> <span class="n">s</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+<span class="mf">6.</span>     <span class="n">Set</span> <span class="n">counter</span> <span class="n">to</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="mf">7.</span> <span class="n">Output</span><span class="p">:</span> <span class="n">s</span>
 </pre></div>
 </div>
+<p>Task 0. Trace this program for <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4]</span></code> (so <code class="docutils literal"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">4</span></code>),
+keeping track of all variables.</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">step</span>&nbsp; <span class="pre">line</span> <span class="pre">a</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">n</span>&nbsp;&nbsp;&nbsp; <span class="pre">s</span>&nbsp; <span class="pre">counter</span>&nbsp;&nbsp; <span class="pre">comment</span></code></div></blockquote>
+<p>Task 1. Describe in one complete sentence what this does.</p>
 </div>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>explain the importance of indentation in Python programs</li>
@@ -270,29 +270,10 @@ presented in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 
 <li>predict the outcome of programs with <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">else</span></code>, and <code class="docutils literal"><span class="pre">elif</span></code>
 statements</li>
 </ul>
-</div>
-<div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">if</span></code></li>
-<li><code class="docutils literal"><span class="pre">else</span></code></li>
-<li><code class="docutils literal"><span class="pre">elif</span></code></li>
-<li>suite</li>
-<li><code class="docutils literal"><span class="pre">NameError</span></code></li>
-<li>ternary operation</li>
-<li><code class="docutils literal"><span class="pre">SyntaxError</span></code></li>
-<li><code class="docutils literal"><span class="pre">pass</span></code></li>
-</ul>
-</div>
-</div>
 <div class="section" id="The-Simplest-if">
-<h2>The Simplest <code class="docutils literal"><span class="pre">if</span></code><a class="headerlink" href="#The-Simplest-if" title="Permalink to this headline">¶</a></h2>
+<h3>The Simplest <code class="docutils literal"><span class="pre">if</span></code><a class="headerlink" href="#The-Simplest-if" title="Permalink to this headline">¶</a></h3>
 <p>Recall the basic conditional statement from <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture
 5</a>, repeated graphically here:</p>
-<div class="figure" id="id1">
-<img alt="Flowchart fragment for a simple conditional statement" src="../_images/simple_if.png" />
-<p class="caption"><span class="caption-text">Flowchart fragment for a simple conditional statement</span></p>
-</div>
 <p>In pseudocode, that same statement could be written as</p>
 <div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">If</span> <span class="n">the</span> <span class="n">condition</span> <span class="n">is</span> <span class="n">satisfied</span> <span class="n">then</span>
     <span class="n">Do</span> <span class="n">something</span>
@@ -335,8 +316,10 @@ states if the number is positive using</p>
 <span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
 </pre></div></div>
 </div>
+</div>
+</div>
 <div class="section" id="Rules-of-the-if-statement">
-<h3>Rules of the <code class="docutils literal"><span class="pre">if</span></code> statement<a class="headerlink" href="#Rules-of-the-if-statement" title="Permalink to this headline">¶</a></h3>
+<h2>Rules of the <code class="docutils literal"><span class="pre">if</span></code> statement<a class="headerlink" href="#Rules-of-the-if-statement" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
     <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="mi">2</span>
@@ -389,10 +372,8 @@ percentage.</p>
 
 </pre></div></div>
 </div>
-</div>
-</div>
 <div class="section" id="The-else-Clause">
-<h2>The <code class="docutils literal"><span class="pre">else</span></code> Clause<a class="headerlink" href="#The-else-Clause" title="Permalink to this headline">¶</a></h2>
+<h3>The <code class="docutils literal"><span class="pre">else</span></code> Clause<a class="headerlink" href="#The-else-Clause" title="Permalink to this headline">¶</a></h3>
 <p>The basic <code class="docutils literal"><span class="pre">if</span></code> statement lets us selectively execute lines of code
 given some condition.</p>
 <p>The <code class="docutils literal"><span class="pre">else</span></code> clause allows us to provide alternate code when the
@@ -436,7 +417,7 @@ the number is nonpositive using (1) only <code class="docutils literal"><span cl
 </div>
 </div>
 <div class="section" id="The-elif-Clause">
-<h2>The <code class="docutils literal"><span class="pre">elif</span></code> Clause<a class="headerlink" href="#The-elif-Clause" title="Permalink to this headline">¶</a></h2>
+<h3>The <code class="docutils literal"><span class="pre">elif</span></code> Clause<a class="headerlink" href="#The-elif-Clause" title="Permalink to this headline">¶</a></h3>
 <p>The basic <code class="docutils literal"><span class="pre">if</span></code> statement lets us selectively execute lines of code
 given some condition.</p>
 <p>The <code class="docutils literal"><span class="pre">else</span></code> clause allows us to provide alternate code when the
@@ -450,7 +431,7 @@ condition is not satisfied.</p>
     <span class="n">do</span> <span class="n">something</span> <span class="k">else</span>
 </pre></div>
 </div>
-<div class="figure" id="id2">
+<div class="figure" id="id1">
 <img alt="Flowchart for if/elif/else" src="../_images/if_elif_else.png" />
 <p class="caption"><span class="caption-text">Flowchart for if/elif/else</span></p>
 </div>
@@ -496,9 +477,10 @@ negative, and zero.</p>
 </div>
 <p><strong>Examples</strong>: <em>1, 2, 3</em> and <em>months</em></p>
 <p><strong>Example in Spyder</strong></p>
+<p>Two new functions for your toolboxes: <code class="docutils literal"><span class="pre">np.genfromtxt</span></code> and <code class="docutils literal"><span class="pre">np.sort</span></code>.</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
 <li>explain the importance of indentation in Python programs</li>
@@ -507,6 +489,7 @@ negative, and zero.</p>
 <li>predict the outcome of a Python program with <code class="docutils literal"><span class="pre">if</span></code>, <code class="docutils literal"><span class="pre">else</span></code>, and
 <code class="docutils literal"><span class="pre">elif</span></code> statements</li>
 </ul>
+</div>
 </div>
 </div>
 
@@ -519,19 +502,17 @@ negative, and zero.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 6 - Conditional Statements and the Structure of Python Code</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Quick-Recap-of-Last-Week">Quick Recap of Last Week</a></li>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
+<li><a class="reference internal" href="#The-Simplest-if">The Simplest <code class="docutils literal"><span class="pre">if</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#The-Simplest-if">The Simplest <code class="docutils literal"><span class="pre">if</span></code></a><ul>
-<li><a class="reference internal" href="#Rules-of-the-if-statement">Rules of the <code class="docutils literal"><span class="pre">if</span></code> statement</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Rules-of-the-if-statement">Rules of the <code class="docutils literal"><span class="pre">if</span></code> statement</a><ul>
 <li><a class="reference internal" href="#The-else-Clause">The <code class="docutils literal"><span class="pre">else</span></code> Clause</a></li>
 <li><a class="reference internal" href="#The-elif-Clause">The <code class="docutils literal"><span class="pre">elif</span></code> Clause</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

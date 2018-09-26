@@ -280,7 +280,7 @@ typically called with two arguments: a filename, always a <code class="docutils 
 and the access mode, which can be <code class="docutils literal"><span class="pre">r</span></code> for <em>read</em>, <code class="docutils literal"><span class="pre">w</span></code> for <em>write</em>,
 and <code class="docutils literal"><span class="pre">a</span></code> for <em>append</em>. For now, we&#8217;ll focus on reading files, and we
 can open <code class="docutils literal"><span class="pre">data.txt</span></code> for reading by executing</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
@@ -291,22 +291,12 @@ can open <code class="docutils literal"><span class="pre">data.txt</span></code>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[1]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;_io.TextIOWrapper name=&#39;data.txt&#39; mode=&#39;r&#39; encoding=&#39;UTF-8&#39;&gt;
-</pre></div>
-</div>
-</div>
 <p>The particular value of <code class="docutils literal"><span class="pre">f</span></code> is not important, but it does suggest it
 is associated with our text file and that it is set for reading. At this
 point, though, the file is only <em>ready</em> to be processed; we still need
 to do something with it. Let&#8217;s see what we can do with the file handle
 <code class="docutils literal"><span class="pre">f</span></code>:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
@@ -318,42 +308,11 @@ to do something with it. Let&#8217;s see what we can do with the file handle
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-buffer
-close
-closed
-detach
-encoding
-errors
-fileno
-flush
-isatty
-line_buffering
-mode
-name
-newlines
-read
-readable
-readline
-readlines
-seek
-seekable
-tell
-truncate
-writable
-write
-writelines
-</pre></div></div>
-</div>
 <p>In fact, file handles have quite a few functions. The important ones for
 getting the content of the file into our program are <code class="docutils literal"><span class="pre">read</span></code> and
 <code class="docutils literal"><span class="pre">readlines</span></code>. We&#8217;ll explore <code class="docutils literal"><span class="pre">write</span></code> later on. Let&#8217;s start with
 <code class="docutils literal"><span class="pre">f.read()</span></code>:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
@@ -363,26 +322,11 @@ getting the content of the file into our program are <code class="docutils liter
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Help on built-in function read:
-
-read(size=-1, /) method of _io.TextIOWrapper instance
-    Read at most n characters from stream.
-
-    Read from underlying buffer until we have n characters or we hit EOF.
-    If n is negative or omitted, read until EOF.
-
-</pre></div></div>
-</div>
 <p>By default, <code class="docutils literal"><span class="pre">read</span></code> will read <em>all</em> the characters. Although not
 stated, the function produces a <code class="docutils literal"><span class="pre">str</span></code> with all of the characters read.
 Hence, we can turn the contents of our text file (connected now to
 <code class="docutils literal"><span class="pre">f</span></code>) into a single string via</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
@@ -393,19 +337,9 @@ Hence, we can turn the contents of our text file (connected now to
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&#39;time (s)   vel (m/s)  acc (m/s**2)\n0.00000000 1.00000000 0.00000000\n0.22222222 1.24884887 0.01097394\n0.44444444 1.55962350 0.08779150\n0.66666667 1.94773404 0.29629630\n0.88888889 2.43242545 0.70233196\n1.11111111 3.03773178 1.37174211\n1.33333333 3.79366789 2.37037037\n1.55555556 4.73771786 3.76406036\n1.77777778 5.91669359 5.61865569\n2.00000000 7.38905610 8.00000000\n&#39;
-</pre></div>
-</div>
-</div>
 <p>Well, the contents sure are there, but the formatting is a bit weird. If
 we <em>print</em> the string, we see what we might expect:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
@@ -414,25 +348,6 @@ we <em>print</em> the string, we see what we might expect:</p>
 <span></span><span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-time (s)   vel (m/s)  acc (m/s**2)
-0.00000000 1.00000000 0.00000000
-0.22222222 1.24884887 0.01097394
-0.44444444 1.55962350 0.08779150
-0.66666667 1.94773404 0.29629630
-0.88888889 2.43242545 0.70233196
-1.11111111 3.03773178 1.37174211
-1.33333333 3.79366789 2.37037037
-1.55555556 4.73771786 3.76406036
-1.77777778 5.91669359 5.61865569
-2.00000000 7.38905610 8.00000000
-
-</pre></div></div>
 </div>
 <p>By default, displaying a <code class="docutils literal"><span class="pre">str</span></code> variable (and not printing it) will
 show all of the characters, including the special <code class="docutils literal"><span class="pre">\n</span></code> character.
@@ -456,13 +371,14 @@ first line and &#8220;XYZ&#8221; on the second line.</div></blockquote>
 <p>It is important to close files once read. Doing so helps to prevent
 multiple programs from accessing the same file.</p>
 <blockquote>
-<div><p><strong>Note</strong>: Always close a file once it has been read.</p>
-<p><strong>Exercise</strong>: The <code class="docutils literal"><span class="pre">open</span></code> function is not limited to files ending
-in <code class="docutils literal"><span class="pre">.txt</span></code>. Any text file works, including <code class="docutils literal"><span class="pre">.py</span></code> files. Go and
-open a previous homework or laboratory file (making sure to set the
-mode to <code class="docutils literal"><span class="pre">r</span></code> and <em>not</em> <code class="docutils literal"><span class="pre">w</span></code>!). Read the contents into a string,
-and use a loop to count the number of <code class="docutils literal"><span class="pre">#</span></code> characters in your file.</p>
-</div></blockquote>
+<div><strong>Note</strong>: Always close a file once it has been read.</div></blockquote>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: The <code class="docutils literal"><span class="pre">open</span></code> function is not limited to files ending in
+<code class="docutils literal"><span class="pre">.txt</span></code>. Any text file works, including <code class="docutils literal"><span class="pre">.py</span></code> files. Go and open a
+previous homework or laboratory file (making sure to set the mode to
+<code class="docutils literal"><span class="pre">r</span></code> and <em>not</em> <code class="docutils literal"><span class="pre">w</span></code>!). Read the contents into a string, and use a loop
+to count the number of <code class="docutils literal"><span class="pre">#</span></code> characters in your file.</p>
+<hr class="docutils" />
 <p>In addition to <code class="docutils literal"><span class="pre">f.read()</span></code>, we can use <code class="docutils literal"><span class="pre">f.readlines()</span></code>. Now, we&#8217;ve
 closed the file, so we need to open it again before we read it. Then,
 following the advice above, the file is closed:</p>
@@ -512,11 +428,12 @@ result is a <code class="docutils literal"><span class="pre">list</span></code> 
 </div>
 <p>Often, data is easier to process by first separating a text file into
 individual lines.</p>
-<blockquote>
-<div><strong>Exercise</strong>: Go find again an old homework file ending in <code class="docutils literal"><span class="pre">.py</span></code>.
-Open it and read its contents using <code class="docutils literal"><span class="pre">readlines</span></code>. How many lines
-does the file contain?</div></blockquote>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Go find again an old homework file ending in <code class="docutils literal"><span class="pre">.py</span></code>. Open
+it and read its contents using <code class="docutils literal"><span class="pre">readlines</span></code>. How many lines does the
+file contain?</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="Parsing-Strings">
 <h2>Parsing Strings<a class="headerlink" href="#Parsing-Strings" title="Permalink to this headline">¶</a></h2>
 <p>With <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">readlines</span></code> we get a single string for the whole
@@ -605,26 +522,35 @@ comma-separated values, we could get those values via</p>
 </div>
 <p>Hence, <code class="docutils literal"><span class="pre">split</span></code> can be used to parse data that has a reasonably simple
 structure.</p>
-<blockquote>
-<div><strong>Exercise</strong>: Write a short program to turn the string
-<code class="docutils literal"><span class="pre">'1,1,2,3,5,8,13'</span></code> into an <code class="docutils literal"><span class="pre">ndarray</span></code>. &gt; <em>Solution</em>. The string
-must be split into individual strings, those individual strings must
-be turned into numbers, and put those numbers must be put into an
-array. To size the array, we use the number of items resulting from
-the split. Here is a complete approach:</div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;1,1,2,3,5,8,13&#39;</span> <span class="c1"># start with the string</span>
-<span class="n">v</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>  <span class="c1"># split it into a list of str values</span>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Write a short program to turn the string
+<code class="docutils literal"><span class="pre">'1,1,2,3,5,8,13'</span></code> into an <code class="docutils literal"><span class="pre">ndarray</span></code>.</p>
+<p><em>Solution</em>. The string must be split into individual strings, those
+individual strings must be turned into numbers, and put those numbers
+must be put into an array. To size the array, we use the number of items
+resulting from the split. Here is a complete approach:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;1,1,2,3,5,8,13&#39;</span> <span class="c1"># start with the string</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>     <span class="c1"># split it into a list of str values</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="c1"># intialize an array of proper length</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
     <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># convert the ith value into an int</span>
 </pre></div>
 </div>
+</div>
+<hr class="docutils" />
 <p>The <code class="docutils literal"><span class="pre">str</span></code> type provides several other functions to help one parse
 contents of a <code class="docutils literal"><span class="pre">str</span></code> value. For instance, how many times does the
 letter <code class="docutils literal"><span class="pre">'o'</span></code> appear in <code class="docutils literal"><span class="pre">'hello</span> <span class="pre">world'</span></code>?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -634,7 +560,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
+<span></span>Out[13]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -645,7 +571,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 <p>Where does the first <code class="docutils literal"><span class="pre">'o'</span></code> occur?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -655,7 +581,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
+<span></span>Out[14]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -666,7 +592,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 <p>Is there an <code class="docutils literal"><span class="pre">x</span></code> in it?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -676,7 +602,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -686,7 +612,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -696,7 +622,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
+<span></span>Out[16]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -707,7 +633,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 <p>Does <code class="docutils literal"><span class="pre">'1984'</span></code> contain only numerical values? How about <code class="docutils literal"><span class="pre">'3.14159'</span></code>?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -717,7 +643,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -727,7 +653,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -737,7 +663,7 @@ letter <code class="docutils literal"><span class="pre">'o'</span></code> appear
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
+<span></span>Out[18]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -760,7 +686,7 @@ reasonable to treat all the <code class="docutils literal"><span class="pre">N/A
 accomplished by <em>replacing</em> <code class="docutils literal"><span class="pre">N/A</span></code> with <code class="docutils literal"><span class="pre">0.0</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -772,7 +698,7 @@ accomplished by <em>replacing</em> <code class="docutils literal"><span class="p
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[18]:
+<span></span>Out[19]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -792,7 +718,7 @@ processed one by one, perhaps using <code class="docutils literal"><span class="
 the columns of data. Then, the entire processing can be done via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -819,12 +745,12 @@ the columns of data. Then, the entire processing can be done via</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
+<span></span>Out[20]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,
-        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])
+<span></span>array([0.        , 0.22222222, 0.44444444, 0.66666667, 0.88888889,
+       1.11111111, 1.33333333, 1.55555556, 1.77777778, 2.        ])
 </pre></div>
 </div>
 </div>
@@ -842,7 +768,7 @@ be created to <em>save</em> to a text file. The only difference in syntax is
 the use of <code class="docutils literal"><span class="pre">w</span></code> instead of <code class="docutils literal"><span class="pre">r</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -853,7 +779,7 @@ the use of <code class="docutils literal"><span class="pre">w</span></code> inst
 <p>Any string can be written to file using the <code class="docutils literal"><span class="pre">write</span></code> function:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -873,7 +799,7 @@ corresponding to 1/3. To print that number with just four decimal
 places, one could use</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -883,7 +809,7 @@ places, one could use</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
+<span></span>Out[23]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -895,7 +821,7 @@ places, one could use</p>
 all at once:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -905,7 +831,7 @@ all at once:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[23]:
+<span></span>Out[24]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -919,7 +845,7 @@ appears without any contents, the corresponding value is formatted into
 its default <code class="docutils literal"><span class="pre">str</span></code> representation. For example, compare the following:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -930,7 +856,7 @@ its default <code class="docutils literal"><span class="pre">str</span></code> r
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[24]:
+<span></span>Out[25]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -948,7 +874,7 @@ notation is preferred, one can use a format like <code class="docutils literal">
 following:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -959,7 +885,7 @@ following:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[25]:
+<span></span>Out[26]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -976,7 +902,7 @@ sufficient for most simple tasks.</p>
 can be written back to file :</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -992,35 +918,43 @@ can be written back to file :</p>
 </div>
 </div>
 <p>Now, <code class="docutils literal"><span class="pre">new_data.txt</span></code> should have exactly the same contents.</p>
-<blockquote>
-<div><p><strong>Exercise</strong>: Go and verify that the previous code produces the
-expected file <code class="docutils literal"><span class="pre">new_data.txt</span></code>. This will require that you download
-and run this notebook or copy the code and paste it into Spyder.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Go and verify that the previous code produces the expected
+file <code class="docutils literal"><span class="pre">new_data.txt</span></code>. This will require that you download and run this
+notebook or copy the code and paste it into Spyder.</p>
+<hr class="docutils" />
 <p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">1/9</span></code>, and <code class="docutils literal"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">'Python'</span></code>,
 produce the string <code class="docutils literal"><span class="pre">'1</span>&nbsp;&nbsp; <span class="pre">0.111</span>&nbsp;&nbsp; <span class="pre">Python'</span></code>.</p>
-<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">np.random.rand(5,</span> <span class="pre">5)</span></code>, write its values
-to file element by element. Each line of the text file should look
-similar to <code class="docutils literal"><span class="pre">1</span> <span class="pre">5</span> <span class="pre">0.569113</span></code>, where the values 1 and 5 correspond to
-the row and column the element.</p>
-<blockquote>
-<div><em>Solution</em>. First, recognize the desired format: an integer, a
-space, an integer, a space, and a float with 6 decimal places.
-Using the format function, such a string is produce via
-<code class="docutils literal"><span class="pre">&quot;{}</span> <span class="pre">{}</span> <span class="pre">{:.6f}&quot;.format(i1,</span> <span class="pre">i2,</span> <span class="pre">f1)</span></code>) where <code class="docutils literal"><span class="pre">i1</span></code> and <code class="docutils literal"><span class="pre">i2</span></code>
-have <code class="docutils literal"><span class="pre">int</span></code> values and <code class="docutils literal"><span class="pre">f1</span></code> has a <code class="docutils literal"><span class="pre">float</span></code> value. Second,
-that format can be used inside a nested loop structure that
-iterates through all rows and columns and writes <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>,
-and <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]</span></code> to file.</div></blockquote>
-</div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">np.random.rand(5,</span> <span class="pre">5)</span></code>, write its values to
+file element by element. Each line of the text file should look similar
+to <code class="docutils literal"><span class="pre">1</span> <span class="pre">5</span> <span class="pre">0.569113</span></code>, where the values 1 and 5 correspond to the row and
+column the element.</p>
+<p><em>Solution</em>. First, recognize the desired format: an integer, a space, an
+integer, a space, and a float with 6 decimal places. Using the format
+function, such a string is produce via
+<code class="docutils literal"><span class="pre">&quot;{}</span> <span class="pre">{}</span> <span class="pre">{:.6f}&quot;.format(i1,</span> <span class="pre">i2,</span> <span class="pre">f1)</span></code>) where <code class="docutils literal"><span class="pre">i1</span></code> and <code class="docutils literal"><span class="pre">i2</span></code> have
+<code class="docutils literal"><span class="pre">int</span></code> values and <code class="docutils literal"><span class="pre">f1</span></code> has a <code class="docutils literal"><span class="pre">float</span></code> value. Second, that format can
+be used inside a nested loop structure that iterates through all rows
+and columns and writes <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, and <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]</span></code> to file.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data_from_A.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;{} {} {:.6f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;{} {} {:.6f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
 <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<p>Remember that the <code class="docutils literal"><span class="pre">\n</span></code> character is needed to end a line.</p>
+</div>
+<hr class="docutils" />
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
 <p>The student interested in more complex formatting should read the

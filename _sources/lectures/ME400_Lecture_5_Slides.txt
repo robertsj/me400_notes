@@ -79,14 +79,11 @@
     }
    },
    "source": [
-    "## Sequence by Example: Computing Grades\n",
+    "## Sequence \n",
     "\n",
-    " 1. homework - 20%\n",
-    " 2. laboratories - 10%\n",
-    " 3. quizzes - 10%\n",
-    " 4. examinations - 60%\n",
-    " \n",
-    "Look familiar?"
+    "Sequence is *basically what we've been doing!*\n",
+    "\n",
+    "In plain English: **A set of steps, when done in the right order, that gets something done.**\n"
    ]
   },
   {
@@ -248,11 +245,35 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example** Consider the following pseudocode:\n",
+    "\n",
+    "```\n",
+    "Input n\n",
+    "Set m to 0\n",
+    "If n is even then\n",
+    "    Set m to 1\n",
+    "If m is odd then\n",
+    "   Set n to 0\n",
+    "Output n\n",
+    "```\n",
+    "\n",
+    "What does it do?\n",
+    "Turn it into a flowchart!"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
      "slide_type": "slide"
     }
    },
    "source": [
-    "## Iteration\n",
+    "## Iteration is **Repetition**\n",
     "\n",
     "Think back to the homeworks:\n",
     "\n",
@@ -275,7 +296,7 @@
    "source": [
     "### The Basic Idea\n",
     "\n",
-    "Weed language to describe the process of *iterating* through several identical steps, array elements, etc.\n",
+    "Need language to describe the process of *iterating* through array elements or *repeating* a \"cookie-cutter\" task.\n",
     "\n",
     "Possible ways to describe iteration for the homework problem in English:\n",
     "\n",
@@ -347,6 +368,85 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Turn the following flowchart into pseudocode. What is the resulting value of `c`?  \n",
+    "![What is the resulting value of `c` in the flowchart](img/lec5_quiz_2.png)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "| step |  `c` |  comment  |\n",
+    "|---|---|---|\n",
+    "| 0 | |   |\n",
+    "| 1  |   |   |\n",
+    "| 2  |   |   |\n",
+    "| 3  |   |   |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Given the following pseudocode, what are the resulting values of `b` for `n` equal to 4, 5, and 6?\n",
+    "\n",
+    "```\n",
+    "Input n\n",
+    "Set a to 1\n",
+    "Set b to 1\n",
+    "Set i to 2\n",
+    "While i < n\n",
+    "    Set c = b\n",
+    "    Set b = a + b\n",
+    "    Set a = c \n",
+    "    Set i to i+1\n",
+    "Output b\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "| step |  `n`|  `a` | `b` | `c` | `i` |  comment  |\n",
+    "|---|---|---|---|---|---|---|\n",
+    "| 0 |  |   |   |   |   |   |\n",
+    "| 1     |   |   |   |   |   |\n",
+    "| 2  |   |   |   |   |   |   |\n",
+    "| 3  |   |   |   |   |   |   |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Develop an algorithm for finding the heaviest rock in a pile of 10 rocks assuming that you are blindfolded, no two rocks have the same mass, and you can tell which of any two rocks is heavier."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
      "slide_type": "slide"
     }
    },
@@ -379,7 +479,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.3"
+   "version": "3.6.5"
   },
   "livereveal": {
    "scroll": true

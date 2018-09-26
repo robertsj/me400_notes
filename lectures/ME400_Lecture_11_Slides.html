@@ -228,24 +228,6 @@ formats.</p>
 <li>Convert data into desired string formats.</li>
 <li>Write strings to text files</li>
 </ul>
-</div>
-<div class="section" id="Key-Terms">
-<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">open</span></code></li>
-<li><code class="docutils literal"><span class="pre">close</span></code></li>
-<li><code class="docutils literal"><span class="pre">read</span></code></li>
-<li><code class="docutils literal"><span class="pre">str</span></code></li>
-<li><code class="docutils literal"><span class="pre">str.split</span></code></li>
-<li><code class="docutils literal"><span class="pre">str.count</span></code></li>
-<li><code class="docutils literal"><span class="pre">str.find</span></code></li>
-<li><code class="docutils literal"><span class="pre">str.isnumeric</span></code></li>
-<li><code class="docutils literal"><span class="pre">str.replace</span></code></li>
-<li><code class="docutils literal"><span class="pre">in</span></code> operator</li>
-<li><code class="docutils literal"><span class="pre">str.format</span></code></li>
-<li><code class="docutils literal"><span class="pre">{}</span></code> for replacement</li>
-<li><code class="docutils literal"><span class="pre">write</span></code></li>
-</ul>
 <div class="section" id="First,-a-Primer-on-String-Manipulation-and-Formatting">
 <h3>First, a Primer on String Manipulation and Formatting<a class="headerlink" href="#First,-a-Primer-on-String-Manipulation-and-Formatting" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">str</span></code> type is fundamental and <em>powerful</em>:</p>
@@ -454,19 +436,30 @@ Hello {} {}!
 </pre></div></div>
 </div>
 <p><strong>Example</strong>: Given <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">np.pi</span></code>, produce the string <code class="docutils literal"><span class="pre">'3.14159'</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+</pre></div>
+</div>
+</div>
 <p><code class="docutils literal"><span class="pre">&quot;{:7.4f}&quot;.format(np.pi)</span></code> yields <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">3.1416&quot;</span></code> (note the space).</p>
 <p>Let&#8217;s dissect <code class="docutils literal"><span class="pre">&quot;{:T.Df}&quot;.format(x)</span></code>. Here, - <code class="docutils literal"><span class="pre">{}</span></code> indicates
 substitution - <code class="docutils literal"><span class="pre">:</span></code> indicates a special format - <code class="docutils literal"><span class="pre">f</span></code> indicates a
 float format - <code class="docutils literal"><span class="pre">T</span></code> is the total number of characters of the formatted
-number (may yield white-space padding to left) - <code class="docutils literal"><span class="pre">D</span></code> is the number of
-digits after the decimal point.</p>
+number (may yield white-space padding to left, and defaults to no
+padding) - <code class="docutils literal"><span class="pre">D</span></code> is the number of digits after the decimal point</p>
 </div>
 <div class="section" id="Importing-Text-(when-NumPy-Fails)">
 <h3>Importing Text (when NumPy Fails)<a class="headerlink" href="#Importing-Text-(when-NumPy-Fails)" title="Permalink to this headline">¶</a></h3>
 <p>First, some simple data:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -475,7 +468,7 @@ digits after the decimal point.</p>
 <span class="n">x</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="n">t</span><span class="o">**</span><span class="mi">3</span>
 <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mi">6</span><span class="o">*</span><span class="n">t</span>
-<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data_lec11.txt&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -489,8 +482,12 @@ The challenge is in defining <code class="docutils literal"><span class="pre">s<
 <p><strong>Example</strong>: Write <code class="docutils literal"><span class="pre">t</span></code> and <code class="docutils literal"><span class="pre">x</span></code> to file in two columns without using
 NumPy and using just two decimal places.</p>
 </div>
-<div class="section" id="A-Challenging-Problem">
-<h3>A Challenging Problem<a class="headerlink" href="#A-Challenging-Problem" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="A-Titanic-Problem">
+<h3>A Titanic Problem<a class="headerlink" href="#A-Titanic-Problem" title="Permalink to this headline">¶</a></h3>
+<p>Consider the data contained in <code class="docutils literal"><span class="pre">titanic_data.csv</span></code>. Determine the
+average class, sex, and age of those who perished and those who
+survived. Let 1 be female and 0 be male, and skip entries for which any
+of the required data is missing.</p>
 </div>
 <div class="section" id="Recap">
 <h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
@@ -514,12 +511,11 @@ NumPy and using just two decimal places.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 11 - Processing Text Data</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
 <li><a class="reference internal" href="#First,-a-Primer-on-String-Manipulation-and-Formatting">First, a Primer on String Manipulation and Formatting</a></li>
 <li><a class="reference internal" href="#Importing-Text-(when-NumPy-Fails)">Importing Text (when NumPy Fails)</a></li>
 <li><a class="reference internal" href="#Saving-to-Text">Saving to Text</a></li>
-<li><a class="reference internal" href="#A-Challenging-Problem">A Challenging Problem</a></li>
+<li><a class="reference internal" href="#A-Titanic-Problem">A Titanic Problem</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>

@@ -72,18 +72,7 @@
    "cell_type": "code",
    "execution_count": 1,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "<_io.TextIOWrapper name='data.txt' mode='r' encoding='UTF-8'>"
-      ]
-     },
-     "execution_count": 1,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "f = open('data.txt', 'r')\n",
     "f"
@@ -100,38 +89,7 @@
    "cell_type": "code",
    "execution_count": 2,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "buffer\n",
-      "close\n",
-      "closed\n",
-      "detach\n",
-      "encoding\n",
-      "errors\n",
-      "fileno\n",
-      "flush\n",
-      "isatty\n",
-      "line_buffering\n",
-      "mode\n",
-      "name\n",
-      "newlines\n",
-      "read\n",
-      "readable\n",
-      "readline\n",
-      "readlines\n",
-      "seek\n",
-      "seekable\n",
-      "tell\n",
-      "truncate\n",
-      "writable\n",
-      "write\n",
-      "writelines\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "for item in dir(f): \n",
     "    if not item[0:1] == '_':\n",
@@ -149,22 +107,7 @@
    "cell_type": "code",
    "execution_count": 3,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Help on built-in function read:\n",
-      "\n",
-      "read(size=-1, /) method of _io.TextIOWrapper instance\n",
-      "    Read at most n characters from stream.\n",
-      "    \n",
-      "    Read from underlying buffer until we have n characters or we hit EOF.\n",
-      "    If n is negative or omitted, read until EOF.\n",
-      "\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "help(f.read)"
    ]
@@ -182,18 +125,7 @@
    "cell_type": "code",
    "execution_count": 4,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "'time (s)   vel (m/s)  acc (m/s**2)\\n0.00000000 1.00000000 0.00000000\\n0.22222222 1.24884887 0.01097394\\n0.44444444 1.55962350 0.08779150\\n0.66666667 1.94773404 0.29629630\\n0.88888889 2.43242545 0.70233196\\n1.11111111 3.03773178 1.37174211\\n1.33333333 3.79366789 2.37037037\\n1.55555556 4.73771786 3.76406036\\n1.77777778 5.91669359 5.61865569\\n2.00000000 7.38905610 8.00000000\\n'"
-      ]
-     },
-     "execution_count": 4,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
+   "outputs": [],
    "source": [
     "s = f.read()\n",
     "s"
@@ -210,26 +142,7 @@
    "cell_type": "code",
    "execution_count": 5,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "time (s)   vel (m/s)  acc (m/s**2)\n",
-      "0.00000000 1.00000000 0.00000000\n",
-      "0.22222222 1.24884887 0.01097394\n",
-      "0.44444444 1.55962350 0.08779150\n",
-      "0.66666667 1.94773404 0.29629630\n",
-      "0.88888889 2.43242545 0.70233196\n",
-      "1.11111111 3.03773178 1.37174211\n",
-      "1.33333333 3.79366789 2.37037037\n",
-      "1.55555556 4.73771786 3.76406036\n",
-      "1.77777778 5.91669359 5.61865569\n",
-      "2.00000000 7.38905610 8.00000000\n",
-      "\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "print(s)"
    ]
@@ -248,9 +161,7 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "f.close()"
@@ -264,7 +175,12 @@
     "\n",
     "> **Note**: Always close a file once it has been read.\n",
     "\n",
-    "> **Exercise**: The `open` function is not limited to files ending in `.txt`.  Any text file works, including `.py` files.  Go and open a previous homework or laboratory file (making sure to set the mode to `r` and *not* `w`!).  Read the contents into a string, and use a loop to count the number of `#` characters in your file.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: The `open` function is not limited to files ending in `.txt`.  Any text file works, including `.py` files.  Go and open a previous homework or laboratory file (making sure to set the mode to `r` and *not* `w`!).  Read the contents into a string, and use a loop to count the number of `#` characters in your file.\n",
+    "\n",
+    "***\n",
     "\n",
     "\n",
     "In addition to `f.read()`, we can use `f.readlines()`.  Now, we've closed the file, so we need to open it again before we read it.  Then, following the advice above, the file is closed:"
@@ -273,9 +189,7 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "f = open('data.txt', 'r')\n",
@@ -326,7 +240,11 @@
    "source": [
     "Often, data is easier to process by first separating a text file into individual lines.\n",
     "\n",
-    "> **Exercise**: Go find again an old homework file ending in `.py`.  Open it and read its contents using `readlines`.  How many lines does the file contain?"
+    "***\n",
+    "\n",
+    "**Exercise**: Go find again an old homework file ending in `.py`.  Open it and read its contents using `readlines`.  How many lines does the file contain?\n",
+    "\n",
+    "***\n"
    ]
   },
   {
@@ -428,15 +346,33 @@
    "source": [
     "Hence, `split` can be used to parse data that has a reasonably simple structure.\n",
     "\n",
-    "> **Exercise**: Write a short program to turn the string `'1,1,2,3,5,8,13'` into an `ndarray`.\n",
-    ">> *Solution*. The string must be split into individual strings, those individual strings must be turned into numbers,  and put those numbers must be put into an array.  To size the array, we use the number of items resulting from the split.  Here is a complete approach:\n",
-    "```python\n",
-    "    s = '1,1,2,3,5,8,13' # start with the string\n",
-    "    v = s.split(s, ',')  # split it into a list of str values\n",
-    "    a = np.zeros(len(v)) # intialize an array of proper length\n",
-    "    for i in range(len(v)):\n",
-    "        a[i] = int(v[i]) # convert the ith value into an int\n",
-    "```"
+    "***\n",
+    "\n",
+    "**Exercise**: Write a short program to turn the string `'1,1,2,3,5,8,13'` into an `ndarray`.\n",
+    "\n",
+    "*Solution*. The string must be split into individual strings, those individual strings must be turned into numbers,  and put those numbers must be put into an array.  To size the array, we use the number of items resulting from the split.  Here is a complete approach:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "s = '1,1,2,3,5,8,13' # start with the string\n",
+    "v = s.split(',')     # split it into a list of str values\n",
+    "a = np.zeros(len(v)) # intialize an array of proper length\n",
+    "for i in range(len(v)):\n",
+    "    a[i] = int(v[i]) # convert the ith value into an int"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "***"
    ]
   },
   {
@@ -448,7 +384,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 13,
    "metadata": {},
    "outputs": [
     {
@@ -457,7 +393,7 @@
        "2"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 13,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -475,7 +411,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [
     {
@@ -484,7 +420,7 @@
        "4"
       ]
      },
-     "execution_count": 13,
+     "execution_count": 14,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -502,7 +438,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": 15,
    "metadata": {},
    "outputs": [
     {
@@ -511,7 +447,7 @@
        "-1"
       ]
      },
-     "execution_count": 14,
+     "execution_count": 15,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -522,7 +458,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 16,
    "metadata": {},
    "outputs": [
     {
@@ -531,7 +467,7 @@
        "False"
       ]
      },
-     "execution_count": 15,
+     "execution_count": 16,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -549,7 +485,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 17,
    "metadata": {},
    "outputs": [
     {
@@ -558,7 +494,7 @@
        "True"
       ]
      },
-     "execution_count": 16,
+     "execution_count": 17,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -569,7 +505,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 18,
    "metadata": {},
    "outputs": [
     {
@@ -578,7 +514,7 @@
        "False"
       ]
      },
-     "execution_count": 17,
+     "execution_count": 18,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -600,7 +536,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
+   "execution_count": 19,
    "metadata": {},
    "outputs": [
     {
@@ -609,7 +545,7 @@
        "'0.00000000 1.00000000 0.0'"
       ]
      },
-     "execution_count": 18,
+     "execution_count": 19,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -633,17 +569,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": 20,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "array([ 0.        ,  0.22222222,  0.44444444,  0.66666667,  0.88888889,\n",
-       "        1.11111111,  1.33333333,  1.55555556,  1.77777778,  2.        ])"
+       "array([0.        , 0.22222222, 0.44444444, 0.66666667, 0.88888889,\n",
+       "       1.11111111, 1.33333333, 1.55555556, 1.77777778, 2.        ])"
       ]
      },
-     "execution_count": 19,
+     "execution_count": 20,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -682,10 +618,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
-   "metadata": {
-    "collapsed": true
-   },
+   "execution_count": 21,
+   "metadata": {},
    "outputs": [],
    "source": [
     "f = open('new_data.txt', 'w')"
@@ -700,10 +634,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 21,
-   "metadata": {
-    "collapsed": true
-   },
+   "execution_count": 22,
+   "metadata": {},
    "outputs": [],
    "source": [
     "f.write('Here is some sample text!')\n",
@@ -721,7 +653,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": 23,
    "metadata": {},
    "outputs": [
     {
@@ -730,7 +662,7 @@
        "'0.3333'"
       ]
      },
-     "execution_count": 22,
+     "execution_count": 23,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -748,7 +680,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": 24,
    "metadata": {},
    "outputs": [
     {
@@ -757,7 +689,7 @@
        "'1 divided by 3 is approximately 0.3333'"
       ]
      },
-     "execution_count": 23,
+     "execution_count": 24,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -775,7 +707,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": 25,
    "metadata": {},
    "outputs": [
     {
@@ -784,7 +716,7 @@
        "'0.3333333333333333'"
       ]
      },
-     "execution_count": 24,
+     "execution_count": 25,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -805,7 +737,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 25,
+   "execution_count": 26,
    "metadata": {},
    "outputs": [
     {
@@ -814,7 +746,7 @@
        "'3.3333e-01'"
       ]
      },
-     "execution_count": 25,
+     "execution_count": 26,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -835,7 +767,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 26,
+   "execution_count": 27,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -855,21 +787,43 @@
    "source": [
     "Now, `new_data.txt` should have exactly the same contents.\n",
     "\n",
-    "> **Exercise**: Go and verify that the previous code produces the expected file `new_data.txt`.  This will require that you download and run this notebook or copy the code and paste it into Spyder.\n",
     "\n",
-    "> **Exercise**: Given `a = 1`, `b = 1/9`, and `c = 'Python'`, produce the string `'1   0.111   Python'`.\n",
+    "***\n",
     "\n",
-    "> **Exercise**: Given `A = np.random.rand(5, 5)`, write its values to file element by element.  Each line of the text file should look similar to `1 5 0.569113`, where the values 1 and 5 correspond to the row and column the element.\n",
+    "**Exercise**: Go and verify that the previous code produces the expected file `new_data.txt`.  This will require that you download and run this notebook or copy the code and paste it into Spyder.\n",
     "\n",
-    ">> *Solution*.  First, recognize the desired format: an integer, a space, an integer, a space, and a float with 6 decimal places.  Using the format function, such a string is produce via `\"{} {} {:.6f}\".format(i1, i2, f1)`) where `i1` and `i2` have `int` values and `f1` has a `float` value.  Second, that format can be used inside a nested loop structure that iterates through all rows and columns and writes `i`, `j`, and `A[i, j]` to file.\n",
-    "```python\n",
-    "    A = np.random.rand(5, 5)\n",
-    "    f = open('data_from_A.txt', 'w')\n",
-    "    for i in range(5): \n",
-    "        for j in range(5):\n",
-    "            f.write(\"{} {} {:.6f}\".format(i, j, A[i, j]))\n",
-    "    f.close()\n",
-    "```"
+    "***\n",
+    "\n",
+    "**Exercise**: Given `a = 1`, `b = 1/9`, and `c = 'Python'`, produce the string `'1   0.111   Python'`.\n",
+    "\n",
+    "***\n",
+    "\n",
+    "**Exercise**: Given `A = np.random.rand(5, 5)`, write its values to file element by element.  Each line of the text file should look similar to `1 5 0.569113`, where the values 1 and 5 correspond to the row and column the element.\n",
+    "\n",
+    "*Solution*.  First, recognize the desired format: an integer, a space, an integer, a space, and a float with 6 decimal places.  Using the format function, such a string is produce via `\"{} {} {:.6f}\".format(i1, i2, f1)`) where `i1` and `i2` have `int` values and `f1` has a `float` value.  Second, that format can be used inside a nested loop structure that iterates through all rows and columns and writes `i`, `j`, and `A[i, j]` to file.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "A = np.random.rand(5, 5)\n",
+    "f = open('data_from_A.txt', 'w')\n",
+    "for i in range(5): \n",
+    "    for j in range(5):\n",
+    "        f.write(\"{} {} {:.6f}\\n\".format(i, j, A[i, j])) \n",
+    "f.close()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Remember that the `\\n` character is needed to end a line.\n",
+    "\n",
+    "***"
    ]
   },
   {
