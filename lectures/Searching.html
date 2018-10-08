@@ -1,30 +1,21 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Searching &mdash; ME 400 Course Notes Fall 2018 documentation</title>
-    
+    <title>Searching &#8212; ME 400 Course Notes Fall 2018 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     'Fall 2018',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Lecture 15 - Sorting" href="Sorting.html" />
     <link rel="prev" title="Lecture 13 - More on Functions" href="More_on_Functions.html" />
    
@@ -33,13 +24,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   
@@ -214,7 +206,7 @@ div.nboutput div.output_area.stderr {
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture and <a class="reference external" href="ME400_Lecture_15.ipynb">Lecture 15</a>, we tackle
 two of the most important practical problems in computing: <em>searching</em>
-and <em>sorting</em>. We&#8217;ll start with <em>searching</em> in this lecture because it
+and <em>sorting</em>. We’ll start with <em>searching</em> in this lecture because it
 is the simpler problem, but efficient searching depends on sorted
 values. Along the way, algorithms will be classified by their <em>order</em>, a
 way to describe how good (or bad) an algorithm is for problems of
@@ -235,10 +227,10 @@ algorithm</li>
 <ul class="simple">
 <li>linear search</li>
 <li>binary search</li>
-<li><code class="docutils literal"><span class="pre">time.time()</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">time.time()</span></code></li>
 <li>numerical experiment</li>
 <li>order</li>
-<li><span class="math">\(\mathcal{O}\)</span> (big-O) notation</li>
+<li><span class="math notranslate nohighlight">\(\mathcal{O}\)</span> (big-O) notation</li>
 </ul>
 </div>
 </div>
@@ -252,7 +244,7 @@ of the unsorted sequence. Linear search algorithms represent the
 brute-force approach: search every element in the sequence, from one end
 to the other, until the match is found. The algorithm can be summarized
 in pseudocode as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of an unsorted sequence&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of an unsorted sequence&quot;&quot;&quot;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="c1"># sequence, number elements, value of interest</span>
 <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">Not</span> <span class="n">found</span>
 <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -264,38 +256,38 @@ in pseudocode as follows:</p>
 <span class="n">Output</span><span class="p">:</span> <span class="n">location</span>
 </pre></div>
 </div>
-<p>Searching requires that an expression line <code class="docutils literal"><span class="pre">a[i]</span> <span class="pre">==</span> <span class="pre">v</span></code> has meaning.
-For <code class="docutils literal"><span class="pre">int</span></code>, <code class="docutils literal"><span class="pre">float</span></code>, and <code class="docutils literal"><span class="pre">str</span></code> values, it does. For more
+<p>Searching requires that an expression line <code class="docutils literal notranslate"><span class="pre">a[i]</span> <span class="pre">==</span> <span class="pre">v</span></code> has meaning.
+For <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, and <code class="docutils literal notranslate"><span class="pre">str</span></code> values, it does. For more
 complicated types, it might not be so obvious. Are the lists
-<code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> and <code class="docutils literal"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></code> equal? In total, no, but some elements
-are, and maybe that&#8217;s what matters.</p>
+<code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code> and <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">2]</span></code> equal? In total, no, but some elements
+are, and maybe that’s what matters.</p>
 <blockquote>
 <div><strong>Exercise</strong>: Implement this algorithm in Python and test with
-sequence <code class="docutils literal"><span class="pre">[2,</span> <span class="pre">6,</span> <span class="pre">1,</span> <span class="pre">7,</span> <span class="pre">3]</span></code> and value <code class="docutils literal"><span class="pre">7</span></code>.</div></blockquote>
+sequence <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">6,</span> <span class="pre">1,</span> <span class="pre">7,</span> <span class="pre">3]</span></code> and value <code class="docutils literal notranslate"><span class="pre">7</span></code>.</div></blockquote>
 <p>One does not need to sort values before searching them with a linear
 search if <em>equality</em> is to be checked. However, what if one wants to
 find (1) the location of an element in a sequence equal to some value
 or, if not found, (2) the location of the value that is closest to but
 less than the value of interest. For this latter case, values need to be
 sorted. Those algorithms will be studied next time, but an easy way to
-sort a sequence is with the <code class="docutils literal"><span class="pre">sorted()</span></code> function:</p>
+sort a sequence is with the <code class="docutils literal notranslate"><span class="pre">sorted()</span></code> function:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="nb">sorted</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[1]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[1, 2, 3, 6, 7]
 </pre></div>
 </div>
@@ -303,7 +295,7 @@ sort a sequence is with the <code class="docutils literal"><span class="pre">sor
 <p>Hence, we can modify somewhat the pseudocode to search sorted values and
 to find the first element equal to (or the first element greater than) a
 value of interest.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of a sorted sequence&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of a sorted sequence&quot;&quot;&quot;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="c1"># sorted sequence, number elements, value of interest</span>
 <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
 <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -317,11 +309,11 @@ value of interest.</p>
 </div>
 <p>Lets implement this algorithm as a function:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Search a sorted sequence for value v. Return nearest</span>
 <span class="sd">       index to right (or last position) if not found.</span>
@@ -337,103 +329,103 @@ value of interest.</p>
 </pre></div>
 </div>
 </div>
-<p>Now, let&#8217;s test it on a sorted array and search for a few values:</p>
+<p>Now, let’s test it on a sorted array and search for a few values:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
 <span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="c1"># expect 2</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[3]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>2
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># expect 0</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[4]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>0
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span> <span class="c1"># expect 4</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[5]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>4
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span> <span class="c1"># expect 4 again</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[6]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>4
 </pre></div>
 </div>
 </div>
-<p>So far, so good. Does it work for all values of <code class="docutils literal"><span class="pre">v</span></code>?</p>
+<p>So far, so good. Does it work for all values of <code class="docutils literal notranslate"><span class="pre">v</span></code>?</p>
 <blockquote>
 <div><p><strong>Exercise</strong>: Produce a flow chart for the linear search algorithm
 (for sorted sequences).</p>
-<p><strong>Exercise</strong>: Modify the <code class="docutils literal"><span class="pre">linear_search</span></code> algorithm to accept a
-third argument <code class="docutils literal"><span class="pre">compare</span></code>, which should be a function that accepts
-two arguments. For a sequence <code class="docutils literal"><span class="pre">a</span></code> and value <code class="docutils literal"><span class="pre">v</span></code>,
-<code class="docutils literal"><span class="pre">compare(a[i],</span> <span class="pre">v)</span></code> should return <code class="docutils literal"><span class="pre">True</span></code> if <code class="docutils literal"><span class="pre">a[i]</span></code> is greater
-than or equal to <code class="docutils literal"><span class="pre">v</span></code> and <code class="docutils literal"><span class="pre">False</span></code> otherwise. Test your modified
-search function with <code class="docutils literal"><span class="pre">compare</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x[1]</span> <span class="pre">&gt;</span> <span class="pre">y[1]</span></code>,
-<code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[(1,</span> <span class="pre">2),</span> <span class="pre">(4,</span> <span class="pre">3),</span> <span class="pre">(1,</span> <span class="pre">9),</span> <span class="pre">(4,</span> <span class="pre">11)]</span></code> and <code class="docutils literal"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">(1,</span> <span class="pre">9)</span></code>.</p>
+<p><strong>Exercise</strong>: Modify the <code class="docutils literal notranslate"><span class="pre">linear_search</span></code> algorithm to accept a
+third argument <code class="docutils literal notranslate"><span class="pre">compare</span></code>, which should be a function that accepts
+two arguments. For a sequence <code class="docutils literal notranslate"><span class="pre">a</span></code> and value <code class="docutils literal notranslate"><span class="pre">v</span></code>,
+<code class="docutils literal notranslate"><span class="pre">compare(a[i],</span> <span class="pre">v)</span></code> should return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">a[i]</span></code> is greater
+than or equal to <code class="docutils literal notranslate"><span class="pre">v</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise. Test your modified
+search function with <code class="docutils literal notranslate"><span class="pre">compare</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x[1]</span> <span class="pre">&gt;</span> <span class="pre">y[1]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[(1,</span> <span class="pre">2),</span> <span class="pre">(4,</span> <span class="pre">3),</span> <span class="pre">(1,</span> <span class="pre">9),</span> <span class="pre">(4,</span> <span class="pre">11)]</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">(1,</span> <span class="pre">9)</span></code>.</p>
 <blockquote>
 <div><em>Solution</em>:</div></blockquote>
 </div></blockquote>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">y</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">linear_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Search a sorted sequence for value v. Return nearest</span>
 <span class="sd">       index to left if not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -458,34 +450,34 @@ search function with <code class="docutils literal"><span class="pre">compare</s
 pretty linear in that each element is checked one after another (i.e.,
 no skipping around the elements to find the proverbial needle). Another
 reason is that the number of times elements have to be compared (i.e.,
-the number of times <code class="docutils literal"><span class="pre">a[i]</span> <span class="pre">&gt;</span> <span class="pre">v</span></code> is evaluated) is proportional (and, in
+the number of times <code class="docutils literal notranslate"><span class="pre">a[i]</span> <span class="pre">&gt;</span> <span class="pre">v</span></code> is evaluated) is proportional (and, in
 the worst, case <em>equal</em>) to the number of elements. Any time we have a
 proportional relationship, that relationship is <em>linear</em>. The familiar
-<span class="math">\(y = ax + b\)</span> is linear, because <span class="math">\(y\)</span> varies linearly with
-<span class="math">\(x\)</span>. For an array of <span class="math">\(n\)</span> elements, the number of comparisons
-is linear with <span class="math">\(n\)</span>. The exact number of comparisons depends on the
+<span class="math notranslate nohighlight">\(y = ax + b\)</span> is linear, because <span class="math notranslate nohighlight">\(y\)</span> varies linearly with
+<span class="math notranslate nohighlight">\(x\)</span>. For an array of <span class="math notranslate nohighlight">\(n\)</span> elements, the number of comparisons
+is linear with <span class="math notranslate nohighlight">\(n\)</span>. The exact number of comparisons depends on the
 value for which one is searching and the sequence of values.</p>
 <p>Generically, this linear relationship is given the fancy name <em>order
 :math:`n`</em>, written compactly in the <a class="reference external" href="https://en.wikipedia.org/wiki/Big_O_notation">big
 O</a> notation
-<span class="math">\(\mathcal{O}(n)\)</span>. Quite frequently, the computational cost of an
+<span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>. Quite frequently, the computational cost of an
 algorithm (i.e., how long it takes to run) is directly proportional to
 its order. Hence, the time it takes for linear search to find its match
 should grow, roughly linearly, with the number of elements being
 searched.</p>
-<p>This fact may be intuitive, but it&#8217;s always nice to see things
-demonstrated. Here&#8217;s what we&#8217;ll do. We&#8217;ll write a little loop that goes
-from <span class="math">\(n = 10\)</span> to <span class="math">\(n = 10^6\)</span>. At each size of <span class="math">\(n\)</span>,
-we&#8217;ll draw a random number from 1 to <span class="math">\(10^6\)</span> and search for it in
-the <code class="docutils literal"><span class="pre">np.arange(1,</span> <span class="pre">n+1)</span></code>, a sorted sequence for sure. For each step,
-we&#8217;ll time things. All together, these steps form the basis for a
+<p>This fact may be intuitive, but it’s always nice to see things
+demonstrated. Here’s what we’ll do. We’ll write a little loop that goes
+from <span class="math notranslate nohighlight">\(n = 10\)</span> to <span class="math notranslate nohighlight">\(n = 10^6\)</span>. At each size of <span class="math notranslate nohighlight">\(n\)</span>,
+we’ll draw a random number from 1 to <span class="math notranslate nohighlight">\(10^6\)</span> and search for it in
+the <code class="docutils literal notranslate"><span class="pre">np.arange(1,</span> <span class="pre">n+1)</span></code>, a sorted sequence for sure. For each step,
+we’ll time things. All together, these steps form the basis for a
 <strong>numerical experiment</strong>. Here it all is:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Program to show time as a function of size for linear search.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -531,14 +523,14 @@ we&#8217;ll time things. All together, these steps form the basis for a
 <img alt="../_images/lectures_Searching_13_0.png" src="../_images/lectures_Searching_13_0.png" />
 </div>
 </div>
-<p>Based on the figure, the times are not perfectly linear with <span class="math">\(n\)</span>,
+<p>Based on the figure, the times are not perfectly linear with <span class="math notranslate nohighlight">\(n\)</span>,
 but then again, the experiment is based on searching for a random value
 (which could be at the very beginning or the very end of the sorted
 array). A more complete approach would be to do the search <em>at each
 :math:`n` several times</em> and average the resulting elapsed times.</p>
 <blockquote>
 <div><strong>Exercise</strong>: Modify the program above so that five different values
-of <code class="docutils literal"><span class="pre">v</span></code> are selected for each value of <code class="docutils literal"><span class="pre">n</span></code>. Then, average the
+of <code class="docutils literal notranslate"><span class="pre">v</span></code> are selected for each value of <code class="docutils literal notranslate"><span class="pre">n</span></code>. Then, average the
 times and plot the results.</div></blockquote>
 <p>Such <strong>numerical experiments</strong> based on randome numbers are great ways
 to explore the behavior of algorithms for a variety of inputs.</p>
@@ -546,15 +538,15 @@ to explore the behavior of algorithms for a variety of inputs.</p>
 <div class="section" id="Binary-Search">
 <h2>Binary Search<a class="headerlink" href="#Binary-Search" title="Permalink to this headline">¶</a></h2>
 <p><strong>Linear search</strong> is easy to understand and easy to implement, but it is
-not the fastest way to search, and it&#8217;s probably not what you use when
+not the fastest way to search, and it’s probably not what you use when
 searching ordered data.</p>
 <p>Think about real-life scenarios in which ordered data is searched by
 hand. One such scenario is when looking up a word in a dictionary (an
 actual, dead-tree book, not the website with the search tool). Surely,
-you don&#8217;t flip through, page by page, from &#8220;a&#8221; to &#8220;z,&#8221; until the item is
+you don’t flip through, page by page, from “a” to “z,” until the item is
 found. Rather, you likely take a large jump to the letter of interest (a
 bonafide search algorithm for things organized into smaller collections
-like alphabetized words). If you&#8217;re like me, you then quickly identify a
+like alphabetized words). If you’re like me, you then quickly identify a
 page near to but <em>before</em> the one of interest and a page near to but
 <em>after</em> the one of interest. Next, you check some page between those. If
 it contains the word of interest, great, your job is done. If it is
@@ -567,9 +559,9 @@ to be the simplest of <strong>divide and conquer</strong> techniques. <a class="
 to the problem of sorting.</p>
 <div class="section" id="The-basic-algorithm">
 <h3>The basic algorithm<a class="headerlink" href="#The-basic-algorithm" title="Permalink to this headline">¶</a></h3>
-<p>For a sorted sequence <code class="docutils literal"><span class="pre">a</span></code> of <code class="docutils literal"><span class="pre">n</span></code> values, a simple, binary search
+<p>For a sorted sequence <code class="docutils literal notranslate"><span class="pre">a</span></code> of <code class="docutils literal notranslate"><span class="pre">n</span></code> values, a simple, binary search
 algorithm is defined by the following pseudocode:</p>
-<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="s">&quot;&quot;&quot;Algorithm for binary search of a sorted sequence&quot;&quot;&quot;</span>
+<div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;&quot;&quot;Algorithm for binary search of a sorted sequence&quot;&quot;&quot;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="c"># Sorted sequence, number elements, value of interest</span>
 
 <span class="c"># Initialize the location</span>
@@ -596,27 +588,27 @@ algorithm is defined by the following pseudocode:</p>
 </pre></div>
 </div>
 <p>This algorithm is substantially more complex than linear search. Notice
-what happens at each step: either (1) the value <code class="docutils literal"><span class="pre">v</span></code> is found or (2)
-one of the bounds (<code class="docutils literal"><span class="pre">L</span></code> or <code class="docutils literal"><span class="pre">R</span></code>) are changed, reducing the range to be
+what happens at each step: either (1) the value <code class="docutils literal notranslate"><span class="pre">v</span></code> is found or (2)
+one of the bounds (<code class="docutils literal notranslate"><span class="pre">L</span></code> or <code class="docutils literal notranslate"><span class="pre">R</span></code>) are changed, reducing the range to be
 searched by half.</p>
 <blockquote>
 <div><p><strong>Exercise</strong>: Step through this algorithm for
-<code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code> and <code class="docutils literal"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">3</span></code>. We know that <code class="docutils literal"><span class="pre">L</span> <span class="pre">=</span> <span class="pre">0</span></code> and
-<code class="docutils literal"><span class="pre">R</span> <span class="pre">=</span> <span class="pre">4</span></code> before the loop begins. What are <code class="docutils literal"><span class="pre">L</span></code> and <code class="docutils literal"><span class="pre">R</span></code> after one
+<code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">3</span></code>. We know that <code class="docutils literal notranslate"><span class="pre">L</span> <span class="pre">=</span> <span class="pre">0</span></code> and
+<code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">=</span> <span class="pre">4</span></code> before the loop begins. What are <code class="docutils literal notranslate"><span class="pre">L</span></code> and <code class="docutils literal notranslate"><span class="pre">R</span></code> after one
 time through the loop? Twice? Three times? If it helps, you can add
-<code class="docutils literal"><span class="pre">Set</span> <span class="pre">counter</span> <span class="pre">=</span> <span class="pre">0</span></code> before the <code class="docutils literal"><span class="pre">While</span></code> and increment it. Then,
-trace the values of <code class="docutils literal"><span class="pre">counter</span></code>, <code class="docutils literal"><span class="pre">L</span></code>, <code class="docutils literal"><span class="pre">R</span></code>, and <code class="docutils literal"><span class="pre">C</span></code> at each
+<code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">counter</span> <span class="pre">=</span> <span class="pre">0</span></code> before the <code class="docutils literal notranslate"><span class="pre">While</span></code> and increment it. Then,
+trace the values of <code class="docutils literal notranslate"><span class="pre">counter</span></code>, <code class="docutils literal notranslate"><span class="pre">L</span></code>, <code class="docutils literal notranslate"><span class="pre">R</span></code>, and <code class="docutils literal notranslate"><span class="pre">C</span></code> at each
 iteration.</p>
-<p><strong>Exercise</strong>: Do the same for <code class="docutils literal"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">2</span></code> (which is not in <code class="docutils literal"><span class="pre">a</span></code>).</p>
+<p><strong>Exercise</strong>: Do the same for <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">2</span></code> (which is not in <code class="docutils literal notranslate"><span class="pre">a</span></code>).</p>
 <p><strong>Exercise</strong>: Develop a flowchart for the binary search algorithm
 shown above in pseudocode.</p>
 </div></blockquote>
 </div>
 <div class="section" id="Back-to-Order">
 <h3>Back to Order<a class="headerlink" href="#Back-to-Order" title="Permalink to this headline">¶</a></h3>
-<p>Linear search is <span class="math">\(\mathcal{O}(n)\)</span>, i.e., order <span class="math">\(n\)</span>. Binary
+<p>Linear search is <span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>, i.e., order <span class="math notranslate nohighlight">\(n\)</span>. Binary
 search is faster. It requires fewer comparisons. Think about it this
-way: apply both search algorithms to find <code class="docutils literal"><span class="pre">9</span></code> in <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code>.
+way: apply both search algorithms to find <code class="docutils literal notranslate"><span class="pre">9</span></code> in <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code>.
 At each step, the elements left to search are as follows (where the
 bolded entry indicates the element is found at that step):</p>
 <table border="1" class="docutils">
@@ -633,36 +625,36 @@ bolded entry indicates the element is found at that step):</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
-<td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
-<td><code class="docutils literal"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td><code class="docutils literal"><span class="pre">[3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
 <td><strong>[9, 11]</strong></td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td><code class="docutils literal"><span class="pre">[7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
-<td>&nbsp;</td>
+<td><code class="docutils literal notranslate"><span class="pre">[7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code></td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td>3</td>
 <td><strong>[9, 11]</strong></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 </tbody>
 </table>
 <p>Here, it appears binary search outperforms linear search by about a
 factor of two, but in general it is <em>much better</em>. In fact, binary
-search is <span class="math">\(\mathcal{O}(\log n)\)</span>. More specifically, the number of
-comparisons required is proportional to <span class="math">\(\log_2 n\)</span>, but remember
-that <span class="math">\(\log_x n = \alpha \log_y n\)</span> for <span class="math">\(\alpha = \log_x(y)\)</span>.
-How <em>much</em> better is <span class="math">\(\mathcal{O}(\log n)\)</span> than
-<span class="math">\(\mathcal{O}(n)\)</span>?</p>
+search is <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span>. More specifically, the number of
+comparisons required is proportional to <span class="math notranslate nohighlight">\(\log_2 n\)</span>, but remember
+that <span class="math notranslate nohighlight">\(\log_x n = \alpha \log_y n\)</span> for <span class="math notranslate nohighlight">\(\alpha = \log_x(y)\)</span>.
+How <em>much</em> better is <span class="math notranslate nohighlight">\(\mathcal{O}(\log n)\)</span> than
+<span class="math notranslate nohighlight">\(\mathcal{O}(n)\)</span>?</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;For n = {:7.0f}, binary is better by about a factor of {:.1e}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
 </pre></div>
@@ -681,16 +673,16 @@ For n =  100000, binary is better by about a factor of 8.7e+03
 For n = 1000000, binary is better by about a factor of 7.2e+04
 </pre></div></div>
 </div>
-<p>That&#8217;s a huge savings when <span class="math">\(n\)</span> is greater than about 10! The
-savings just get better with larger <span class="math">\(n\)</span>.</p>
+<p>That’s a huge savings when <span class="math notranslate nohighlight">\(n\)</span> is greater than about 10! The
+savings just get better with larger <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <blockquote>
 <div><p><strong>Exercise</strong>: Implement the binary search algorithm above as a
-Python function <code class="docutils literal"><span class="pre">binary_search_basic</span></code>.</p>
+Python function <code class="docutils literal notranslate"><span class="pre">binary_search_basic</span></code>.</p>
 <p><strong>Exercise</strong>: Implement a <em>modified</em> binary search algorithm in
-Python as a function <code class="docutils literal"><span class="pre">binary_search</span></code> that returns the location of
-the element nearest to but less than <code class="docutils literal"><span class="pre">v</span></code> when <code class="docutils literal"><span class="pre">v</span></code> is not found.</p>
+Python as a function <code class="docutils literal notranslate"><span class="pre">binary_search</span></code> that returns the location of
+the element nearest to but less than <code class="docutils literal notranslate"><span class="pre">v</span></code> when <code class="docutils literal notranslate"><span class="pre">v</span></code> is not found.</p>
 <p><strong>Exercise</strong>: Repeat the numerical experiment performed above using
-<code class="docutils literal"><span class="pre">binary_search</span></code> in place of <code class="docutils literal"><span class="pre">linear_search</span></code>. Make sure to
+<code class="docutils literal notranslate"><span class="pre">binary_search</span></code> in place of <code class="docutils literal notranslate"><span class="pre">linear_search</span></code>. Make sure to
 replace the trend line with what you expect.</p>
 <p><strong>Exercise</strong>: Implement the binary search function using recursion.</p>
 </div></blockquote>
@@ -698,35 +690,35 @@ replace the trend line with what you expect.</p>
 </div>
 <div class="section" id="A-Comment-on-Built-In-Functions">
 <h2>A Comment on Built-In Functions<a class="headerlink" href="#A-Comment-on-Built-In-Functions" title="Permalink to this headline">¶</a></h2>
-<p>Given <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code>, Python already has a way to find the
-location of <code class="docutils literal"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">9</span></code>:</p>
+<p>Given <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">7,</span> <span class="pre">9,</span> <span class="pre">11]</span></code>, Python already has a way to find the
+location of <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">9</span></code>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
 <span class="n">a</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[9]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>3
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">help</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -745,11 +737,11 @@ index(...) method of builtins.list instance
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">a</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -767,35 +759,35 @@ index(...) method of builtins.list instance
 <span class="ansi-red-fg">ValueError</span>: 2 is not in list
 </pre></div></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">index</span></code> function does not require that the elements of <code class="docutils literal"><span class="pre">a</span></code> be
+<p>The <code class="docutils literal notranslate"><span class="pre">index</span></code> function does not require that the elements of <code class="docutils literal notranslate"><span class="pre">a</span></code> be
 sorted:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[12]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>3
 </pre></div>
 </div>
 </div>
-<p>Based on the documentation, it&#8217;s not clear what sort of search is
-powering the <code class="docutils literal"><span class="pre">index</span></code> function. You could dig in to the underlying
+<p>Based on the documentation, it’s not clear what sort of search is
+powering the <code class="docutils literal notranslate"><span class="pre">index</span></code> function. You could dig in to the underlying
 code, or you could try a numerical experiment!</p>
 <blockquote>
 <div><strong>Exercise</strong>: Adapt the numerical experiment above to determine
-whether the <code class="docutils literal"><span class="pre">index</span></code> function is linear or binary. Does its
-behavior change if <code class="docutils literal"><span class="pre">a</span></code> is unsorted?</div></blockquote>
+whether the <code class="docutils literal notranslate"><span class="pre">index</span></code> function is linear or binary. Does its
+behavior change if <code class="docutils literal notranslate"><span class="pre">a</span></code> is unsorted?</div></blockquote>
 </div>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
@@ -805,30 +797,60 @@ behavior change if <code class="docutils literal"><span class="pre">a</span></co
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Searching</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<h1 class="logo"><a href="../index.html">ME 400 Course Notes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administrivia/ME400_Syllabus.html">Syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">Lecture 1 - Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Basic_Operators_and_Built-In_Functions.html">Lecture 2 - Basic Operators and Built-In Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Basic_Data_Processing_with_NumPy_and_Matplotlib.html">Lecture 3 - Basic Data Processing with NumPy and Matplotlib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_NumPy_Arrays.html">Lecture 4 - More on NumPy Arrays: Slicing and `np.linalg`</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Algorithms_Flowcharts_and_Pseudocode.html">Lecture 5 - Algorithms, Flowcharts, and Pseudocode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conditional_Statements_and_the_Structure_of_Python_Code.html">Lecture 6 - Conditional Statements and the Structure of Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_Conditionals.html">Lecture 7 - More on Conditionals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Loops_in_Python.html">Lecture 8 - Loops in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_Loops.html">Lecture 9 - More on Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pythonic_Containers.html">Lecture 10 - Pythonic Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Processing_Text_Data.html">Lecture 11 - Processing Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Basics_of_Functions.html">Lecture 12 - Basics of Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_Functions.html">Lecture 13 - More on Functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lecture 14 - Searching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-Basic,-Linear-Search">The Basic, Linear Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#A-Bit-About-Order">A Bit About Order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Binary-Search">Binary Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#A-Comment-on-Built-In-Functions">A Comment on Built-In Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#The-Basic,-Linear-Search">The Basic, Linear Search</a></li>
-<li><a class="reference internal" href="#A-Bit-About-Order">A Bit About Order</a></li>
-<li><a class="reference internal" href="#Binary-Search">Binary Search</a><ul>
-<li><a class="reference internal" href="#The-basic-algorithm">The basic algorithm</a></li>
-<li><a class="reference internal" href="#Back-to-Order">Back to Order</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sorting.html">Lecture 15 - Sorting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Unit_Tests_and_Defensive_Programming.html">Lecture 17 - Unit Tests and Defensive Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Numerical_Differentiation.html">Lecture 18 - Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Numerical_Integration.html">Lecture 19 - Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Linear_Systems.html">Lecture 20 - Linear Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Root_Finding.html">Lecture 21 - Root Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Lecture 22 - Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modeling_Data_With_Least_Squares_Fitting.html">Lecture 23 - Modeling Data with Least Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modeling_Data_With_Interpolation.html">Lecture 24 - Modeling Data with Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eulers_Method_For_IVPs.html">Lecture 25 - Euler's Method for IVPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Systems_Of_IVPs.html">Lecture 26 - Systems of IVPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Numerical_Solution_of_BVPs.html">Lecture 27 - Numerical Solution of BVPs</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#A-Comment-on-Built-In-Functions">A Comment on Built-In Functions</a></li>
-<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
-</ul>
-</li>
-</ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -838,23 +860,26 @@ behavior change if <code class="docutils literal"><span class="pre">a</span></co
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Searching.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -863,11 +888,11 @@ behavior change if <code class="docutils literal"><span class="pre">a</span></co
       &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/lectures/Searching.txt"
+      <a href="../_sources/lectures/Searching.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 

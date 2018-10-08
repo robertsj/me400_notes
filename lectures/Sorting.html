@@ -1,30 +1,21 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Lecture 15 - Sorting &mdash; ME 400 Course Notes Fall 2018 documentation</title>
-    
+    <title>Lecture 15 - Sorting &#8212; ME 400 Course Notes Fall 2018 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     'Fall 2018',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Unit Tests and Defensive Programming" href="Unit_Tests_and_Defensive_Programming.html" />
     <link rel="prev" title="Searching" href="Searching.html" />
    
@@ -33,13 +24,14 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   
@@ -212,20 +204,20 @@ div.nboutput div.output_area.stderr {
 <h1>Lecture 15 - Sorting<a class="headerlink" href="#Lecture-15---Sorting" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture and <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture 14</a>, we tackle
-two of the most important practical problems in computing: <em>searching</em>
-and <em>sorting</em>. In this lecture, we turn to <em>sorting</em>, the more
-challenging problem and one that was a focus of much research in the
-early years of computing for making searching easier. We&#8217;ll flex our
-knowledge of functions to help write clean and clear sorting programs.</p>
+<p>In this lecture and <a class="reference internal" href="Searching.html"><span class="doc">Lecture 14</span></a>, we tackle two of
+the most important practical problems in computing: <em>searching</em> and
+<em>sorting</em>. In this lecture, we turn to <em>sorting</em>, the more challenging
+problem and one that was a focus of much research in the early years of
+computing for making searching easier. We’ll flex our knowledge of
+functions to help write clean and clear sorting programs.</p>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Sort an array of numbers using brute-force, <span class="math">\(\mathcal{O}(n^2)\)</span>
+<li>Sort an array of numbers using brute-force, <span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span>
 schemes like <em>selection sort</em>.</li>
 <li>Sort an array of numbers using divide-and-conquer,
-<span class="math">\(\mathcal{O}(n\log n)\)</span> schemes like <em>merge sort</em>.</li>
+<span class="math notranslate nohighlight">\(\mathcal{O}(n\log n)\)</span> schemes like <em>merge sort</em>.</li>
 <li>Apply built-in Python functions to sort sequences.</li>
 </ul>
 </div>
@@ -233,9 +225,10 @@ schemes like <em>selection sort</em>.</li>
 <h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>selection sort</li>
-<li>stable sorting algorithm</li>
+<li>stable sorting algorithm (<em>hint</em>: see the exercises)</li>
 <li>merge sort</li>
 <li>merge</li>
+<li>divide and conquer</li>
 </ul>
 </div>
 </div>
@@ -244,24 +237,24 @@ schemes like <em>selection sort</em>.</li>
 <p>Sorting a sequence of randomly arranged items is no easy task, often
 resulting in a lot of repetive motions and paper cuts (if the items are,
 e.g., student exams). However, computers are great for such repetition,
-and they don&#8217;t seem to suffer those paper cuts. The question is: <em>how to
+and they don’t seem to suffer those paper cuts. The question is: <em>how to
 sort</em>? Sorting, it turns out, presents a rich opportunity for
 integrating much of the material covered so far.</p>
 <p>The simplest sorting algorithm is based on brute force and leverages the
-solution to a problem encountered as early as <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture
-5</a>: finding the minimum value of a sequence of
-numbers. The basic idea is simple. Given a sequence of <span class="math">\(n\)</span> numbers
-to sort in increasing order, we</p>
+solution to a problem encountered as early as <a class="reference internal" href="Algorithms_Flowcharts_and_Pseudocode.html"><span class="doc">Lecture
+5</span></a>: finding the minimum
+value of a sequence of numbers. The basic idea is simple. Given a
+sequence of <span class="math notranslate nohighlight">\(n\)</span> numbers to sort in increasing order, we</p>
 <ol class="arabic simple">
 <li>Find the smallest value (just as we have previously done).</li>
 <li>Swap it with the first element in the sequence.</li>
-<li>Repeat steps (1) and (2) this process for the last <span class="math">\(n-1\)</span> items
-in the sequence.</li>
+<li>Repeat steps (1) and (2) for the last <span class="math notranslate nohighlight">\(n-1\)</span> items in the
+sequence.</li>
 </ol>
 <p>This algorithm is known as <a class="reference external" href="https://en.wikipedia.org/wiki/Selection_sort">selection
 sort</a>. In more detailed
 pseudocode, <strong>selection sort</strong> can be written as</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;The selection sort algorithm to sort an array&#39;&#39;&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;The selection sort algorithm to sort an array&#39;&#39;&#39;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="c1"># sequence of numbers and its length</span>
 <span class="c1"># Loop through each element a[i]</span>
 <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -280,13 +273,13 @@ pseudocode, <strong>selection sort</strong> can be written as</p>
 </div>
 <p>Take some time and digest this algorithm. Then try the following
 exercises:</p>
-<blockquote>
-<div><strong>Exercise</strong>: Apply this algorithm to the sequence [5, 3, 7]. For
-each value of <code class="docutils literal"><span class="pre">i</span></code> and <code class="docutils literal"><span class="pre">j</span></code>, write out, using pen and paper, the
-values of <code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, <code class="docutils literal"><span class="pre">k</span></code>, <code class="docutils literal"><span class="pre">a[i]</span></code>, <code class="docutils literal"><span class="pre">a[j]</span></code>, <code class="docutils literal"><span class="pre">a[k]</span></code>,
-<code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code>, and <code class="docutils literal"><span class="pre">a</span></code> <em>before</em> the conditional statement. &gt;
-<em>Solution</em>:</div></blockquote>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">i</span>    <span class="n">j</span>    <span class="n">k</span>    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>    <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>    <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>   <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>    <span class="n">a</span>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply this algorithm to the sequence [5, 3, 7]. For each
+value of <code class="docutils literal notranslate"><span class="pre">i</span></code> and <code class="docutils literal notranslate"><span class="pre">j</span></code>, write out, using pen and paper, the values of
+<code class="docutils literal notranslate"><span class="pre">i</span></code>, <code class="docutils literal notranslate"><span class="pre">j</span></code>, <code class="docutils literal notranslate"><span class="pre">k</span></code>, <code class="docutils literal notranslate"><span class="pre">a[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">a[j]</span></code>, <code class="docutils literal notranslate"><span class="pre">a[k]</span></code>, <code class="docutils literal notranslate"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">a</span></code> <em>before</em> the conditional statement.</p>
+<p><em>Solution</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span>    <span class="n">j</span>    <span class="n">k</span>    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>    <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>    <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>   <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>    <span class="n">a</span>
 <span class="o">-------------------------------------------------------------</span>
 <span class="mi">0</span>    <span class="mi">1</span>    <span class="mi">0</span>     <span class="mi">5</span>       <span class="mi">3</span>       <span class="mi">5</span>        <span class="kc">True</span>       <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 <span class="mi">0</span>    <span class="mi">2</span>    <span class="mi">1</span>     <span class="mi">5</span>       <span class="mi">7</span>       <span class="mi">3</span>        <span class="kc">False</span>      <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
@@ -294,30 +287,31 @@ values of <code class="docutils literal"><span class="pre">i</span></code>, <cod
 <span class="mi">2</span>    <span class="mi">3</span>    <span class="mi">2</span>     <span class="mi">7</span>      <span class="n">N</span><span class="o">/</span><span class="n">A</span>      <span class="mi">7</span>        <span class="n">N</span><span class="o">/</span><span class="n">A</span>        <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Some more:</p>
-<blockquote>
-<div><p><strong>Exercise</strong>: Repeat the above exercise for the sequence [4, 1, 8,
-2, 3].</p>
-<p><strong>Exercise</strong>: What happens to <code class="docutils literal"><span class="pre">a[i]</span></code> if <code class="docutils literal"><span class="pre">a[j]</span></code> is never less
-than <code class="docutils literal"><span class="pre">a[k]</span></code>?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Repeat the above exercise for the sequence [4, 1, 8, 2,
+3].</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: What happens to <code class="docutils literal notranslate"><span class="pre">a[i]</span></code> if <code class="docutils literal notranslate"><span class="pre">a[j]</span></code> is never less than
+<code class="docutils literal notranslate"><span class="pre">a[k]</span></code>?</p>
+<hr class="docutils" />
 <p><strong>Exercise</strong>: Produce a flowchart for this algorithm.</p>
-<p><strong>Exercise</strong>: Apply this algorithm to the sequence [3, <span class="math">\(1_0\)</span>,
-4, <span class="math">\(1_1\)</span>, 2]. Here, the subscript is used to count the number
-of times a 1 appears in the sequence. Does the algorithm produce
-[<span class="math">\(1_0\)</span>, <span class="math">\(1_1\)</span>, 2, 3, 4] or [<span class="math">\(1_1\)</span>, <span class="math">\(1_0\)</span>, 2,
-3, 4]? A sorting algorithm is <strong>stable</strong> if it preserves the
-original order of equal values (i.e., <span class="math">\(1_0\)</span> and then
-<span class="math">\(1_1\)</span>).</p>
-</div></blockquote>
-<p>Let&#8217;s put this to practice using Python. Because sorting is something to
-be done for any array, it makes sense to implement the algorithm as a
-function:</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply this algorithm to the sequence [3, <span class="math notranslate nohighlight">\(1_0\)</span>, 4,
+<span class="math notranslate nohighlight">\(1_1\)</span>, 2]. Here, the subscript is used to count the number of
+times a 1 appears in the sequence. Does the algorithm produce
+[<span class="math notranslate nohighlight">\(1_0\)</span>, <span class="math notranslate nohighlight">\(1_1\)</span>, 2, 3, 4] or [<span class="math notranslate nohighlight">\(1_1\)</span>, <span class="math notranslate nohighlight">\(1_0\)</span>, 2, 3,
+4]? A sorting algorithm is <strong>stable</strong> if it preserves the original order
+of equal values (i.e., <span class="math notranslate nohighlight">\(1_0\)</span> and then <span class="math notranslate nohighlight">\(1_1\)</span>).</p>
+<hr class="docutils" />
+<p>Let’s put selection sort into practice using Python. Because sorting is
+something to be done for any array, it makes sense to implement the
+algorithm as a function:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">selection_sort</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Applies the selection sort algorithm to sort the sequence a.&quot;&quot;&quot;</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -335,88 +329,93 @@ function:</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">selection_sort</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[2]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[3, 5, 7]
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">selection_sort</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[3]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[1, 2, 3, 4, 5]
 </pre></div>
 </div>
 </div>
 <p>Download this notebook or copy the function above into your own Python
-file. Then tackle the following:</p>
-<blockquote>
-<div><p><strong>Exercise</strong>: Define <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">[5,</span> <span class="pre">3,</span> <span class="pre">7]</span></code> and execute
-<code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">selection_sort(x)</span></code>. Print both <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code>. Why are they
-the same? In other words, why is <code class="docutils literal"><span class="pre">x</span></code> also sorted?</p>
-<blockquote>
-<div><em>Solution</em>: Remember, <code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x</span></code> does not produce a copy of
-<code class="docutils literal"><span class="pre">x</span></code>. Rather, <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are now just two names for the
-same data. Similarly, when <code class="docutils literal"><span class="pre">x</span></code> is passed to
-<code class="docutils literal"><span class="pre">selection_sort</span></code>, it is given the new name <code class="docutils literal"><span class="pre">a</span></code> within the
-function, and any changes to <code class="docutils literal"><span class="pre">a</span></code> lead to changes in <code class="docutils literal"><span class="pre">x</span></code>.
-Because <code class="docutils literal"><span class="pre">a</span></code> is returned and assigned to <code class="docutils literal"><span class="pre">y</span></code>, <code class="docutils literal"><span class="pre">y</span></code> and <code class="docutils literal"><span class="pre">x</span></code>
-are two names for the same (now sorted) <code class="docutils literal"><span class="pre">list</span></code>.</div></blockquote>
-<p><strong>Exercise</strong>: Define <code class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">(5,</span> <span class="pre">3,</span> <span class="pre">7)</span></code> and execute
-<code class="docutils literal"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">selection_sort(x)</span></code>. Why does it fail?</p>
-<p><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">selection_sort</span></code> so that it sorts and returns
-a <em>copy</em> of <code class="docutils literal"><span class="pre">a</span></code>, making it suitable for sorting <code class="docutils literal"><span class="pre">tuple</span></code>
-variables.</p>
-<p><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">selection_sort</span></code> so that it optionally sorts
-a sequence in decreasing order. The function <code class="docutils literal"><span class="pre">def</span></code> statement
-should look like <code class="docutils literal"><span class="pre">def</span> <span class="pre">selection_sort(a,</span> <span class="pre">increasing=True):</span></code>.</p>
-<blockquote>
-<div><em>Solution</em>: A one-line change is to switch <code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code> with
-<code class="docutils literal"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span> <span class="pre">if</span> <span class="pre">increasing</span> <span class="pre">else</span> <span class="pre">a[k]</span> <span class="pre">&lt;</span> <span class="pre">a[j]</span></code>. Revisit <a class="reference external" href="ME400_Lecture_6.ipynb">Lecture
-6</a> for more tertiary <code class="docutils literal"><span class="pre">if</span></code> statements
-of the form <code class="docutils literal"><span class="pre">a</span> <span class="pre">if</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">c</span></code>. Verify this works!</div></blockquote>
-<p><strong>Exercise</strong>: Modify <code class="docutils literal"><span class="pre">selection_sort</span></code> so that it uses <code class="docutils literal"><span class="pre">for</span></code>
-loops instead of <code class="docutils literal"><span class="pre">while</span></code> loops. Check your result against the
-version provided above.</p>
-<p><strong>Exercise</strong>: Could <code class="docutils literal"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span></code> be changed to
-<code class="docutils literal"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span> <span class="pre">-</span> <span class="pre">1</span></code>? Why or why not?</p>
-<blockquote>
-<div><em>Solution</em>. Yes! Doing so would skip the loop when <code class="docutils literal"><span class="pre">a</span></code> has a
-single element, for which sorting is not required anyway.</div></blockquote>
-</div></blockquote>
-<p>So what&#8217;s the <em>order</em> of this algorithm? In other words, given a
-sequence of <span class="math">\(n\)</span> elements, how many comparisons must be made?</p>
-<p>Let&#8217;s break it down a bit. The algorithm is comprised of two loops. The
-first one must go through all the elements of <code class="docutils literal"><span class="pre">a</span></code>. For each value of
-<code class="docutils literal"><span class="pre">i</span></code>, the second loop makes <code class="docutils literal"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">i</span></code> comparisons. In other words, we
+file. Then tackle the exercises that follow.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Define <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">[5,</span> <span class="pre">3,</span> <span class="pre">7]</span></code> and execute
+<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">selection_sort(x)</span></code>. Print both <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>. Why are they the
+same? In other words, why is <code class="docutils literal notranslate"><span class="pre">x</span></code> also sorted?</p>
+<p><em>Solution</em>: Remember, <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">x</span></code> does not produce a copy of <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+Rather, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are now just two names for the same data.
+Similarly, when <code class="docutils literal notranslate"><span class="pre">x</span></code> is passed to <code class="docutils literal notranslate"><span class="pre">selection_sort</span></code>, it is given the
+new name <code class="docutils literal notranslate"><span class="pre">a</span></code> within the function, and any changes to <code class="docutils literal notranslate"><span class="pre">a</span></code> lead to
+changes in <code class="docutils literal notranslate"><span class="pre">x</span></code>. Because <code class="docutils literal notranslate"><span class="pre">a</span></code> is returned and assigned to <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>
+and <code class="docutils literal notranslate"><span class="pre">x</span></code> are two names for the same (now sorted) <code class="docutils literal notranslate"><span class="pre">list</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Define <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">(5,</span> <span class="pre">3,</span> <span class="pre">7)</span></code> and execute
+<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">selection_sort(x)</span></code>. Why does it fail?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Modify <code class="docutils literal notranslate"><span class="pre">selection_sort</span></code> so that it sorts and returns a
+<em>copy</em> of <code class="docutils literal notranslate"><span class="pre">a</span></code>, making it suitable for sorting <code class="docutils literal notranslate"><span class="pre">tuple</span></code> variables.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Modify <code class="docutils literal notranslate"><span class="pre">selection_sort</span></code> so that it optionally sorts a
+sequence in decreasing order. The function <code class="docutils literal notranslate"><span class="pre">def</span></code> statement should look
+like <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">selection_sort(a,</span> <span class="pre">increasing=True):</span></code>.</p>
+<p><em>Solution</em>: A one-line change is to switch <code class="docutils literal notranslate"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span></code> with
+<code class="docutils literal notranslate"><span class="pre">a[j]</span> <span class="pre">&lt;</span> <span class="pre">a[k]</span> <span class="pre">if</span> <span class="pre">increasing</span> <span class="pre">else</span> <span class="pre">a[k]</span> <span class="pre">&lt;</span> <span class="pre">a[j]</span></code>. Otherwise, an
+<code class="docutils literal notranslate"><span class="pre">if/elif</span></code> structure would work just as well. Revisit <a class="reference external" href="Conditional_Statements_and_the_Structure_of_Python_Code">Lecture
+6</a> for more
+tertiary <code class="docutils literal notranslate"><span class="pre">if</span></code> statements of the form <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">if</span> <span class="pre">b</span> <span class="pre">else</span> <span class="pre">c</span></code>. Verify this
+works!</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Modify <code class="docutils literal notranslate"><span class="pre">selection_sort</span></code> so that it uses <code class="docutils literal notranslate"><span class="pre">for</span></code> loops
+instead of <code class="docutils literal notranslate"><span class="pre">while</span></code> loops. Check your result against the version
+provided above.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Could <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span></code> be changed to
+<code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">len(a)</span> <span class="pre">-</span> <span class="pre">1</span></code>? Why or why not?</p>
+<p><em>Solution</em>. Yes! Doing so would skip the loop when <code class="docutils literal notranslate"><span class="pre">a</span></code> has a single
+element, for which sorting is not required anyway.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="Quantifying-that-Hard-Work">
+<h2>Quantifying that Hard Work<a class="headerlink" href="#Quantifying-that-Hard-Work" title="Permalink to this headline">¶</a></h2>
+<p>So what’s the <em>order</em> of this algorithm? In other words, given a
+sequence of <span class="math notranslate nohighlight">\(n\)</span> elements, how many comparisons must be made?</p>
+<p>Let’s break it down a bit. The algorithm is comprised of two loops. The
+first one must go through all the elements of <code class="docutils literal notranslate"><span class="pre">a</span></code>. For each value of
+<code class="docutils literal notranslate"><span class="pre">i</span></code>, the second loop makes <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">i</span></code> comparisons. In other words, we
 have something like</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">i</span>     <span class="c1"># comparisons</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i</span>     <span class="c1"># comparisons</span>
 <span class="o">-------------------</span>
 <span class="mi">0</span>       <span class="n">n</span>
 <span class="mi">1</span>       <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
@@ -427,27 +426,27 @@ have something like</p>
 <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>   <span class="mi">1</span>
 </pre></div>
 </div>
-<p>That total looks an awful lot like <span class="math">\(1 + 2 + \ldots + (n - 1) + n\)</span>,
-and that sum is <span class="math">\(n(n+1)/2 = n^2/2 + n/2\)</span>. Because
-<span class="math">\(n \ll n^2\)</span> for large <span class="math">\(n\)</span>, the algorithm is
-<span class="math">\(\mathcal{O}(n^2)\)</span>. That&#8217;s expensive, and for large sequences, we
+<p>That total looks an awful lot like <span class="math notranslate nohighlight">\(1 + 2 + \ldots + (n - 1) + n\)</span>,
+and that sum is <span class="math notranslate nohighlight">\(n(n+1)/2 = n^2/2 + n/2\)</span>. Because
+<span class="math notranslate nohighlight">\(n \ll n^2\)</span> for large <span class="math notranslate nohighlight">\(n\)</span>, the algorithm is
+<span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span>. That’s expensive, and for large sequences, we
 could wait a long, long time for the sort to finish.</p>
-<p>Let&#8217;s verify that selection sort is <span class="math">\(\mathcal{O}(n^2)\)</span> by
-performing a little experiment. As done in <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture
-14</a> to assess the linear search, we can
-generate random sequences of different sizes using NumPy. Then, we can
-sort them with selection sort and time how long it takes to do so for
-each size.</p>
+<p>Let’s verify that selection sort is <span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span> by
+performing a little experiment. As done in <a class="reference internal" href="Searching.html"><span class="doc">Lecture
+14</span></a> to assess the linear search, we can generate
+random sequences of different sizes using NumPy. Then, we can sort them
+with selection sort and time how long it takes to do so for each size.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Program to show time as a function of size for selection sort.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="c1"># Set the seed to keep the output fixed</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
@@ -476,7 +475,16 @@ each size.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.legend.Legend at 0x7f3e72381240&gt;
 </pre></div>
 </div>
 </div>
@@ -484,29 +492,31 @@ each size.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_Sorting_11_0.png" src="../_images/lectures_Sorting_11_0.png" />
+<img alt="../_images/lectures_Sorting_11_1.png" src="../_images/lectures_Sorting_11_1.png" />
 </div>
 </div>
-<p>It appears that the order is confirmed, and that the impact on time is
-as expected. Basically, each comparison (which requires accessing two
-elements of <code class="docutils literal"><span class="pre">a</span></code>) requires a certain amount of time. If the number of
-comparisons is goes as <span class="math">\(n^2\)</span>, and the time goes with the number of
-comparisons, then selection sort is <strong>100 times more expensive for an
-array of size :math:`10n` than for an array of size :math:`n`</strong>. That&#8217;s
-huge, and better methods are surely needed for the massive data sets out
-in the real world that must be sorted (think Google searches and other
-everyday lists with thousands of entries).</p>
-<blockquote>
-<div><strong>Exercise</strong>: The results from the numerical experiment suggest that
-an array of 100 elements takes about 0.002 s to sort using the
-selection sort algorithm. About how many seconds would you expect
-the same algorithm to take for 1 million elements?</div></blockquote>
+<p>It appears that the order is confirmed because the two lines are
+approximately parallel (for large enough <span class="math notranslate nohighlight">\(n\)</span>), and that the impact
+on time is as expected. Basically, each comparison (which requires
+accessing two elements of <code class="docutils literal notranslate"><span class="pre">a</span></code>) requires a certain amount of time. If
+the number of comparisons is goes as <span class="math notranslate nohighlight">\(n^2\)</span>, and the time goes with
+the number of comparisons, then selection sort is <strong>100 times more
+expensive</strong> for an array of size <span class="math notranslate nohighlight">\(10n\)</span> than for an array of size
+<span class="math notranslate nohighlight">\(n\)</span>. That’s huge, and better methods are surely needed for the
+massive data sets out in the real world that must be sorted (think
+Google searches and other everyday lists with thousands of entries).</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: The results from the numerical experiment suggest that an
+array of 100 elements takes about 0.001 s to sort using the selection
+sort algorithm. About how many seconds would you expect the same
+algorithm to take for 1 million elements?</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="Better-Sorting-for-Bigger-Data">
 <h2>Better Sorting for Bigger Data<a class="headerlink" href="#Better-Sorting-for-Bigger-Data" title="Permalink to this headline">¶</a></h2>
 <p>We saw in <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture 14</a> that the task of
 searching a pre-sorted array could be done in as few as
-<span class="math">\(\mathcal{O}(n \log n)\)</span> operations. The trick was to split
+<span class="math notranslate nohighlight">\(\mathcal{O}(n \log n)\)</span> operations. The trick was to split
 identify which half of a sequence contained the element, and to keep
 splitting the domain in half at every iteration until the element in
 question was found. It was even suggested that such a <strong>binary search</strong>
@@ -519,7 +529,7 @@ most widely search algorithms, and the <a class="reference external" href="https
 transform</a>,
 which drives much of signal processing across multiple domains. Often,
 and as true for these algorithms, divide and conquer takes one from
-<span class="math">\(\mathcal{O}(n^2)\)</span> to <span class="math">\(\mathcal{O}(n \log n)\)</span>, a huge
+<span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{O}(n \log n)\)</span>, a huge
 savings.</p>
 <p>For our purposes, it is sufficient to consider the simplest of the
 divide and conquer approaches to sorting: <a class="reference external" href="https://en.wikipedia.org/wiki/Merge_sort">merge
@@ -531,20 +541,20 @@ chunks that can be sorted directly and (2) merge two sorted
 <h3>Merging Sorted Sequences<a class="headerlink" href="#Merging-Sorted-Sequences" title="Permalink to this headline">¶</a></h3>
 <p>The fundamental work done by mergesort is to merge two smaller, <em>sorted</em>
 sequences into one larger, <em>sorted</em> sequence. For example, if one starts
-with <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">8]</span></code> and <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">[7,</span> <span class="pre">5]</span></code>, the result of <em>merging</em> <code class="docutils literal"><span class="pre">a</span></code>
-and <code class="docutils literal"><span class="pre">b</span></code> should be <code class="docutils literal"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">5,</span> <span class="pre">7,</span> <span class="pre">8]</span></code>.</p>
+with <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">8]</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">[5,</span> <span class="pre">7]</span></code>, the result of <em>merging</em> <code class="docutils literal notranslate"><span class="pre">a</span></code>
+and <code class="docutils literal notranslate"><span class="pre">b</span></code> should be <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">5,</span> <span class="pre">7,</span> <span class="pre">8]</span></code>.</p>
 <p>How is this accomplished? We know the total number of elements to be
-merged (here, that&#8217;s 4). Each element of the new, sorted sequence <code class="docutils literal"><span class="pre">c</span></code>
-can be defined by choosing the lowest of the remaining elements in <code class="docutils literal"><span class="pre">a</span></code>
-and <code class="docutils literal"><span class="pre">b</span></code>. Because <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are sorted, we can keep track of
+merged (here, that’s 4). Each element of the new, sorted sequence <code class="docutils literal notranslate"><span class="pre">c</span></code>
+can be defined by choosing the lowest of the remaining elements in <code class="docutils literal notranslate"><span class="pre">a</span></code>
+and <code class="docutils literal notranslate"><span class="pre">b</span></code>. Because <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are sorted, we can keep track of
 which elements have already been selected with two counters (one for
-<code class="docutils literal"><span class="pre">a</span></code> and one for <code class="docutils literal"><span class="pre">b</span></code>). If the counter for <code class="docutils literal"><span class="pre">a</span></code> is equal to the
-length of <code class="docutils literal"><span class="pre">a</span></code> (i.e., all elements of <code class="docutils literal"><span class="pre">a</span></code> have been merged), then all
-of the remaining elements of <code class="docutils literal"><span class="pre">c</span></code> must come from <code class="docutils literal"><span class="pre">b</span></code>. The same goes
-if the <code class="docutils literal"><span class="pre">b</span></code> counter equals the length of <code class="docutils literal"><span class="pre">b</span></code>.</p>
-<p>That&#8217;s all a mouthful, for sure. The idea can be shown more succinctly
+<code class="docutils literal notranslate"><span class="pre">a</span></code> and one for <code class="docutils literal notranslate"><span class="pre">b</span></code>). If the counter for <code class="docutils literal notranslate"><span class="pre">a</span></code> is equal to the
+length of <code class="docutils literal notranslate"><span class="pre">a</span></code> (i.e., all elements of <code class="docutils literal notranslate"><span class="pre">a</span></code> have been merged), then all
+of the remaining elements of <code class="docutils literal notranslate"><span class="pre">c</span></code> must come from <code class="docutils literal notranslate"><span class="pre">b</span></code>. The same goes
+if the <code class="docutils literal notranslate"><span class="pre">b</span></code> counter equals the length of <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<p>That’s all a mouthful, for sure. The idea can be shown more succinctly
 in pseudocode:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Merge: an algorithm to merge two sorted sequences&#39;&#39;&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Merge: an algorithm to merge two sorted sequences&#39;&#39;&#39;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 <span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">a</span>
 <span class="n">Set</span> <span class="n">n</span> <span class="n">to</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">b</span>
@@ -577,27 +587,29 @@ in pseudocode:</p>
 </div>
 <p>Take some time and digest this algorithm. Then try the following
 exercises:</p>
-<blockquote>
-<div><p><strong>Exercise</strong>: Apply this algorithm to <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">8]</span></code> and
-<code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">[2,</span> <span class="pre">5,</span> <span class="pre">7]</span></code>. For each value of <code class="docutils literal"><span class="pre">k</span></code>, list the final value of
-<code class="docutils literal"><span class="pre">i</span></code>, <code class="docutils literal"><span class="pre">j</span></code>, and <code class="docutils literal"><span class="pre">k</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply this algorithm to <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">3,</span> <span class="pre">8]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">[2,</span> <span class="pre">5,</span> <span class="pre">7]</span></code>. Trace it by hand using the tecniques employed earlier
+in the course.</p>
+<hr class="docutils" />
 <p><strong>Exercise</strong>: Implement this algorithm as the Python function
-<code class="docutils literal"><span class="pre">merge(a,</span> <span class="pre">b)</span></code>.</p>
-<p><strong>Exercise</strong>: Is merge sort stable? Try it on [3, 1<span class="math">\(_0\)</span>, 4,
-1<span class="math">\(_1\)</span>, 2].</p>
-</div></blockquote>
+<code class="docutils literal notranslate"><span class="pre">merge(a,</span> <span class="pre">b)</span></code>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Is merge sort stable? Try it on [3, 1<span class="math notranslate nohighlight">\(_0\)</span>, 4,
+1<span class="math notranslate nohighlight">\(_1\)</span>, 2].</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="Divide-and-Conquer">
 <h3>Divide and Conquer<a class="headerlink" href="#Divide-and-Conquer" title="Permalink to this headline">¶</a></h3>
 <p>Merging is half thee battle: we need to dive down and get the smaller
 arrays to sort. A natural approach is to use recursion. Here is a
 function that will divide a sequence and print out subsequences.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">divide_and_print</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
@@ -628,19 +640,19 @@ function that will divide a sequence and print out subsequences.</p>
 divided at each level of recursion. Like all recursive functions, there
 needs to be a termination criterion (or guard). Here, if the sequence
 has two or fewer elements, the function returns without further dividing
-<code class="docutils literal"><span class="pre">a</span></code>.</p>
-<p>To apply the basic idea of <code class="docutils literal"><span class="pre">divide_and_print</span></code> to sorting, the sequence
-must be sorted at the bottom level (i.e., when <code class="docutils literal"><span class="pre">len(a)</span> <span class="pre">&lt;=</span> <span class="pre">2</span></code>) and
-merged at successive levels. For example, the very first chunk of <code class="docutils literal"><span class="pre">a</span></code>
-is the subsequence <code class="docutils literal"><span class="pre">[8,</span> <span class="pre">7]</span></code>. That is easily sorted by simple
-comparison: since <code class="docutils literal"><span class="pre">8</span> <span class="pre">&gt;</span> <span class="pre">7</span></code>, swap the elements to yield (and return)
-<code class="docutils literal"><span class="pre">[7,</span> <span class="pre">8]</span></code>. The next chunk is <code class="docutils literal"><span class="pre">[6,</span> <span class="pre">5]</span></code>, which is also reversed to
-<code class="docutils literal"><span class="pre">[5,</span> <span class="pre">6]</span></code>. These sorted subsequences of two elements can then be
+<code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
+<p>To apply the basic idea of <code class="docutils literal notranslate"><span class="pre">divide_and_print</span></code> to sorting, the sequence
+must be sorted at the bottom level (i.e., when <code class="docutils literal notranslate"><span class="pre">len(a)</span> <span class="pre">&lt;=</span> <span class="pre">2</span></code>) and
+merged at successive levels. For example, the very first chunk of <code class="docutils literal notranslate"><span class="pre">a</span></code>
+is the subsequence <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">7]</span></code>. That is easily sorted by simple
+comparison: since <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">&gt;</span> <span class="pre">7</span></code>, swap the elements to yield (and return)
+<code class="docutils literal notranslate"><span class="pre">[7,</span> <span class="pre">8]</span></code>. The next chunk is <code class="docutils literal notranslate"><span class="pre">[6,</span> <span class="pre">5]</span></code>, which is also reversed to
+<code class="docutils literal notranslate"><span class="pre">[5,</span> <span class="pre">6]</span></code>. These sorted subsequences of two elements can then be
 merged.</p>
-<p>Here is the full algorithm in pseudocode, where <code class="docutils literal"><span class="pre">Call</span></code> indicates that
+<p>Here is the full algorithm in pseudocode, where <code class="docutils literal notranslate"><span class="pre">Call</span></code> indicates that
 an algorithm (think a function, here) is to be supplied some input and
 is to provide some output:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Merge Sort: an algorithm to sort the sequence a&#39;&#39;&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Merge Sort: an algorithm to sort the sequence a&#39;&#39;&#39;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span>
 <span class="n">Set</span> <span class="n">n</span> <span class="n">to</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">a</span>
 <span class="n">If</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">then</span>
@@ -659,89 +671,91 @@ is to provide some output:</p>
 </pre></div>
 </div>
 <p>Although perhaps not obvious, the merge sort algorithm is
-<span class="math">\(\mathcal{O}(n\log n)\)</span>. Given <span class="math">\(n\)</span> elements in a sequence,
-the algorithm divides the array into smaller chunks <span class="math">\(\log_2 n - 1\)</span>
+<span class="math notranslate nohighlight">\(\mathcal{O}(n\log n)\)</span>. Given <span class="math notranslate nohighlight">\(n\)</span> elements in a sequence,
+the algorithm divides the array into smaller chunks <span class="math notranslate nohighlight">\(\log_2 n - 1\)</span>
 times. For example, if one starts with 16 elements, those are then
 divided into subsequences with 8 elements, and then 4, and then 2. That
-is <span class="math">\(\log_2 16 - 1 = 3\)</span> levels. At the last (deepest) level with
+is <span class="math notranslate nohighlight">\(\log_2 16 - 1 = 3\)</span> levels. At the last (deepest) level with
 subsequences of 1 or 2 elements, up to one comparison is made to decide
 whether to swap the elements or not. For all other levels, the merge
-algorithm is applied. To merge two sequences each of length <span class="math">\(m\)</span>
-requires at least <span class="math">\(m\)</span> comparisons (and up to <span class="math">\(2m\)</span>
-comparisons). Because all <span class="math">\(n\)</span> elements of the original sequence
+algorithm is applied. To merge two sequences each of length <span class="math notranslate nohighlight">\(m\)</span>
+requires at least <span class="math notranslate nohighlight">\(m\)</span> comparisons (and up to <span class="math notranslate nohighlight">\(2m\)</span>
+comparisons). Because all <span class="math notranslate nohighlight">\(n\)</span> elements of the original sequence
 are merged at every level (albeit as part of smaller subsequences), up
-to <span class="math">\(2n\)</span> comparisons are therefore required per level. Hence, there
+to <span class="math notranslate nohighlight">\(2n\)</span> comparisons are therefore required per level. Hence, there
 are up to approximately
-<span class="math">\((\log_2 n - 1)\cdot 2n = \mathcal{O}(n\log n)\)</span> comparisons.</p>
-<p>Spend some time and digest this alorithm. Then tackle the following:</p>
-<blockquote>
-<div><p><strong>Exercise</strong>: Apply this algorithm to <code class="docutils literal"><span class="pre">[6,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code> and
-trace its progress by hand, writing down the value of <code class="docutils literal"><span class="pre">a</span></code> at the
-beginning of each call to Merge Sort. Number these calls in the
-order in which they are made. (In other words, predict what would
-happen if <code class="docutils literal"><span class="pre">a</span></code> were printed after <code class="docutils literal"><span class="pre">Input</span></code>.)</p>
-<blockquote>
-<div><p><em>Solution</em>:</p>
-<div class="line-block">
-<div class="line"><code class="docutils literal"><span class="pre">0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[6,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code></div>
-<div class="line"><code class="docutils literal"><span class="pre">1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[6,</span> <span class="pre">5,</span> <span class="pre">4]</span></code></div>
-<div class="line"><code class="docutils literal"><span class="pre">2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[6]</span></code></div>
-<div class="line"><code class="docutils literal"><span class="pre">3</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[5,</span> <span class="pre">4]</span></code></div>
-<div class="line"><code class="docutils literal"><span class="pre">4</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code></div>
-<div class="line"><code class="docutils literal"><span class="pre">5</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[3]</span></code></div>
-<div class="line"><code class="docutils literal"><span class="pre">6</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">[2,</span> <span class="pre">1]</span></code></div>
+<span class="math notranslate nohighlight">\((\log_2 n - 1)\cdot 2n = \mathcal{O}(n\log n)\)</span> comparisons.</p>
+<p>Spend some time and digest this alorithm. Then tackle the following
+exercises.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Apply this algorithm to <code class="docutils literal notranslate"><span class="pre">[6,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code> and trace
+its progress by hand, writing down the value of <code class="docutils literal notranslate"><span class="pre">a</span></code> at the beginning
+of each call to Merge Sort. Number these calls in the order in which
+they are made. (In other words, predict what would happen if <code class="docutils literal notranslate"><span class="pre">a</span></code> were
+printed after <code class="docutils literal notranslate"><span class="pre">Input</span></code>.)</p>
+<p><em>Solution</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>      <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="mi">1</span>      <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="mi">2</span>      <span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+<span class="mi">3</span>      <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="mi">4</span>      <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="mi">5</span>      <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="mi">6</span>      <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
 </div>
-</div></blockquote>
+<hr class="docutils" />
 <p><strong>Exercise</strong>: Implement this algorithm as the Python function
-<code class="docutils literal"><span class="pre">merge_sort(a)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">merge_sort(a)</span></code>.</p>
+<hr class="docutils" />
 <p><strong>Exercise</strong>: How many comparisons are made for
-<code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[6,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code>? Make sure to include the comparisons
-made when merging. How does this compare to selection sort?</p>
-<p><strong>Exercise</strong>: Suppose you implement merge sort (correctly) in Python
-and use it to sort a list of 100 elements. If the time required to
-sort 100 elements is about 0.001 s, how long would it take to sort a
-list with 1 million elements?</p>
-<blockquote>
-<div><em>Solution</em>:
-<span class="math">\(t \approx \frac{10^6 \log 10^6}{100 \log 100} \times 0.001~\text{s}= 30~\text{s}\)</span>.</div></blockquote>
-<p><strong>Exercise</strong>: Develop a modified merge sort algorithm that does not
-use recursion. <em>Hint</em>: start simple and reproduce the behavior of
-<code class="docutils literal"><span class="pre">divide_and_print</span></code> using only loops.</p>
-</div></blockquote>
+<code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[6,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">1]</span></code>? Make sure to include the comparisons made
+when merging. How does this compare to selection sort?</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Suppose you implement merge sort (correctly) in Python and
+use it to sort a list of 100 elements. If the time required to sort 100
+elements is about 0.001 s, how long would it take to sort a list with 1
+million elements?</p>
+<p><em>Solution</em>:
+<span class="math notranslate nohighlight">\(t \approx \frac{10^6 \log 10^6}{100 \log 100} \times 0.001~\text{s}= 30~\text{s}\)</span>.</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Develop a modified merge sort algorithm that does not use
+recursion. <em>Hint</em>: start simple and reproduce the behavior of
+<code class="docutils literal notranslate"><span class="pre">divide_and_print</span></code> using only loops.</p>
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="Built-in-Sorting">
 <h2>Built-in Sorting<a class="headerlink" href="#Built-in-Sorting" title="Permalink to this headline">¶</a></h2>
 <p>Sorting is so fundamental that algorithms are often implemented by
 default in high-level languages (like Python, MATLAB, and C++). In
-Python, the built-in <code class="docutils literal"><span class="pre">sorted</span></code> function accepts as input a sequence
-<code class="docutils literal"><span class="pre">a</span></code> and returns the sorted results:</p>
+Python, the built-in <code class="docutils literal notranslate"><span class="pre">sorted</span></code> function accepts as input a sequence
+<code class="docutils literal notranslate"><span class="pre">a</span></code> and returns the sorted results:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="nb">sorted</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[6]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[1, 2, 3]
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">help</span><span class="p">(</span><span class="nb">sorted</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -761,102 +775,128 @@ sorted(iterable, /, *, key=None, reverse=False)
 
 </pre></div></div>
 </div>
-<p>As <code class="docutils literal"><span class="pre">help</span></code> indicates, two optional arguments <code class="docutils literal"><span class="pre">key</span></code> and <code class="docutils literal"><span class="pre">reverse</span></code>
-can be provided. By default, <code class="docutils literal"><span class="pre">reverse</span></code> is <code class="docutils literal"><span class="pre">False</span></code>, and a sequence is
-sorted in increasing order. By setting <code class="docutils literal"><span class="pre">reverse=True</span></code>, the opposite
+<p>As <code class="docutils literal notranslate"><span class="pre">help</span></code> indicates, two optional arguments <code class="docutils literal notranslate"><span class="pre">key</span></code> and <code class="docutils literal notranslate"><span class="pre">reverse</span></code>
+can be provided. By default, <code class="docutils literal notranslate"><span class="pre">reverse</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, and a sequence is
+sorted in increasing order. By setting <code class="docutils literal notranslate"><span class="pre">reverse=True</span></code>, the opposite
 order can be achieve:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="nb">sorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[8]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[1, 2, 3]
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="nb">sorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[9]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[3, 2, 1]
 </pre></div>
 </div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">key</span></code> argument is <code class="docutils literal"><span class="pre">None</span></code> by default. Any other value passed must
+<p>The <code class="docutils literal notranslate"><span class="pre">key</span></code> argument is <code class="docutils literal notranslate"><span class="pre">None</span></code> by default. Any other value passed must
 be a callable function that is given an item of the sequence and returns
 a value to be used when comparing that item to others.</p>
-<p>Consider, for example, the list <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code>. The value of <code class="docutils literal"><span class="pre">a[0]</span></code>
-is 1, while <code class="docutils literal"><span class="pre">a[1]</span></code> is 2. Hence, <code class="docutils literal"><span class="pre">a[0]</span> <span class="pre">&lt;</span> <span class="pre">a[1]</span></code> is <code class="docutils literal"><span class="pre">1</span> <span class="pre">&lt;</span> <span class="pre">2</span></code> is
-<code class="docutils literal"><span class="pre">True</span></code>. The result of this comparison (<code class="docutils literal"><span class="pre">True</span></code>) can be modified by
-using the <code class="docutils literal"><span class="pre">key</span></code> function to change the value of each item compared.
-For example, if both <code class="docutils literal"><span class="pre">a[0]</span></code> and <code class="docutils literal"><span class="pre">a[1]</span></code> are <em>negated</em> before their
-comparison, the result is <code class="docutils literal"><span class="pre">-1</span> <span class="pre">&lt;</span> <span class="pre">-2</span></code>, i.e., <code class="docutils literal"><span class="pre">False</span></code>. Such a change
+<p>Consider, for example, the list <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code>. The value of <code class="docutils literal notranslate"><span class="pre">a[0]</span></code>
+is 1, while <code class="docutils literal notranslate"><span class="pre">a[1]</span></code> is 2. Hence, <code class="docutils literal notranslate"><span class="pre">a[0]</span> <span class="pre">&lt;</span> <span class="pre">a[1]</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;</span> <span class="pre">2</span></code> is
+<code class="docutils literal notranslate"><span class="pre">True</span></code>. The result of this comparison (<code class="docutils literal notranslate"><span class="pre">True</span></code>) can be modified by
+using the <code class="docutils literal notranslate"><span class="pre">key</span></code> function to change the value of each item compared.
+For example, if both <code class="docutils literal notranslate"><span class="pre">a[0]</span></code> and <code class="docutils literal notranslate"><span class="pre">a[1]</span></code> are <em>negated</em> before their
+comparison, the result is <code class="docutils literal notranslate"><span class="pre">-1</span> <span class="pre">&lt;</span> <span class="pre">-2</span></code>, i.e., <code class="docutils literal notranslate"><span class="pre">False</span></code>. Such a change
 produces a sorted array in reverse order:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="nb">sorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>Out[10]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[3, 2, 1]
 </pre></div>
 </div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">key</span></code> function can make sorting items with many components easier.
-Those items could be the rows of a spread sheet whose components are the
-valiues in various columns. Suppose such data were read from <code class="docutils literal"><span class="pre">.csv</span></code>
-file to produce a list of each row of data, e.g.,</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
+<p>One can also define a key function using a standard <code class="docutils literal notranslate"><span class="pre">def</span></code> statement,
+or</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;Julia&quot;</span><span class="p">,</span> <span class="s2">&quot;Roberts&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Harrison&quot;</span><span class="p">,</span> <span class="s2">&quot;Ford&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Meryl&quot;</span><span class="p">,</span> <span class="s2">&quot;Streep&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">my_key_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">x</span> <span class="c1"># each item of the list is negated before comparing</span>
+<span class="nb">sorted</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="n">my_key_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[3, 2, 1]
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">key</span></code> function can make sorting items with many components easier.
+Those items could be the rows of a spread sheet whose components are the
+valiues in various columns. Suppose such data were read from <code class="docutils literal notranslate"><span class="pre">.csv</span></code>
+file to produce a list of each row of data, e.g.,</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;Julia&quot;</span><span class="p">,</span> <span class="s2">&quot;Roberts&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Harrison&quot;</span><span class="p">,</span> <span class="s2">&quot;Ford&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Meryl&quot;</span><span class="p">,</span> <span class="s2">&quot;Streep&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
 <p>Perhaps obviously, these are famous names coupled with arbitrary
 numbers. We can print out these items by last name via</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </pre></div>
@@ -872,20 +912,21 @@ numbers. We can print out these items by last name via</p>
 (&#39;Meryl&#39;, &#39;Streep&#39;, 3, 6)
 </pre></div></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">key</span></code> function returns <code class="docutils literal"><span class="pre">x[1]</span></code>, with is <code class="docutils literal"><span class="pre">Ford</span></code>, <code class="docutils literal"><span class="pre">Roberts</span></code>, or
-<code class="docutils literal"><span class="pre">Streep</span></code> for the given data. Certainly, more complex data types
+<p>The <code class="docutils literal notranslate"><span class="pre">key</span></code> function returns <code class="docutils literal notranslate"><span class="pre">x[1]</span></code>, with is <code class="docutils literal notranslate"><span class="pre">Ford</span></code>, <code class="docutils literal notranslate"><span class="pre">Roberts</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">Streep</span></code> for the given data. Certainly, more complex data types
 (dictionaries, nested lists, etc.) may be similarly <em>keyed</em> and sorted.</p>
-<blockquote>
-<div><strong>Exercise</strong> Take this data and sort the three items in order based
-on the number of <code class="docutils literal"><span class="pre">e</span></code>&#8216;s in the last name.</div></blockquote>
-<p>Python&#8217;s built-in <code class="docutils literal"><span class="pre">list</span></code> type has its own <code class="docutils literal"><span class="pre">sort</span></code> function. Like
-<code class="docutils literal"><span class="pre">sorted</span></code>, it accepts optional <code class="docutils literal"><span class="pre">key</span></code> and <code class="docutils literal"><span class="pre">reverse</span></code> arguments:</p>
+<hr class="docutils" />
+<p><strong>Exercise</strong> Take this famous-person data and sort the three items in
+order based on the number of <code class="docutils literal notranslate"><span class="pre">e</span></code>’s in the last name.</p>
+<hr class="docutils" />
+<p>Python’s built-in <code class="docutils literal notranslate"><span class="pre">list</span></code> type has its own <code class="docutils literal notranslate"><span class="pre">sort</span></code> function. Like
+<code class="docutils literal notranslate"><span class="pre">sorted</span></code>, it accepts optional <code class="docutils literal notranslate"><span class="pre">key</span></code> and <code class="docutils literal notranslate"><span class="pre">reverse</span></code> arguments:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">help</span><span class="p">(</span><span class="nb">list</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -902,34 +943,34 @@ sort(...)
 
 </pre></div></div>
 </div>
-<p>The major difference between <code class="docutils literal"><span class="pre">list.sort</span></code> and <code class="docutils literal"><span class="pre">sorted</span></code> is that
-<code class="docutils literal"><span class="pre">list.sort</span></code> sorts the elements <em>in place</em>. In other words,
-<code class="docutils literal"><span class="pre">a.sort()</span></code> changes <code class="docutils literal"><span class="pre">a</span></code> directly, while <code class="docutils literal"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">sorted(a)</span></code> produced a
-copy of <code class="docutils literal"><span class="pre">a</span></code>, sorts that copy, and then returns the sorted sequence,
-which is assigned to <code class="docutils literal"><span class="pre">b</span></code>.</p>
-<p>Finally, <code class="docutils literal"><span class="pre">NumPy</span></code> provides its own <code class="docutils literal"><span class="pre">np.sort(a)</span></code> function to sort an
-array <code class="docutils literal"><span class="pre">a</span></code>. It also accepts three optional arguments: <code class="docutils literal"><span class="pre">axis</span></code>,
-<code class="docutils literal"><span class="pre">kind</span></code>, and <code class="docutils literal"><span class="pre">order</span></code>. By setting the axis (e.g., 0 for rows and 1 for
+<p>The major difference between <code class="docutils literal notranslate"><span class="pre">list.sort</span></code> and <code class="docutils literal notranslate"><span class="pre">sorted</span></code> is that
+<code class="docutils literal notranslate"><span class="pre">list.sort</span></code> sorts the elements <em>in place</em>. In other words,
+<code class="docutils literal notranslate"><span class="pre">a.sort()</span></code> changes <code class="docutils literal notranslate"><span class="pre">a</span></code> directly, while <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">sorted(a)</span></code> produced a
+copy of <code class="docutils literal notranslate"><span class="pre">a</span></code>, sorts that copy, and then returns the sorted sequence,
+which is assigned to <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> provides its own <code class="docutils literal notranslate"><span class="pre">np.sort(a)</span></code> function to sort an
+array <code class="docutils literal notranslate"><span class="pre">a</span></code>. It also accepts three optional arguments: <code class="docutils literal notranslate"><span class="pre">axis</span></code>,
+<code class="docutils literal notranslate"><span class="pre">kind</span></code>, and <code class="docutils literal notranslate"><span class="pre">order</span></code>. By setting the axis (e.g., 0 for rows and 1 for
 columns in a 2-D array), the elements are sorted along that axis. By
 default, the data is sorted along the last axis.</p>
 <p>For example, consider the following:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]])</span>
 <span class="n">A</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[15]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>array([[ 3,  2,  1],
        [ 2,  4,  6],
        [ 1,  5, 10]])
@@ -937,21 +978,21 @@ default, the data is sorted along the last axis.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[16]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>array([[ 1,  2,  1],
        [ 2,  4,  6],
        [ 3,  5, 10]])
@@ -959,71 +1000,103 @@ default, the data is sorted along the last axis.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[17]:
 </pre></div>
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>array([[ 1,  2,  3],
        [ 2,  4,  6],
        [ 1,  5, 10]])
 </pre></div>
 </div>
 </div>
-<p>For sorting NumPy arrays, the <code class="docutils literal"><span class="pre">np.sort</span></code> function is most likely the
+<p>For sorting NumPy arrays, the <code class="docutils literal notranslate"><span class="pre">np.sort</span></code> function is most likely the
 fastest option.</p>
-<blockquote>
-<div><strong>Exercise</strong>: Perform a numerical experiment like the one above for
-selection sort using <code class="docutils literal"><span class="pre">np.sort</span></code> with the optional argument
-<code class="docutils literal"><span class="pre">kind='mergesort'</span></code>. Does its order appear to be
-<span class="math">\(\mathcal{O}(n\log n)\)</span>?</div></blockquote>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Perform a numerical experiment like the one above for
+selection sort using <code class="docutils literal notranslate"><span class="pre">np.sort</span></code> with the optional argument
+<code class="docutils literal notranslate"><span class="pre">kind='mergesort'</span></code>. Does its order appear to be
+<span class="math notranslate nohighlight">\(\mathcal{O}(n\log n)\)</span>?</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
 <p>None at this time, but <em>sorting</em> is a rich topic for which many
-resources are available. We&#8217;ve seen <span class="math">\(\mathcal{O}(n^2)\)</span> and
-<span class="math">\(\mathcal{O}(n\log n)\)</span> sorting. Nothing is better (for general
+resources are available. We’ve seen <span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span> and
+<span class="math notranslate nohighlight">\(\mathcal{O}(n\log n)\)</span> sorting. Nothing is better (for general
 data), but there exist other algorithms (insertion, bubble, heap, and
-other sorts). There&#8217;s even one out there that of order
-<span class="math">\(\mathcal{O}(n!)\)</span>. Would you want to use it?</p>
+other sorts). There’s even one out there that of order
+<span class="math notranslate nohighlight">\(\mathcal{O}(n!)\)</span>. Would you want to use it?</p>
 </div>
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Lecture 15 - Sorting</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<h1 class="logo"><a href="../index.html">ME 400 Course Notes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administrivia/ME400_Syllabus.html">Syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">Lecture 1 - Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Basic_Operators_and_Built-In_Functions.html">Lecture 2 - Basic Operators and Built-In Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Basic_Data_Processing_with_NumPy_and_Matplotlib.html">Lecture 3 - Basic Data Processing with NumPy and Matplotlib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_NumPy_Arrays.html">Lecture 4 - More on NumPy Arrays: Slicing and `np.linalg`</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Algorithms_Flowcharts_and_Pseudocode.html">Lecture 5 - Algorithms, Flowcharts, and Pseudocode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conditional_Statements_and_the_Structure_of_Python_Code.html">Lecture 6 - Conditional Statements and the Structure of Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_Conditionals.html">Lecture 7 - More on Conditionals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Loops_in_Python.html">Lecture 8 - Loops in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_Loops.html">Lecture 9 - More on Loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pythonic_Containers.html">Lecture 10 - Pythonic Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Processing_Text_Data.html">Lecture 11 - Processing Text Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Basics_of_Functions.html">Lecture 12 - Basics of Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="More_on_Functions.html">Lecture 13 - More on Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Searching.html">Lecture 14 - Searching</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lecture 15 - Sorting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Sorting-is-Hard-Work">Sorting is Hard Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Quantifying-that-Hard-Work">Quantifying that Hard Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Better-Sorting-for-Bigger-Data">Better Sorting for Bigger Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Built-in-Sorting">Built-in Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Sorting-is-Hard-Work">Sorting is Hard Work</a></li>
-<li><a class="reference internal" href="#Better-Sorting-for-Bigger-Data">Better Sorting for Bigger Data</a><ul>
-<li><a class="reference internal" href="#Merging-Sorted-Sequences">Merging Sorted Sequences</a></li>
-<li><a class="reference internal" href="#Divide-and-Conquer">Divide and Conquer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Unit_Tests_and_Defensive_Programming.html">Lecture 17 - Unit Tests and Defensive Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Numerical_Differentiation.html">Lecture 18 - Numerical Differentiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Numerical_Integration.html">Lecture 19 - Numerical Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Linear_Systems.html">Lecture 20 - Linear Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Root_Finding.html">Lecture 21 - Root Finding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Lecture 22 - Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modeling_Data_With_Least_Squares_Fitting.html">Lecture 23 - Modeling Data with Least Squares Fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modeling_Data_With_Interpolation.html">Lecture 24 - Modeling Data with Interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eulers_Method_For_IVPs.html">Lecture 25 - Euler's Method for IVPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Systems_Of_IVPs.html">Lecture 26 - Systems of IVPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Numerical_Solution_of_BVPs.html">Lecture 27 - Numerical Solution of BVPs</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#Built-in-Sorting">Built-in Sorting</a></li>
-<li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
-</ul>
-</li>
-</ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -1033,23 +1106,26 @@ other sorts). There&#8217;s even one out there that of order
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/lectures/Sorting.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -1058,11 +1134,11 @@ other sorts). There&#8217;s even one out there that of order
       &copy;2018, Jeremy Roberts.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/lectures/Sorting.txt"
+      <a href="../_sources/lectures/Sorting.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 
