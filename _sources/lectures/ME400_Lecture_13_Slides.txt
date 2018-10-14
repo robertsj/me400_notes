@@ -38,16 +38,13 @@
     }
    },
    "source": [
-    "### Key Terms\n",
+    "## Quick Review - Flowcharts and Functions\n",
     "\n",
-    "- `*args`\n",
-    "- `**kwargs`\n",
-    "- anonymous function\n",
-    "- `lambda`\n",
-    "- `filter`\n",
-    "- recursion\n",
-    "- recursive function\n",
-    "- recursive sequence"
+    "Last time, we had the following problem: given a list of five numbers, e.g., `L = [1, 2, 2, 3, 5]`, write a function that decides whether `L` has exactly one pair of numbers or not.  (Here, that is `True`).\n",
+    "\n",
+    "Functions are **subprograms** so pseudocode and flowcharts can be made separate.\n",
+    "\n",
+    "A function *call* is an expression and, hence can be part of a single statement, e.g., `counts = count_em(L)`."
    ]
   },
   {
@@ -78,7 +75,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -104,7 +100,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "subslide"
     }
@@ -139,14 +134,20 @@
     "1. `*args` packages all **positional unnamed) arguments** into a `tuple`\n",
     "2. `**kwargs` packages all **keyword (named) arguments** into a `dict`\n",
     "3. All positional arguments must come before keyword arguments\n",
-    "4. `*args` and `**kwargs` help make functions super flexible"
+    "4. `*args` and `**kwargs` help make functions super flexible\n",
+    "\n",
+    "```python\n",
+    "#               <--positional-->  <-------keyword-------->\n",
+    "def my_function(pos1, pos2, pos3, named1=val1, named2=val2):\n",
+    "    ...\n",
+    "```"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
-     "slide_type": "subslide"
+     "slide_type": "skip"
     }
    },
    "source": [
@@ -157,9 +158,8 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
-     "slide_type": "fragment"
+     "slide_type": "skip"
     }
    },
    "outputs": [],
@@ -269,9 +269,13 @@
   },
   {
    "cell_type": "markdown",
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
    "source": [
-    "**Example**:  Trace (by hand) the following code:\n",
+    "**Example**:  Trace the following code using the debugger:\n",
     "\n",
     "```python\n",
     "1. def foo(n):\n",
@@ -279,7 +283,9 @@
     "3.         return 1\n",
     "4.     return n * foo(n-1)\n",
     "5. foo(4)\n",
-    "```"
+    "```\n",
+    "\n",
+    "Make sure you can do this by hand, too!"
    ]
   },
   {
@@ -304,15 +310,22 @@
    "outputs": [],
    "source": [
     "def fibo_recursive(n):\n",
+    "    \"\"\"Determine nth term in Fibonacci sequence 1, 1, 2, 3, ...\"\"\"\n",
     "    pass"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [],
-   "source": []
+   "source": [
+    "fibo_recursive(1) # 1 1 2 3 5 8 13 21"
+   ]
   },
   {
    "cell_type": "markdown",
@@ -360,7 +373,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.3"
+   "version": "3.6.5"
   },
   "livereveal": {
    "scroll": true

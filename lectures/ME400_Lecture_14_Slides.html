@@ -59,17 +59,6 @@ different sizes.</p>
 <li>Perform simple, numerical experiments to confirm the order of an
 algorithm</li>
 </ul>
-</div>
-<div class="section" id="Key-Terms">
-<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>linear search</li>
-<li>binary search</li>
-<li><code class="docutils literal"><span class="pre">time.time()</span></code></li>
-<li>numerical experiment</li>
-<li>order</li>
-<li><span class="math">\(\mathcal{O}\)</span> (big-O) notation</li>
-</ul>
 <div class="section" id="The-Basic,-Linear-Search">
 <h3>The Basic, Linear Search<a class="headerlink" href="#The-Basic,-Linear-Search" title="Permalink to this headline">¶</a></h3>
 <p><strong>The Problem</strong>: given a sequence of values, find the location of the
@@ -92,7 +81,7 @@ element in the sequence equal to some value of interest.</p>
 <p>What if one wants to find - The location of an element in a sequence
 equal to some value or, <em>if not found</em>, - The location of the value that
 is closest to but less/greater than the value of interest. <strong>Sorted
-elements are needed&#8212;we&#8217;ll cover these algorithms next time</strong></p>
+elements are needed&#8212;we&#8217;ll cover sorting algorithms next time</strong></p>
 <p><strong>Example</strong>: Modify the linear search algorithm to return the location
 of the first match or, if no match, then the element closest to but less
 than the target value. <em>Assume</em> that the sequence is sorted in
@@ -110,12 +99,12 @@ than the target value. <em>Assume</em> that the sequence is sorted in
 </div>
 </div>
 <div class="section" id="A-Bit-About-Order">
-<h3>A Bit About Order<a class="headerlink" href="#A-Bit-About-Order" title="Permalink to this headline">¶</a></h3>
+<h3>A Bit About <em>Order</em><a class="headerlink" href="#A-Bit-About-Order" title="Permalink to this headline">¶</a></h3>
 <p>Why call linear search <em>linear</em>?</p>
 <ul class="simple">
 <li>elements are looked at in order; usually, that&#8217;s called <em>sequential</em>
 but <em>linear</em> seems okay</li>
-<li>the number of comparisons (e.g., <code class="docutils literal"><span class="pre">a[i]</span> <span class="pre">&gt;</span> <span class="pre">v</span></code>) requires depends
+<li>the <strong>number of comparisons</strong> (e.g., <code class="docutils literal"><span class="pre">a[i]</span> <span class="pre">&gt;</span> <span class="pre">v</span></code>) requires depends
 linearly on the number of elements, i.e., the number is proportional
 to <span class="math">\(n\)</span>.</li>
 </ul>
@@ -124,6 +113,9 @@ to <span class="math">\(n\)</span>.</li>
 <p>The computational cost of an algorithm (time and, sometimes, memory) is
 often proportional to its order. <strong>Smaller order means a faster
 algorithm.</strong></p>
+<p>In this class, <em>order</em> is used in an engineering/empirical sense that
+describes how <em>computationally expensive</em> an algorithm is on the
+average.</p>
 </div>
 <div class="section" id="Binary-Search">
 <h3>Binary Search<a class="headerlink" href="#Binary-Search" title="Permalink to this headline">¶</a></h3>
@@ -148,9 +140,9 @@ the simplest of <strong>divide and conquer</strong> algorithms.</p>
  <span class="mf">7.</span>     <span class="n">If</span> <span class="n">v</span> <span class="o">==</span> <span class="n">a</span><span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="n">then</span>
  <span class="mf">8.</span>         <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">C</span>
  <span class="mf">9.</span>         <span class="n">Break</span>
-<span class="mf">10.</span>     <span class="n">If</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="n">then</span>
+<span class="mf">10.</span>     <span class="n">If</span> <span class="n">If</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="n">then</span>
 <span class="mf">11.</span>         <span class="n">Set</span> <span class="n">R</span> <span class="o">=</span> <span class="n">C</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="mf">12.</span>     <span class="n">If</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="n">then</span>
+<span class="mf">12.</span>     <span class="n">If</span> <span class="n">If</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">a</span><span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="n">then</span>
 <span class="mf">13.</span>         <span class="n">Set</span> <span class="n">L</span> <span class="o">=</span> <span class="n">C</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="mf">14.</span>  <span class="n">Output</span><span class="p">:</span> <span class="n">location</span>
 </pre></div>
@@ -190,11 +182,10 @@ algorithm</li>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 14 - Searching</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
 <li><a class="reference internal" href="#The-Basic,-Linear-Search">The Basic, Linear Search</a></li>
 <li><a class="reference internal" href="#When-Searching-for-Equality-is-Not-Enough">When Searching for Equality is Not Enough</a></li>
-<li><a class="reference internal" href="#A-Bit-About-Order">A Bit About Order</a></li>
+<li><a class="reference internal" href="#A-Bit-About-Order">A Bit About <em>Order</em></a></li>
 <li><a class="reference internal" href="#Binary-Search">Binary Search</a></li>
 </ul>
 </li>

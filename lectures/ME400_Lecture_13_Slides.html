@@ -200,11 +200,7 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
 .ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-13---More-on-Functions">
 <h1>Lecture 13 - More on Functions<a class="headerlink" href="#Lecture-13---More-on-Functions" title="Permalink to this headline">¶</a></h1>
@@ -225,19 +221,16 @@ functions and the use of functions that call themselves (i.e.,
 <li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function (see the reading)</li>
 <li>Define a recursive function.</li>
 </ul>
+<div class="section" id="Quick-Review---Flowcharts-and-Functions">
+<h3>Quick Review - Flowcharts and Functions<a class="headerlink" href="#Quick-Review---Flowcharts-and-Functions" title="Permalink to this headline">¶</a></h3>
+<p>Last time, we had the following problem: given a list of five numbers,
+e.g., <code class="docutils literal"><span class="pre">L</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">5]</span></code>, write a function that decides whether
+<code class="docutils literal"><span class="pre">L</span></code> has exactly one pair of numbers or not. (Here, that is <code class="docutils literal"><span class="pre">True</span></code>).</p>
+<p>Functions are <strong>subprograms</strong> so pseudocode and flowcharts can be made
+separate.</p>
+<p>A function <em>call</em> is an expression and, hence can be part of a single
+statement, e.g., <code class="docutils literal"><span class="pre">counts</span> <span class="pre">=</span> <span class="pre">count_em(L)</span></code>.</p>
 </div>
-<div class="section" id="Key-Terms">
-<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">*args</span></code></li>
-<li><code class="docutils literal"><span class="pre">**kwargs</span></code></li>
-<li>anonymous function</li>
-<li><code class="docutils literal"><span class="pre">lambda</span></code></li>
-<li><code class="docutils literal"><span class="pre">filter</span></code></li>
-<li>recursion</li>
-<li>recursive function</li>
-<li>recursive sequence</li>
-</ul>
 <div class="section" id="*args-and-**kwargs">
 <h3><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code><a class="headerlink" href="#*args-and-**kwargs" title="Permalink to this headline">¶</a></h3>
 <p>What on earth are <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>? Before moving along, let&#8217;s
@@ -278,6 +271,11 @@ look at a function introduced back in <a class="reference external" href="ME400_
 <li>All positional arguments must come before keyword arguments</li>
 <li><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> help make functions super flexible</li>
 </ol>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1">#               &lt;--positional--&gt;  &lt;-------keyword--------&gt;</span>
+<span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span><span class="p">,</span> <span class="n">pos3</span><span class="p">,</span> <span class="n">named1</span><span class="o">=</span><span class="n">val1</span><span class="p">,</span> <span class="n">named2</span><span class="o">=</span><span class="n">val2</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
 <p><strong>Exercise</strong>: Define a function <code class="docutils literal"><span class="pre">true_or_false(*args,</span> <span class="pre">**kwargs)</span></code> that
 returns a <code class="docutils literal"><span class="pre">list</span></code> whose length is equal to the number of positional
 arguments passed and a <code class="docutils literal"><span class="pre">dict</span></code> whose length is equal to the number of
@@ -358,7 +356,7 @@ recursion is ending!
 </div>
 <p>How would this stop? From <span class="math">\(n = 5\)</span>, to <span class="math">\(n = -10\)</span>, to
 <span class="math">\(n = -\infty\)</span>.</p>
-<p><strong>Example</strong>: Trace (by hand) the following code:</p>
+<p><strong>Example</strong>: Trace the following code using the debugger:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 <span class="mf">2.</span>     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 <span class="mf">3.</span>         <span class="k">return</span> <span class="mi">1</span>
@@ -366,6 +364,7 @@ recursion is ending!
 <span class="mf">5.</span> <span class="n">foo</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Make sure you can do this by hand, too!</p>
 <p><strong>Exercise</strong>: Fibonacci (in Python and using recursion).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -374,7 +373,18 @@ recursion is ending!
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine nth term in Fibonacci sequence 1, 1, 2, 3, ...&quot;&quot;&quot;</span>
     <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">fibo_recursive</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 1 1 2 3 5 8 13 21</span>
 </pre></div>
 </div>
 </div>
@@ -401,8 +411,8 @@ recursion is ending!
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 13 - More on Functions</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
+<li><a class="reference internal" href="#Quick-Review---Flowcharts-and-Functions">Quick Review - Flowcharts and Functions</a></li>
 <li><a class="reference internal" href="#*args-and-**kwargs"><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code></a></li>
 </ul>
 </li>
