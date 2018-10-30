@@ -202,14 +202,18 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Optimization">
 <h1>Optimization<a class="headerlink" href="#Optimization" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference external" href="#root_finding">Root Finding</a>, the bisection method and Newton&#8217;s
-method were used to solve nonlinear equations. Now, thoese methods (and
+method were used to solve nonlinear equations. Now, those methods (and
 tools like <code class="docutils literal"><span class="pre">fsolve</span></code>) are used to solve <strong>optimization problems</strong>. The
 subject is rich, so we&#8217;ll touch on only the basics, but you&#8217;ll have
 tools at your disposal to tackle such problems in varied applications.</p>
@@ -226,24 +230,48 @@ Newton methods.</li>
 <h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>optimization</li>
+<li>uncontrained optimization</li>
+<li>constrained optimization</li>
 <li>extremum</li>
 <li>critical point</li>
 <li>objective function</li>
+<li>linear program</li>
 <li><code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code></li>
+<li><code class="docutils literal"><span class="pre">scipy.optimize.linprog</span></code></li>
 </ul>
 </div>
+</div>
+<div class="section" id="Some-Nomenclature">
+<h2>Some Nomenclature<a class="headerlink" href="#Some-Nomenclature" title="Permalink to this headline">¶</a></h2>
+<p>Optimization problems often defined by minimizing an <strong>objective
+function</strong></p>
+<div class="math">
+\[\min_{x} f(x) \qquad \text{or} \qquad \min_{\mathbf{x}} f(\mathbf{x}) \, ,\]</div>
+<p>subject to the <strong>inequality constraints</strong></p>
+<div class="math">
+\[g(x) \ge 0 \qquad \text{or} \qquad \mathbf{g(x)}  \ge \mathbf{0} \, ,\]</div>
+<p>and/or the <strong>equality constraints</strong></p>
+<div class="math">
+\[h(x) = 0 \qquad \text{or} \qquad \mathbf{h(x)} = \mathbf{0} \, .\]</div>
+<p>An optimization problem is <em>unconstrained</em> if it is subject to no
+inequality constraints and no equality constraints. Otherwise, the
+problem is <em>constrained</em>. In practice, unconstrained problems are often
+easier to solve using a variety of techniques for finding <em>extrema</em>.
+We&#8217;ll start with unconstrained problems and then consider an important
+class of constrained problems known as <em>linear programs</em>.</p>
 </div>
 <div class="section" id="Finding-Extrema">
 <h2>Finding Extrema<a class="headerlink" href="#Finding-Extrema" title="Permalink to this headline">¶</a></h2>
 <p>One of the great applications of differentiation is its ability to
 identify the <em>critical points</em> of a function <span class="math">\(f(x)\)</span>, which include
-its minima and maxima. If <span class="math">\(f(x)\)</span> represents some quantity of
-interest, perhaps the cost of materials for some component or the
-signal-to-noise ratio of some sensor. If we want to mininimize those
-costs or maximize those ratios, we need to use <em>optimization</em>. Although
-optimization problems and the techniques to solve them are quite
-diverse, we will stick to 1-D problems in which the <em>objective function</em>
-to be minimized or maximized is continuous (as opposed to discrete).</p>
+its <em>minima</em> and <em>maxima</em>, i.e., its <em>extrema</em>. Suppose <span class="math">\(f(x)\)</span>
+represents some quantity of interest, perhaps the cost of materials for
+some component or the signal-to-noise ratio of some sensor. If we want
+to mininimize those costs or maximize those ratios, we need to use
+<em>optimization</em>. Although optimization problems and the techniques to
+solve them are quite diverse, we will stick to 1-D problems in which the
+<em>objective function</em> to be minimized or maximized is continuous (as
+opposed to discrete).</p>
 <p>You&#8217;ve had calculus (and we&#8217;ve reviewed some its topics). Hence, you
 might recall that a function <span class="math">\(f(x)\)</span> exhibits an <strong>extremum</strong>,
 i.e., a <strong>minimum</strong> or <strong>maximum</strong>, at any point <span class="math">\(x\)</span> for which
@@ -303,7 +331,7 @@ might not be unique.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_Optimization_4_0.png" src="../_images/lectures_Optimization_4_0.png" />
+<img alt="../_images/lectures_Optimization_5_0.png" src="../_images/lectures_Optimization_5_0.png" />
 </div>
 </div>
 <p>Of the three roots, two correspond to minima&#8212;but the left one (blue
@@ -358,6 +386,7 @@ on optimization and root finding.</p>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#Some-Nomenclature">Some Nomenclature</a></li>
 <li><a class="reference internal" href="#Finding-Extrema">Finding Extrema</a></li>
 <li><a class="reference internal" href="#The-Connection-To-Nonlinear-Functions">The Connection To Nonlinear Functions</a><ul>
 <li><a class="reference internal" href="#When-the-Derivative-is-Available">When the Derivative is Available</a></li>

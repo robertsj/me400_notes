@@ -200,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-19---Numerical-Integration">
 <h1>Lecture 19 - Numerical Integration<a class="headerlink" href="#Lecture-19---Numerical-Integration" title="Permalink to this headline">¶</a></h1>
@@ -244,7 +248,7 @@ how we define the rectangles (or other shapes).</p>
    \lim_{n \to \infty} \sum^{n}_{i=1} f \left ( \overbrace{i \frac{b-a}{n} + a}^{x_i} \right )
    \overbrace{\frac{b-a}{n}}^{\Delta}\]</div>
 <p>for uniformly spaced points
-<span class="math">\(x_i = a + \Delta, a + 2\Delta, \ldots, b - \Delta\)</span>.</p>
+<span class="math">\(x_i = a + \Delta, a + 2\Delta, \ldots, b - \Delta, b\)</span>.</p>
 <p>If we <em>don&#8217;t take the limit</em>, we have the <strong>right-sided Riemann sum</strong>
 approximation</p>
 <div class="math">
@@ -259,7 +263,7 @@ approximation</p>
 <span class="math">\(x\in[0, 1]\)</span> with <span class="math">\(n=5\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -281,7 +285,7 @@ approximation</p>
 <p>the picture becomes</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -301,7 +305,7 @@ for 10, 100, and 1000 evenly-spaced points. What is the <em>absolute</em> error
 for each?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -346,7 +350,7 @@ left-sided sum. Note that the <span class="math">\(x\)</span> points are <strong
 spaced</strong>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -368,21 +372,14 @@ points:</p>
 <div class="math">
 \[S = \frac{b-a}{n} \sum^{n}_{i=1} f \Bigg ( \frac{ (i-1/2)(b-a) }{n} + a \Bigg )\]</div>
 <p>for which the picture becomes</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">riemann_sum_plots</span><span class="o">.</span><span class="n">midpoint_sum</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_19_Slides_16_0.png" src="../_images/lectures_ME400_Lecture_19_Slides_16_0.png" />
 </div>
 </div>
 <p>This is the <strong>midpoint rule</strong>. It is great if <em>you</em> get to choose your
@@ -426,8 +423,28 @@ quad(func, a, b, args=(), full_output=0, epsabs=1.49e-08, epsrel=1.49e-08, limit
 </div>
 <p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
 <span class="math">\(\int^2_0 e^x dx = e^2 - 1\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">quad</span></code> to evaluate
 <span class="math">\(\int^1_0 (ax^2 + bx + c)dx\)</span> for <span class="math">\(a=b=c=1\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <p><strong>Exercise</strong>: The entropy change of an ideal gas from <span class="math">\((T_1, p_1)\)</span>
 to <span class="math">\((T_2, p_2)\)</span> is</p>
 <div class="math">
@@ -451,6 +468,16 @@ Riemann sums, the mid-point rule, and the trapezoid rule.</li>
 of <code class="docutils literal"><span class="pre">scipy.integrate</span></code></li>
 <li>Establish the order of an integration scheme using graphical means</li>
 </ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>

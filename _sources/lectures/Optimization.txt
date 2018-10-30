@@ -9,7 +9,7 @@
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     " \n",
-    "In [Root Finding](#root_finding), the bisection method and Newton's method were used to solve nonlinear equations.  Now, thoese methods (and tools like `fsolve`) are used to solve **optimization problems**. The subject is rich, so we'll touch on only the basics, but you'll have tools at your disposal to tackle such problems in varied applications.\n",
+    "In [Root Finding](#root_finding), the bisection method and Newton's method were used to solve nonlinear equations.  Now, those methods (and tools like `fsolve`) are used to solve **optimization problems**. The subject is rich, so we'll touch on only the basics, but you'll have tools at your disposal to tackle such problems in varied applications.\n",
     " \n",
     "### Objectives\n",
     "\n",
@@ -21,10 +21,41 @@
     "### Key Terms\n",
     "\n",
     "- optimization\n",
+    "- uncontrained optimization\n",
+    "- constrained optimization\n",
     "- extremum\n",
     "- critical point\n",
     "- objective function\n",
-    "- `scipy.optimize.minimize`"
+    "- linear program\n",
+    "- `scipy.optimize.minimize`\n",
+    "- `scipy.optimize.linprog`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Some Nomenclature\n",
+    "\n",
+    "Optimization problems often defined by minimizing an **objective function**\n",
+    "\n",
+    "$$\n",
+    "  \\min_{x} f(x) \\qquad \\text{or} \\qquad \\min_{\\mathbf{x}} f(\\mathbf{x}) \\, ,\n",
+    "$$\n",
+    "\n",
+    "subject to the **inequality constraints**\n",
+    "\n",
+    "$$\n",
+    "  g(x) \\ge 0 \\qquad \\text{or} \\qquad \\mathbf{g(x)}  \\ge \\mathbf{0} \\, ,\n",
+    "$$\n",
+    "\n",
+    "and/or the **equality constraints**\n",
+    "\n",
+    "$$\n",
+    "  h(x) = 0 \\qquad \\text{or} \\qquad \\mathbf{h(x)} = \\mathbf{0} \\, .\n",
+    "$$\n",
+    "\n",
+    "An optimization problem is *unconstrained* if it is subject to no inequality constraints and no equality constraints.  Otherwise, the problem is *constrained*.  In practice, unconstrained problems are often easier to solve using a variety of techniques for finding *extrema*.  We'll start with unconstrained problems and then consider an important class of constrained problems known as *linear programs*."
    ]
   },
   {
@@ -35,7 +66,7 @@
     "\n",
     "One of the great applications of differentiation is its ability\n",
     "to identify the *critical points* of a function $f(x)$, which\n",
-    "include its minima and maxima.  If \n",
+    "include its *minima* and *maxima*, i.e., its *extrema*.  Suppose\n",
     "$f(x)$ represents some quantity of interest, perhaps the cost \n",
     "of materials for some component or the signal-to-noise ratio of\n",
     "some sensor.  If we want to mininimize those costs or maximize those\n",
@@ -154,7 +185,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.3"
+   "version": "3.6.5"
   }
  },
  "nbformat": 4,

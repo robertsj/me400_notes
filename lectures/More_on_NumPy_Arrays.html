@@ -202,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-4---More-on-NumPy-Arrays:-Slicing-and-np.linalg">
 <h1>Lecture 4 - More on NumPy Arrays: Slicing and <code class="docutils literal"><span class="pre">np.linalg</span></code><a class="headerlink" href="#Lecture-4---More-on-NumPy-Arrays:-Slicing-and-np.linalg" title="Permalink to this headline">¶</a></h1>
@@ -839,19 +843,15 @@ defined, the following are equivalent:</p>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
 <span></span>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-
-
-
-
-
-**Note**. The complete slicing syntax for an array ``a`` is
-``a[start:end:stride]``. By default, ``start = 0``,
-``end = len(a)``, and ``stride = 1``. Hence, any or all of
-``start``, ``end``, and ``stride`` may be omitted. When ``stride``
-is omitted, the second ``:`` may also be omitted.
 </pre></div>
 </div>
 </div>
+<blockquote>
+<div><strong>Note</strong>. The complete slicing syntax for an array <code class="docutils literal"><span class="pre">a</span></code> is
+<code class="docutils literal"><span class="pre">a[start:end:stride]</span></code>. By default, <code class="docutils literal"><span class="pre">start</span> <span class="pre">=</span> <span class="pre">0</span></code>,
+<code class="docutils literal"><span class="pre">end</span> <span class="pre">=</span> <span class="pre">len(a)</span></code>, and <code class="docutils literal"><span class="pre">stride</span> <span class="pre">=</span> <span class="pre">1</span></code>. Hence, any or all of
+<code class="docutils literal"><span class="pre">start</span></code>, <code class="docutils literal"><span class="pre">end</span></code>, and <code class="docutils literal"><span class="pre">stride</span></code> may be omitted. When <code class="docutils literal"><span class="pre">stride</span></code>
+is omitted, the second <code class="docutils literal"><span class="pre">:</span></code> may also be omitted.</div></blockquote>
 <p>Slicing of NumPy arrays provides not just access to selected elements:
 it also lets one modify those elements. Given the zeros array</p>
 <div class="nbinput nblast docutils container">

@@ -200,12 +200,14 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-16---Modules-and-Packages">
 <h1>Lecture 16 - Modules and Packages<a class="headerlink" href="#Lecture-16---Modules-and-Packages" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>Python modules offer a unique way to organize your code, especially as
 it evolves into several functions. Moreover, any of the external
 packages you&#8217;ve already used, like NumPy and Matplotlib, are organized
@@ -213,29 +215,15 @@ as modules within larger <em>packages</em>. By the end of this lesson, you&#8217
 understand how to organize your create and use your own modules and
 packages.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>Produce a module of functions</li>
 <li>Set appropriate paths in order to import modules you create</li>
 </ul>
-</div>
-<div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">module</span></code></li>
-<li><code class="docutils literal"><span class="pre">import</span></code></li>
-<li><code class="docutils literal"><span class="pre">from</span> <span class="pre">some_module</span> <span class="pre">import</span></code></li>
-<li><code class="docutils literal"><span class="pre">*</span></code> (as something to import)</li>
-<li>function</li>
-<li>attribute</li>
-<li><code class="docutils literal"><span class="pre">sys</span></code></li>
-<li><code class="docutils literal"><span class="pre">sys.path</span></code></li>
-</ul>
-</div>
-</div>
+<p>Any time remaining can be spent on Exam questions.</p>
 <div class="section" id="Creating-Modules">
-<h2>Creating Modules<a class="headerlink" href="#Creating-Modules" title="Permalink to this headline">¶</a></h2>
+<h3>Creating Modules<a class="headerlink" href="#Creating-Modules" title="Permalink to this headline">¶</a></h3>
 <p>We&#8217;ve been importing modules like NumPy since the beginning:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -454,15 +442,16 @@ use the module name to access its functions (e.g.,
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 1.618033988749895
-</pre></div><p>&#8220;When you use the <code class="docutils literal"><span class="pre">*</span></code>, careful you must be, for the <code class="docutils literal"><span class="pre">*</span></code> uses you
-back.&#8221; - <em>Said probably not Yoda</em></p>
+</pre></div></div>
 </div>
-</div>
+<blockquote>
+<div>&#8220;When you use the <code class="docutils literal"><span class="pre">*</span></code>, careful you must be, for the <code class="docutils literal"><span class="pre">*</span></code> uses you
+back.&#8221; - <em>Said probably not Yoda</em></div></blockquote>
 <p>Final alternative: import individial functions or attributes (values
 like <code class="docutils literal"><span class="pre">pi</span></code>) via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -474,7 +463,7 @@ like <code class="docutils literal"><span class="pre">pi</span></code>) via</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
+<span></span>Out[8]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -485,7 +474,7 @@ like <code class="docutils literal"><span class="pre">pi</span></code>) via</p>
 <p>Functions (or attributes like <code class="docutils literal"><span class="pre">pi</span></code>) can be imported selectively via</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -510,7 +499,7 @@ like <code class="docutils literal"><span class="pre">pi</span></code>) via</p>
 <p>will fail.</p>
 </div>
 <div class="section" id="Running-Modules-as-Scripts">
-<h2>Running Modules as Scripts<a class="headerlink" href="#Running-Modules-as-Scripts" title="Permalink to this headline">¶</a></h2>
+<h3>Running Modules as Scripts<a class="headerlink" href="#Running-Modules-as-Scripts" title="Permalink to this headline">¶</a></h3>
 <p><strong>Every Python script can be imported as a module</strong> (that includes your
 homework submissions!)</p>
 <p>Almost all statements in the script are executed: - variable assignments
@@ -541,7 +530,7 @@ Show also that <code class="docutils literal"><span class="pre">import</span> <s
 statements when the <code class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span></code> line is included.</p>
 </div>
 <div class="section" id="Using-Modules-on-the-Moon">
-<h2>Using Modules on the Moon<a class="headerlink" href="#Using-Modules-on-the-Moon" title="Permalink to this headline">¶</a></h2>
+<h3>Using Modules on the Moon<a class="headerlink" href="#Using-Modules-on-the-Moon" title="Permalink to this headline">¶</a></h3>
 <p>The hard work is done, but how to use your module? Set <code class="docutils literal"><span class="pre">PYTHONPATH</span></code>!</p>
 <p>On Windows, that might look like:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">robertsj</span><span class="o">&gt;</span><span class="n">cd</span> <span class="n">Documents</span>\<span class="n">PythonForEngineers</span>\<span class="n">BackOnEarth</span>
@@ -595,7 +584,7 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
 </div>
 </div>
 <div class="section" id="Packages">
-<h2>Packages<a class="headerlink" href="#Packages" title="Permalink to this headline">¶</a></h2>
+<h3>Packages<a class="headerlink" href="#Packages" title="Permalink to this headline">¶</a></h3>
 <p>Modules collect functions, etc. <em>Packages</em> collect modules.</p>
 <div class="line-block">
 <div class="line">Example: 1. Make a new directory called <code class="docutils literal"><span class="pre">my_package</span></code> and place
@@ -605,7 +594,7 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
 <p>Once that&#8217;s done, the following is possible from anywhere:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -615,26 +604,22 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;__builtins__&#39;,
- &#39;__cached__&#39;,
- &#39;__doc__&#39;,
- &#39;__file__&#39;,
- &#39;__loader__&#39;,
- &#39;__name__&#39;,
- &#39;__package__&#39;,
- &#39;__path__&#39;,
- &#39;__spec__&#39;]
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-10-67a3dd90939a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">import</span> my_module
+<span class="ansi-green-intense-fg ansi-bold">      2</span> dir<span class="ansi-blue-fg">(</span>my_module<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;my_module&#39;
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -649,13 +634,19 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;class &#39;module&#39;&gt;
-&lt;class &#39;module&#39;&gt;
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-11-2a0057d82d9c&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">import</span> my_module<span class="ansi-blue-fg">.</span>error_metrics
+<span class="ansi-green-intense-fg ansi-bold">      2</span> print<span class="ansi-blue-fg">(</span>type<span class="ansi-blue-fg">(</span>my_module<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> print<span class="ansi-blue-fg">(</span>type<span class="ansi-blue-fg">(</span>my_module<span class="ansi-blue-fg">.</span>error_metrics<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;my_module&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -664,27 +655,21 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&#39;__builtins__&#39;,
- &#39;__cached__&#39;,
- &#39;__doc__&#39;,
- &#39;__file__&#39;,
- &#39;__loader__&#39;,
- &#39;__name__&#39;,
- &#39;__package__&#39;,
- &#39;__path__&#39;,
- &#39;__spec__&#39;,
- &#39;error_metrics&#39;]
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-12-de9a65ec5c6f&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>dir<span class="ansi-blue-fg">(</span>my_module<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;my_module&#39; is not defined
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -693,24 +678,27 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>0.37416573867739417
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-13-af774b449d8e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>my_module<span class="ansi-blue-fg">.</span>error_metrics<span class="ansi-blue-fg">.</span>rms_error<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0.1</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">0.2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0.3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;my_module&#39; is not defined
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
 <li>Produce a module of functions</li>
 <li>Set appropriate paths in order to import modules you create</li>
 </ul>
-<p><strong>Note</strong>: John is taking my office hours W (I have a student defense).</p>
+</div>
 </div>
 </div>
 
@@ -723,16 +711,14 @@ in <code class="docutils literal"><span class="pre">.bashrc</span></code> or <co
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 16 - Modules and Packages</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
 <li><a class="reference internal" href="#Creating-Modules">Creating Modules</a></li>
 <li><a class="reference internal" href="#Running-Modules-as-Scripts">Running Modules as Scripts</a></li>
 <li><a class="reference internal" href="#Using-Modules-on-the-Moon">Using Modules on the Moon</a></li>
 <li><a class="reference internal" href="#Packages">Packages</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

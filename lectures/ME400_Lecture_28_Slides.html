@@ -200,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-28---Symbolic-Computing-with-SymPy">
 <h1>Lecture 28 - Symbolic Computing with SymPy<a class="headerlink" href="#Lecture-28---Symbolic-Computing-with-SymPy" title="Permalink to this headline">¶</a></h1>
@@ -265,6 +269,16 @@ div.nboutput div.output_area.stderr {
 </div>
 <p><code class="docutils literal"><span class="pre">SymPy</span></code> has most of the special functions built in.</p>
 <p><strong>Exercise</strong>: Define the expression <span class="math">\(q = \sqrt{x} + e^x\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Symbolic-Equations">
 <h3>Symbolic Equations<a class="headerlink" href="#Symbolic-Equations" title="Permalink to this headline">¶</a></h3>
@@ -353,6 +367,16 @@ div.nboutput div.output_area.stderr {
 \[$$\left ( -0.4384471871911697, \quad -0.4384471871911697\right )$$\]</div></div>
 </div>
 <p><strong>Exercise</strong>: Solve <span class="math">\(e^{ax} = \sqrt{bx}\)</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <p>Systems can be solved by defining a <code class="docutils literal"><span class="pre">list</span></code> of <code class="docutils literal"><span class="pre">Eq</span></code> variables and
 each unknown to find (e.g., <code class="docutils literal"><span class="pre">sy.solve([eq0,</span> <span class="pre">eq1],</span> <span class="pre">x,</span> <span class="pre">y)</span></code> if we want
 <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code>.</p>
@@ -393,6 +417,16 @@ each unknown to find (e.g., <code class="docutils literal"><span class="pre">sy.
 <div class="output_area docutils container">
 <div class="math">
 \[$$\frac{1}{\tan{\left (t \right )}} \left(\left(\sin{\left (t \right )} + \tan{\left (t \right )}\right)^{2} + \cos^{2}{\left (t \right )} - \sec^{2}{\left (t \right )}\right)$$\]</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
 </div>
 <p><strong>Expansion</strong></p>
 <div class="nbinput docutils container">
@@ -499,7 +533,7 @@ functions)</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([  2.25,   6.25,  12.25])
+<span></span>array([ 2.25,  6.25, 12.25])
 </pre></div>
 </div>
 </div>
@@ -519,7 +553,7 @@ functions)</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_28_Slides_27_0.png" src="../_images/lectures_ME400_Lecture_28_Slides_27_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_28_Slides_30_0.png" src="../_images/lectures_ME400_Lecture_28_Slides_30_0.png" />
 </div>
 </div>
 </div>

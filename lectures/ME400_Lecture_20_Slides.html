@@ -200,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-20---Linear-Systems">
 <h1>Lecture 20 - Linear Systems<a class="headerlink" href="#Lecture-20---Linear-Systems" title="Permalink to this headline">¶</a></h1>
@@ -263,7 +267,7 @@ product</em>:</p>
 \[w_i = \sum_{j=0}^{j=n-1} a_{ij} v_j \, = \mathbf{a}_{i:}^T \mathbf{v} \, .\]</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -285,13 +289,13 @@ unit of work is the product <code class="docutils literal"><span class="pre">A[i
 <em>floating-point operation</em> or <em>FLOP</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1750</span>
 <span class="n">A</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">matrix_vector</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -305,7 +309,7 @@ unit of work is the product <code class="docutils literal"><span class="pre">A[i
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-elapsed time = 1.55e-04 seconds
+elapsed time = 1.00e+00 seconds
 </pre></div></div>
 </div>
 <p>An <em>alternative</em> view of <span class="math">\(\mathbf{Av} \to \mathbf{w}\)</span>:</p>
@@ -359,7 +363,7 @@ columns of <span class="math">\(\mathbf{A}\)</span>:</p>
 <p>Consider the following (slightly modified from the reading:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [52]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -385,7 +389,7 @@ columns of <span class="math">\(\mathbf{A}\)</span>:</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [55]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -427,7 +431,7 @@ elimination is? Perform a numerical experiment to check your prediction.</p>
 first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [63]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -447,7 +451,7 @@ first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [64]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -457,17 +461,68 @@ first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[64]:
+<span></span>Out[6]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 1.5,  2. ,  1.5])
+<span></span>array([1.5, 2. , 1.5])
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Practical-Use-of-Matrices">
 <h3>Practical Use of Matrices<a class="headerlink" href="#Practical-Use-of-Matrices" title="Permalink to this headline">¶</a></h3>
+<p>It&#8217;s important to know <em>how</em> to solve linear system (by code or hand),
+but <code class="docutils literal"><span class="pre">np.linalg.solve</span></code> is the tool to use in practice.</p>
+<p><strong>Exercise</strong> Last year you purchased shares in three companies: Wayne
+Enterprises, Stark Industries, and Oscorp. The Wayne Enterprises stocks
+cost you $50 per share, the Stark Industries stocks cost you $45 per
+share, and the Oscorp stocks cost you $30 per share. You spent a total
+of $24,400, and purchased twice as many Stark Industriess shares as
+Oscorp shares. The Wayne Enterprises stocks appreciated by 20%, while
+the other two appreciated by 10%, and you sold all the stocks for $3,440
+more than you originally paid. How many stocks of each company did you
+originally purchase?</p>
+<p>Key Problem: Isolate the <em>unknowns</em> and <em>equations</em>.</p>
+<p>The unknowns are the numbers of stocks <span class="math">\(W\)</span>, <span class="math">\(S\)</span>, and
+<span class="math">\(O\)</span>.</p>
+<p>The equations are: - <span class="math">\(50W + 45S + 30O = 24400\)</span> -
+<span class="math">\(S = 2O \rightarrow S - 2O = 0\)</span> -
+<span class="math">\((0.2)(50)W + (0.1)(45)S + (0.1)(30)O = 3440\)</span></p>
+<p>In matrix form (i.e., <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>):</p>
+<div class="math">
+\[\begin{split}\overbrace{
+\left( \begin{array}{ccc}
+50  &amp; 45 &amp; 30 \\
+0   &amp;  1 &amp;  -2 \\
+0.2\times 50 &amp; 0.1\times 45 &amp; 0.1\times 30 \end{array} \right)}^{\mathbf{A}}
+\overbrace{\left( \begin{array}{c}
+W\\
+S\\
+O\\
+\end{array}\right)}^{\mathbf{x}} =
+\overbrace{
+\left( \begin{array}{c}
+24400\\
+0\\
+3440\\
+\end{array}\right)}^{\mathbf{b}}\end{split}\]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<p><strong>Example</strong>: Compute all of the member and reaction forces for the
+following small truss system:</p>
+<div class="figure" id="id1">
+<img alt="small truss" src="../_images/small_truss.png" />
+<p class="caption"><span class="caption-text">small truss</span></p>
+</div>
 </div>
 <div class="section" id="Recap">
 <h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>

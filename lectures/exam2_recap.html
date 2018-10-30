@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Fall 2018',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<p>Like merge sort, the default sorting algorithm used by np.sort is
+<span class="math">\(O(n \log n)\)</span>. Suppose you used np.sort to sort 100 different
+arrays each having 100,000 numbers, and the average time per sort was
+about 0.01 s. If you did the same thing for arrays with 1,000,000
+numbers each, about how long do you think it would take on the average?</p>
+<p>HINT 1: Remember that <span class="math">\(\log_b x^a = a \log_b x\)</span>, e.g.,
+<span class="math">\(\log_b 10^3 = 3 \log_b 10\)</span>.</p>
+<p>HINT 2: We use order as an engineering metric by assuming the time is
+proportional to whatever is inside the <span class="math">\(O\)</span>. If the method is
+<span class="math">\(O(n)\)</span>, then <span class="math">\(t \propto n\)</span> or <span class="math">\(t = an\)</span> for some
+(unknown) constant <span class="math">\(a\)</span>.</p>
+<p>Circle your final answer.</p>
+<p>The Babylonian algorithm for estimate <span class="math">\(\sqrt{X}\)</span> is</p>
+<div class="math">
+\[R = (R_{old} + X / R_{old}) / 2 \, ,\]</div>
+<p>Below are several lines of Python code. Eight of these, when put
+together, form a simple program to estimate the square root of 2 using
+the Babylonian algorithm. The estimate is &#8220;good enough&#8221; if the
+<strong>absolute</strong> difference between <span class="math">\(R_{new}\)</span> and <span class="math">\(R_{old}\)</span> is
+smaller than <span class="math">\(10^{-4}\)</span>.</p>
+<p>HINT 1: Cross out any lines that can&#8217;t be correct (e.g., what does <code class="docutils literal"><span class="pre">^</span></code>
+mean in Python, and what is <span class="math">\(10^{-1}\)</span> as a decimal?).</p>
+<p>HINT 2: Recall that <code class="docutils literal"><span class="pre">break</span></code> is one way to terminate a loop.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span> <span class="n">X</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">b</span><span class="o">.</span> <span class="n">R_old</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">c</span><span class="o">.</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="n">d</span><span class="o">.</span> <span class="k">while</span> <span class="o">|</span><span class="n">R_old</span><span class="o">-</span><span class="n">R</span><span class="o">|</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">^-</span><span class="mi">4</span>
+<span class="n">e</span><span class="o">.</span> <span class="n">R</span> <span class="o">=</span> <span class="p">(</span><span class="n">R_old</span> <span class="o">+</span> <span class="n">X</span> <span class="o">/</span> <span class="n">R_old</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">f</span><span class="o">.</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">R</span><span class="o">-</span><span class="n">R_old</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tau</span><span class="p">:</span>
+<span class="n">g</span><span class="o">.</span> <span class="k">if</span> <span class="n">R</span><span class="o">-</span><span class="n">R_old</span> <span class="o">&lt;</span> <span class="n">tau</span><span class="p">:</span>
+<span class="n">h</span><span class="o">.</span> <span class="k">break</span>
+<span class="n">i</span><span class="o">.</span> <span class="n">c</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">j</span><span class="o">.</span> <span class="n">R_old</span> <span class="o">=</span> <span class="n">R</span>
+<span class="n">k</span><span class="o">.</span> <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.0001</span>
+<span class="n">l</span><span class="o">.</span> <span class="n">tau</span> <span class="o">=</span> <span class="mf">10e-4</span>
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/lectures/exam2_recap.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Jeremy Roberts.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/lectures/exam2_recap.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

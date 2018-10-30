@@ -202,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Data-Analysis-via-Interpolation">
 <h1>Data Analysis via Interpolation<a class="headerlink" href="#Data-Analysis-via-Interpolation" title="Permalink to this headline">¶</a></h1>
@@ -246,11 +250,13 @@ physical properties. Often, the value needed is not in the table, and
 <em>linear interpolation</em> is required to estimate the missing value.</p>
 <p>Let the quantity of interest be <span class="math">\(y(x)\)</span>, for which values
 <span class="math">\(y_0, y_1, \ldots\)</span> are provided at <span class="math">\(x_0, x_1, \ldots\)</span>.
-Suppose the value of <span class="math">\(y\)</span> at $x = <a href="#id1"><span class="problematic" id="id2">:raw-latex:`\tilde{x}`</span></a> $ is
-desired. The first step is to determine which two values <span class="math">\(x_i\)</span> and
-<span class="math">\(x_{i+1}\)</span> contain the point $:raw-latex:<cite>tilde{x}</cite> $. This step
-is accomplished using the linear or binary search algorithms developed
-in <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture 14</a>.</p>
+Suppose the value of <span class="math">\(y\)</span> at $x =</p>
+<div class="math">
+\[\tilde{x}\]</div><p>$ is desired. The first step is to determine which two values
+<span class="math">\(x_i\)</span> and <span class="math">\(x_{i+1}\)</span> contain the point $</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}:nowrap:\\  \tilde{x}\\$. This step is accomplished using the linear or binary search\end{aligned}\end{align} \]</div>
+<p>algorithms developed in <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture 14</a>.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Apply linear search to find <span class="math">\(i\)</span> such that
 <span class="math">\(\tilde{x} \in [x_i, x_{i+1}]\)</span> for <span class="math">\(\tilde{x}\)</span> = 3.5$ and
@@ -258,13 +264,16 @@ in <a class="reference external" href="ME400_Lecture_14.ipynb">Lecture 14</a>.</
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Repeat the exercise using binary search.</p>
 <hr class="docutils" />
-<p><strong>Exercise</strong>: For the same $:raw-latex:<cite>tilde{x}</cite> $ and points
-<span class="math">\(x\)</span>, evaluate <code class="docutils literal"><span class="pre">np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde</span></code> and
+<p><strong>Exercise</strong>: For the same $</p>
+<div class="math">
+\[\tilde{x}\]</div><p>$ and points <span class="math">\(x\)</span>, evaluate <code class="docutils literal"><span class="pre">np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde</span></code> and
 <code class="docutils literal"><span class="pre">sum(np.array(x)</span> <span class="pre">&lt;</span> <span class="pre">x_tilde)</span></code>. What can you conclude?</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">help</span></code> to learn about <code class="docutils literal"><span class="pre">np.searchsorted</span></code>. Then, for
-the same $:raw-latex:<cite>tilde{x}</cite> $ and points <span class="math">\(x\)</span>, evaluate
-<code class="docutils literal"><span class="pre">np.searchsorted(x,</span> <span class="pre">x_tilde)</span></code>. What can you conclude?</p>
+the same $</p>
+<div class="math">
+\[\tilde{x}\]</div><p>$ and points <span class="math">\(x\)</span>, evaluate <code class="docutils literal"><span class="pre">np.searchsorted(x,</span> <span class="pre">x_tilde)</span></code>. What
+can you conclude?</p>
 <hr class="docutils" />
 <p>Once <span class="math">\(i\)</span> is determined, <span class="math">\((x_i, y(x_i))\)</span> and
 <span class="math">\((x_{i+1}, y(x_{i+1}))\)</span> are connected by a line of the form

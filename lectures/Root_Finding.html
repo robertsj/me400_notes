@@ -202,7 +202,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Root-Finding">
 <h1>Root Finding<a class="headerlink" href="#Root-Finding" title="Permalink to this headline">¶</a></h1>
@@ -337,8 +341,9 @@ and identify the roots.</p>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_Root_Finding_4_0.png" src="../_images/lectures_Root_Finding_4_0.png" />
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;Figure size 800x300 with 1 Axes&gt;
+</pre></div>
 </div>
 </div>
 <p>Because <code class="docutils literal"><span class="pre">plt.plot</span></code> does not by default draw a line for <span class="math">\(y=0\)</span>, a
@@ -410,14 +415,15 @@ between <span class="math">\(x=A\)</span> and <span class="math">\(x=x^*\)</span
 axis, at which point there <em>must</em> be a second root.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Write a <code class="docutils literal"><span class="pre">lambda</span></code> function for <span class="math">\(x\)</span> that returns
-<code class="docutils literal"><span class="pre">True</span></code> if <span class="math">\(x \geq 0\)</span> and <code class="docutils literal"><span class="pre">False</span></code> otherwise. ***</p>
+<code class="docutils literal"><span class="pre">True</span></code> if <span class="math">\(x \geq 0\)</span> and <code class="docutils literal"><span class="pre">False</span></code> otherwise.</p>
+<hr class="docutils" />
 <p>An important difference between bisection and binary search is that now
 the search can require an unlimited number of comparisons because the
 search range <span class="math">\([A, B]\)</span> is split in half repeatedly until a root is
 <em>converged</em> to within a desired tolerance <span class="math">\(\tau\)</span>. In other words,
 roots will very rarely be found <em>exactly</em>; rather, we often must accept
-<em>approximate</em> values, as was first introduced in <a class="reference external" href="ME400_Lecture_8">Lecture
-8</a>.</p>
+<em>approximate</em> values, as was first introduced
+<a class="reference internal" href="Loops_in_Python.html"><span class="doc">earlier</span></a>.</p>
 <p>In pseudocode, the bisection method can be written as follows (where the
 notation from binary search is adopted as closely as is reasonable):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Bisection method for finding an isolated root of f between a and b&#39;&#39;&#39;</span>
@@ -497,29 +503,8 @@ guess the root (intuition, a graph, etc.), and call that initial
 approximation <span class="math">\(x_0\)</span>. Then, for some <span class="math">\(\Delta\)</span>,
 <span class="math">\(x_r = x_0 + \Delta\)</span>,Taylor series provides the following
 relationship:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sy</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
-<span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">Delta</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;f x_0 Delta&#39;</span><span class="p">)</span>
-<span class="n">x_r</span> <span class="o">=</span> <span class="n">x_0</span> <span class="o">+</span> <span class="n">Delta</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x_r</span><span class="p">),</span> <span class="n">Delta</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[3]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
 <div class="math">
-\[$$f{\left (x_{0} \right )} + \Delta \left. \frac{d}{d \xi_{1}} f{\left (\xi_{1} \right )} \right|_{\substack{ \xi_{1}=x_{0} }} + \mathcal{O}\left(\Delta^{2}\right) = 0$$\]</div></div>
-</div>
+\[f(x_0) + \Delta \frac{df}{dx}\Bigg |_{x=x_0} + \mathcal{O}(\Delta^2) = 0 \, .\]</div>
 <p>Formally, this equation is still exact because
 <span class="math">\(\mathcal{O}(\Delta^2)\)</span> captures <em>all</em> terms proportional to
 <span class="math">\(\Delta^2\)</span> and higher powers of <span class="math">\(\Delta\)</span>. However, if
@@ -531,11 +516,11 @@ then we&#8217;re left with the <em>approximate</em> relationship</p>
 <p>from which it follows that</p>
 <div class="math">
 \[\Delta =  -\frac{f(x_0)}{f'(x_0)} \, .\]</div>
-<p>We expect <span class="math">\(x_1 = x_1 + \Delta\)</span> to be a <em>better</em> approximation than
-<span class="math">\(x_0\)</span>. Moreover, the same process can be applied to determine a
-sequence of estimated roots <span class="math">\(x_2\)</span>, <span class="math">\(x_3\)</span>, and so on. This
-process is Newton&#8217;s method, and is presented in the following
-pseudocode:</p>
+<p>We expect <span class="math">\(x_1 = x_0 + \Delta = x_0 - f(x_0)/f'(x_0)\)</span> to be a
+<em>better</em> approximation than <span class="math">\(x_0\)</span>. Moreover, the same process can
+be applied to determine a sequence of estimated roots <span class="math">\(x_2\)</span>,
+<span class="math">\(x_3\)</span>, and so on. This process is Newton&#8217;s method, and is
+presented in the following pseudocode:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Newton&#39;s method for finding the root f given x_0&#39;&#39;&#39;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tau</span>
 <span class="n">Set</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
@@ -547,6 +532,12 @@ pseudocode:</p>
 <span class="n">Output</span><span class="p">:</span> <span class="n">x</span>
 </pre></div>
 </div>
+<hr class="docutils" />
+<p><strong>Exercise</strong>: Consider <span class="math">\(f(x) = \cos(x) = 0\)</span>. With <span class="math">\(x_0 = 1\)</span>,
+apply <em>one</em> step of Newton&#8217;s method. What is the result (i.e.,
+<span class="math">\(x_1\)</span>)?</p>
+<p><em>Solution</em>:
+<span class="math">\(x_1 = x_0 - \frac{\cos(x_0)}{-\sin(x_0)} \approx 1.642\)</span></p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Apply Newton&#8217;s method <em>manually</em> to solve
 <span class="math">\(f(x) = x^3 + 2x^2 - 5x - 6 = 0\)</span> to within <span class="math">\(\tau = 10^{-5}\)</span>.
@@ -580,12 +571,11 @@ exercise to estimate the order of convergence of Newton&#8217;s method.</p>
 <p><em>Solution</em>: Using logarithms, we have
 <span class="math">\(\log \epsilon_4 = p \log \epsilon_3 + \log c\)</span> and
 <span class="math">\(\log \epsilon_5 = p \log \epsilon_4 + \log c\)</span>. Those are two
-equations for the two unknowns <span class="math">\(p\)</span> and <span class="math">\(\log c\)</span>. Now,
-recalling what we learned in <a class="reference external" href="ME400_Lecture_4.ipynb">Lecture 4</a>, this
-system is easy to solve:</p>
+equations for the two unknowns <span class="math">\(p\)</span> and <span class="math">\(\log c\)</span>. We can set
+up and solve the <span class="math">\(2\times 2\)</span> system via:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -596,18 +586,17 @@ system is easy to solve:</p>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e_3</span><span class="p">),</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e_4</span><span class="p">),</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e_4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e_5</span><span class="p">)])</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">p</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="math">
-\[$$1.99902739068$$\]</div></div>
+<div class="highlight"><pre>
+1.9990273906811293
+</pre></div></div>
 </div>
 <p>That&#8217;s pretty darn close to 2, and Newton&#8217;s method is therefore
 confirmed to exhibit second-order convergence (for this problem).</p>
@@ -656,9 +645,12 @@ provided. Here, <code class="docutils literal"><span class="pre">delta</span></c
 finite-difference approximation to <span class="math">\(f'(x)\)</span>.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Use the secant method <em>without</em> defining <span class="math">\(f'(x)\)</span> to
-solve the following equations: 1. <span class="math">\(\tan(x)/x^2\)</span> for
-<span class="math">\(x_0 = 1\)</span>. 2. <span class="math">\(s^2 = 3\)</span> for <span class="math">\(s_0=1.5\)</span>. (What is this
-doing?) 3. <span class="math">\(2\cosh(x/4)-x = 0\)</span> with <span class="math">\(x_0 = 4\)</span>.</p>
+solve the following equations:</p>
+<ol class="arabic simple">
+<li><span class="math">\(\tan(x)/x^2\)</span> for <span class="math">\(x_0 = 1\)</span>.</li>
+<li><span class="math">\(s^2 = 3\)</span> for <span class="math">\(s_0=1.5\)</span>. (What is this doing?)</li>
+<li><span class="math">\(2\cosh(x/4)-x = 0\)</span> with <span class="math">\(x_0 = 4\)</span>.</li>
+</ol>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Another method that can be used when the derivative is not
 available is <a class="reference external" href="https://en.wikipedia.org/wiki/Steffensen%27s_method">Steffensen&#8217;s
@@ -684,10 +676,10 @@ systems of equations requires the <strong>jacobian matrix</strong>. For a system
 defined as</p>
 <div class="math">
 \[\begin{split}  \mathbf{J}(\mathbf{x}) = \begin{bmatrix}
-    \frac{\partial f_0}{\partial x_0} &amp; \frac{\partial f_1}{\partial x_0} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_0} \\
-    \frac{\partial f_0}{\partial x_1} &amp; \frac{\partial f_1}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_1} \\
+    \frac{\partial f_0}{\partial x_0} &amp; \frac{\partial f_0}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_{0}}{\partial x_{n-1}} \\
+    \frac{\partial f_1}{\partial x_0} &amp; \frac{\partial f_1}{\partial x_1} &amp; \ldots &amp; \frac{\partial f_{1}}{\partial x_{n-1}} \\
          &amp;     &amp;  \ddots &amp;  \\
-    \frac{\partial f_0}{\partial x_{n-1}} &amp; \frac{\partial f_1}{\partial x_{n-1}} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_{n-1}}
+    \frac{\partial f_{n-1}}{\partial x_{0}} &amp; \frac{\partial f_{n-1}}{\partial x_{1}} &amp; \ldots &amp; \frac{\partial f_{n-1}}{\partial x_{n-1}}
 \end{bmatrix}\end{split}\]</div>
 <p>where <span class="math">\(x_i\)</span> indicates the <span class="math">\(i\)</span>th unknown (or element
 <span class="math">\(i\)</span> of <span class="math">\(\mathbf{x}\)</span>).</p>
@@ -697,13 +689,37 @@ defined as</p>
 <p>Here, <span class="math">\(\mathbf{f}(\mathbf{x}_n)\)</span> and
 <span class="math">\(\mathbf{J}(\mathbf{x}_n)\)</span> indicate the function and its jacobian
 are evalaluated at <span class="math">\(\mathbf{x}_n\)</span>.</p>
+<p>Note that if we let
+<span class="math">\(\mathbf{\Delta}_n = \mathbf{J}^{-1}(\mathbf{x}_n)\mathbf{f}(\mathbf{x}_n)\)</span>,
+then it becomes clear that
+<span class="math">\(\mathbf{J}(\mathbf{x}_n)\mathbf{\Delta}_n = \mathbf{f}(\mathbf{x}_n)\)</span>.
+In other words, each Newton step for a system of <em>nonlinear</em> equations
+requires the solution of a <em>linear</em> system of equations where the Newton
+step <span class="math">\(\mathbf{\Delta}_n\)</span> is the unknown.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: Consider the nonlinear system of equations <span class="math">\(x-y = 4\)</span>
 and <span class="math">\(x^2 + y = -3\)</span>. Derive the jacobian matrix, and apply one step
-of Newton&#8217;s method using <span class="math">\(x_0=1/2\)</span> and <span class="math">\(y_0=-3\)</span>. (<em>Hint</em>:
-Check your work by defining <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">sy.Matrix([x-y-4,</span>&nbsp; <span class="pre">x**2+y+3])</span></code> and
-<code class="docutils literal"><span class="pre">J</span> <span class="pre">=</span> <span class="pre">f.jacobian([x,</span> <span class="pre">y])</span></code>. Feel free to dig in a bit and see how
-matrix-vector multiplication works in SymPy.)</p>
+of Newton&#8217;s method using <span class="math">\(x_0=1/2\)</span> and <span class="math">\(y_0=-3\)</span>.</p>
+<p><em>Partial Solution</em>: Here, we have</p>
+<div class="math">
+\[\begin{split}\mathbf{f}(\mathbf{x}) = \left[ \begin{array}{c}
+  x-y - 4\\
+  x^2 + y + 3
+\end{array}\right ] =
+\left[ \begin{array}{c}
+  0\\
+  0
+\end{array}\right ] \, ,\end{split}\]</div>
+<p>where <span class="math">\(\mathbf{x} = [x, y]^T\)</span>.</p>
+<p>The jacobian is, therefore, defined as</p>
+<div class="math">
+\[\begin{split}\mathbf{J}(\mathbf{x}) =
+\left[ \begin{array}{cc}
+  1 &amp; -1 \\
+ 2x &amp; 1 \\
+\end{array}\right ] \, .\end{split}\]</div>
+<p>With <span class="math">\(\mathbf{x}_0 = [1/2, -3]^T\)</span>, Newton gives
+<span class="math">\(\mathbf{x}_1 = \mathbf{x}_0 - \mathbf{J}^{-1}(\mathbf{x})\mathbf{f}(\mathbf{x}_0)\)</span>.</p>
 <hr class="docutils" />
 <p><strong>Exercise</strong>: What&#8217;s the Jacobian matrix for the <em>linear</em> system
 <span class="math">\(ax+by = 1\)</span> and <span class="math">\(cx+dy=2\)</span>? How many Newton iterations are
@@ -748,7 +764,7 @@ and <span class="math">\(x^2 + y = -3\)</span> using <code class="docutils liter
 <p><em>Solution</em>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -760,18 +776,17 @@ and <span class="math">\(x^2 + y = -3\)</span> using <code class="docutils liter
 
 <span class="n">z0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">z0</span><span class="p">)</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+<span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="math">
-\[$$\left ( 0.61803398875, \quad -3.38196601125\right )$$\]</div></div>
+<div class="highlight"><pre>
+0.6180339887498933 -3.381966011250107
+</pre></div></div>
 </div>
 </div>
 </div>
@@ -833,7 +848,7 @@ might not be unique.</p>
 <p>Consider the following example (for <span class="math">\(f(x) = \sin(x^22)-3)^2\)</span>):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -845,7 +860,7 @@ might not be unique.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_Root_Finding_31_0.png" src="../_images/lectures_Root_Finding_31_0.png" />
+<img alt="../_images/lectures_Root_Finding_30_0.png" src="../_images/lectures_Root_Finding_30_0.png" />
 </div>
 </div>
 <p>Of the three roots, two correspond to minima&#8212;but the left one (blue

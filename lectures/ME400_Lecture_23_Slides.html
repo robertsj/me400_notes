@@ -200,7 +200,11 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
 </style>
 <div class="section" id="Lecture-23---Data-Analysis-via-Least-Squares-Fitting">
 <h1>Lecture 23 - Data Analysis via Least-Squares Fitting<a class="headerlink" href="#Lecture-23---Data-Analysis-via-Least-Squares-Fitting" title="Permalink to this headline">¶</a></h1>
@@ -326,7 +330,7 @@ their L2-norms.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-05a1610cbc18&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-3a72ebb0971c&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
 <span class="ansi-red-fg">    e_1 =</span>
          ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -342,6 +346,16 @@ their L2-norms.</p>
 <span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
 <p><strong>Exercise</strong>: Determine the best-fit parameters <span class="math">\(a\)</span> and <span class="math">\(b\)</span>
 for the example data above.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Beyond-Linear-Models">
 <h2>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h2>
@@ -395,7 +409,7 @@ can be used (just like for <span class="math">\(y(x) = ax+b\)</span>). For a qua
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-8d4399594022&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">&lt;ipython-input-5-af3d3e9f1ce4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> plt.plot(x, y, &#39;k&#39;, x, y_lin, &#39;b-.&#39;,
 </span><span class="ansi-green-intense-fg ansi-bold">      2</span>          x, y_quad, &#39;g--&#39;, x, y_cub, &#39;r:&#39;)
 <span class="ansi-green-intense-fg ansi-bold">      3</span> plt<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;y&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;linear&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;quadratic&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;cubic&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
