@@ -216,39 +216,17 @@ and <span class="math">\(\mathbf{f(x)} = \mathbf{0}\)</span>, i.e., nonlinear sy
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Find one or more roots of a one-dimensional, nonlinear equation
-<span class="math">\(f(x) = 0\)</span> using the bisection and Newton methods.</li>
-<li>Find local extrema of a function <span class="math">\(f(x)\)</span> using the bisection and
-Newton methods.</li>
-<li>Establish the order of an integration scheme using numerical,
-graphical, or symbolic means.</li>
-</ul>
-</div>
-<div class="section" id="Key-Terms">
-<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>nonlinear equation</li>
-<li>transcendental equation</li>
-<li>graphical solution</li>
-<li>bisection method</li>
-<li>Newton&#8217;s method</li>
-<li>quadratic convergence</li>
-<li>second-order convergence</li>
-<li>order of convergence</li>
-<li>secant method</li>
-<li>Steffensen&#8217;s method</li>
-<li>nonlinear systems</li>
-<li>Jacobian matrix</li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></li>
-<li>optimization</li>
-<li>extremum</li>
-<li>critical point</li>
-<li>objective function</li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code></li>
+<li>Use graphical means to isolate roots of nonlinear equations.</li>
+<li>Find an isolated root of nonlinear equations using the bisection
+method.</li>
+<li>Find an isolated root of nonlinear equations (or systems of
+equations) using Newton&#8217;s method.</li>
+<li>Find an isolated root of nonlinear equations (or systems of
+equations) using <code class="docutils literal"><span class="pre">fsolve</span></code>.</li>
 </ul>
 <div class="section" id="Nonlinear-Equations">
 <h3>Nonlinear Equations<a class="headerlink" href="#Nonlinear-Equations" title="Permalink to this headline">¶</a></h3>
-<p>Linear equations are characterized by <em>linear combinations</em> or the
+<p>Linear equations are characterized by <em>linear combinations</em> of the
 unknowns, e.g.,</p>
 <div class="math">
 \[\begin{split}\begin{split}
@@ -296,7 +274,7 @@ Assume <span class="math">\(L = 5\)</span> and <span class="math">\(\text{Bi}=0.
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-
+<span class="n">L</span><span class="p">,</span> <span class="n">Bi</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.5</span>
 </pre></div>
 </div>
 </div>
@@ -355,7 +333,7 @@ secant method.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_21_Slides_13_0.png" src="../_images/lectures_ME400_Lecture_21_Slides_13_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_21_Slides_12_0.png" src="../_images/lectures_ME400_Lecture_21_Slides_12_0.png" />
 </div>
 </div>
 </div>
@@ -390,10 +368,10 @@ terms of <span class="math">\(x_2\)</span>, etc. until <span class="math">\(f(x_
 <p><strong>Exercise</strong>: Solve <span class="math">\(f(x) = \sin(x)-2/5 = 0\)</span> starting with
 <span class="math">\(x_0 = 0.5\)</span> until <span class="math">\(|f(x)| &lt; 10^{-5}\)</span>.</p>
 </div>
-<div class="section" id="Secant-Method">
-<h2>Secant Method<a class="headerlink" href="#Secant-Method" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Approximate-Newton-Method">
+<h2>Approximate Newton Method<a class="headerlink" href="#Approximate-Newton-Method" title="Permalink to this headline">¶</a></h2>
 <p>Actually, just like Newton but without <span class="math">\(f'(x)\)</span>! Use a <em>finite
-difference</em> instead.</p>
+difference</em> instead to yield the <em>secant method</em>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>&#39;&#39;&#39;Secant method for finding the root f given x_0&#39;&#39;&#39;
 Input: f, x_0, tau
 Set x = x_0
@@ -469,8 +447,7 @@ Newton methods.</li>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 21 - Root Finding</a><ul>
-<li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Objectives">Objectives</a><ul>
 <li><a class="reference internal" href="#Nonlinear-Equations">Nonlinear Equations</a></li>
 </ul>
 </li>
@@ -481,7 +458,7 @@ Newton methods.</li>
 </li>
 <li><a class="reference internal" href="#Bisection">Bisection</a></li>
 <li><a class="reference internal" href="#Newton's-Method">Newton&#8217;s Method</a></li>
-<li><a class="reference internal" href="#Secant-Method">Secant Method</a><ul>
+<li><a class="reference internal" href="#Approximate-Newton-Method">Approximate Newton Method</a><ul>
 <li><a class="reference internal" href="#Solving-Systems-of-Nonlinear-Equations-Numerically">Solving Systems of Nonlinear Equations Numerically</a></li>
 </ul>
 </li>

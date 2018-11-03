@@ -134,9 +134,12 @@
     "For the *average* student (with respect to reading and analytical abilities) to earn an *average* grade will require approximately **6 to 9 hours per week** of *study* outside of class.  This is consistent with [university policy](https://www.k-state.edu/provost/universityhb/fhsecf.html#F115), which suggests 2 outside hours per 1 in-class hour. Here, to study implies reading, preparation for lecture, solving homework sets, visiting with the instructor and GTAs, and anything else that contributes actively to the learning process.  Historically, roughly half the class has earned A's and B's, meaning the average grade is near the B/C cutoff.\n",
     "\n",
     "For the average student, I'd suggest the following breakdown of out-of-class work:\n",
+    "\n",
     " - 2 hours per week reading, taking notes, and executing example code \n",
     " - 1 hour per week on pre-lecture activities\n",
-    " - 3--6 hours per week on homework problems"
+    " - 3--6 hours per week on homework problems\n",
+    " \n",
+    "Note: these times indicate *real*, *uninterrupted* times.  Glancing at the reading while watching TV, surfing Reddit, etc., will not do much for one's learning."
    ]
   },
   {
@@ -218,14 +221,16 @@
     "\n",
     "### Formative Activities\n",
     "\n",
-    "Before most (if not all) lectures, students will complete a \"pre-lecture\" activity.  These activities will most often take the form of an online (Canvas-based) quiz with questions that cover the reading assigned for the lecture in question.  These activities may also include more open-ended responses from students.  In cases where there is a \"right\" answer, students will be given as many chances as needed to answer the question correctly.   For these cases, \"right\" answers are automatically shown after the due time.  Some lectures will also have in-class activities (which may be short problems, worksheets, etc.).  These in-class activities can only be completed if you attend the lecture, and they will not be announced. The **lowest three scores will be dropped** from the calculuted score, so there are **no make-up activities**.\n",
+    "Before most (if not all) lectures, students will complete a \"pre-lecture\" activity.  These activities will most often take the form of an online (Canvas-based) quiz with questions that cover the reading assigned for the lecture in question.  These activities may also include more open-ended responses from students.  In cases where there is a \"right\" answer, students will be given as many chances as needed to answer the question correctly.   For these cases, \"right\" answers are automatically shown after the due time.  Some lectures will also have in-class activities (which may be short problems, worksheets, etc.).  These in-class activities can only be completed if you attend the lecture, and they will not be announced. The **lowest three scores will be dropped** from the calculuted score, so there are **no make-up activities**.  Hence, if you are absent from class for any reason (official or not), there is no make-up activity.\n",
+    "\n",
+    "\n",
     "\n",
     "### Laboratory Exercises\n",
     "\n",
     "The purpose of the laboratories is to review and to put in practice the concepts and tools discussed in lecture.  Part of this experience will be laboratory exercises that must be completed in the alotted laboratory time.  Generally, full credit is earned if students attend the laboratory and put forth a good-faith effort. There are 12 laboratories.  \n",
     "\n",
     "**Students may drop their lowest two scores (which can include absences of any kind)**.  Consequently, **no makeups**\n",
-    "will be allowed.  You do not need to inform the instructor of absences; you simply will not earn credit for that laboratory.\n",
+    "will be allowed.  You do not need to inform the instructor of absences; you simply will not earn credit for that laboratory.  Absences of *any k\n",
     "\n",
     "### Homework\n",
     "\n",

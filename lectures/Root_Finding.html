@@ -791,108 +791,6 @@ and <span class="math">\(x^2 + y = -3\)</span> using <code class="docutils liter
 </div>
 </div>
 <hr class="docutils" />
-<div class="section" id="Finding-Extrema">
-<h2>Finding Extrema<a class="headerlink" href="#Finding-Extrema" title="Permalink to this headline">¶</a></h2>
-<p>One of the great applications of differentiation is its ability to
-identify the <em>critical points</em> of a function <span class="math">\(f(x)\)</span>, which include
-its minima and maxima. If <span class="math">\(f(x)\)</span> represents some quantity of
-interest, perhaps the cost of materials for some component or the
-signal-to-noise ratio of some sensor. If we want to mininimize those
-costs or maximize those ratios, we need to use <em>optimization</em>. Although
-optimization problems and the techniques to solve them are quite
-diverse, we will stick to 1-D problems in which the <em>objective function</em>
-to be minimized or maximized is continuous (as opposed to discrete).</p>
-<p>You&#8217;ve had calculus (and we&#8217;ve reviewed some its topics). Hence, you
-might recall that a function <span class="math">\(f(x)\)</span> exhibits an <strong>extremum</strong>,
-i.e., a <strong>minimum</strong> or <strong>maximum</strong>, at any point <span class="math">\(x\)</span> for which
-<span class="math">\(f'(x)\)</span> is zero and <span class="math">\(f''(x)\)</span> is nonzero. When <span class="math">\(f'(x)\)</span>
-<em>and</em> <span class="math">\(f''(x)\)</span> vanish, the point is often called a <strong>saddle
-point</strong>, though that term is more meaningful in multiple dimensions.</p>
-<hr class="docutils" />
-<p><strong>Exercise</strong>: Given some fencing of <em>fixed</em> length <code class="docutils literal"><span class="pre">L</span></code>, what is the
-largest area that fencing can enclose if arranged in a rectangle of
-sides <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>?</p>
-<p><em>Solution</em>:</p>
-<p>Here&#8217;s the problem. We want to maximize <span class="math">\(A = ab\)</span> where
-<span class="math">\(2a+2b = L\)</span> or <span class="math">\(b = L/2 - a\)</span>. We know <span class="math">\(L\)</span> and
-<span class="math">\(b\)</span> depends on <span class="math">\(a\)</span>, so there is just one free parameter
-(i.e., we&#8217;re in 1-D where we&#8217;ll stay throughout). Note that <span class="math">\(a\)</span>
-(and <span class="math">\(b\)</span>) can range from 0 to <span class="math">\(L/2\)</span>.</p>
-<p>Formally, we see a solution to</p>
-<div class="math">
-\[\max_{a \in [0,\, L/2]} a\left (\frac{L}{2}-a \right)\]</div>
-<p>which reads &#8220;find the value of <span class="math">\(a\)</span> in the range <span class="math">\([0, L/2]\)</span>
-that maximizes the quantity <span class="math">\(f(a) = a(L/2-a)\)</span>. Here, <span class="math">\(f(a)\)</span>
-is the <strong>objective function</strong>.</p>
-<p>Differentiation of <span class="math">\(f(a)\)</span> gives</p>
-<div class="math">
-\[f'(a) = L/2 - 2a\]</div>
-<p>which, when set to zero, requires that <span class="math">\(a = L/4\)</span>. Consequently,
-<span class="math">\(b = L/2-a = L/4 = a\)</span>. That is to say, our fence must form a
-square to maximize the area enclosed.</p>
-</div>
-<hr class="docutils" />
-<div class="section" id="The-Connection-To-Nonlinear-Functions">
-<h2>The Connection To Nonlinear Functions<a class="headerlink" href="#The-Connection-To-Nonlinear-Functions" title="Permalink to this headline">¶</a></h2>
-<p>As the fence exercise illustrates, if we can write down the derivative
-and explicitly find the point at which it vanishes, our problem is
-solved. That is rarely the case. Often, the functions of interest have
-complicated derivatives that make <span class="math">\(f'(x) = 0\)</span> a nonlinear
-equation. We generally can&#8217;t solve that problem directly. In many cases,
-we don&#8217;t even have <span class="math">\(f'(x)\)</span>, and at best, we can approximate it
-numerically using finite differences.</p>
-<p>Further complicating matters is that even if we can solve
-<span class="math">\(f'(x)=0\)</span>, the result might not be an extremum (consider
-<span class="math">\(f(x)=x^3\)</span> and the zeros of its derivative <span class="math">\(3x^2\)</span>), and it
-might not be unique.</p>
-<p>Consider the following example (for <span class="math">\(f(x) = \sin(x^22)-3)^2\)</span>):</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">nonlinear_plots</span><span class="o">.</span><span class="n">extrema</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_Root_Finding_30_0.png" src="../_images/lectures_Root_Finding_30_0.png" />
-</div>
-</div>
-<p>Of the three roots, two correspond to minima&#8212;but the left one (blue
-circle) is greater than the right one (red square), so is it really a
-minimum? <em>Yes</em>, if we make the distinction between <em>local</em> and <em>global</em>
-minima. For this problem, the right minimum is the <em>global</em> minimum,
-while the central root (green star) represents a local maximum
-(<span class="math">\(f(x)\)</span> is <em>unbounded</em>, i.e., there is no value <span class="math">\(M &lt; \infty\)</span>
-such that <span class="math">\(|f(x)| &lt; M\)</span> for all possible values of <span class="math">\(x\)</span>).
-Given the choice, a global optimum is usualy preferred, but for many
-cases, we&#8217;re at best guaranteed a local minimum. There are techniques to
-increase our chances of finding a global optimum, but that&#8217;s outside the
-present scope!</p>
-<div class="section" id="When-the-Derivative-is-Available">
-<h3>When the Derivative is Available<a class="headerlink" href="#When-the-Derivative-is-Available" title="Permalink to this headline">¶</a></h3>
-<p>If we have <span class="math">\(f(x)\)</span> and can evaluated <span class="math">\(f'(x)\)</span>, then either
-Newton&#8217;s method or the secant method can be applied to
-<span class="math">\(g(x)=f'(x) = 0\)</span>. (The same goes for multi-variable problems). In
-fact, this approach (among others) in built into
-<code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code>, which the reader should investigate.</p>
-</div>
-<div class="section" id="When-the-Derivative-is-Unavailable">
-<h3>When the Derivative is Unavailable<a class="headerlink" href="#When-the-Derivative-is-Unavailable" title="Permalink to this headline">¶</a></h3>
-<p>If we had <span class="math">\(f'(x)\)</span>, we could apply Newton&#8217;s method to
-<span class="math">\(g(x) = f'(x) = 0\)</span>. Assuming we don&#8217;t, how to proceed? One option
-is to adapt the bisection method. Now, the search is not based on the
-change of the sign of <span class="math">\(f(x)\)</span> but rather it&#8217;s magnitude relative to
-the left and right points. Again, we have to have isolated our (single)
-target value in some finite range, which may be no easy task (plotting
-helps).</p>
-</div>
-</div>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
 <p>Checkout out the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">SciPy
@@ -928,12 +826,6 @@ on optimization and root finding.</p>
 </li>
 <li><a class="reference internal" href="#Solving-Systems-of-Nonlinear-Equations-Numerically">Solving Systems of Nonlinear Equations Numerically</a><ul>
 <li><a class="reference internal" href="#scipy.optimize.fsolve"><code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Finding-Extrema">Finding Extrema</a></li>
-<li><a class="reference internal" href="#The-Connection-To-Nonlinear-Functions">The Connection To Nonlinear Functions</a><ul>
-<li><a class="reference internal" href="#When-the-Derivative-is-Available">When the Derivative is Available</a></li>
-<li><a class="reference internal" href="#When-the-Derivative-is-Unavailable">When the Derivative is Unavailable</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
