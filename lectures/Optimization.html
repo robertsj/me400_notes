@@ -318,7 +318,7 @@ might not be unique.</p>
 <p>Consider the following example (for <span class="math">\(f(x) = \sin(x^22)-3)^2\)</span>):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -330,8 +330,9 @@ might not be unique.</p>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_Optimization_5_0.png" src="../_images/lectures_Optimization_5_0.png" />
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;Figure size 640x480 with 1 Axes&gt;
+</pre></div>
 </div>
 </div>
 <p>Of the three roots, two correspond to minima&#8212;but the left one (blue
@@ -364,7 +365,7 @@ confirm your result by showing it on a graph of <span class="math">\(f(x)\)</spa
 Then, Newton&#8217;s method gives</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [56]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -391,11 +392,11 @@ Then, Newton&#8217;s method gives</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[56]:
+<span></span>Out[2]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x7f0e1957a940&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x7f3a3f320d68&gt;
 </pre></div>
 </div>
 </div>
@@ -441,7 +442,7 @@ and <span class="math">\(x_1\)</span> that maximize <span class="math">\(f(\math
 <p>Now, apply Newton&#8217;s method:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [57]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -470,22 +471,22 @@ and <span class="math">\(x_1\)</span> that maximize <span class="math">\(f(\math
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[57]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>Text(0.5,1,&#39;$f(x_0, x_1)$&#39;)
-</pre></div>
-</div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_Optimization_11_1.png" src="../_images/lectures_Optimization_11_1.png" />
-</div>
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-3-f67d6031561e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span> <span class="ansi-red-fg"># Apply Newton&#39;s method</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span> x <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1.0</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2.0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 11</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">while</span> sum<span class="ansi-blue-fg">(</span>abs<span class="ansi-blue-fg">(</span>g<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">1e-8</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     12</span>     x <span class="ansi-blue-fg">=</span> x <span class="ansi-blue-fg">-</span> np<span class="ansi-blue-fg">.</span>linalg<span class="ansi-blue-fg">.</span>solve<span class="ansi-blue-fg">(</span>H<span class="ansi-blue-fg">,</span> gf<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;g&#39; is not defined
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="When-the-Derivative-is-Unavailable">
@@ -522,9 +523,9 @@ solution is <code class="docutils literal"><span class="pre">sol.x</span></code>
 <p><strong>Solution</strong>: Note that any maximization problem can be turned into a
 minimization problem negating the objective function, i.e., <span class="math">\(f(x)\)</span>
 becomes <span class="math">\(-f(x)\)</span>. Then:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [55]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -535,14 +536,6 @@ becomes <span class="math">\(-f(x)\)</span>. Then:</p>
 <span class="k">print</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[1.42755179]
-</pre></div></div>
 </div>
 </div>
 </div>
@@ -617,9 +610,9 @@ x_1
 \end{array} \right]\end{split}\]</div>
 <p>Finally, there are no equality constraints. From here, <code class="docutils literal"><span class="pre">linprog</span></code> can
 be used via</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [73]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -637,14 +630,6 @@ be used via</p>
              <span class="c1"># with attribute x</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[2.66666667 0.66666667]
-</pre></div></div>
 </div>
 <hr class="docutils" />
 <p><strong>Exercise</strong>. Suppose the Acme Concrete Company is supplying concrete

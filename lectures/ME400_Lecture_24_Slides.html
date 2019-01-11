@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Lecture 24 - Data Analysis via Least-Squares Fitting &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    <title>Lecture 24 - Data Analysis via Interpolation &mdash; ME 400 Course Notes Fall 2018 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -206,323 +206,119 @@ div.nboutput div.output_area.stderr {
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
 </style>
-<div class="section" id="Lecture-24---Data-Analysis-via-Least-Squares-Fitting">
-<h1>Lecture 24 - Data Analysis via Least-Squares Fitting<a class="headerlink" href="#Lecture-24---Data-Analysis-via-Least-Squares-Fitting" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Lecture-24---Data-Analysis-via-Interpolation">
+<h1>Lecture 24 - Data Analysis via Interpolation<a class="headerlink" href="#Lecture-24---Data-Analysis-via-Interpolation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>A ubiquitous task in engineering and other technical disciplines is the
-analysis of data. Data comes from many sources, including measurements
-in the laboratory and numerical simulations. In this lecture and in
-<a class="reference external" href="ME400_Lecture_25.ipynb">Lecture 25</a>, we&#8217;ll apply what we&#8217;ve learned
-so far to produce <em>models</em> from data that we can use to explore trends
-and make conclusions. Specifically, in this lecture, we&#8217;ll develop
-models based on <strong>least-squares</strong> fitting of model parameters to
-existing data. Such fitting may be the right choice when the data in
-contaminated by noise or when the model need only capture the main
-features of the observed phenomenon.</p>
-</div>
-<div class="section" id="Exam-2---Second-Chance">
-<h2>Exam 2 - Second Chance<a class="headerlink" href="#Exam-2---Second-Chance" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>20 minutes</li>
-<li>Notes are okay</li>
-<li>No computer/calculator</li>
-<li>Use your paper, remove frills, and put name and lab time on <em>top
-right</em></li>
-<li>Worth 3 points (15%) on the exam</li>
-</ul>
-<div class="section" id="Problem-1---1-point">
-<h3>Problem 1 - 1 point<a class="headerlink" href="#Problem-1---1-point" title="Permalink to this headline">¶</a></h3>
-<p>Suppose you were given a function named <code class="docutils literal"><span class="pre">foo</span></code> that sorts lists of
-numbers. Not knowing its order, you tested it for several 100-element
-lists and found it took, on average 10 s per sort. You did the same for
-several 1000-element lists, and found it took 1000 s per sort (on
-average). Is the method <span class="math">\(\mathcal{O}(\log n)\)</span>,
-<span class="math">\(\mathcal{O}(n)\)</span>, <span class="math">\(\mathcal{O}(n \log n)\)</span>,
-<span class="math">\(\mathcal{O}(n^2)\)</span>, or something else? <em>Show your work</em> and circle
-you answer.</p>
-</div>
-<div class="section" id="Problem-2---1-point">
-<h3>Problem 2 - 1 point<a class="headerlink" href="#Problem-2---1-point" title="Permalink to this headline">¶</a></h3>
-<p>Consider a rocket in space moving in a straight path. Its position with
-time is <span class="math">\(x(t) = t^3 + 12t\)</span>, where <span class="math">\(x\)</span> is in km and <span class="math">\(t\)</span>
-is in s. What is the rocket&#8217;s acceleration at <span class="math">\(t = 10\)</span> s? Circle
-your answer (including units).</p>
-</div>
-<div class="section" id="Problem-3---1-point">
-<h3>Problem 3 - 1 point<a class="headerlink" href="#Problem-3---1-point" title="Permalink to this headline">¶</a></h3>
-<p>Consider a rocket in space moving in a straight path. Its position was
-measured at <span class="math">\(t = 8, 9, 10\)</span> (in s) and found to be
-<span class="math">\(x = 350, 450, 600\)</span> (in km), respectively. What is the rocket&#8217;s
-acceleration at <span class="math">\(t = 10\)</span> s? Circle your answer (including units).</p>
-</div>
+<p>In this lecture, we continue the theme of data analysis initiated in
+<a class="reference external" href="ME400_Lecture_24.ipynb">Lecture 24</a>, focusing now on the process of
+<strong>interpolation</strong>. Whereas the fitted models of <a class="reference external" href="ME400_Lecture_24.ipynb">Lecture
+24</a> allow one to produce simple models from
+noisy (or otherwise complicated) data, interpolation allows one to
+estimate new values from known discrete points that are assumed to be
+noise free.</p>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Explain (and demonstrate) what is meant by a least-squares fit of a
-linear model <span class="math">\(ax+b\)</span> to a set of measured points
-<span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
-<li>Use built-in tools to perform linear, least-squares fitting of data
-to models</li>
-<li>Use built-in tools to perform nonlinear, least-squares fitting of
-data to models</li>
-</ul>
-</div>
-<div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>error</li>
-<li>least-squares</li>
-<li>normal equation</li>
-<li><code class="docutils literal"><span class="pre">np.linalg.solve</span></code></li>
-<li><code class="docutils literal"><span class="pre">np.polyfit</span></code></li>
-<li><code class="docutils literal"><span class="pre">np.polyval</span></code></li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code></li>
+<li>Apply linear interpolation to evaluate <span class="math">\(f(x)\)</span> given discrete
+points <span class="math">\((x_i, f(x_i))\)</span> for <span class="math">\(i = 0, 1 \ldots\)</span>.</li>
+<li>Apply linear interpolation to evaluate <span class="math">\(f(x, y)\)</span> given discrete
+points <span class="math">\((x_i, y_j, f(x_i, y_j))\)</span> for
+<span class="math">\(\, i = 0, 1, \ldots\)</span> and <span class="math">\(j = 0, 1,\ldots\)</span>.</li>
+<li>Apply tools from NumPy and SciPy to perform high-order (e.g.,
+cubine-spline) interpolation</li>
 </ul>
 </div>
 </div>
-<div class="section" id="Noisy-Data">
-<h2>Noisy Data<a class="headerlink" href="#Noisy-Data" title="Permalink to this headline">¶</a></h2>
-<p>A familiar task: draw a line of &#8220;best fit&#8221; through noisy data
-<span class="math">\((x_i, y_i)\)</span></p>
-<p>Alternative description: find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> so that the
-<em>linear model</em> <span class="math">\(y(x) = ax + b\)</span> best matches the data.</p>
+<div class="section" id="Simple-Linear-Interpolation">
+<h2>Simple Linear Interpolation<a class="headerlink" href="#Simple-Linear-Interpolation" title="Permalink to this headline">¶</a></h2>
+<p>A common task in many thermal engineering courses is to use tabulated
+physical properties. Often, the value needed is not in the table, and
+<em>linear interpolation</em> is required to estimate the missing value.</p>
+<p><strong>Classical</strong>: interpolate between two pairs <span class="math">\((x_0, y_0)\)</span> and
+<span class="math">\((x_1, y_1)\)</span> by finding a slope and intercept. <em>Fine, but it gets
+old.</em></p>
+<p><strong>Alternative</strong>: the teeter-totter analogy (and the path to
+<em>barycentric</em> interpolation)</p>
+<p>Barycentric interpolation in 1-D:</p>
+<div class="math">
+\[\begin{split}\begin{split}
+f(x) &amp;= f(a) + \frac{f(b) - f(a)}{b - a} (x - a) \\
+     &amp;= f(a) \left ( \frac{b - x}{b - a} \right ) + f(b) \left( \frac{x - a}{b - a} \right ) \\
+     &amp;= f(a) w_a + f(b) w_b \, .
+\end{split}\end{split}\]</div>
+<p>Note, <span class="math">\(w_a + w_b = 1\)</span> (as we might expect).</p>
+<p><strong>Exercise</strong>: Consider the following table of thermodynamic data for
+saturated steam (saved as <a class="reference external" href="thermo_data.txt">thermo_data.txt</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span> <span class="n">T</span> <span class="p">[</span><span class="n">K</span><span class="p">]</span>   <span class="n">P</span> <span class="p">[</span><span class="n">MPa</span><span class="p">]</span>  <span class="n">h_l</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span> <span class="n">h_v</span> <span class="p">[</span><span class="n">kJ</span><span class="o">/</span><span class="n">kg</span><span class="p">]</span>
+<span class="mf">373.150</span>   <span class="mf">0.101</span>    <span class="mf">2675.572</span>     <span class="mf">419.099</span>
+<span class="mf">389.817</span>   <span class="mf">0.179</span>    <span class="mf">2701.054</span>     <span class="mf">489.625</span>
+<span class="mf">406.483</span>   <span class="mf">0.298</span>    <span class="mf">2724.633</span>     <span class="mf">560.634</span>
+<span class="mf">423.150</span>   <span class="mf">0.476</span>    <span class="mf">2745.919</span>     <span class="mf">632.252</span>
+<span class="mf">439.817</span>   <span class="mf">0.730</span>    <span class="mf">2764.528</span>     <span class="mf">704.626</span>
+<span class="mf">456.483</span>   <span class="mf">1.082</span>    <span class="mf">2780.059</span>     <span class="mf">777.934</span>
+<span class="mf">473.150</span>   <span class="mf">1.555</span>    <span class="mf">2792.062</span>     <span class="mf">852.393</span>
+<span class="mf">489.817</span>   <span class="mf">2.175</span>    <span class="mf">2800.004</span>     <span class="mf">928.269</span>
+<span class="mf">506.483</span>   <span class="mf">2.972</span>    <span class="mf">2803.247</span>    <span class="mf">1005.893</span>
+<span class="mf">523.150</span>   <span class="mf">3.976</span>    <span class="mf">2801.012</span>    <span class="mf">1085.687</span>
+<span class="mf">539.817</span>   <span class="mf">5.222</span>    <span class="mf">2792.314</span>    <span class="mf">1168.202</span>
+<span class="mf">556.483</span>   <span class="mf">6.745</span>    <span class="mf">2775.820</span>    <span class="mf">1254.194</span>
+<span class="mf">573.150</span>   <span class="mf">8.588</span>    <span class="mf">2749.574</span>    <span class="mf">1344.771</span>
+</pre></div>
+</div>
+<p>Write a function that loads this data and returns <span class="math">\(h_v\)</span> for any
+value of <span class="math">\(P \in [0.101, 8.588]\)</span> using linear interpolation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="mi">2</span>
-<span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="c1"># connect first and last points</span>
-<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">y_a1</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">b</span>
-<span class="c1"># connect minimum and maximum points</span>
-<span class="n">t_max</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
-<span class="n">t_min</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="o">==</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
-<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">t_max</span><span class="o">-</span><span class="n">t_min</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t_min</span>
-<span class="n">y_a2</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">b</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
+<p><strong>Exercise</strong>: What about for <span class="math">\(P &lt; 1.01\)</span> or <span class="math">\(P &gt; 8.588\)</span>? How
+can we still apply the model <span class="math">\(y(t) = ax + b\)</span>?</p>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k.&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_a1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_a2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;$y(t)$&quot;</span><span class="p">,</span> <span class="s2">&quot;approx 1&quot;</span><span class="p">,</span> <span class="s2">&quot;approx 2&quot;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_24_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_7_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="What-&quot;Best&quot;-Means">
-<h2>What &#8220;Best&#8221; Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
-<p>The error is the difference between the model and data:</p>
+<div class="section" id="Interpolation-In-Two-Dimensions">
+<h2>Interpolation In Two Dimensions<a class="headerlink" href="#Interpolation-In-Two-Dimensions" title="Permalink to this headline">¶</a></h2>
+<p>Some applications require interpolation of two-dimensional data
+evaluated at <span class="math">\((x_i, y_j)\)</span> for <span class="math">\(i=0,1,\ldots\)</span> and $ j=0,1,</p>
 <div class="math">
-\[e_i = y(t_i) - y_i = a t_i + b - y_i \, \quad i = 0, 1, \ldots\]</div>
-<p>A model is the <strong>least-squares, best fit</strong> if it minimizes</p>
-<div class="math">
-\[|| \mathbf{e} ||_2 = \sqrt{ |e_0|^2 + |e_1|^2 + \ldots} = \sqrt{\sum_{i=0} |e_i|^2} \,  ,\]</div>
-<p>the <span class="math">\(L_2\)</span> norm (or euclidean norm) of the error. Similar to other
-error metrics we&#8217;ve seen?</p>
-<p><strong>Exercise</strong>: Compute and plot errors from example, and compute their
-L2-norms.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
+\[\ldots\]</div><p>$.</p>
+<p><em>Formal approach</em>: Linear interpolation of such data is based on the
+model <span class="math">\(f(x, y) = axy + bx + cy + d\)</span> for
+<span class="math">\(x \in [x_i, x_{i+1}]\)</span> and <span class="math">\(y \in [y_j, y_{j+1}]\)</span>. Four
+equations and four unknowns.</p>
+<p><em>Simpler approach</em>: Perform two interpolations to find <span class="math">\(f(x, y_j)\)</span>
+and <span class="math">\(f(x, y_{j+1})\)</span>, and from these two values, perform a third
+interpolation to find <span class="math">\(f(x, y)\)</span>.</p>
+<p>What about interpolating arbitrary <span class="math">\(f(x_i, y_i)\)</span> points?</p>
 </div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">e_1</span><span class="p">,</span> <span class="n">e_2</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_a1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y_a2</span><span class="p">)</span>
-<span class="n">norm_e_1</span><span class="p">,</span> <span class="n">norm_e_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_2</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e_1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e_2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;$||e_1||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_1</span><span class="p">),</span>
-            <span class="sa">r</span><span class="s2">&quot;$||e_2||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_2</span><span class="p">)])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_24_Slides_10_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_10_0.png" />
-</div>
-</div>
-<p>Linear least-square solutions are found by solving the normal equations:</p>
-<div class="math">
-\[\mathbf{c} = (\mathbf{M}^T \mathbf{M})^{-1}  \mathbf{M}^T \mathbf{y} \, .\]</div>
-<p>where the model attempts to satisfy <span class="math">\(\mathbf{Mc} = \mathbf{y}\)</span>.</p>
-<p>Here, <span class="math">\(\mathbf{M} = [\mathbf{x}, \mathbf{1}]\)</span> and
-<span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
-</div>
-<div class="section" id="Beyond-Linear-Models">
-<h2>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h2>
-<p>Not all data is intrinsically linear. Alternatives:</p>
-<ul class="simple">
-<li>polynomial models
-<span class="math">\(y(x) = a_n x^n + a_{n-1} x^{n-1} + \ldots + a_0\)</span>.</li>
-<li>problem-specific models, e.g.,
-<span class="math">\(y(x) = a_0 e^x + a_1 e^{-x} + a_2\)</span>.</li>
-</ul>
-<p>The key is that the coefficients <span class="math">\(a_n\)</span> are weights of separate,
-nonparameterized functions of <span class="math">\(x\)</span>. <em>Linear</em> least-squares fitting
-can be used (just like for <span class="math">\(y(x) = ax+b\)</span>).</p>
-<p>For polynomial fits, use <code class="docutils literal"><span class="pre">np.polyfit</span></code> and <code class="docutils literal"><span class="pre">np.polyval</span></code>:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># fit sin(x)**2 to linear, quadratic, and cubic</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-<span class="c1">#                   # a_n, a_{n-1}, ...  #</span>
-<span class="n">y_lin</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">y_quad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-<span class="n">y_cub</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_lin</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">,</span>
-         <span class="n">x</span><span class="p">,</span> <span class="n">y_quad</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_cub</span><span class="p">,</span> <span class="s1">&#39;r:&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;quadratic&#39;</span><span class="p">,</span> <span class="s1">&#39;cubic&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_24_Slides_15_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_15_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Beyond-Polynomial-Models">
-<h2>Beyond Polynomial Models<a class="headerlink" href="#Beyond-Polynomial-Models" title="Permalink to this headline">¶</a></h2>
-<p>Linear models are common, and polynomial models can provide necessary
-improvements. For many cases, neither type of model is sufficient.</p>
-<p>Consider data that needs to be fitted to</p>
-<div class="math">
-\[y(t) = a\sin(bt + c) + d\]</div>
-<p>Because <span class="math">\(b\)</span> and <span class="math">\(c\)</span> are <em>inside</em> a nonlinear function,
-<em>linear</em> least-squares fitting is not applicable. Rather, we need
-<em>nonlinear</em> least squares via, e.g., <code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code>.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.945</span><span class="p">,</span> <span class="mf">3.964</span><span class="p">,</span> <span class="mf">4.481</span><span class="p">,</span> <span class="mf">5.747</span><span class="p">,</span> <span class="mf">7.523</span><span class="p">,</span> <span class="mf">8.710</span><span class="p">,</span> <span class="mf">10.733</span><span class="p">,</span> <span class="mf">13.910</span><span class="p">,</span> <span class="mf">16.721</span><span class="p">,</span> <span class="mf">19.951</span><span class="p">,</span> <span class="mf">24.610</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k-o&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t$&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$P(t)$&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_24_Slides_17_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_17_0.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">c</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 3.18684102,  0.2049746 ])
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">P_model</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">P_model</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;P(t)&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_24_Slides_20_0.png" src="../_images/lectures_ME400_Lecture_24_Slides_20_0.png" />
-</div>
-</div>
+<div class="section" id="Higher-Order-Interpolation">
+<h2>Higher-Order Interpolation<a class="headerlink" href="#Higher-Order-Interpolation" title="Permalink to this headline">¶</a></h2>
+<p>Linear interpolation is conceptually straightforward, but it helps to
+use tools like <code class="docutils literal"><span class="pre">np.interp</span></code> and <code class="docutils literal"><span class="pre">scipy.interpolate</span></code>.</p>
+<p>Interpolation that is <em>better</em> than linear is more challenging to
+implement, and we&#8217;ll turn to the <code class="docutils literal"><span class="pre">scipy.interpolate</span></code> module and its
+<code class="docutils literal"><span class="pre">interp1d</span></code> and <code class="docutils literal"><span class="pre">interp2d</span></code> utilities.</p>
+<p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">thermo_data.txt</span></code> again. Use every third value and
+interpolate <span class="math">\(P(T)\)</span> using linear and cubic interpolation. Compare
+to the original data set. Which appears better?</p>
 </div>
 <div class="section" id="Recap">
 <h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
 <p>You should now be able to:</p>
 <ul class="simple">
-<li>Explain (and demonstrate) what is meant by a least-squares fit of a
-linear model <span class="math">\(ax+b\)</span> to a set of measured points
-<span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
-<li>Use built-in tools to perform linear, least-squares fitting of data
-to models</li>
-<li>Use built-in tools to perform nonlinear, least-squares fitting of
-data to models</li>
+<li>Apply linear interpolation to evaluate <span class="math">\(f(x)\)</span> given discrete
+points <span class="math">\((x_i, f(x_i))\)</span> for <span class="math">\(i = 0, 1 \ldots\)</span>.</li>
+<li>Apply linear interpolation to evaluate <span class="math">\(f(x, y)\)</span> given discrete
+points <span class="math">\((x_i, y_j, f(x_i, y_j))\)</span> for
+<span class="math">\(\, i = 0, 1, \ldots\)</span> and <span class="math">\(j = 0, 1,\ldots\)</span>.</li>
+<li>Apply tools from NumPy and SciPy to perform high-order (e.g.,
+cubine-spline) interpolation</li>
 </ul>
 </div>
 </div>
@@ -535,20 +331,14 @@ data to models</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 24 - Data Analysis via Least-Squares Fitting</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a></li>
-<li><a class="reference internal" href="#Exam-2---Second-Chance">Exam 2 - Second Chance</a><ul>
-<li><a class="reference internal" href="#Problem-1---1-point">Problem 1 - 1 point</a></li>
-<li><a class="reference internal" href="#Problem-2---1-point">Problem 2 - 1 point</a></li>
-<li><a class="reference internal" href="#Problem-3---1-point">Problem 3 - 1 point</a></li>
+<li><a class="reference internal" href="#">Lecture 24 - Data Analysis via Interpolation</a><ul>
+<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Noisy-Data">Noisy Data</a></li>
-<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What &#8220;Best&#8221; Means</a></li>
-<li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
-<li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
+<li><a class="reference internal" href="#Simple-Linear-Interpolation">Simple Linear Interpolation</a></li>
+<li><a class="reference internal" href="#Interpolation-In-Two-Dimensions">Interpolation In Two Dimensions</a></li>
+<li><a class="reference internal" href="#Higher-Order-Interpolation">Higher-Order Interpolation</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>

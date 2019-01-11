@@ -210,11 +210,9 @@ div.nboutput div.output_area.stderr {
 <h1>Lecture 27 - Numerical Solutions of Two-Point BVPs<a class="headerlink" href="#Lecture-27---Numerical-Solutions-of-Two-Point-BVPs" title="Permalink to this headline">¶</a></h1>
 <p><strong>Last Time</strong>: Systems of IVPs</p>
 <p><strong>Today</strong>: One-dimensional, boundary-value problems (BVPs)</p>
-<p><strong>Remember</strong>: Exam 3 on Friday. No additional old exam is available
-since no third midterm was given in past terms (but last practice exam
-has material relevant for this one). Same rules: one 11&#8217;&#8217; by 8.5&#8217;&#8217;
-sheet, handwritten but no other resources. Same format: roughly half
-written, half coded. Cumulative, with emphasis on material since Exam 2.</p>
+<p><strong>Remember</strong>: Exam 3 on Friday. Same rules: one 11&#8217;&#8217; by 8.5&#8217;&#8217; sheet,
+handwritten, but no other resources. Same format: roughly half written,
+half coded. Cumulative, with emphasis on material since Exam 2.</p>
 <div class="section" id="Objectives">
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
@@ -286,7 +284,8 @@ conditions!</p>
 <p><strong>Exercise</strong>: Set up the finite-difference equations for
 <span class="math">\(-y'' + y(x) = 1\)</span> subject to <span class="math">\(y(0) = y(10) = 0\)</span> using 5
 evenly spaced points <strong>with pen and paper</strong>. Then, use NumPy to solve
-the system.</p>
+the system, and use Matplotlib to plot the result.</p>
+<p>Do the same for <span class="math">\(\frac{dy}{dx}\Bigg |_{x=10} = 0\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -294,6 +293,8 @@ the system.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
 </pre></div>
 </div>
 </div>

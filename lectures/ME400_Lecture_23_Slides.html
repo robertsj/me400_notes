@@ -211,18 +211,18 @@ div.nboutput div.output_area.stderr {
 <p>A ubiquitous task in engineering and other technical disciplines is the
 analysis of data. Data comes from many sources, including measurements
 in the laboratory and numerical simulations. In this lecture and the
-next, we&#8217;ll apply what we&#8217;ve learned so far to produce <em>models</em> from
+next, we&#8217;ll apply what we&#8217;ve learned so far to produce <strong>models</strong> of
 data that we can use to explore trends and make conclusions.
 Specifically, in this lecture, we&#8217;ll develop models based on
 <strong>least-squares</strong> fitting of model parameters to existing data. Such
 fitting may be the right choice when the data in contaminated by noise
 or when the model need only capture the main features of the observed
 phenomenon.</p>
-</div>
 <div class="section" id="Objectives">
-<h1>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h1>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
+<li>Explain what it means to <em>model</em> data</li>
 <li>Explain (and demonstrate) what is meant by a least-squares fit of a
 linear model <span class="math">\(ax+b\)</span> to a set of measured points
 <span class="math">\((x_i, y_i),\, i = 0, 1, \ldots\)</span>.</li>
@@ -232,26 +232,16 @@ to models</li>
 data to models</li>
 </ul>
 </div>
-<div class="section" id="Key-Terms">
-<h1>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li>error</li>
-<li>least-squares</li>
-<li>normal equation</li>
-<li><code class="docutils literal"><span class="pre">np.linalg.solve</span></code></li>
-<li><code class="docutils literal"><span class="pre">np.polyfit</span></code></li>
-<li><code class="docutils literal"><span class="pre">np.polyval</span></code></li>
-<li><code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code></li>
-</ul>
+</div>
 <div class="section" id="Noisy-Data">
-<h2>Noisy Data<a class="headerlink" href="#Noisy-Data" title="Permalink to this headline">¶</a></h2>
+<h1>Noisy Data<a class="headerlink" href="#Noisy-Data" title="Permalink to this headline">¶</a></h1>
 <p>A familiar task: draw a line of &#8220;best fit&#8221; through noisy data
 <span class="math">\((x_i, y_i)\)</span></p>
 <p>Alternative description: find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> so that the
 <em>linear model</em> <span class="math">\(y(x) = ax + b\)</span> best matches the data.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -276,7 +266,7 @@ data to models</li>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -291,12 +281,12 @@ data to models</li>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_23_Slides_5_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_5_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_23_Slides_4_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_4_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="What-&quot;Best&quot;-Means">
-<h2>What &#8220;Best&#8221; Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h2>
+<h1>What &#8220;Best&#8221; Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h1>
 <p>The error is the difference between the model and data:</p>
 <div class="math">
 \[e_i = y(t_i) - y_i = a t_i + b - y_i \, \quad i = 0, 1, \ldots\]</div>
@@ -307,9 +297,9 @@ data to models</li>
 error metrics we&#8217;ve seen?</p>
 <p><strong>Exercise</strong>: Compute and plot the errors from example, and compute
 their L2-norms.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -325,22 +315,12 @@ their L2-norms.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-3a72ebb0971c&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
-<span class="ansi-red-fg">    e_1 =</span>
-         ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
-
-</pre></div></div>
-</div>
-<p>Linear least-square solutions are found by solving the normal equations:</p>
+<p>Given a model
+<span class="math">\(\mathbf{y}_{appx} = \mathbf{Mc} \approx \mathbf{y}\)</span>, the
+parameters <span class="math">\(\mathbf{c}\)</span> the minimize the <span class="math">\(L_2\)</span> norm of error
+are found by solving the normal equations:</p>
 <div class="math">
 \[\mathbf{c} = (\mathbf{M}^T \mathbf{M})^{-1}  \mathbf{M}^T \mathbf{y} \, .\]</div>
-<p>where the model attempts to satisfy <span class="math">\(\mathbf{Mc} = \mathbf{y}\)</span>.</p>
 <p>For <span class="math">\(y(x) \approx at + b\)</span>,
 <span class="math">\(\mathbf{M} = [\mathbf{x}, \mathbf{1}]\)</span> and
 <span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
@@ -348,7 +328,7 @@ their L2-norms.</p>
 for the example data above.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -358,7 +338,7 @@ for the example data above.</p>
 </div>
 </div>
 <div class="section" id="Beyond-Linear-Models">
-<h2>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h2>
+<h1>Beyond Linear Models<a class="headerlink" href="#Beyond-Linear-Models" title="Permalink to this headline">¶</a></h1>
 <p>Not all data is intrinsically linear. Alternatives:</p>
 <ul class="simple">
 <li>polynomial models
@@ -378,19 +358,20 @@ can be used (just like for <span class="math">\(y(x) = ax+b\)</span>). For a qua
 <span class="math">\(x\in [0, 2]\)</span>, and plot the approximations.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 <span class="c1"># compute the approximations here</span>
+
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -406,22 +387,12 @@ can be used (just like for <span class="math">\(y(x) = ax+b\)</span>). For a qua
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-af3d3e9f1ce4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> plt.plot(x, y, &#39;k&#39;, x, y_lin, &#39;b-.&#39;,
-</span><span class="ansi-green-intense-fg ansi-bold">      2</span>          x, y_quad, &#39;g--&#39;, x, y_cub, &#39;r:&#39;)
-<span class="ansi-green-intense-fg ansi-bold">      3</span> plt<span class="ansi-blue-fg">.</span>legend<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;y&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;linear&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;quadratic&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;cubic&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> plt<span class="ansi-blue-fg">.</span>xlabel<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;x&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> plt<span class="ansi-blue-fg">.</span>show<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;y_lin&#39; is not defined
-</pre></div></div>
+<img alt="../_images/lectures_ME400_Lecture_23_Slides_16_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_16_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="Beyond-Polynomial-Models">
-<h2>Beyond Polynomial Models<a class="headerlink" href="#Beyond-Polynomial-Models" title="Permalink to this headline">¶</a></h2>
+<h1>Beyond Polynomial Models<a class="headerlink" href="#Beyond-Polynomial-Models" title="Permalink to this headline">¶</a></h1>
 <p>Linear models are common, and polynomial models can provide necessary
 improvements. For many cases, neither type of model is sufficient.</p>
 <p>Consider data that needs to be fitted to</p>
@@ -482,7 +453,7 @@ powers as a function of time as tabulated below:</p>
 could use regular old linear regression effectively?</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h1>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h1>
 <p>You should now be able to:</p>
 <ul class="simple">
 <li>Explain (and demonstrate) what is meant by a least-squares fit of a
@@ -494,7 +465,6 @@ to models</li>
 data to models</li>
 </ul>
 </div>
-</div>
 
 
           </div>
@@ -504,16 +474,15 @@ data to models</li>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 23 - Data Analysis via Least-Squares Fitting</a></li>
+<li><a class="reference internal" href="#">Lecture 23 - Data Analysis via Least-Squares Fitting</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+</ul>
+</li>
 <li><a class="reference internal" href="#Noisy-Data">Noisy Data</a></li>
 <li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What &#8220;Best&#8221; Means</a></li>
 <li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
 <li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
-</ul>
-</li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>

@@ -262,7 +262,7 @@ function</strong></p>
 one of finding <em>extrema</em>. Remember, a function exhibits an extremum
 where its first derivative vanishes.</p>
 <p><strong>Example</strong>: Solve <span class="math">\(\min_x f(x)\)</span> where
-<span class="math">\(f(x) = x^2(x-10)+(x+8)^2/1000\)</span> using (1) Newton&#8217;s method and (2)
+<span class="math">\(f(x) = x(x-10)(x+8)^2/1000\)</span> using (1) Newton&#8217;s method and (2)
 <code class="docutils literal"><span class="pre">minimize</span></code>. This is a <em>nonlinear</em> optimization problem.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -273,7 +273,7 @@ where its first derivative vanishes.</p>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">1</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">1000</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">96</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">640</span><span class="o">*</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;local minimum&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="s1">&#39;local maximum&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
@@ -290,44 +290,21 @@ where its first derivative vanishes.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># For option 1, we need the first and second derivative of f(x), but</span>
-<span class="c1"># I&#39;m to lazy to do it by hand!</span>
-<span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">2e-7</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Recursively compute any order derivative using central difference</span>
-<span class="sd">       approximation for the first derivative.  Here, `order` is the derivative</span>
-<span class="sd">       order (e.g., 1 for first derivative, 2 for second derivative, etc.) and</span>
-<span class="sd">       `delta` is the finite-difference step size.  Careful: `delta` probably</span>
-<span class="sd">       should not be made smaller or round-off errors may cause issues!&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">delta</span><span class="p">,</span> <span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># set initial guess</span>
+<span></span><span class="c1"># Option 1 - Newton&#39;s method for f&#39;(x) = 0</span>
+<span class="n">fp</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">18</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">192</span><span class="o">*</span><span class="n">z</span> <span class="o">-</span> <span class="mi">640</span><span class="p">)</span><span class="o">/</span><span class="mf">1000.</span>
+<span class="n">fpp</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">36</span><span class="o">*</span><span class="n">z</span> <span class="o">-</span> <span class="mi">192</span><span class="p">)</span><span class="o">/</span><span class="mf">1000.</span>
+<span class="c1"># Set the initial guess</span>
 <span class="n">x</span> <span class="o">=</span> <span class="mf">5.0</span>
-<span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;converged at iteration {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">it</span><span class="p">))</span>
-        <span class="k">break</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;minimum is at x = {:.4e}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;minimum value is {:.4e}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="c1"># Perform Newton&#39;s method</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;minimum: f({:.2f}) is {:2f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -336,21 +313,29 @@ where its first derivative vanishes.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-converged at iteration 6
-minimum is at x = 6.5523e+00
-minimum value is -4.7839e+00
+minimum: f(5.00) is -4.225000
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1">#  Option 2 - scipy&#39;s minimize</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;minimum: f({:.2f}) is {:2f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+minimum: f(5.00) is -4.225000
+</pre></div></div>
 </div>
 <p>Note we needed the <em>second derivative</em> of the objective function
 <span class="math">\(f(x)\)</span>. For multi-dimensional problems, compare the following:</p>
@@ -379,22 +364,29 @@ Jacobian&#8212;otherwise, identical!</p>
 <h3>Constrained Optimization<a class="headerlink" href="#Constrained-Optimization" title="Permalink to this headline">¶</a></h3>
 <p>Real engineering problems almost always have constraints: maximum
 stresses allowed, limited resources, etc.</p>
+<p>We&#8217;ll limit our focus (and your responsibility) to <em>linear programs</em>,
+though do note that <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> can handle constrained
+problems (see its examples in the documentation).</p>
 <p><strong>Example</strong>: Consider the following minimization problem:</p>
 <div class="math">
 \[\begin{split}\begin{split}
-  \min_{\mathbf{x}} &amp;= x_0^2 - 5 x_1 \\
+  \min_{\mathbf{x}} &amp;= x_0 + 2 x_1 \\
    \text{subject to:} &amp; \\
-   x_0 + x_1 &amp; \leq 5 \\
-   x_0 &amp; \leq 10
+   x_0  &amp; \geq 0 \\
+   x_1  &amp; \geq 0 \\
+   x_0 - x_1  &amp; \leq 2 \\
+   5 x_0 - x_1 &amp; = 1
 \end{split}\end{split}\]</div>
+<p>Solve using <code class="docutils literal"><span class="pre">linprog</span></code></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
 </pre></div>
 </div>
 </div>
@@ -473,19 +465,9 @@ inputs summarize as follows:</p>
 <li>Define objective functions and constraints provided sufficient inputs</li>
 <li>Define examples of linear/nonlinear, constrained/unconstrained
 optimization problems</li>
-<li>Use <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> to solve a variety of optimization
-problems of interest</li>
+<li>Use <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> and <code class="docutils literal"><span class="pre">scipy.optimize.linprog</span></code> to
+solve a variety of optimization problems of interest</li>
 </ul>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>

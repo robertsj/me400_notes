@@ -403,6 +403,13 @@ using <code class="docutils literal"><span class="pre">odeint</span></code> for 
 compute <span class="math">\(x(t)\)</span> at <span class="math">\(t = [0, 0.5, 1.0, \ldots, 10]\)</span> (that&#8217;s 21
 times) using <code class="docutils literal"><span class="pre">odeint</span></code>. Plot these estimates and the the actual
 solution. Also plot the <em>absolute error</em>.</p>
+<p>For reference, the solution is</p>
+<div class="math">
+\[\frac{2 \sqrt{3}}{3} e^{- \frac{t}{2}} \sin{\left (\frac{\sqrt{3} t}{2} \right )}\]</div>
+<p>(Psst... substitute <span class="math">\(x(t) = e^{rt}\)</span>, solve the quadratic for two
+roots <span class="math">\(r_1\)</span> and <span class="math">\(r_2\)</span>. Then
+<span class="math">\(x(t) = Ae^{r_1 t} + Be^{r_2 t}\)</span> is the general solution. Apply
+IC&#8217;s, and use <span class="math">\(\sin(z) = 2i(e^{iz} - e^{-iz})\)</span> to get this form.)</p>
 </div>
 <div class="section" id="Recap">
 <h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>

@@ -103,9 +103,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": []
   },
@@ -171,8 +169,8 @@
    },
    "outputs": [],
    "source": [
-    "root0 = sol[0].subs({a: 1, b: 5, c: 2})\n",
-    "root1 = sol[1].subs({a: 1, b: 5, c: 2})\n",
+    "root0 = sol[0].subs({a: 1, b: 5, c: 2}) # dictionary of \n",
+    "root1 = sol[1].subs({a: 1, b: 5, c: 2}) # symbol:value pairs\n",
     "root0, root1"
    ]
   },
@@ -215,7 +213,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -240,7 +237,6 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
@@ -285,13 +281,14 @@
    "cell_type": "code",
    "execution_count": null,
    "metadata": {
-    "collapsed": true,
     "slideshow": {
      "slide_type": "fragment"
     }
    },
    "outputs": [],
-   "source": []
+   "source": [
+    "expr.simplify()"
+   ]
   },
   {
    "cell_type": "markdown",
@@ -440,28 +437,6 @@
     "## Recap\n",
     "\n",
     "You should now be able to *define the symbols and expressions*, *solve symbolic equations*, and *evaluate expressions numerically*."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## Grades and All That\n",
-    "\n",
-    "**Exam 3**\n",
-    " - median of 72.5% \n",
-    " - max of 100%.\n",
-    "\n",
-    "**Final Grade Boundaries**\n",
-    " - 87%, 77%, 67%, 57% (i.e., 3% shift).   \n",
-    " \n",
-    "**Evaluations in Lab on Friday!** \n",
-    " - Specific *suggestions* are very useful to me\n",
-    " - The TA's and I tried to be very accessible during and outside of office hours.  If this helped you, we want to know."
    ]
   }
  ],

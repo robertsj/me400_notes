@@ -225,9 +225,7 @@ complete solutions to ODEs important in engineering disciplines.</li>
 <h2>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>You should already be able to</p>
 <ul class="simple">
-<li>Solve ODEs based on what you&#8217;ve learned in a course like MATH 340
-(this is not a strict requirement, but if you have <em>not</em> had MATH
-340, you may wish to set up a time with me or the TAs).</li>
+<li>Solve ODEs based on what you&#8217;ve learned in a course like MATH 340.</li>
 <li>Set up and solve algebraic systems using SymPy</li>
 <li>Perform subsitution into symbolic values using SymPy</li>
 <li>Define derivatives of arbitrary functions using SymPy</li>
@@ -256,9 +254,9 @@ complete solutions to ODEs important in engineering disciplines.</li>
 <p><strong>Exercise</strong>: Let <span class="math">\(f(x) = ax^2\)</span>. Evaluate the following (a)
 <span class="math">\(\frac{d}{dx} f\)</span>, (b) <span class="math">\(\frac{d^3}{dx^3} f\)</span>, (c)
 <span class="math">\(\int f(x) dx\)</span> and (d) <span class="math">\(\int^{2}_{0} f(x) dx\)</span>.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [37]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -266,19 +264,38 @@ complete solutions to ODEs important in engineering disciplines.</li>
 <span class="n">sy</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
 <span class="n">a</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;a x&#39;</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-<span class="c1"># a</span>
-<span class="n">sy</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[37]:
+<span></span>In [ ]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="math">
-\[$$\frac{8 a}{3}$$\]</div></div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -296,29 +313,42 @@ complete solutions to ODEs important in engineering disciplines.</li>
      <span class="c1"># integrated, differentiated, etc.</span>
 </pre></div>
 </div>
-<p><strong>Exercise</strong>: Use SymPy to &#8220;prove&#8221; (1) the produce rule
-<span class="math">\([f(x)g(x)]' = f(x)g'(x) + f'(x)g(x)\)</span> and (2) the chain rule
-<span class="math">\((d/dx)f(g(x)) = (df/dg)(dg/dx)\)</span></p>
-<div class="nbinput docutils container">
+<div class="line-block">
+<div class="line"><strong>Exercise</strong>: Use SymPy to &#8220;prove&#8221;</div>
+<div class="line">1. the <em>product rule</em>
+<span class="math">\(\frac{d}{dx}[f(x)g(x)] = f(x)\frac{dg}{dx} + \frac{df}{dx}g(x)\)</span>
+2. the chain rule
+<span class="math">\(\frac{d}{dx}f(g(x)) = \frac{df}{dg}\frac{dg}{dx}\)</span></div>
+</div>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [40]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x f g&#39;</span><span class="p">)</span>
-
-<span class="n">sy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[40]:
+<span></span>In [ ]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="math">
-\[$$\frac{d}{d g{\left (x \right )}} f{\left (g{\left (x \right )} \right )} \frac{d}{d x} g{\left (x \right )}$$\]</div></div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="Defining-ODEs">
@@ -347,48 +377,6 @@ symbolically</li>
 <li>Apply initial and boundary conditions as is appropriate to determine
 complete solutions to ODEs important in engineering disciplines.</li>
 </ul>
-<p>Lab 12 is the last &#8220;required&#8221; lab.</p>
-<p>Homework 12 to be release soon; due last day of classes.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>

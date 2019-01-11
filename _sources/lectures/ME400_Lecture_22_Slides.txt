@@ -112,7 +112,7 @@
     }
    },
    "source": [
-    "**Example**: Solve $\\min_x f(x)$ where $f(x) = x^2(x-10)+(x+8)^2/1000$ using (1) Newton's method and (2) `minimize`.  This is a *nonlinear* optimization problem."
+    "**Example**: Solve $\\min_x f(x)$ where $f(x) = x(x-10)(x+8)^2/1000$ using (1) Newton's method and (2) `minimize`.  This is a *nonlinear* optimization problem."
    ]
   },
   {
@@ -128,7 +128,7 @@
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
     "x = np.linspace(-15, 15, 1000)\n",
-    "f = lambda z: z*(z-10)*(z**1+8)**2/1000\n",
+    "f = lambda z: (z**4 + 6*z**3 - 96*z**2 - 640*z)/1000\n",
     "plt.plot(x, f(x));  plt.ylim(-8, 5); plt.xlabel('x'); plt.ylabel('f(x)')\n",
     "plt.text(-12, -1, 'local minimum', fontsize=12)\n",
     "plt.text(-5, 1.5, 'local maximum', fontsize=12)\n",
@@ -146,41 +146,15 @@
    },
    "outputs": [],
    "source": [
-    "# For option 1, we need the first and second derivative of f(x), but\n",
-    "# I'm to lazy to do it by hand!\n",
-    "def diff(f, x, order=1, delta=2e-7):\n",
-    "    \"\"\"Recursively compute any order derivative using central difference\n",
-    "       approximation for the first derivative.  Here, `order` is the derivative\n",
-    "       order (e.g., 1 for first derivative, 2 for second derivative, etc.) and\n",
-    "       `delta` is the finite-difference step size.  Careful: `delta` probably\n",
-    "       should not be made smaller or round-off errors may cause issues!\"\"\"\n",
-    "    if order == 0:\n",
-    "        return f(x)\n",
-    "    else:\n",
-    "        a = diff(f, x+delta, order-1, delta)\n",
-    "        b = diff(f, x-delta, order-1, delta)\n",
-    "        return (a-b)/(2*delta)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "# set initial guess\n",
+    "# Option 1 - Newton's method for f'(x) = 0\n",
+    "fp = lambda z: (4*z**3 + 18*z**2 - 192*z - 640)/1000.\n",
+    "fpp = lambda z: (12*z**2 + 36*z - 192)/1000.\n",
+    "# Set the initial guess\n",
     "x = 5.0\n",
-    "for it in range(20):\n",
-    "    x = x - diff(f, x)/diff(f, x, 2)\n",
-    "    if abs(diff(f, x)) < 1e-8:\n",
-    "        print('converged at iteration {}'.format(it))\n",
-    "        break\n",
-    "print(\"minimum is at x = {:.4e}\".format(x))\n",
-    "print(\"minimum value is {:.4e}\".format(f(x)))"
+    "# Perform Newton's method\n",
+    "\n",
+    "\n",
+    "print('minimum: f({:.2f}) is {:2f}'.format(x, f(x)))"
    ]
   },
   {
@@ -194,7 +168,9 @@
    "outputs": [],
    "source": [
     "#  Option 2 - scipy's minimize\n",
-    "from scipy.optimize import minimize"
+    "from scipy.optimize import minimize\n",
+    "\n",
+    "print('minimum: f({:.2f}) is {:2f}'.format(x, f(x)))"
    ]
   },
   {
@@ -239,7 +215,9 @@
    "source": [
     "## Constrained Optimization\n",
     "\n",
-    "Real engineering problems almost always have constraints: maximum stresses allowed, limited resources, etc."
+    "Real engineering problems almost always have constraints: maximum stresses allowed, limited resources, etc.  \n",
+    "\n",
+    "We'll limit our focus (and your responsibility) to *linear programs*, though do note that `scipy.optimize.minimize` can handle constrained problems (see its examples in the documentation)."
    ]
   },
   {
@@ -254,12 +232,16 @@
     "\n",
     "$$\n",
     "\\begin{split}\n",
-    "  \\min_{\\mathbf{x}} &= x_0^2 - 5 x_1 \\\\\n",
+    "  \\min_{\\mathbf{x}} &= x_0 + 2 x_1 \\\\\n",
     "   \\text{subject to:} & \\\\\n",
-    "   x_0 + x_1 & \\leq 5 \\\\\n",
-    "   x_0 & \\leq 10 \n",
+    "   x_0  & \\geq 0 \\\\\n",
+    "   x_1  & \\geq 0 \\\\\n",
+    "   x_0 - x_1  & \\leq 2 \\\\\n",
+    "   5 x_0 - x_1 & = 1 \n",
     "\\end{split}\n",
-    "$$"
+    "$$\n",
+    "\n",
+    "Solve using `linprog`"
    ]
   },
   {
@@ -272,8 +254,8 @@
    },
    "outputs": [],
    "source": [
-    "from scipy.optimize import minimize\n",
-    "f = lambda x:  x[0]**2 - 5*x[1]"
+    "from scipy.optimize import linprog\n",
+    "import numpy as np\n"
    ]
   },
   {
@@ -322,17 +304,8 @@
     "\n",
     "- Define objective functions and constraints provided sufficient inputs\n",
     "- Define examples of linear/nonlinear, constrained/unconstrained optimization problems\n",
-    "- Use `scipy.optimize.minimize` to solve a variety of optimization problems of interest"
+    "- Use `scipy.optimize.minimize` and `scipy.optimize.linprog` to solve a variety of optimization problems of interest"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {
-    "collapsed": true
-   },
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {
