@@ -8,9 +8,7 @@
     }
    },
    "source": [
-    "# Lecture 3 - Basic Data Processing with NumPy and Matplotlib\n",
-    "\n",
-    "## Overview, Objectives, and Key Terms\n",
+    "#### Lecture 3 - Basic Data Processing with NumPy and Matplotlib\n",
     " \n",
     "In this lesson, we'll explore some core features of NumPy and Matplotlib and extend our Python based \"calculator\" to include processing of *arrays* of data.  [NumPy](http://www.numpy.org/) is the basic numerical package for Python.  A lot of its utility comes from its numerical, multidimensional array type, `ndarray`. Use of these arrays in a *vectorized* way often leads to significantly faster (and much more compact) code.  Moreover, the array-valued results of numerical computations are  easily visualized using Matplotlib, which was originally developed to provide MATLAB-like graphics in the Python environment.   \n",
     "\n",
@@ -150,7 +148,7 @@
    },
    "outputs": [],
    "source": [
-    "x = np.linspace(0, 1, 10)\n",
+    "x =  \n",
     "f = "
    ]
   },
@@ -211,7 +209,7 @@
     "\n",
     "```octave\n",
     "a = [1 2 3]; % define two arrays\n",
-    "b = [2 3 4]; % with 3 elements\n",
+    "b = [4 5 6]; % with 3 elements\n",
     "s = a + b;   % add them\n",
     "p = a .* b;  % multiple element by element\n",
     "q = a ./ b;  % divide ...\n",
@@ -241,7 +239,7 @@
    "outputs": [],
    "source": [
     "a = # define two arrays\n",
-    "b = # with 3 elements\n",
+    "b = # with 3 elements \n",
     "s = # add them\n",
     "p = # multiple element by element\n",
     "q = # divide ...\n",
@@ -258,7 +256,7 @@
    "source": [
     "### Inspecting Arrays and Their Elements\n",
     "\n",
-    "Access elements of an array (called *indexing*) using `[]` (square \"brackets)."
+    "Access and modify single elements of an array (called *indexing*) using `[]` (square \"brackets)."
    ]
   },
   {
@@ -272,7 +270,7 @@
    "outputs": [],
    "source": [
     "x = np.array([11, 22, 33, 44])\n",
-    "# how to get 33?  44?"
+    "# how to get 11?  33?  44?"
    ]
   },
   {
@@ -364,7 +362,7 @@
    "outputs": [],
    "source": [
     "x = np.linspace(0, 1, 10)\n",
-    "f = np.sin(x)\n"
+    "f = np.sin(x)"
    ]
   },
   {

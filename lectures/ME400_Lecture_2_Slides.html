@@ -208,8 +208,6 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-2---Basic-Operators-and-Built-In-Functions">
 <h1>Lecture 2 - Basic Operators and Built-In Functions<a class="headerlink" href="#Lecture-2---Basic-Operators-and-Built-In-Functions" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In this lesson, we&#8217;ll continue our study of basic types from <a class="reference internal" href="Getting_Started.html"><span class="doc">Lecture
 1</span></a>, incorporating operators (arithmetic and
 otherwise) along with some very useful built-in functions. By the end,
@@ -227,20 +225,23 @@ we&#8217;ll construct our very first (albeit, simple)
 </div>
 </div>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li><em>add, subtract, multiply, and divide</em> two quantities</li>
+<li><em>apply arithmetic, relational, and logical operators to define
+complex expressions</em></li>
+<li><em>use parentheses to identify the order of operations</em></li>
+<li><em>explain the difference between statement and expression</em></li>
 <li><em>use the ``help()`` function to understand how to use another
 function</em></li>
 <li><em>use ``dir()`` and the ``variable explorer`` to see defined variables
 and their values</em></li>
-<li><em>explain the difference between statement and expression</em></li>
+<li><em>import and use functions from the ``math`` module</em></li>
 <li><em>write a short, well-commented program</em></li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>statement</li>
 <li>expression</li>
@@ -256,18 +257,18 @@ and their values</em></li>
 <li>flowchart</li>
 <li>comments and the <code class="docutils literal"><span class="pre">#</span></code> symbol</li>
 </ul>
-</div>
-</div>
 <div class="section" id="Python-Operators">
-<h2>Python Operators<a class="headerlink" href="#Python-Operators" title="Permalink to this headline">¶</a></h2>
+<h3>Python Operators<a class="headerlink" href="#Python-Operators" title="Permalink to this headline">¶</a></h3>
 <p>In <a class="reference external" href="ME400_Lecture_1.ipynb">Lecture 1</a>, we saw several examples of the
 form <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code>, where the variable <code class="docutils literal"><span class="pre">a</span></code> is <em>assigned</em> the value <code class="docutils literal"><span class="pre">1</span></code>.
 Here, <code class="docutils literal"><span class="pre">=</span></code> is the <em>assignment</em> operator. The entire line of code
 <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">1</span></code> is a <em>statement</em>.</p>
 <p><strong>A statement is a complete line of code that leads to an action.</strong></p>
 <p><strong>An expression is a piece of code that evaluates to some value.</strong></p>
+</div>
+</div>
 <div class="section" id="Arithmetic-Operators">
-<h3>Arithmetic Operators<a class="headerlink" href="#Arithmetic-Operators" title="Permalink to this headline">¶</a></h3>
+<h2>Arithmetic Operators<a class="headerlink" href="#Arithmetic-Operators" title="Permalink to this headline">¶</a></h2>
 <p>Consider variables <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code> of the <code class="docutils literal"><span class="pre">int</span></code> type.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -360,7 +361,7 @@ Here, <code class="docutils literal"><span class="pre">=</span></code> is the <e
 </div>
 </div>
 <div class="section" id="Relational-Operators">
-<h3>Relational Operators<a class="headerlink" href="#Relational-Operators" title="Permalink to this headline">¶</a></h3>
+<h2>Relational Operators<a class="headerlink" href="#Relational-Operators" title="Permalink to this headline">¶</a></h2>
 <p>Comparisons can be made between two variables <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code>.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -425,7 +426,7 @@ Here, <code class="docutils literal"><span class="pre">=</span></code> is the <e
 </div>
 </div>
 <div class="section" id="Logical-Operations">
-<h3>Logical Operations<a class="headerlink" href="#Logical-Operations" title="Permalink to this headline">¶</a></h3>
+<h2>Logical Operations<a class="headerlink" href="#Logical-Operations" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">not</span></code>, <code class="docutils literal"><span class="pre">and</span></code>, <code class="docutils literal"><span class="pre">or</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -451,7 +452,7 @@ Here, <code class="docutils literal"><span class="pre">=</span></code> is the <e
 </div>
 </div>
 <div class="section" id="The-Order-of-Operations">
-<h3>The Order of Operations<a class="headerlink" href="#The-Order-of-Operations" title="Permalink to this headline">¶</a></h3>
+<h2>The Order of Operations<a class="headerlink" href="#The-Order-of-Operations" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><code class="docutils literal"><span class="pre">()</span></code>&#8216;s</li>
 <li><code class="docutils literal"><span class="pre">*</span></code>, <code class="docutils literal"><span class="pre">/</span></code>, <code class="docutils literal"><span class="pre">//</span></code>, and <code class="docutils literal"><span class="pre">%</span></code></li>
@@ -462,7 +463,7 @@ Here, <code class="docutils literal"><span class="pre">=</span></code> is the <e
 <li><code class="docutils literal"><span class="pre">or</span></code></li>
 </ol>
 <p><strong>Exercise</strong>: Use parentheses to make the order of operations explicit
-in the following expression:</p>
+in the following expressions and then <em>evaluate</em> the expression.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
@@ -483,15 +484,53 @@ in the following expression:</p>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="mi">1</span> <span class="ow">or</span> <span class="mi">2</span> <span class="ow">and</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>1
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="mi">0</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="mi">123</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>123
+</pre></div>
 </div>
 </div>
 <div class="section" id="Exploring-Built-In-Functions">
-<h2>Exploring Built-In Functions<a class="headerlink" href="#Exploring-Built-In-Functions" title="Permalink to this headline">¶</a></h2>
+<h3>Exploring Built-In Functions<a class="headerlink" href="#Exploring-Built-In-Functions" title="Permalink to this headline">¶</a></h3>
 <p><strong>Goal</strong>: be able to use Python as a powerful, interactive calculator.</p>
 <p>We need next is some of the typical mathematical <em>functions</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -502,7 +541,7 @@ in the following expression:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
+<span></span>Out[9]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -566,7 +605,7 @@ in the following expression:</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -862,7 +901,7 @@ FILE
 is 90 degrees. What are the other angles?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -879,7 +918,7 @@ is 90 degrees. What are the other angles?</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-9-705b72eb1571&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">4</span>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-11-705b72eb1571&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">4</span>
 <span class="ansi-red-fg">    angle_AC =</span>
                ^
 <span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
@@ -888,12 +927,14 @@ is 90 degrees. What are the other angles?</p>
 </div>
 </div>
 <div class="section" id="A-first-program">
-<h2>A first program<a class="headerlink" href="#A-first-program" title="Permalink to this headline">¶</a></h2>
+<h3>A first program<a class="headerlink" href="#A-first-program" title="Permalink to this headline">¶</a></h3>
 <p>A computer <em>program</em> is a sequence of instruction statements to perform
 a task.</p>
 <p>A good programmer <em>designs</em> a program</p>
+</div>
+</div>
 <div class="section" id="Flowcharts">
-<h3>Flowcharts<a class="headerlink" href="#Flowcharts" title="Permalink to this headline">¶</a></h3>
+<h2>Flowcharts<a class="headerlink" href="#Flowcharts" title="Permalink to this headline">¶</a></h2>
 <p>A <strong>flowchart</strong> is a visual design tool for designing and understanding
 computer programs.</p>
 <div class="figure" id="id1">
@@ -911,20 +952,35 @@ later on in flowcharts:</p>
 <li><em>rectangles</em> represent an action taken by the program (which might
 correspond to several, executed instructions)</li>
 </ul>
+<div class="section" id="Exercise-(in-Spyder)">
+<h3>Exercise (in Spyder)<a class="headerlink" href="#Exercise-(in-Spyder)" title="Permalink to this headline">¶</a></h3>
+<ol class="loweralpha simple" start="2">
+<li>Write a program that approximates the specific enthalphy (kJ/kg) at
+a temperature of 550 K for subcooled water at 15.5 MPa given values
+at 500 K and 600 K.</li>
+<li>Modify the program to accept a temperature from the user in place of
+550 K using the &#8220;input&#8221; function.</li>
+</ol>
 </div>
+<div class="section" id="Review-of-Selected-Survey-Responses">
+<h3>Review of Selected Survey Responses<a class="headerlink" href="#Review-of-Selected-Survey-Responses" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
-<li><em>add, subtract, multiply, and divide</em> two quantities</li>
+<li><em>apply arithmetic, relational, and logical operators to define
+complex expressions</em></li>
+<li><em>use parentheses to identify the order of operations</em></li>
+<li><em>explain the difference between statement and expression</em></li>
 <li><em>use the ``help()`` function to understand how to use another
 function</em></li>
 <li><em>use ``dir()`` and the ``variable explorer`` to see defined variables
 and their values</em></li>
-<li><em>explain the difference between statement and expression</em></li>
+<li><em>import and use functions from the ``math`` module</em></li>
 <li><em>write a short, well-commented program</em></li>
 </ul>
+</div>
 </div>
 </div>
 
@@ -937,24 +993,25 @@ and their values</em></li>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 2 - Basic Operators and Built-In Functions</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
+<li><a class="reference internal" href="#Python-Operators">Python Operators</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Python-Operators">Python Operators</a><ul>
 <li><a class="reference internal" href="#Arithmetic-Operators">Arithmetic Operators</a></li>
 <li><a class="reference internal" href="#Relational-Operators">Relational Operators</a></li>
 <li><a class="reference internal" href="#Logical-Operations">Logical Operations</a></li>
-<li><a class="reference internal" href="#The-Order-of-Operations">The Order of Operations</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#The-Order-of-Operations">The Order of Operations</a><ul>
 <li><a class="reference internal" href="#Exploring-Built-In-Functions">Exploring Built-In Functions</a></li>
-<li><a class="reference internal" href="#A-first-program">A first program</a><ul>
-<li><a class="reference internal" href="#Flowcharts">Flowcharts</a></li>
+<li><a class="reference internal" href="#A-first-program">A first program</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#Flowcharts">Flowcharts</a><ul>
+<li><a class="reference internal" href="#Exercise-(in-Spyder)">Exercise (in Spyder)</a></li>
+<li><a class="reference internal" href="#Review-of-Selected-Survey-Responses">Review of Selected Survey Responses</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

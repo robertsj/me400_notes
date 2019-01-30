@@ -62,8 +62,12 @@
     "    \n",
     "- **Undergraduate Teaching Assistants**\n",
     "    - Ben Logan\n",
+    "        - *Office*: Ward 133 \n",
+    "        - *Office Hours*: T 2–3:30pm\n",
     "    - Aimee Neilsen\n",
-    "    - Erin O'Toole"
+    "    - Erin O'Toole\n",
+    "        - *Office*: Ward 137D\n",
+    "        - *Office Hours*: W 2:30–4pm     "
    ]
   },
   {
