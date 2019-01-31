@@ -867,7 +867,7 @@ your answer by evaluating the expression in Python.</p>
 result is <code class="docutils literal"><span class="pre">0</span></code>, as is easily verified:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -877,7 +877,7 @@ result is <code class="docutils literal"><span class="pre">0</span></code>, as i
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -890,7 +890,7 @@ equivalent to <code class="docutils literal"><span class="pre">False</span></cod
 <code class="docutils literal"><span class="pre">and</span></code> expression <code class="docutils literal"><span class="pre">False</span></code> and, hence, it&#8217;s the final result:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -900,7 +900,7 @@ equivalent to <code class="docutils literal"><span class="pre">False</span></cod
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
+<span></span>Out[16]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -913,7 +913,7 @@ equivalent to <code class="docutils literal"><span class="pre">False</span></cod
 <em>second</em> value <code class="docutils literal"><span class="pre">'a'</span></code> that makes it so:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -923,7 +923,7 @@ equivalent to <code class="docutils literal"><span class="pre">False</span></cod
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1081,7 +1081,7 @@ when it prompts us for further input, let&#8217;s enter &#8220;symbols.&#8221; A
 we&#8217;ll enter &#8220;quit.&#8221;</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1109,20 +1109,65 @@ To get a list of available modules, keywords, symbols, or topics, type
 with a one-line summary of what it does; to list the modules whose name
 or summary contain a given string such as &#34;spam&#34;, type &#34;modules spam&#34;.
 
+help&gt; symbols
+
+Here is a list of the punctuation symbols which Python assigns special meaning
+to. Enter any symbol to get more help.
+
+!=                  *=                  &lt;&lt;                  ^
+&#34;                   +                   &lt;&lt;=                 ^=
+&#34;&#34;&#34;                 +=                  &lt;=                  _
+%                   ,                   &lt;&gt;                  __
+%=                  -                   ==                  `
+&amp;                   -=                  &gt;                   b&#34;
+&amp;=                  .                   &gt;=                  b&#39;
+&#39;                   ...                 &gt;&gt;                  j
+&#39;&#39;&#39;                 /                   &gt;&gt;=                 r&#34;
+(                   //                  @                   r&#39;
+)                   //=                 J                   |
+*                   /=                  [                   |=
+**                  :                   \                   ~
+**=                 &lt;                   ]
+
+help&gt; quit
+
+You are now leaving help and returning to the Python interpreter.
+If you want to ask for help on a particular object directly from the
+interpreter, you can type &#34;help(object)&#34;.  Executing &#34;help(&#39;string&#39;)&#34;
+has the same effect as typing a particular string at the help&gt; prompt.
 </pre></div></div>
 </div>
 <p>We can also use help directly to learn about a variable or function. For
 example, how can we use <code class="docutils literal"><span class="pre">print</span></code>? Let&#8217;s use <code class="docutils literal"><span class="pre">help</span></code> to figure that
 out:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">help</span><span class="p">(</span><span class="k">print</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on built-in function print in module builtins:
+
+print(...)
+    print(value, ..., sep=&#39; &#39;, end=&#39;\n&#39;, file=sys.stdout, flush=False)
+
+    Prints the values to a stream, or to sys.stdout by default.
+    Optional keyword arguments:
+    file:  a file-like object (stream); defaults to the current sys.stdout.
+    sep:   string inserted between values, default a space.
+    end:   string appended after the last value, default a newline.
+    flush: whether to forcibly flush the stream.
+
+</pre></div></div>
 </div>
 <p>When we work in IPython, another way to obtain help is by using the
 question mark <code class="docutils literal"><span class="pre">?</span></code> placed immediately after whatever name about which
@@ -1133,13 +1178,90 @@ in format but equivalent to the output of <code class="docutils literal"><span c
 <h3><code class="docutils literal"><span class="pre">dir</span></code> and <code class="docutils literal"><span class="pre">type</span></code><a class="headerlink" href="#dir-and-type" title="Permalink to this headline">¶</a></h3>
 <p>Another very useful function is <code class="docutils literal"><span class="pre">dir</span></code>. If we call it without
 arguments, it gives us the following:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="nb">dir</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[23]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;In&#39;,
+ &#39;InteractiveShell&#39;,
+ &#39;Out&#39;,
+ &#39;_&#39;,
+ &#39;_10&#39;,
+ &#39;_11&#39;,
+ &#39;_12&#39;,
+ &#39;_13&#39;,
+ &#39;_14&#39;,
+ &#39;_15&#39;,
+ &#39;_16&#39;,
+ &#39;_17&#39;,
+ &#39;_18&#39;,
+ &#39;_19&#39;,
+ &#39;_2&#39;,
+ &#39;_4&#39;,
+ &#39;_5&#39;,
+ &#39;_6&#39;,
+ &#39;_7&#39;,
+ &#39;_8&#39;,
+ &#39;_9&#39;,
+ &#39;__&#39;,
+ &#39;___&#39;,
+ &#39;__builtin__&#39;,
+ &#39;__builtins__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__spec__&#39;,
+ &#39;_dh&#39;,
+ &#39;_i&#39;,
+ &#39;_i1&#39;,
+ &#39;_i10&#39;,
+ &#39;_i11&#39;,
+ &#39;_i12&#39;,
+ &#39;_i13&#39;,
+ &#39;_i14&#39;,
+ &#39;_i15&#39;,
+ &#39;_i16&#39;,
+ &#39;_i17&#39;,
+ &#39;_i18&#39;,
+ &#39;_i19&#39;,
+ &#39;_i2&#39;,
+ &#39;_i20&#39;,
+ &#39;_i21&#39;,
+ &#39;_i22&#39;,
+ &#39;_i23&#39;,
+ &#39;_i3&#39;,
+ &#39;_i4&#39;,
+ &#39;_i5&#39;,
+ &#39;_i6&#39;,
+ &#39;_i7&#39;,
+ &#39;_i8&#39;,
+ &#39;_i9&#39;,
+ &#39;_ih&#39;,
+ &#39;_ii&#39;,
+ &#39;_iii&#39;,
+ &#39;_oh&#39;,
+ &#39;a&#39;,
+ &#39;b&#39;,
+ &#39;exit&#39;,
+ &#39;get_ipython&#39;,
+ &#39;quit&#39;,
+ &#39;s&#39;,
+ &#39;t&#39;,
+ &#39;u&#39;,
+ &#39;v&#39;]
 </pre></div>
 </div>
 </div>
@@ -1148,13 +1270,174 @@ defined, including <code class="docutils literal"><span class="pre">a</span></co
 items shown are not important for users, but <code class="docutils literal"><span class="pre">__builtin__</span></code> provides us
 a way to see the names of all functions and other things defined by
 default. Again, we turn to <code class="docutils literal"><span class="pre">dir</span></code>:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="nb">dir</span><span class="p">(</span><span class="n">__builtin__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[24]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;ArithmeticError&#39;,
+ &#39;AssertionError&#39;,
+ &#39;AttributeError&#39;,
+ &#39;BaseException&#39;,
+ &#39;BlockingIOError&#39;,
+ &#39;BrokenPipeError&#39;,
+ &#39;BufferError&#39;,
+ &#39;BytesWarning&#39;,
+ &#39;ChildProcessError&#39;,
+ &#39;ConnectionAbortedError&#39;,
+ &#39;ConnectionError&#39;,
+ &#39;ConnectionRefusedError&#39;,
+ &#39;ConnectionResetError&#39;,
+ &#39;DeprecationWarning&#39;,
+ &#39;EOFError&#39;,
+ &#39;Ellipsis&#39;,
+ &#39;EnvironmentError&#39;,
+ &#39;Exception&#39;,
+ &#39;False&#39;,
+ &#39;FileExistsError&#39;,
+ &#39;FileNotFoundError&#39;,
+ &#39;FloatingPointError&#39;,
+ &#39;FutureWarning&#39;,
+ &#39;GeneratorExit&#39;,
+ &#39;IOError&#39;,
+ &#39;ImportError&#39;,
+ &#39;ImportWarning&#39;,
+ &#39;IndentationError&#39;,
+ &#39;IndexError&#39;,
+ &#39;InterruptedError&#39;,
+ &#39;IsADirectoryError&#39;,
+ &#39;KeyError&#39;,
+ &#39;KeyboardInterrupt&#39;,
+ &#39;LookupError&#39;,
+ &#39;MemoryError&#39;,
+ &#39;ModuleNotFoundError&#39;,
+ &#39;NameError&#39;,
+ &#39;None&#39;,
+ &#39;NotADirectoryError&#39;,
+ &#39;NotImplemented&#39;,
+ &#39;NotImplementedError&#39;,
+ &#39;OSError&#39;,
+ &#39;OverflowError&#39;,
+ &#39;PendingDeprecationWarning&#39;,
+ &#39;PermissionError&#39;,
+ &#39;ProcessLookupError&#39;,
+ &#39;RecursionError&#39;,
+ &#39;ReferenceError&#39;,
+ &#39;ResourceWarning&#39;,
+ &#39;RuntimeError&#39;,
+ &#39;RuntimeWarning&#39;,
+ &#39;StopAsyncIteration&#39;,
+ &#39;StopIteration&#39;,
+ &#39;SyntaxError&#39;,
+ &#39;SyntaxWarning&#39;,
+ &#39;SystemError&#39;,
+ &#39;SystemExit&#39;,
+ &#39;TabError&#39;,
+ &#39;TimeoutError&#39;,
+ &#39;True&#39;,
+ &#39;TypeError&#39;,
+ &#39;UnboundLocalError&#39;,
+ &#39;UnicodeDecodeError&#39;,
+ &#39;UnicodeEncodeError&#39;,
+ &#39;UnicodeError&#39;,
+ &#39;UnicodeTranslateError&#39;,
+ &#39;UnicodeWarning&#39;,
+ &#39;UserWarning&#39;,
+ &#39;ValueError&#39;,
+ &#39;Warning&#39;,
+ &#39;ZeroDivisionError&#39;,
+ &#39;__IPYTHON__&#39;,
+ &#39;__build_class__&#39;,
+ &#39;__debug__&#39;,
+ &#39;__doc__&#39;,
+ &#39;__import__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__spec__&#39;,
+ &#39;abs&#39;,
+ &#39;all&#39;,
+ &#39;any&#39;,
+ &#39;ascii&#39;,
+ &#39;bin&#39;,
+ &#39;bool&#39;,
+ &#39;bytearray&#39;,
+ &#39;bytes&#39;,
+ &#39;callable&#39;,
+ &#39;chr&#39;,
+ &#39;classmethod&#39;,
+ &#39;compile&#39;,
+ &#39;complex&#39;,
+ &#39;copyright&#39;,
+ &#39;credits&#39;,
+ &#39;delattr&#39;,
+ &#39;dict&#39;,
+ &#39;dir&#39;,
+ &#39;display&#39;,
+ &#39;divmod&#39;,
+ &#39;enumerate&#39;,
+ &#39;eval&#39;,
+ &#39;exec&#39;,
+ &#39;filter&#39;,
+ &#39;float&#39;,
+ &#39;format&#39;,
+ &#39;frozenset&#39;,
+ &#39;get_ipython&#39;,
+ &#39;getattr&#39;,
+ &#39;globals&#39;,
+ &#39;hasattr&#39;,
+ &#39;hash&#39;,
+ &#39;help&#39;,
+ &#39;hex&#39;,
+ &#39;id&#39;,
+ &#39;input&#39;,
+ &#39;int&#39;,
+ &#39;isinstance&#39;,
+ &#39;issubclass&#39;,
+ &#39;iter&#39;,
+ &#39;len&#39;,
+ &#39;license&#39;,
+ &#39;list&#39;,
+ &#39;locals&#39;,
+ &#39;map&#39;,
+ &#39;max&#39;,
+ &#39;memoryview&#39;,
+ &#39;min&#39;,
+ &#39;next&#39;,
+ &#39;object&#39;,
+ &#39;oct&#39;,
+ &#39;open&#39;,
+ &#39;ord&#39;,
+ &#39;pow&#39;,
+ &#39;print&#39;,
+ &#39;property&#39;,
+ &#39;range&#39;,
+ &#39;repr&#39;,
+ &#39;reversed&#39;,
+ &#39;round&#39;,
+ &#39;set&#39;,
+ &#39;setattr&#39;,
+ &#39;slice&#39;,
+ &#39;sorted&#39;,
+ &#39;staticmethod&#39;,
+ &#39;str&#39;,
+ &#39;sum&#39;,
+ &#39;super&#39;,
+ &#39;tuple&#39;,
+ &#39;type&#39;,
+ &#39;vars&#39;,
+ &#39;zip&#39;]
 </pre></div>
 </div>
 </div>
@@ -1170,9 +1453,9 @@ variables</div></blockquote>
 are <em>reserved</em> and <em>cannot be used as variable names</em>. The entire list
 of keywords can be generated as follows (how else could you find them?
 <em>Hint</em>: Look at <code class="docutils literal"><span class="pre">help</span></code> again):</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1181,17 +1464,71 @@ of keywords can be generated as follows (how else could you find them?
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;False&#39;,
+ &#39;None&#39;,
+ &#39;True&#39;,
+ &#39;and&#39;,
+ &#39;as&#39;,
+ &#39;assert&#39;,
+ &#39;break&#39;,
+ &#39;class&#39;,
+ &#39;continue&#39;,
+ &#39;def&#39;,
+ &#39;del&#39;,
+ &#39;elif&#39;,
+ &#39;else&#39;,
+ &#39;except&#39;,
+ &#39;finally&#39;,
+ &#39;for&#39;,
+ &#39;from&#39;,
+ &#39;global&#39;,
+ &#39;if&#39;,
+ &#39;import&#39;,
+ &#39;in&#39;,
+ &#39;is&#39;,
+ &#39;lambda&#39;,
+ &#39;nonlocal&#39;,
+ &#39;not&#39;,
+ &#39;or&#39;,
+ &#39;pass&#39;,
+ &#39;raise&#39;,
+ &#39;return&#39;,
+ &#39;try&#39;,
+ &#39;while&#39;,
+ &#39;with&#39;,
+ &#39;yield&#39;]
+</pre></div>
+</div>
+</div>
 <p>Seriously, these words are <em>reserved</em>, and use of them as variable names
 leads to nasty business like the following:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">class</span> <span class="err">= &quot;</span><span class="nc">ME</span> <span class="mi">400</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-26-8d7f79ce0b82&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
+<span class="ansi-red-fg">    class = &#34;ME 400&#34;</span>
+          ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
 </div>
 <blockquote>
 <div><strong>Warning</strong>: The keywords of Python cannot be used as variable
@@ -1200,13 +1537,23 @@ names.</div></blockquote>
 function. How does it work? Just call it with a variable as its argument
 to figure out the type of the variable. For example, we can easily
 confirm that <code class="docutils literal"><span class="pre">a</span></code> is an <code class="docutils literal"><span class="pre">int</span></code> by doing the following:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>bool
 </pre></div>
 </div>
 </div>
@@ -1231,7 +1578,7 @@ mathematical functions.</p>
 <p>First, let&#8217;s import math.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1242,9 +1589,9 @@ mathematical functions.</p>
 <p>How do we use it? Of course, we can use <code class="docutils literal"><span class="pre">help</span></code>, but the output is too
 long to show here, but <code class="docutils literal"><span class="pre">dir</span></code> gives a nice list of what <code class="docutils literal"><span class="pre">math</span></code>
 contains:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1252,13 +1599,77 @@ contains:</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[29]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&#39;__doc__&#39;,
+ &#39;__file__&#39;,
+ &#39;__loader__&#39;,
+ &#39;__name__&#39;,
+ &#39;__package__&#39;,
+ &#39;__spec__&#39;,
+ &#39;acos&#39;,
+ &#39;acosh&#39;,
+ &#39;asin&#39;,
+ &#39;asinh&#39;,
+ &#39;atan&#39;,
+ &#39;atan2&#39;,
+ &#39;atanh&#39;,
+ &#39;ceil&#39;,
+ &#39;copysign&#39;,
+ &#39;cos&#39;,
+ &#39;cosh&#39;,
+ &#39;degrees&#39;,
+ &#39;e&#39;,
+ &#39;erf&#39;,
+ &#39;erfc&#39;,
+ &#39;exp&#39;,
+ &#39;expm1&#39;,
+ &#39;fabs&#39;,
+ &#39;factorial&#39;,
+ &#39;floor&#39;,
+ &#39;fmod&#39;,
+ &#39;frexp&#39;,
+ &#39;fsum&#39;,
+ &#39;gamma&#39;,
+ &#39;gcd&#39;,
+ &#39;hypot&#39;,
+ &#39;inf&#39;,
+ &#39;isclose&#39;,
+ &#39;isfinite&#39;,
+ &#39;isinf&#39;,
+ &#39;isnan&#39;,
+ &#39;ldexp&#39;,
+ &#39;lgamma&#39;,
+ &#39;log&#39;,
+ &#39;log10&#39;,
+ &#39;log1p&#39;,
+ &#39;log2&#39;,
+ &#39;modf&#39;,
+ &#39;nan&#39;,
+ &#39;pi&#39;,
+ &#39;pow&#39;,
+ &#39;radians&#39;,
+ &#39;sin&#39;,
+ &#39;sinh&#39;,
+ &#39;sqrt&#39;,
+ &#39;tan&#39;,
+ &#39;tanh&#39;,
+ &#39;tau&#39;,
+ &#39;trunc&#39;]
+</pre></div>
+</div>
+</div>
 <p>A lot of these names ought to look familiar, like <code class="docutils literal"><span class="pre">sin</span></code>, <code class="docutils literal"><span class="pre">exp</span></code>, and
 <code class="docutils literal"><span class="pre">log</span></code>. All of them live in the <code class="docutils literal"><span class="pre">math</span></code> module, and to access them, we
 can use these functions with the <code class="docutils literal"><span class="pre">.</span></code> operator, e.g., <code class="docutils literal"><span class="pre">math.sin</span></code>.
 Here are some examples:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1266,9 +1677,19 @@ Here are some examples:</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>Out[30]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>7.38905609893065
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1276,13 +1697,33 @@ Here are some examples:</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>Out[31]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>1.0
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[32]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>120
 </pre></div>
 </div>
 </div>
@@ -1328,9 +1769,9 @@ One way to provide a Python program with input directly is by using the
 <code class="docutils literal"><span class="pre">input</span></code> function. The <code class="docutils literal"><span class="pre">input</span></code> function can be used to prompt a user
 to enter information. The information entered is stored as a <code class="docutils literal"><span class="pre">str</span></code> and
 can be assigned to a variable. Here is an example:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1338,10 +1779,18 @@ can be assigned to a variable. Here is an example:</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Enter your info: 123
+</pre></div></div>
+</div>
 <p>Now, <code class="docutils literal"><span class="pre">my_info</span></code> is a variable with the value <code class="docutils literal"><span class="pre">'123'</span></code>.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1349,11 +1798,21 @@ can be assigned to a variable. Here is an example:</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[34]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;123&#39;
+</pre></div>
+</div>
+</div>
 <p>If we intended to store <code class="docutils literal"><span class="pre">my_info</span></code> as an integer value, we would need
 to modify our code to the following:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1361,13 +1820,31 @@ to modify our code to the following:</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Enter your info: 123
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">my_info_int</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[36]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>123
 </pre></div>
 </div>
 </div>
@@ -1376,9 +1853,9 @@ to modify our code to the following:</p>
 <h3>The Program<a class="headerlink" href="#The-Program" title="Permalink to this headline">¶</a></h3>
 <p>Now, we have what we need and can construct the entire program. Here it
 is all in one IPython line:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1398,6 +1875,15 @@ is all in one IPython line:</p>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The volume is &quot;</span><span class="p">,</span> <span class="n">volume</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Please enter a radius: 2
+The volume is  33.510321638291124
+</pre></div></div>
 </div>
 <p>One feature of this (and all good programs) is the use of <em>comments</em>,
 which are lines that start with the <code class="docutils literal"><span class="pre">#</span></code> symbol. These lines are not
