@@ -208,31 +208,26 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-8---Loops-in-Python">
 <h1>Lecture 8 - Loops in Python<a class="headerlink" href="#Lecture-8---Loops-in-Python" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 5</a>, the basics of programming
-logic were introduced, including the idea of <em>iteration</em>. The emphasis
-here and in <a class="reference external" href="ME400_Lecture_9.ipynb">Lecture 9</a> is on the logic of
+<p>In <a class="reference internal" href="Algorithms_Flowcharts_and_Pseudocode.html"><span class="doc">Lecture 5</span></a>, the
+basics of programming logic were introduced, including the idea of
+<em>iteration</em>. The emphasis here and in the next lesson is on the logic of
 <em>iteration</em> and its implementation via <code class="docutils literal"><span class="pre">while</span></code> and <code class="docutils literal"><span class="pre">for</span></code> loops in
 Python. To proceed, one must be comfortable with the theoretical
-coverage of iteration presented in <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture
-5</a>.</p>
-<div class="section" id="Quick-Announcements-(Less-I-Forget!)">
-<h3>Quick Announcements (Less I Forget!)<a class="headerlink" href="#Quick-Announcements-(Less-I-Forget!)" title="Permalink to this headline">¶</a></h3>
-<p>HW3 graded. See John or Richard in office hours (1-5pm T) with requests.
-Requests due within 48 hours (so we&#8217;ll say 5 pm Wednesday).</p>
-<p>HW4 will be graded early Thursday. You may still have through 5 pm
-Wednesday for requests.</p>
-<div class="line-block">
-<div class="line">Exam 1 on Friday.</div>
-<div class="line">- Half written, half coded. - Past exam on Canvas is a reasonable
-example of my exam style. - You can use: a pen/pencil and one <strong>hand
+coverage of iteration presented in <a class="reference internal" href="Algorithms_Flowcharts_and_Pseudocode.html"><span class="doc">Lecture
+5</span></a>.</p>
+<div class="section" id="Quick-Announcements">
+<h2>Quick Announcements<a class="headerlink" href="#Quick-Announcements" title="Permalink to this headline">¶</a></h2>
+<p>HW4 will be graded early Thursday. Exam 1 on Friday: - Half written,
+half coded. - Past exams on Canvas provide examples of my exam style
+(and good practice questions) - You can use: a pen/pencil and one <strong>hand
 written</strong> 11&#8217;&#8217; by 8.5&#8217;&#8217; sheet, front and back. No calculator. No
-internet. No talking between labs.</div>
+internet. No talking between labs.</p>
 </div>
+<div class="section" id="Wrap-Up-Four-Seasons-Question">
+<h2>Wrap Up Four Seasons Question<a class="headerlink" href="#Wrap-Up-Four-Seasons-Question" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>Use a <code class="docutils literal"><span class="pre">while</span></code> loop to solve simple problems using iteration</li>
@@ -242,7 +237,7 @@ with iteration</li>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">while</span></code></li>
 <li><code class="docutils literal"><span class="pre">break</span></code></li>
@@ -250,10 +245,8 @@ with iteration</li>
 <li>numerical convergence (as another common loop example)</li>
 <li>convergence criterion</li>
 </ul>
-</div>
-</div>
 <div class="section" id="Diving-Into-while-loops">
-<h2>Diving Into <code class="docutils literal"><span class="pre">while</span></code> loops<a class="headerlink" href="#Diving-Into-while-loops" title="Permalink to this headline">¶</a></h2>
+<h3>Diving Into <code class="docutils literal"><span class="pre">while</span></code> loops<a class="headerlink" href="#Diving-Into-while-loops" title="Permalink to this headline">¶</a></h3>
 <p>A prototypical problem: <em>add the integers from 1 through n</em>.</p>
 <p><strong>Exercise</strong> Develop a program using pseudocode or a flowchart to solve
 this problem.</p>
@@ -268,9 +261,9 @@ this problem.</p>
 <img alt="Flowchart for adding integers" src="../_images/add_integer_range.png" />
 <p class="caption"><span class="caption-text">Flowchart for adding integers</span></p>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -280,6 +273,18 @@ this problem.</p>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;1 + 2 + ... + n = &#39;</span><span class="p">,</span> <span class="err">???</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-1-979282101033&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">4</span>
+<span class="ansi-red-fg">    print(&#39;1 + 2 + ... + n = &#39;, ???)</span>
+                                ^
+<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
+
+</pre></div></div>
 </div>
 <p><strong>Question</strong>: Why not use <code class="docutils literal"><span class="pre">sum</span></code> in place of <code class="docutils literal"><span class="pre">s</span></code>?</p>
 <p>Similar problems:</p>
@@ -292,7 +297,7 @@ this problem.</p>
 </ul>
 </div>
 <div class="section" id="Connecting-Dots">
-<h2>Connecting Dots<a class="headerlink" href="#Connecting-Dots" title="Permalink to this headline">¶</a></h2>
+<h3>Connecting Dots<a class="headerlink" href="#Connecting-Dots" title="Permalink to this headline">¶</a></h3>
 <p><strong>Exercise</strong>: Write a Python program to find the two smallest numbers of
 an array and trace it for <code class="docutils literal"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">np.array([1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">8,</span> <span class="pre">2,</span> <span class="pre">4])</span></code> and
 <code class="docutils literal"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">6</span></code>.</p>
@@ -302,7 +307,7 @@ an array and trace it for <code class="docutils literal"><span class="pre">a</sp
 <em>placeholder variable</em> that stores a value (or its location) of interest</p>
 </div>
 <div class="section" id="The-break-Clause">
-<h2>The <code class="docutils literal"><span class="pre">break</span></code> Clause<a class="headerlink" href="#The-break-Clause" title="Permalink to this headline">¶</a></h2>
+<h3>The <code class="docutils literal"><span class="pre">break</span></code> Clause<a class="headerlink" href="#The-break-Clause" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">break</span></code> clause allows any loop (<code class="docutils literal"><span class="pre">while</span></code> or, next time <code class="docutils literal"><span class="pre">for</span></code>)
 to be terminated any time.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">condition_1</span><span class="p">:</span>   <span class="c1"># keep going while condition_1 is True</span>
@@ -320,6 +325,7 @@ to be terminated any time.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;this line will now be displayed just once!&quot;</span><span class="p">)</span>
+    <span class="k">break</span>
 </pre></div>
 </div>
 </div>
@@ -333,7 +339,7 @@ this line will now be displayed just once!
 </div>
 </div>
 <div class="section" id="Numerical-Convergence">
-<h2>Numerical Convergence<a class="headerlink" href="#Numerical-Convergence" title="Permalink to this headline">¶</a></h2>
+<h3>Numerical Convergence<a class="headerlink" href="#Numerical-Convergence" title="Permalink to this headline">¶</a></h3>
 <p>The integer summation problem posed above is one of the canonical
 examples to use iteration, and it serves as a template for many other
 tasks. An equally important example is that of <strong>numerical
@@ -341,14 +347,50 @@ convergence</strong>.</p>
 <p>The <strong>Taylor series</strong> expansion of <span class="math">\(\sin(x)\)</span> about <span class="math">\(x=0\)</span> is
 given by</p>
 <div class="math">
-\[\sin(x) = x - \frac{1}{3!} x^3 + \frac{1}{5!} x^5 - \ldots = \sum^{\infty}_{i=0} \frac{x^{2i+1}}{(2i+1)!} \, .\]</div>
+\[\sin(x) = x - \frac{1}{3!} x^3 + \frac{1}{5!} x^5 - \ldots = \sum^{\infty}_{j=0} (-1)^j \frac{x^{2j+1}}{(2j+1)!} \, .\]</div>
 <p>Using just the first few terms often gives a good approximation near
 <span class="math">\(x = 0\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">y3</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">120</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">5</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>  <span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="s1">&#39;g:&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;$y(x) = \sin(x)$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_1$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_2$&#39;</span><span class="p">,</span> <span class="s1">&#39;$y_3$&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.legend.Legend at 0x7f3ba9d37da0&gt;
+</pre></div>
+</div>
+</div>
 <p><strong>Goal</strong>: Approximate <span class="math">\(\sin(x)\)</span> using a <strong>truncated</strong> expansion of
 just <span class="math">\(n\)</span> terms.</p>
 <p>But, <strong>how good is good enough?</strong> and <strong>what does good mean in this
 case?</strong></p>
 <p>Need to define the <strong>convergence criterion</strong>.</p>
+<p><strong>Exercise</strong>: Write a program to determine n such that
+<span class="math">\(|\sin(x) - S_n(x)| &lt; 10^{-4}\)</span> for <span class="math">\(x = 0.2\)</span> where
+<span class="math">\(S_n(x)\)</span> is the <span class="math">\(n\)</span>-term Taylor series approximation of
+<span class="math">\(\sin(x)\)</span> about <span class="math">\(x = 0\)</span>. In other words, <span class="math">\(S_1(x) = x\)</span>,
+<span class="math">\(S_2(x) = x - x^3/6\)</span>, etc.</p>
+<p><em>Hint</em>: <span class="math">\(10^{-4}\)</span> can be written as <code class="docutils literal"><span class="pre">0.0001</span></code> or <code class="docutils literal"><span class="pre">1e-4</span></code> or
+<code class="docutils literal"><span class="pre">10**(-4)</span></code> in Python.</p>
 <p><strong>Exercise</strong>: Write a program to determine <span class="math">\(n\)</span> such that
 <span class="math">\(\Big |(1-x)^{-1} - \sum^{n}_{i=0} x^i \Big| &lt; 10^{-4}\)</span>, and trace
 the program graphically.</p>
@@ -356,7 +398,7 @@ the program graphically.</p>
 plot from the Lecture 4 example.</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to:</p>
 <ul class="simple">
 <li>Use a <code class="docutils literal"><span class="pre">while</span></code> loop to solve simple problems using iteration</li>
@@ -364,6 +406,7 @@ plot from the Lecture 4 example.</p>
 <li>Use the graphical debugger in Spyder to trace and debug a program
 with iteration</li>
 </ul>
+</div>
 </div>
 </div>
 
@@ -376,17 +419,17 @@ with iteration</li>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 8 - Loops in Python</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
-<li><a class="reference internal" href="#Quick-Announcements-(Less-I-Forget!)">Quick Announcements (Less I Forget!)</a></li>
+<li><a class="reference internal" href="#Quick-Announcements">Quick Announcements</a></li>
+<li><a class="reference internal" href="#Wrap-Up-Four-Seasons-Question">Wrap Up Four Seasons Question</a></li>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
 <li><a class="reference internal" href="#Diving-Into-while-loops">Diving Into <code class="docutils literal"><span class="pre">while</span></code> loops</a></li>
 <li><a class="reference internal" href="#Connecting-Dots">Connecting Dots</a></li>
 <li><a class="reference internal" href="#The-break-Clause">The <code class="docutils literal"><span class="pre">break</span></code> Clause</a></li>
 <li><a class="reference internal" href="#Numerical-Convergence">Numerical Convergence</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

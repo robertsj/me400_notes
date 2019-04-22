@@ -9,41 +9,8 @@
    },
    "source": [
     "# Lecture 7 - More on Conditionals\n",
-    "\n",
-    "## Overview, Objectives, and Key Terms\n",
     " \n",
     "In [Lecture 5](ME400_Lecture_5.ipynb), the basics of programming logic were introduced, including the idea of *selection*. In [Lecture 6](ME400_Lecture_6.ipynb), those concepts were put into practice in Python using the `if`, `elif`, and `else` structure.  In this lesson, we dive into more complicated use cases, focusing on *nested* conditionals and the more complex code resulting from such conditionals.  Along the way, we'll apply the *graphical debugger* in Spyder to help understand the flow of execution (and to catch bugs!).  "
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "## On Pre-Lecture 7\n",
-    "\n",
-    "- Narrow range of time on reading/example (0-2)\n",
-    "- Wide range of time on social media (0-14+)\n",
-    "\n",
-    "**Time management** is a crucial skill.  Two (related) tricks:\n",
-    " \n",
-    "  1. Plan out every minute of your day (15- or 30-minute blocks)\n",
-    "  2. Record what actually happens in those blocks\n",
-    "  3. Choose one day a week for *insert favorite time waster here)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "slide"
-    }
-   },
-   "source": [
-    "**Continue Monday's example...**"
    ]
   },
   {
@@ -60,7 +27,7 @@
     "\n",
     "- Read and write nested `if` statements\n",
     "- Explain the difference between syntactical and logical errors\n",
-    "- Use the graphical debugger in Spyder to trace and debug a program\n"
+    "- Use the graphical debugger in Spyder to trace and debug a program"
    ]
   },
   {
@@ -71,15 +38,99 @@
     }
    },
    "source": [
-    "### Key Terms\n",
+    "### Recap of Grade Problem (and Preview of HW4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "Template includes new functions (`np.sort` and `np.hstack`).\n",
     "\n",
-    "- nested conditional\n",
-    "- bug\n",
-    "- debugger\n",
-    "- breakpoint\n",
-    "- syntactical error\n",
-    "- logical error\n",
-    "- trace code"
+    "**Example**: combine two 1-D arrays `a` and `b` into one longer array `c`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([3, 5, 3, 2, 2, 6])"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "a = np.array([3, 5, 3])\n",
+    "b = np.array([2, 2, 6])\n",
+    "c = np.hstack((a, b))\n",
+    "c"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Example**: Suppose `c` represents scores. Compute the average score when **two drops** are allowed."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4.25"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dropped = 2\n",
+    "sum(np.sort(c)[dropped:])/(len(c)-2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "In summary, you need to do these things:\n",
+    " \n",
+    " - Get the number of tasks in each category, accounting for the `option` (e.g., the number of homeworks included in the grade depends on the `option`) by using an appropriate conditional statement.\n",
+    " - Define arrays for each task by slicing `A` (e.g., `hw = A[2:(2+number_hw), 2]`)\n",
+    " - Define the `final_grade` by using the `final_percentage` and `option` variables with an appropriate conditional statement."
    ]
   },
   {
@@ -124,6 +175,13 @@
    },
    "source": [
     "**Remember that indentation matters!**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "*Example*:"
    ]
   },
   {
@@ -294,46 +352,12 @@
    },
    "outputs": [],
    "source": [
-    "food_price = 48.70 # cost of some entrees\n",
-    "booze_price = 15.76 # cost of some refreshments\n",
-    "total_price = food_price + booze_price # total price before tax\n",
-    "kansas = total_price * 0.06 # uncle sam (brownback) portion\n",
-    "riley = total_price * 0.01 # county's cut\n",
-    "manhattan = total_price * 0.01 # city's cut\n",
-    "excise = booze_price * 0.1 # kansas gets more?\n",
-    "print('total bill is ', food_price + booze_price + kansas + manhattan + excise)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "Does this have a bug(s)?  What kind?"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {
-    "collapsed": true,
-    "slideshow": {
-     "slide_type": "fragment"
-    }
-   },
-   "outputs": [],
-   "source": [
-    "\"\"\"\n",
     "import numpy as np\n",
     "a = np.range(5) # make some numbers\n",
     "b = a           # copy a\n",
     "a = a**2        # change a\n",
     "s = sum(b)      # compute the sum of b\n",
-    "print('I'm smart and know that s is 10!')\n",
-    "\"\"\""
+    "print('I'm smart and know that s is 10!')"
    ]
   },
   {
@@ -378,6 +402,32 @@
     }
    },
    "source": [
+    "## Final Problem\n",
+    "\n",
+    "\n",
+    "Recall we have four seasons: spring, summer, fall, and winter.\n",
+    "In 2019, the official starts dates for these seasons are:\n",
+    "\n",
+    "\n",
+    " - Spring  3/20 (called the vernal equinox) \n",
+    " - Summer  6/21 (called the summer solstice) \n",
+    " - Fall    9/23 (called the autumnal equinox) \n",
+    " - Winter  12/21 (called the winter solstice) \n",
+    "\n",
+    "\n",
+    "Write a program that asks a user for the date in the format used above, e.g., `2/14` or `12/25`, and displays the season. \n",
+    "\n",
+    "Hint: remember what type `input` produces and that the location of the forward slash `/` depends on the month.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
     "## Recap\n",
     "\n",
     "You should now be able to:\n",
@@ -404,7 +454,10 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
+  },
+  "livereveal": {
+   "scroll": true
   }
  },
  "nbformat": 4,

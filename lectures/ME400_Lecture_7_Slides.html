@@ -208,8 +208,6 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-7---More-on-Conditionals">
 <h1>Lecture 7 - More on Conditionals<a class="headerlink" href="#Lecture-7---More-on-Conditionals" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference external" href="ME400_Lecture_5.ipynb">Lecture 5</a>, the basics of programming
 logic were introduced, including the idea of <em>selection</em>. In <a class="reference external" href="ME400_Lecture_6.ipynb">Lecture
 6</a>, those concepts were put into practice in
@@ -218,22 +216,8 @@ lesson, we dive into more complicated use cases, focusing on <em>nested</em>
 conditionals and the more complex code resulting from such conditionals.
 Along the way, we&#8217;ll apply the <em>graphical debugger</em> in Spyder to help
 understand the flow of execution (and to catch bugs!).</p>
-</div>
-<div class="section" id="On-Pre-Lecture-7">
-<h2>On Pre-Lecture 7<a class="headerlink" href="#On-Pre-Lecture-7" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Narrow range of time on reading/example (0-2)</li>
-<li>Wide range of time on social media (0-14+)</li>
-</ul>
-<p><strong>Time management</strong> is a crucial skill. Two (related) tricks:</p>
-<ol class="arabic simple">
-<li>Plan out every minute of your day (15- or 30-minute blocks)</li>
-<li>Record what actually happens in those blocks</li>
-<li>Choose one day a week for *insert favorite time waster here)</li>
-</ol>
-<p><strong>Continue Monday&#8217;s example...</strong></p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>Read and write nested <code class="docutils literal"><span class="pre">if</span></code> statements</li>
@@ -241,27 +225,77 @@ understand the flow of execution (and to catch bugs!).</p>
 <li>Use the graphical debugger in Spyder to trace and debug a program</li>
 </ul>
 </div>
-<div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Recap-of-Grade-Problem-(and-Preview-of-HW4)">
+<h2>Recap of Grade Problem (and Preview of HW4)<a class="headerlink" href="#Recap-of-Grade-Problem-(and-Preview-of-HW4)" title="Permalink to this headline">¶</a></h2>
+<p>Template includes new functions (<code class="docutils literal"><span class="pre">np.sort</span></code> and <code class="docutils literal"><span class="pre">np.hstack</span></code>).</p>
+<p><strong>Example</strong>: combine two 1-D arrays <code class="docutils literal"><span class="pre">a</span></code> and <code class="docutils literal"><span class="pre">b</span></code> into one longer
+array <code class="docutils literal"><span class="pre">c</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([3, 5, 3, 2, 2, 6])
+</pre></div>
+</div>
+</div>
+<p><strong>Example</strong>: Suppose <code class="docutils literal"><span class="pre">c</span></code> represents scores. Compute the average score
+when <strong>two drops</strong> are allowed.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">dropped</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">c</span><span class="p">)[</span><span class="n">dropped</span><span class="p">:])</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>4.25
+</pre></div>
+</div>
+</div>
+<p>In summary, you need to do these things:</p>
 <ul class="simple">
-<li>nested conditional</li>
-<li>bug</li>
-<li>debugger</li>
-<li>breakpoint</li>
-<li>syntactical error</li>
-<li>logical error</li>
-<li>trace code</li>
+<li>Get the number of tasks in each category, accounting for the
+<code class="docutils literal"><span class="pre">option</span></code> (e.g., the number of homeworks included in the grade
+depends on the <code class="docutils literal"><span class="pre">option</span></code>) by using an appropriate conditional
+statement.</li>
+<li>Define arrays for each task by slicing <code class="docutils literal"><span class="pre">A</span></code> (e.g.,
+<code class="docutils literal"><span class="pre">hw</span> <span class="pre">=</span> <span class="pre">A[2:(2+number_hw),</span> <span class="pre">2]</span></code>)</li>
+<li>Define the <code class="docutils literal"><span class="pre">final_grade</span></code> by using the <code class="docutils literal"><span class="pre">final_percentage</span></code> and
+<code class="docutils literal"><span class="pre">option</span></code> variables with an appropriate conditional statement.</li>
 </ul>
-</div>
-</div>
 <div class="section" id="Nested-Conditionals">
-<h2>Nested Conditionals<a class="headerlink" href="#Nested-Conditionals" title="Permalink to this headline">¶</a></h2>
+<h3>Nested Conditionals<a class="headerlink" href="#Nested-Conditionals" title="Permalink to this headline">¶</a></h3>
 <p><strong>Example</strong>: Write a program that gets a number from the user, says
 whether it is odd or even, and if it is odd, whether it is also
 divisible by 3. Produce a flowchart.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -275,36 +309,13 @@ divisible by 3. Produce a flowchart.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-1-243d3a5437cb&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>n <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter a number: &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">if</span> n <span class="ansi-blue-fg">%</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-red-fg">#234 &lt;-- 4 spaces for one indentation level</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;n is odd&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
-<span class="ansi-green-intense-fg ansi-bold">    697</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    698</span>             raise StdinNotImplementedError(
-<span class="ansi-green-fg">--&gt; 699</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">    700</span>             )
-<span class="ansi-green-intense-fg ansi-bold">    701</span>         return self._input_request(str(prompt),
-
-<span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
-</pre></div></div>
-</div>
 <p><strong>Remember that indentation matters!</strong></p>
+<p><em>Example</em>:</p>
 <p><strong>Example</strong>: What&#8217;s the tax on $75000? Then rewrite <em>without</em> nested
 if&#8217;s.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -322,33 +333,9 @@ if&#8217;s.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">StdinNotImplementedError</span>                  Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-eea96172ef49&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>income <span class="ansi-blue-fg">=</span> float<span class="ansi-blue-fg">(</span>input<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;enter your income: &#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> tax <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">if</span> income <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">13860</span><span class="ansi-blue-fg">:</span> <span class="ansi-red-fg"># poverty line</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>     <span class="ansi-green-fg">if</span> income <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">52500</span><span class="ansi-blue-fg">:</span> <span class="ansi-red-fg"># median income</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>         <span class="ansi-green-fg">if</span> income <span class="ansi-blue-fg">&gt;</span> <span class="ansi-cyan-fg">250000</span><span class="ansi-blue-fg">:</span> <span class="ansi-red-fg"># average KSU college dean</span>
-
-<span class="ansi-green-fg">~/opt/anaconda3/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
-<span class="ansi-green-intense-fg ansi-bold">    697</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_allow_stdin<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    698</span>             raise StdinNotImplementedError(
-<span class="ansi-green-fg">--&gt; 699</span><span class="ansi-red-fg">                 </span><span class="ansi-blue-fg">&#34;raw_input was called, but this frontend does not support input requests.&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">    700</span>             )
-<span class="ansi-green-intense-fg ansi-bold">    701</span>         return self._input_request(str(prompt),
-
-<span class="ansi-red-fg">StdinNotImplementedError</span>: raw_input was called, but this frontend does not support input requests.
-</pre></div></div>
-</div>
 </div>
 <div class="section" id="Debugging">
-<h2>Debugging<a class="headerlink" href="#Debugging" title="Permalink to this headline">¶</a></h2>
+<h3>Debugging<a class="headerlink" href="#Debugging" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>&#8220;Everyone knows that debugging is twice as hard as writing the code
 in the first place. Therefore, if you write the code as cleverly as
@@ -362,9 +349,9 @@ Kernighan</a>, from
 are broken.</p>
 <p>Logical errors arise when the rules of logic are broken. Sometimes,
 these lead to <em>runtime errors</em>.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -373,21 +360,9 @@ these lead to <em>runtime errors</em>.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-3-d3146b059444&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
-<span class="ansi-red-fg">    if True</span>
-           ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
-
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -399,30 +374,15 @@ these lead to <em>runtime errors</em>.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-4-98aadbb02f29&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> a <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># define be to be 3 times the third element</span>
-<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>b <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">]</span>
-
-<span class="ansi-red-fg">IndexError</span>: index 3 is out of bounds for axis 0 with size 3
-</pre></div></div>
-</div>
 <p>Does this have a bug? What kind(s)?</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>class = &quot;ME 400&quot;
 instructor = &quot;Roberts&quot;
 print(instructor, &quot; teaches &quot;, class)
 </pre></div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -432,74 +392,26 @@ print(instructor, &quot; teaches &quot;, class)
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-cyan-fg">  File </span><span class="ansi-green-fg">&#34;&lt;ipython-input-5-7578e6b410de&gt;&#34;</span><span class="ansi-cyan-fg">, line </span><span class="ansi-green-fg">1</span>
-<span class="ansi-red-fg">    class = &#34;ME 400&#34;</span>
-          ^
-<span class="ansi-red-fg">SyntaxError</span><span class="ansi-red-fg">:</span> invalid syntax
-
-</pre></div></div>
-</div>
 <p>Does this have a bug(s)? What kind?</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">food_price</span> <span class="o">=</span> <span class="mf">48.70</span> <span class="c1"># cost of some entrees</span>
-<span class="n">booze_price</span> <span class="o">=</span> <span class="mf">15.76</span> <span class="c1"># cost of some refreshments</span>
-<span class="n">total_price</span> <span class="o">=</span> <span class="n">food_price</span> <span class="o">+</span> <span class="n">booze_price</span> <span class="c1"># total price before tax</span>
-<span class="n">kansas</span> <span class="o">=</span> <span class="n">total_price</span> <span class="o">*</span> <span class="mf">0.06</span> <span class="c1"># uncle sam (brownback) portion</span>
-<span class="n">riley</span> <span class="o">=</span> <span class="n">total_price</span> <span class="o">*</span> <span class="mf">0.01</span> <span class="c1"># county&#39;s cut</span>
-<span class="n">manhattan</span> <span class="o">=</span> <span class="n">total_price</span> <span class="o">*</span> <span class="mf">0.01</span> <span class="c1"># city&#39;s cut</span>
-<span class="n">excise</span> <span class="o">=</span> <span class="n">booze_price</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="c1"># kansas gets more?</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;total bill is &#39;</span><span class="p">,</span> <span class="n">food_price</span> <span class="o">+</span> <span class="n">booze_price</span> <span class="o">+</span> <span class="n">kansas</span> <span class="o">+</span> <span class="n">manhattan</span> <span class="o">+</span> <span class="n">excise</span><span class="p">)</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># make some numbers</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>           <span class="c1"># copy a</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span>        <span class="c1"># change a</span>
+<span class="n">s</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>      <span class="c1"># compute the sum of b</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="n">m</span> <span class="n">smart</span> <span class="ow">and</span> <span class="n">know</span> <span class="n">that</span> <span class="n">s</span> <span class="ow">is</span> <span class="mi">10</span><span class="o">!</span><span class="err">&#39;</span><span class="o">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-total bill is  70.5482
-</pre></div></div>
-</div>
-<p>Does this have a bug(s)? What kind?</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">import numpy as np</span>
-<span class="sd">a = np.range(5) # make some numbers</span>
-<span class="sd">b = a           # copy a</span>
-<span class="sd">a = a**2        # change a</span>
-<span class="sd">s = sum(b)      # compute the sum of b</span>
-<span class="sd">print(&#39;I&#39;m smart and know that s is 10!&#39;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&quot;\nimport numpy as np\na = np.range(5) # make some numbers\nb = a           # copy a\na = a**2        # change a\ns = sum(b)      # compute the sum of b\nprint(&#39;I&#39;m smart and know that s is 10!&#39;)\n&quot;
-</pre></div>
 </div>
 </div>
 <div class="section" id="Old-School-Debugging">
-<h3>Old-School Debugging<a class="headerlink" href="#Old-School-Debugging" title="Permalink to this headline">¶</a></h3>
+<h2>Old-School Debugging<a class="headerlink" href="#Old-School-Debugging" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Compile (or run) program, see syntax errors, and fix.</li>
 <li>Compile and run program, notice silly output</li>
@@ -511,7 +423,7 @@ lines</li>
 </ol>
 </div>
 <div class="section" id="Pro-Tips">
-<h3>Pro Tips<a class="headerlink" href="#Pro-Tips" title="Permalink to this headline">¶</a></h3>
+<h2>Pro Tips<a class="headerlink" href="#Pro-Tips" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li>Don&#8217;t make errors in the first place:<ul>
 <li><strong>Design</strong> your code with flowcharts and pseudocode as applicable</li>
@@ -523,13 +435,27 @@ by hand</li>
 <li>Know what your code does by tracing it via the Spyder graphical
 <strong>debugger</strong> (or similar tool)</li>
 </ol>
-</div>
+<div class="section" id="Final-Problem">
+<h3>Final Problem<a class="headerlink" href="#Final-Problem" title="Permalink to this headline">¶</a></h3>
+<p>Recall we have four seasons: spring, summer, fall, and winter. In 2019,
+the official starts dates for these seasons are:</p>
+<ul class="simple">
+<li>Spring 3/20 (called the vernal equinox)</li>
+<li>Summer 6/21 (called the summer solstice)</li>
+<li>Fall 9/23 (called the autumnal equinox)</li>
+<li>Winter 12/21 (called the winter solstice)</li>
+</ul>
+<p>Write a program that asks a user for the date in the format used above,
+e.g., <code class="docutils literal"><span class="pre">2/14</span></code> or <code class="docutils literal"><span class="pre">12/25</span></code>, and displays the season.</p>
+<p>Hint: remember what type <code class="docutils literal"><span class="pre">input</span></code> produces and that the location of the
+forward slash <code class="docutils literal"><span class="pre">/</span></code> depends on the month.</p>
 </div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to: - Read and write nested <code class="docutils literal"><span class="pre">if</span></code> statements -
 Explain the difference between syntactical and logical errors - Use the
 graphical debugger in Spyder to trace and debug a program</p>
+</div>
 </div>
 </div>
 
@@ -542,19 +468,18 @@ graphical debugger in Spyder to trace and debug a program</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 7 - More on Conditionals</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a></li>
-<li><a class="reference internal" href="#On-Pre-Lecture-7">On Pre-Lecture 7</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Recap-of-Grade-Problem-(and-Preview-of-HW4)">Recap of Grade Problem (and Preview of HW4)</a><ul>
 <li><a class="reference internal" href="#Nested-Conditionals">Nested Conditionals</a></li>
-<li><a class="reference internal" href="#Debugging">Debugging</a><ul>
-<li><a class="reference internal" href="#Old-School-Debugging">Old-School Debugging</a></li>
-<li><a class="reference internal" href="#Pro-Tips">Pro Tips</a></li>
+<li><a class="reference internal" href="#Debugging">Debugging</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#Old-School-Debugging">Old-School Debugging</a></li>
+<li><a class="reference internal" href="#Pro-Tips">Pro Tips</a><ul>
+<li><a class="reference internal" href="#Final-Problem">Final Problem</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

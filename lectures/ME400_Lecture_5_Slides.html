@@ -40,10 +40,174 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="Lecture-5---Algorithms,-flowcharts,-and-pseudocode.">
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="section" id="Lecture-5---Algorithms,-flowcharts,-and-pseudocode.">
 <h1>Lecture 5 - Algorithms, flowcharts, and pseudocode.<a class="headerlink" href="#Lecture-5---Algorithms,-flowcharts,-and-pseudocode." title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
 <p>In this lesson, we&#8217;ll dive right into the basic logic needed to plan
 one&#8217;s program, significantly extending the process identified in <a class="reference external" href="ME400_Lecture_2.ipynb">Lesson
 2</a>. We&#8217;ll examine <em>algorithms</em> for several
@@ -54,6 +218,63 @@ and <strong>iteration</strong>. Throughout, specialized syntax (Python or otherw
 is avoided (with the exception of the handy slicing syntax introduced in
 <a class="reference external" href="ME400_Lecture_3.ipynb">Lesson 3</a>), but variables and simple
 operators are used.</p>
+<div class="section" id="Reminders-about-some-Syllabus-Policies">
+<h2>Reminders about some Syllabus Policies<a class="headerlink" href="#Reminders-about-some-Syllabus-Policies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Homework help through discussion board or office hours (<em>not</em> email)</li>
+<li>No make ups for labs or in-class activities (drops account for <em>any</em>
+absences)</li>
+<li>Emails should have proper format (&#8220;business casual&#8221;), and a subject
+with ME 400 helps cut through the noise.</li>
+</ul>
+</div>
+<div class="section" id="Quick-Review:-Order-of-Operations">
+<h2>Quick Review: Order of Operations<a class="headerlink" href="#Quick-Review:-Order-of-Operations" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">**</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="c1"># expect -1, 4, -9, ...</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Is this correct?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<p>Given</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">False</span> <span class="ow">or</span> <span class="bp">True</span> <span class="ow">and</span> <span class="s1">&#39;cat&#39;</span> <span class="ow">and</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="s1">&#39;dog&#39;</span>
+</pre></div>
+</div>
+<p>it is easy to demonstrate that <code class="docutils literal"><span class="pre">z</span> <span class="pre">==</span> <span class="pre">'dog'</span></code> by evaluating the
+expression, but <em>why</em> is it <code class="docutils literal"><span class="pre">'dog'</span></code>?</p>
+<p>Start with:</p>
+<div class="math">
+\[z = \text{True and False} \, \text{or} \, \text{True and 'cat' and ''} \, \text{or} \, \text{'dog'}\]</div>
+<p>Use parentheses to show that <code class="docutils literal"><span class="pre">and</span></code> operations come before <code class="docutils literal"><span class="pre">or</span></code>
+operations and that operations are performed from left to right:</p>
+<div class="math">
+\[z = \Bigg ((\text{True and False}) \, \text{or} \, \Big (\text{(True and 'cat') and ''} \Big) \Bigg ) \, \text{or} \, \text{'dog'}\]</div>
+<p>Evaluate the contents <em>inside</em> parentheses:</p>
+<div class="math">
+\[z = \Bigg ((\text{False}) \, \text{or} \, \Big (\text{('cat') and ''} \Big) \Bigg ) \, \text{or} \, \text{'dog'}\]</div>
+<div class="math">
+\[z = \Bigg (\text{False} \, \text{or} \, \Big (\text{'cat' and ''} \Big) \Bigg ) \, \text{or} \, \text{'dog'}\]</div>
+<div class="math">
+\[z = \Big (\text{False} \, \text{or} \,  (\text{''}) \Big) \, \text{or} \, \text{'dog'}\]</div>
+<div class="math">
+\[z = \Big (\text{False} \, \text{or} \,  \text{''} \Big) \, \text{or} \, \text{'dog'}\]</div>
+<div class="math">
+\[z = \Big ( \text{''} \Big) \, \text{or} \, \text{'dog'}\]</div>
+<div class="math">
+\[z =  \text{''} \,\,  \text{or} \,\, \text{'dog'}\]</div>
+<div class="math">
+\[z = \text{'dog'}\]</div>
 <div class="section" id="Objectives">
 <h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
@@ -169,13 +390,13 @@ letter grade?</p>
 </pre></div>
 </div>
 <p><strong>Example</strong> Consider the following pseudocode:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="n">n</span>
-<span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="mi">0</span>
-<span class="n">If</span> <span class="n">n</span> <span class="ow">is</span> <span class="n">even</span> <span class="n">then</span>
-    <span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="mi">1</span>
-<span class="n">If</span> <span class="n">m</span> <span class="ow">is</span> <span class="n">odd</span> <span class="n">then</span>
-   <span class="n">Set</span> <span class="n">n</span> <span class="n">to</span> <span class="mi">0</span>
-<span class="n">Output</span> <span class="n">n</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">0.</span>  <span class="n">Input</span> <span class="n">n</span>
+<span class="mf">1.</span>  <span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="mf">2.</span>  <span class="n">If</span> <span class="n">n</span> <span class="ow">is</span> <span class="n">even</span> <span class="n">then</span>
+<span class="mf">3.</span>      <span class="n">Set</span> <span class="n">m</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="mf">4.</span>  <span class="n">If</span> <span class="n">m</span> <span class="ow">is</span> <span class="n">odd</span> <span class="n">then</span>
+<span class="mf">5.</span>      <span class="n">Set</span> <span class="n">n</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="mf">6.</span>  <span class="n">Output</span> <span class="n">n</span>
 </pre></div>
 </div>
 <p>What does it do? Turn it into a flowchart!</p>
@@ -269,16 +490,16 @@ resulting value of <code class="docutils literal"><span class="pre">c</span></co
 </table>
 <p><strong>Example</strong>: Given the following pseudocode, what are the resulting
 values of <code class="docutils literal"><span class="pre">b</span></code> for <code class="docutils literal"><span class="pre">n</span></code> equal to 4, 5, and 6?</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="n">n</span>
-<span class="n">Set</span> <span class="n">a</span> <span class="n">to</span> <span class="mi">1</span>
-<span class="n">Set</span> <span class="n">b</span> <span class="n">to</span> <span class="mi">1</span>
-<span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="mi">2</span>
-<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
-    <span class="n">Set</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span>
-    <span class="n">Set</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
-    <span class="n">Set</span> <span class="n">a</span> <span class="o">=</span> <span class="n">c</span>
-    <span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
-<span class="n">Output</span> <span class="n">b</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">1.</span>  <span class="n">Input</span> <span class="n">n</span>
+<span class="mf">2.</span>  <span class="n">Set</span> <span class="n">a</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="mf">3.</span>  <span class="n">Set</span> <span class="n">b</span> <span class="n">to</span> <span class="mi">1</span>
+<span class="mf">4.</span>  <span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="mi">2</span>
+<span class="mf">5.</span>  <span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
+<span class="mf">6.</span>     <span class="n">Set</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span>
+<span class="mf">7.</span>     <span class="n">Set</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="mf">8.</span>     <span class="n">Set</span> <span class="n">a</span> <span class="o">=</span> <span class="n">c</span>
+<span class="mf">9.</span>     <span class="n">Set</span> <span class="n">i</span> <span class="n">to</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="mf">10.</span> <span class="n">Output</span> <span class="n">b</span>
 </pre></div>
 </div>
 <table border="1" class="docutils">
@@ -362,7 +583,8 @@ the same mass, and you can tell which of any two rocks is heavier.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 5 - Algorithms, flowcharts, and pseudocode.</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
+<li><a class="reference internal" href="#Reminders-about-some-Syllabus-Policies">Reminders about some Syllabus Policies</a></li>
+<li><a class="reference internal" href="#Quick-Review:-Order-of-Operations">Quick Review: Order of Operations</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
 </ul>

@@ -267,11 +267,62 @@ saturated steam (saved as <a class="reference external" href="thermo_data.txt">t
 <span class="mf">573.150</span>   <span class="mf">8.588</span>    <span class="mf">2749.574</span>    <span class="mf">1344.771</span>
 </pre></div>
 </div>
-<p>Write a function that loads this data and returns <span class="math">\(h_v\)</span> for any
-value of <span class="math">\(P \in [0.101, 8.588]\)</span> using linear interpolation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;thermo_data.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; T [K]   P [MPa]  h_l [kJ/kg] h_v [kJ/kg]</span>
+<span class="s2"> 373.150   0.101    2675.572     419.099</span>
+<span class="s2"> 389.817   0.179    2701.054     489.625</span>
+<span class="s2"> 406.483   0.298    2724.633     560.634</span>
+<span class="s2"> 423.150   0.476    2745.919     632.252</span>
+<span class="s2"> 439.817   0.730    2764.528     704.626</span>
+<span class="s2"> 456.483   1.082    2780.059     777.934</span>
+<span class="s2"> 473.150   1.555    2792.062     852.393</span>
+<span class="s2"> 489.817   2.175    2800.004     928.269</span>
+<span class="s2"> 506.483   2.972    2803.247    1005.893</span>
+<span class="s2"> 523.150   3.976    2801.012    1085.687</span>
+<span class="s2"> 539.817   5.222    2792.314    1168.202</span>
+<span class="s2"> 556.483   6.745    2775.820    1254.194</span>
+<span class="s2"> 573.150   8.588    2749.574    1344.771&quot;&quot;&quot;</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Write a function that loads this data and returns <span class="math">\(h_v\)</span> for any
+value of <span class="math">\(P_{\text{target}} \in [0.101, 8.588]\)</span> using linear
+interpolation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">get_h_v</span><span class="p">(</span><span class="n">P_target</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -279,8 +330,9 @@ value of <span class="math">\(P \in [0.101, 8.588]\)</span> using linear interpo
 </pre></div>
 </div>
 </div>
-<p><strong>Exercise</strong>: What about for <span class="math">\(P &lt; 1.01\)</span> or <span class="math">\(P &gt; 8.588\)</span>? How
-can we still apply the model <span class="math">\(y(t) = ax + b\)</span>?</p>
+<p><strong>Exercise</strong>: What about for <span class="math">\(P_{\text{target}} &lt; 1.01\)</span> or
+<span class="math">\(P_{\text{target}} &gt; 8.588\)</span>? How can we still apply the model
+<span class="math">\(y(x) = ax + b\)</span>?</p>
 </div>
 <div class="section" id="Interpolation-In-Two-Dimensions">
 <h2>Interpolation In Two Dimensions<a class="headerlink" href="#Interpolation-In-Two-Dimensions" title="Permalink to this headline">¶</a></h2>
@@ -288,22 +340,94 @@ can we still apply the model <span class="math">\(y(t) = ax + b\)</span>?</p>
 evaluated at <span class="math">\((x_i, y_j)\)</span> for <span class="math">\(i=0,1,\ldots\)</span> and $ j=0,1,</p>
 <div class="math">
 \[\ldots\]</div><p>$.</p>
-<p><em>Formal approach</em>: Linear interpolation of such data is based on the
-model <span class="math">\(f(x, y) = axy + bx + cy + d\)</span> for
-<span class="math">\(x \in [x_i, x_{i+1}]\)</span> and <span class="math">\(y \in [y_j, y_{j+1}]\)</span>. Four
-equations and four unknowns.</p>
-<p><em>Simpler approach</em>: Perform two interpolations to find <span class="math">\(f(x, y_j)\)</span>
-and <span class="math">\(f(x, y_{j+1})\)</span>, and from these two values, perform a third
-interpolation to find <span class="math">\(f(x, y)\)</span>.</p>
+<p><strong>Formal definition</strong>: Linear interpolation of such data is based on the
+model</p>
+<div class="math">
+\[f(x, y) = axy + bx + cy + d \, ,\]</div>
+<p>where <span class="math">\(x \in [x_i, x_{i+1}]\)</span> and <span class="math">\(y \in [y_j, y_{j+1}]\)</span>.</p>
+<p>That&#8217;s <em>four equations and four unknowns</em>.</p>
+<p><strong>Simpler Computation</strong>: Perform two interpolations to find
+<span class="math">\(f(x, y_j)\)</span> and <span class="math">\(f(x, y_{j+1})\)</span>, and from these two values,
+perform a third interpolation to find <span class="math">\(f(x, y)\)</span>.</p>
 <p>What about interpolating arbitrary <span class="math">\(f(x_i, y_i)\)</span> points?</p>
 </div>
-<div class="section" id="Higher-Order-Interpolation">
-<h2>Higher-Order Interpolation<a class="headerlink" href="#Higher-Order-Interpolation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Black-Box-Interpolation-Schemes">
+<h2>Black-Box Interpolation Schemes<a class="headerlink" href="#Black-Box-Interpolation-Schemes" title="Permalink to this headline">¶</a></h2>
 <p>Linear interpolation is conceptually straightforward, but it helps to
-use tools like <code class="docutils literal"><span class="pre">np.interp</span></code> and <code class="docutils literal"><span class="pre">scipy.interpolate</span></code>.</p>
+use tools that provide access to <em>higher-order</em> and <em>multi-dimensional</em>
+interpolation.</p>
 <p>Interpolation that is <em>better</em> than linear is more challenging to
-implement, and we&#8217;ll turn to the <code class="docutils literal"><span class="pre">scipy.interpolate</span></code> module and its
-<code class="docutils literal"><span class="pre">interp1d</span></code> and <code class="docutils literal"><span class="pre">interp2d</span></code> utilities.</p>
+implement (and more complex mathematically). Here, we&#8217;ll turn to the
+<code class="docutils literal"><span class="pre">scipy.interpolate</span></code> module and its <code class="docutils literal"><span class="pre">interp1d</span></code> and <code class="docutils literal"><span class="pre">interp2d</span></code>
+utilities. These tools implement both linear and cubic interpolation
+(among others).</p>
+<p>Cubic (specifically, cubic spline) interpolation assumes the form</p>
+<div class="math">
+\[s_i(x) = a_i + b_i x + c_i x^2 + d_i x^3\]</div>
+<p>for <span class="math">\(x \in [x_i, x_{i+1}]\)</span>, <span class="math">\(i = 0, \ldots, n-1\)</span> and
+requires</p>
+<div class="math">
+\[s_i(x_i) = y_i  \, ,\]</div>
+<div class="math">
+\[s_{n-1}(x_n) = y_n \, ,\]</div>
+<div class="math">
+\[s_i(x_{i+1}) = s_{i+1}(x_{i+1}) \, ,\]</div>
+<div class="math">
+\[s'_i(x_{i+1}) = s'_{i+1}(x_{i+1}) \, ,\]</div>
+<p>and</p>
+<div class="math">
+\[s''_i(x_{i+1}) = s''_{i+1}(x_{i+1}) \, .\]</div>
+<p>For <span class="math">\(n+1\)</span> points <span class="math">\((x_i, y_i), i = 0, \ldots n\)</span>, we have
+<span class="math">\(4(n-1)\)</span> unknowns. These conditions give us <span class="math">\(4n - 2\)</span>
+conditions. Often, set <span class="math">\(s''_0 = s''_{n-1} = 0\)</span>, which are the
+<em>natural spline</em> conditions. (Look for a bonus problem on the next
+homework.)</p>
+<p><strong>Exercise</strong>: Interpolate a coarsely sampled sine wave using <em>linear</em>
+and <em>cubic</em> interpolation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">xnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ynew</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
+</div>
+</div>
+<p><strong>Exercise</strong>: Do the same for a 2-D case <span class="math">\(z = \sin{(x^2 + y^2)}\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">xnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">5.01</span><span class="p">,</span> <span class="mf">5.01</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+<span class="n">ynew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">5.01</span><span class="p">,</span> <span class="mf">5.01</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+<span class="n">znew</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
+</div>
+</div>
 <p><strong>Exercise</strong>: Use <code class="docutils literal"><span class="pre">thermo_data.txt</span></code> again. Use every third value and
 interpolate <span class="math">\(P(T)\)</span> using linear and cubic interpolation. Compare
 to the original data set. Which appears better?</p>
@@ -338,7 +462,7 @@ cubine-spline) interpolation</li>
 </li>
 <li><a class="reference internal" href="#Simple-Linear-Interpolation">Simple Linear Interpolation</a></li>
 <li><a class="reference internal" href="#Interpolation-In-Two-Dimensions">Interpolation In Two Dimensions</a></li>
-<li><a class="reference internal" href="#Higher-Order-Interpolation">Higher-Order Interpolation</a></li>
+<li><a class="reference internal" href="#Black-Box-Interpolation-Schemes">Black-Box Interpolation Schemes</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>
 </li>

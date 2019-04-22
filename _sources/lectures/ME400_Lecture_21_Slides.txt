@@ -120,7 +120,7 @@
    "execution_count": null,
    "metadata": {
     "slideshow": {
-     "slide_type": "subslide"
+     "slide_type": "fragment"
     }
    },
    "outputs": [],
@@ -129,6 +129,17 @@
     "import numpy as np\n",
     "L, Bi = 5, 0.5"
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
   },
   {
    "cell_type": "markdown",
@@ -197,7 +208,63 @@
     }
    },
    "source": [
+    "**Exercise**: How can you defined `sign(f(C))` in Python?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
     "Graphical display of bisection to find first positive root of $\\sin(x) - 2/5$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "\n",
+    "def bisection_root():\n",
+    "    \n",
+    "    f = lambda z: np.sin(z)-0.4    \n",
+    "    x = np.linspace(0, 1, 100)    \n",
+    "    plt.plot(x, f(x), 'k', x, 0*x,'k--')\n",
+    "    \n",
+    "    # Plot f(A), f(B)\n",
+    "    A, B, C = 0, 1.0, 0.5\n",
+    "    plt.plot(A, f(A), 'bs', ms=22)\n",
+    "    plt.plot(B, f(B), 'bs', ms=22)\n",
+    "    plt.plot(C, f(C), 'bs', ms=22, label='initial')\n",
+    "    plt.fill_betweenx([f(A), f(B)], A, B, color='b', alpha=0.05)\n",
+    "    \n",
+    "    A, B, C = A, C, (A+C)/2\n",
+    "    plt.plot(A, f(A), 'ro', ms=15)\n",
+    "    plt.plot(B, f(B), 'ro', ms=15)\n",
+    "    plt.plot(C, f(C), 'ro', ms=15, label='after first iteration')\n",
+    "    plt.fill_betweenx([f(A), f(B)], A, B, color='r', alpha=0.1)\n",
+    "    \n",
+    "    A, B, C = C, B, (C+B)/2\n",
+    "    plt.plot(A, f(A), 'c>', ms=12)\n",
+    "    plt.plot(B, f(B), 'c>', ms=12)\n",
+    "    plt.plot(C, f(C), 'c>', ms=12, label='after second iteration')\n",
+    "    plt.fill_betweenx([f(A), f(B)], A, B, color='c', alpha=0.15)\n",
+    "    \n",
+    "    \n",
+    "    plt.legend(fontsize=12)\n",
+    "    plt.xlabel('$x$', fontsize=16)\n",
+    "    plt.ylabel('$f(x)$', fontsize=16)\n",
+    "    plt.show()"
    ]
   },
   {
@@ -210,8 +277,7 @@
    },
    "outputs": [],
    "source": [
-    "import nonlinear_plots\n",
-    "nonlinear_plots.bisection_root()"
+    "bisection_root()"
    ]
   },
   {
@@ -242,7 +308,10 @@
     "Quick motivation for Newton *from the math* by recalling\n",
     "\n",
     "$$\n",
-    "  f(x) = f(x_0) + \\Delta f'(x_0) + \\mathcal{O}(\\Delta^2) = 0 \\, .\n",
+    "\\begin{split}\n",
+    "  f(x_{\\text{true root}}) &= f(x_0+\\Delta) \\\\\n",
+    "       &= f(x_0) + \\Delta f'(x_0) + \\mathcal{O}(\\Delta^2) = 0 \\, .\n",
+    "\\end{split}\n",
     "$$"
    ]
   },
@@ -314,36 +383,7 @@
     }
    },
    "source": [
-    "### Approximate Newton Method\n",
-    "\n",
-    "Actually, just like Newton but without $f'(x)$!  Use a *finite difference* instead to yield the *secant method*."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {
-    "slideshow": {
-     "slide_type": "subslide"
-    }
-   },
-   "source": [
-    "```\n",
-    "'''Secant method for finding the root f given x_0'''\n",
-    "Input: f, x_0, tau\n",
-    "Set x = x_0\n",
-    "Set x_0 = x - tau\n",
-    "While |f(x)| > tau do\n",
-    "   # Approximate the derivative\n",
-    "   Set fp = (f(x)-f(x_0))/(x-x_0)\n",
-    "   # Compute the Newton \"step\"\n",
-    "   Set Delta = -f(x)/fp\n",
-    "   # Store old x, and compute next value\n",
-    "   Set x_0 = x\n",
-    "   Set x = x + Delta\n",
-    "Output: x\n",
-    "```\n",
-    "\n",
-    "> *Pro Tip*: Depending on $f(x)$ (and its cost), *may* be better to use $x$ and $x+\\delta$ for finite difference where $\\delta < (x-x_0)$."
+    "If you don't have $f'(x)$, use a finite-difference approximation."
    ]
   },
   {
@@ -414,6 +454,49 @@
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise** Suppose a bridge trunnion (a pin) has a diameter of 12.363 in but must fit into a slightly under-sized hole of diameter 12.358 in.  One option is to cool it. The coefficient of expansion for the trunnion material  (steel) is well approximated by\n",
+    "\n",
+    "$$\n",
+    " \\alpha = -1.2 \\cdot 10^{-11} T^2 + 6.2 \\cdot 10^{-9} T + 6.0 \\cdot 10^{-6}\n",
+    "$$\n",
+    "\n",
+    "The change in the diameter if the trunnion is cooled to a temperature $T_c$ (from the sweltering 80 F) outside is\n",
+    "\n",
+    "$$\n",
+    "\\Delta D = D_{80} \\int^{T_c}_{80} \\alpha(T)dT \\, .\n",
+    "$$\n",
+    "\n",
+    "Find what $T_c$ must be.  Could it be ice water? What else?\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**  Solve the nonlinear system of equations \n",
+    "\n",
+    "$$\n",
+    "\\begin{split}\n",
+    "x   - y &= 4 \\\\\n",
+    "   x^2 + y &= -3\n",
+    "\\end{split}\n",
+    "$$\n",
+    "\n",
+    "with initial guesses of $x=1/2$ and $y=-3$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
      "slide_type": "slide"
     }
    },
@@ -445,7 +528,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
   },
   "livereveal": {
    "scroll": true

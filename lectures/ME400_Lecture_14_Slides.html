@@ -53,9 +53,9 @@ different sizes.</p>
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Search an array of numbers using a linear search.</li>
-<li>Search an array of numbers using a binary search.</li>
-<li>Conf what is meant by order and use it to compare algorithms</li>
+<li>Search an array of sorted or unsorted numbers using a linear search.</li>
+<li>Search an array of sorted numbers using a binary search.</li>
+<li>Describe what is meant by order and use it to compare algorithms</li>
 <li>Perform simple, numerical experiments to confirm the order of an
 algorithm</li>
 </ul>
@@ -75,6 +75,8 @@ element in the sequence equal to some value of interest.</p>
 <span class="n">Output</span><span class="p">:</span> <span class="n">location</span>
 </pre></div>
 </div>
+<p><strong>Exercise</strong>: Implement this search algorithm as a Python function named
+<code class="docutils literal"><span class="pre">linear_search(a,</span> <span class="pre">v)</span></code>.</p>
 </div>
 <div class="section" id="When-Searching-for-Equality-is-Not-Enough">
 <h3>When Searching for Equality is Not Enough<a class="headerlink" href="#When-Searching-for-Equality-is-Not-Enough" title="Permalink to this headline">¶</a></h3>
@@ -86,13 +88,13 @@ elements are needed&#8212;we&#8217;ll cover sorting algorithms next time</strong
 of the first match or, if no match, then the element closest to but less
 than the target value. <em>Assume</em> that the sequence is sorted in
 <em>increasing</em> order.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of a sorted sequence&quot;&quot;&quot;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Algorithm for linear search of an unsorted sequence&quot;&quot;&quot;</span>
 <span class="n">Input</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="c1"># sequence, number elements, value of interest</span>
 <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">Not</span> <span class="n">found</span>
 <span class="n">Set</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">While</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span>
-    <span class="n">If</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span> <span class="n">then</span>
-        <span class="n">Set</span> <span class="n">location</span> <span class="o">=</span> <span class="n">i</span>
+<span class="n">While</span> <span class="n">________</span>
+    <span class="n">If</span> <span class="n">________</span> <span class="n">then</span>
+        <span class="n">Set</span> <span class="n">________</span>
         <span class="n">Break</span>  <span class="c1"># could we do this without break?</span>
 <span class="n">Output</span><span class="p">:</span> <span class="n">location</span>
 </pre></div>
@@ -100,14 +102,10 @@ than the target value. <em>Assume</em> that the sequence is sorted in
 </div>
 <div class="section" id="A-Bit-About-Order">
 <h3>A Bit About <em>Order</em><a class="headerlink" href="#A-Bit-About-Order" title="Permalink to this headline">¶</a></h3>
-<p>Why call linear search <em>linear</em>?</p>
-<ul class="simple">
-<li>elements are looked at in order; usually, that&#8217;s called <em>sequential</em>
-but <em>linear</em> seems okay</li>
-<li>the <strong>number of comparisons</strong> (e.g., <code class="docutils literal"><span class="pre">a[i]</span> <span class="pre">&gt;</span> <span class="pre">v</span></code>) requires depends
-linearly on the number of elements, i.e., the number is proportional
-to <span class="math">\(n\)</span>.</li>
-</ul>
+<p>The <em>order</em> of an algorithm tells us how <em>expensive</em> the algorithm is as
+a function of <span class="math">\(n\)</span> for problems of size <span class="math">\(n\)</span>.</p>
+<p>Example: the cost of linear search is the <strong>number of comparisons</strong>
+(<code class="docutils literal"><span class="pre">a[i]</span> <span class="pre">&gt;</span> <span class="pre">v</span></code>) required to find <code class="docutils literal"><span class="pre">v</span></code>. How many is that?</p>
 <p>The fancy way to say it: - <strong>order n</strong> - <span class="math">\(\mathcal{O}(n)\)</span> (this is
 &#8220;Big O&#8221; notation)</p>
 <p>The computational cost of an algorithm (time and, sometimes, memory) is
@@ -116,6 +114,10 @@ algorithm.</strong></p>
 <p>In this class, <em>order</em> is used in an engineering/empirical sense that
 describes how <em>computationally expensive</em> an algorithm is on the
 average.</p>
+<p><strong>Exercise</strong>: Suppose that, on the average, a particular implementation
+of linear search requires about 0.1 seconds to search a list of
+<span class="math">\(10^5\)</span> numbers. About how long do you think it would take to
+search a list of <span class="math">\(10^6\)</span> numbers?</p>
 </div>
 <div class="section" id="Binary-Search">
 <h3>Binary Search<a class="headerlink" href="#Binary-Search" title="Permalink to this headline">¶</a></h3>

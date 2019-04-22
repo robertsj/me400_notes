@@ -117,6 +117,35 @@
    ]
   },
   {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "skip"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "f = open('thermo_data.txt', 'w')\n",
+    "s = \"\"\" T [K]   P [MPa]  h_l [kJ/kg] h_v [kJ/kg]\n",
+    " 373.150   0.101    2675.572     419.099\n",
+    " 389.817   0.179    2701.054     489.625\n",
+    " 406.483   0.298    2724.633     560.634\n",
+    " 423.150   0.476    2745.919     632.252\n",
+    " 439.817   0.730    2764.528     704.626\n",
+    " 456.483   1.082    2780.059     777.934\n",
+    " 473.150   1.555    2792.062     852.393\n",
+    " 489.817   2.175    2800.004     928.269\n",
+    " 506.483   2.972    2803.247    1005.893\n",
+    " 523.150   3.976    2801.012    1085.687\n",
+    " 539.817   5.222    2792.314    1168.202\n",
+    " 556.483   6.745    2775.820    1254.194\n",
+    " 573.150   8.588    2749.574    1344.771\"\"\"\n",
+    "f.write(s)\n",
+    "f.close()"
+   ]
+  },
+  {
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
@@ -124,13 +153,47 @@
     }
    },
    "source": [
-    "Write a function that loads this data and returns $h_v$ for any value of $P \\in [0.101, 8.588]$ using linear interpolation."
+    "Write a function that loads this data and returns $h_v$ for any value of $P_{\\text{target}} \\in [0.101, 8.588]$ using linear interpolation."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "metadata": {},
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import matplotlib\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def get_h_v(P_target):\n",
+    "    pass"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
    "outputs": [],
    "source": []
   },
@@ -142,7 +205,7 @@
     }
    },
    "source": [
-    "**Exercise**: What about for $P < 1.01$ or $P > 8.588$?  How can we still apply the model $y(t) = ax + b$?"
+    "**Exercise**: What about for $P_{\\text{target}} < 1.01$ or $P_{\\text{target}} > 8.588$?  How can we still apply the model $y(x) = ax + b$?"
    ]
   },
   {
@@ -155,11 +218,37 @@
    "source": [
     "## Interpolation In Two Dimensions\n",
     "\n",
-    "Some applications require interpolation of two-dimensional data evaluated at $(x_i, y_j)$ for $i=0,1,\\ldots$ and $ j=0,1,\\ldots$.  \n",
+    "Some applications require interpolation of two-dimensional data evaluated at $(x_i, y_j)$ for $i=0,1,\\ldots$ and $ j=0,1,\\ldots$.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Formal definition**: Linear interpolation of such data is based on the model \n",
     "\n",
-    "*Formal approach*: Linear interpolation of such data is based on the model $f(x, y) = axy + bx + cy + d$ for $x \\in [x_i, x_{i+1}]$ and $y \\in [y_j, y_{j+1}]$.  Four equations and four unknowns.\n",
+    "$$\n",
+    "f(x, y) = axy + bx + cy + d \\, ,\n",
+    "$$\n",
     "\n",
-    "*Simpler approach*: Perform two interpolations to find $f(x, y_j)$ and $f(x, y_{j+1})$, and from these two values, perform a third interpolation to find $f(x, y)$."
+    "where $x \\in [x_i, x_{i+1}]$ and $y \\in [y_j, y_{j+1}]$.  \n",
+    "\n",
+    "That's *four equations and four unknowns*."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Simpler Computation**: Perform two interpolations to find $f(x, y_j)$ and $f(x, y_{j+1})$, and from these two values, perform a third interpolation to find $f(x, y)$."
    ]
   },
   {
@@ -181,9 +270,9 @@
     }
    },
    "source": [
-    "## Higher-Order Interpolation\n",
+    "## Black-Box Interpolation Schemes\n",
     "\n",
-    "Linear interpolation is conceptually straightforward, but it helps to use tools like `np.interp` and `scipy.interpolate`."
+    "Linear interpolation is conceptually straightforward, but it helps to use tools that provide access to *higher-order* and *multi-dimensional* interpolation."
    ]
   },
   {
@@ -194,8 +283,128 @@
     }
    },
    "source": [
-    "Interpolation that is *better* than linear is more challenging to implement, and we'll turn to the `scipy.interpolate` module and its `interp1d` and `interp2d` utilities.  \n",
+    "Interpolation that is *better* than linear is more challenging to implement (and more complex mathematically).  Here, we'll turn to the `scipy.interpolate` module and its `interp1d` and `interp2d` utilities.  These tools implement both linear and cubic interpolation (among others)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Cubic (specifically, cubic spline) interpolation assumes the form \n",
     "\n",
+    "$$\n",
+    "  s_i(x) = a_i + b_i x + c_i x^2 + d_i x^3\n",
+    "$$ \n",
+    "\n",
+    "for $x \\in [x_i, x_{i+1}]$, $i = 0, \\ldots, n-1$ and requires\n",
+    "\n",
+    "$$\n",
+    " s_i(x_i) = y_i  \\, ,\n",
+    "$$\n",
+    "\n",
+    "$$\n",
+    "s_{n-1}(x_n) = y_n \\, ,\n",
+    "$$\n",
+    "\n",
+    "$$\n",
+    "s_i(x_{i+1}) = s_{i+1}(x_{i+1}) \\, ,\n",
+    "$$ \n",
+    "\n",
+    "$$\n",
+    "s'_i(x_{i+1}) = s'_{i+1}(x_{i+1}) \\, ,\n",
+    "$$\n",
+    "\n",
+    "and\n",
+    "\n",
+    "$$\n",
+    "s''_i(x_{i+1}) = s''_{i+1}(x_{i+1}) \\, .\n",
+    "$$\n",
+    "\n",
+    "For $n+1$ points $(x_i, y_i), i = 0, \\ldots n$, we have $4(n-1)$ unknowns.  These conditions give us $4n - 2$ conditions.  Often, set $s''_0 =  s''_{n-1} = 0$, which are the *natural spline* conditions. (Look for a bonus problem on the next homework.)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "source": [
+    "**Exercise**: Interpolate a coarsely sampled sine wave using *linear* and *cubic* interpolation. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from scipy.interpolate import interp1d\n",
+    "x = np.linspace(0, 10, 10)\n",
+    "y = np.sin(x)\n",
+    "f = None\n",
+    "xnew = np.linspace(0, 10, 100)\n",
+    "ynew = None"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "**Exercise**: Do the same for a 2-D case $z = \\sin{(x^2 + y^2)}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from scipy import interpolate\n",
+    "x = np.linspace(-5., 5., 10)\n",
+    "y = np.linspace(-5., 5., 10)\n",
+    "xx, yy = np.meshgrid(x, y)\n",
+    "z = np.sin(xx**2+yy**2)\n",
+    "f = None"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "xnew = np.arange(-5.01, 5.01, 1e-2)\n",
+    "ynew = np.arange(-5.01, 5.01, 1e-2)\n",
+    "znew = None"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
     "**Exercise**: Use `thermo_data.txt` again.  Use every third value and interpolate $P(T)$ using linear and cubic interpolation. Compare to the original data set.  Which appears better?"
    ]
   },
@@ -234,7 +443,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
   },
   "livereveal": {
    "scroll": true

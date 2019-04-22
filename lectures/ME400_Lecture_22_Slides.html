@@ -272,6 +272,8 @@ where its first derivative vanishes.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">96</span><span class="o">*</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">640</span><span class="o">*</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">)</span>
@@ -285,9 +287,8 @@ where its first derivative vanishes.</p>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;Figure size 640x480 with 1 Axes&gt;
-</pre></div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_22_Slides_7_0.png" src="../_images/lectures_ME400_Lecture_22_Slides_7_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -315,6 +316,16 @@ where its first derivative vanishes.</p>
 <div class="highlight"><pre>
 minimum: f(5.00) is -4.225000
 </pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -359,14 +370,51 @@ minimum: f(5.00) is -4.225000
 <p>Newton applied with <span class="math">\(\mathbf{g}(\mathbf{x})\)</span> in place of the
 residual and <span class="math">\(\mathbf{H}(\mathbf{x})\)</span> in place of the
 Jacobian&#8212;otherwise, identical!</p>
+<p><strong>Example</strong>: Find <span class="math">\(\mathbf{x} = [x_0, x_1]^T\)</span> that minimizes
+<span class="math">\(f(x) =x_0^2 - x_0 - 2 x_1 - x_0 x_1 + x_1^2\)</span>. Use an initial
+guess of <span class="math">\(x_0 = x_1 = 0\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">x_initial</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Constrained-Optimization">
 <h3>Constrained Optimization<a class="headerlink" href="#Constrained-Optimization" title="Permalink to this headline">¶</a></h3>
 <p>Real engineering problems almost always have constraints: maximum
 stresses allowed, limited resources, etc.</p>
-<p>We&#8217;ll limit our focus (and your responsibility) to <em>linear programs</em>,
-though do note that <code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> can handle constrained
-problems (see its examples in the documentation).</p>
+<p>We&#8217;ll quickly look at how <code class="docutils literal"><span class="pre">minimize</span></code> can be used with contraints and
+then move to the special class of problems called <em>linear programs</em> that
+can be solved using <code class="docutils literal"><span class="pre">linprog</span></code>.</p>
+<p><strong>Example</strong>: Suppose you need to create a thin-walled right circular
+cylinder with a volume of 1 m<span class="math">\(^3\)</span> using the least material. You
+get to choose the radius <span class="math">\(r\)</span> and the height <span class="math">\(h\)</span>. Choose
+wisely, using <code class="docutils literal"><span class="pre">minimize</span></code> to help.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">volume_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the difference between the desired and actual volume.  Ultimately, this should be zero.&quot;&quot;&quot;</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">h</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">V</span>
+<span class="k">def</span> <span class="nf">objective_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return the surface area, which we want to minimize.&quot;&quot;&quot;</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">h</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">r</span>
+<span class="c1"># Insert call to minimize here!</span>
+</pre></div>
+</div>
+</div>
 <p><strong>Example</strong>: Consider the following minimization problem:</p>
 <div class="math">
 \[\begin{split}\begin{split}
@@ -380,13 +428,12 @@ problems (see its examples in the documentation).</p>
 <p>Solve using <code class="docutils literal"><span class="pre">linprog</span></code></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-
 </pre></div>
 </div>
 </div>

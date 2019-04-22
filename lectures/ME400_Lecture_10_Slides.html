@@ -216,8 +216,9 @@ of variable types were presented (namely, <code class="docutils literal"><span c
 particularly those with a numerical flavor. In this lecture, the
 built-in Python types <code class="docutils literal"><span class="pre">list</span></code>, <code class="docutils literal"><span class="pre">tuple</span></code>, and <code class="docutils literal"><span class="pre">dict</span></code> are presented,
 with motivating applications for each.</p>
+</div>
 <div class="section" id="Objectives">
-<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
+<h1>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h1>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li>Define and use <code class="docutils literal"><span class="pre">list</span></code> and <code class="docutils literal"><span class="pre">tuple</span></code> variables.</li>
@@ -225,7 +226,7 @@ with motivating applications for each.</p>
 <li>Explain the difference between <em>mutable</em> and <em>immutable</em> types.</li>
 </ul>
 <div class="section" id="What-is-a-sequential-type?">
-<h3>What is a <em>sequential</em> type?<a class="headerlink" href="#What-is-a-sequential-type?" title="Permalink to this headline">¶</a></h3>
+<h2>What is a <em>sequential</em> type?<a class="headerlink" href="#What-is-a-sequential-type?" title="Permalink to this headline">¶</a></h2>
 <p><strong>Sequential types</strong> are <strong>container types</strong>.</p>
 <p><strong>Container types</strong> are a collections of values.</p>
 <p><strong>Sequential types</strong> have elements arranged one after the other (<em>in
@@ -235,7 +236,7 @@ sequence</em>) and (in Python) that can be accessed using <code class="docutils 
 sequential?</div></blockquote>
 </div>
 <div class="section" id="The-list-type">
-<h3>The <code class="docutils literal"><span class="pre">list</span></code> type<a class="headerlink" href="#The-list-type" title="Permalink to this headline">¶</a></h3>
+<h2>The <code class="docutils literal"><span class="pre">list</span></code> type<a class="headerlink" href="#The-list-type" title="Permalink to this headline">¶</a></h2>
 <p>The most versatile of Python&#8217;s sequential types is <code class="docutils literal"><span class="pre">list</span></code>. A <code class="docutils literal"><span class="pre">list</span></code>
 variable can be defined using comma-separated values within square
 brackets <code class="docutils literal"><span class="pre">[]</span></code>.</p>
@@ -314,7 +315,7 @@ online readings for more details.</p>
 <p><strong>Example</strong>: Add a fourth element to c with the value <code class="docutils literal"><span class="pre">[99,</span> <span class="pre">100]</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -393,7 +394,7 @@ online readings for more details.</p>
 </div>
 </div>
 <div class="section" id="The-tuple-Type">
-<h3>The <code class="docutils literal"><span class="pre">tuple</span></code> Type<a class="headerlink" href="#The-tuple-Type" title="Permalink to this headline">¶</a></h3>
+<h2>The <code class="docutils literal"><span class="pre">tuple</span></code> Type<a class="headerlink" href="#The-tuple-Type" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">tuple</span></code> type, like <code class="docutils literal"><span class="pre">list</span></code>, is sequence of elements with
 arbitrary types. Defining them is just like <code class="docutils literal"><span class="pre">list</span></code> values but with
 <code class="docutils literal"><span class="pre">()</span></code> and not <code class="docutils literal"><span class="pre">[]</span></code>.</p>
@@ -457,7 +458,7 @@ index
 (or its elements) to change.</p>
 </div>
 <div class="section" id="The-dict-Type">
-<h3>The <code class="docutils literal"><span class="pre">dict</span></code> Type<a class="headerlink" href="#The-dict-Type" title="Permalink to this headline">¶</a></h3>
+<h2>The <code class="docutils literal"><span class="pre">dict</span></code> Type<a class="headerlink" href="#The-dict-Type" title="Permalink to this headline">¶</a></h2>
 <p>Sequences are useful, but not all data is related by position (think a
 phonebook or password manager). These latter data are best represented
 using an <em>associative</em> container.</p>
@@ -488,7 +489,7 @@ values) and the values <code class="docutils literal"><span class="pre">'a'</spa
 <p><strong>Example</strong>: What happens if we execute <code class="docutils literal"><span class="pre">print(d['c'])</span></code>?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -538,7 +539,8 @@ values
 </pre></div>
 </div>
 </div>
-<p><strong>Exercise</strong>: Given <code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">{'L':</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3],</span> <span class="pre">'T':</span> <span class="pre">(11,</span> <span class="pre">12,</span> <span class="pre">13)}</span></code>, what
+<p><strong>Exercise</strong>: Given
+<code class="docutils literal"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">{'L':</span> <span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3],</span> <span class="pre">'T':</span> <span class="pre">(11,</span> <span class="pre">12,</span> <span class="pre">13),</span> <span class="pre">'I':</span> <span class="pre">123,</span> <span class="pre">'F':</span> <span class="pre">3.14}</span></code>, what
 are two ways to get <code class="docutils literal"><span class="pre">13</span></code>?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -546,14 +548,36 @@ are two ways to get <code class="docutils literal"><span class="pre">13</span></
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">)}</span>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mf">3.14</span><span class="p">}</span>
 
+</pre></div>
+</div>
+</div>
+<p><strong>Exercise</strong>: Demonstrate that <code class="docutils literal"><span class="pre">'L'</span></code> is a key in <code class="docutils literal"><span class="pre">d</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<p><strong>Exercise</strong>: Print out each key and value of <code class="docutils literal"><span class="pre">d</span></code> one at a time.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Recap">
-<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
+<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
 <p>You should now be able to</p>
 <ul class="simple">
 <li>Define and use <code class="docutils literal"><span class="pre">list</span></code> and <code class="docutils literal"><span class="pre">tuple</span></code> variables.</li>
@@ -562,7 +586,7 @@ are two ways to get <code class="docutils literal"><span class="pre">13</span></
 </ul>
 </div>
 <div class="section" id="Exam-1">
-<h3>Exam 1<a class="headerlink" href="#Exam-1" title="Permalink to this headline">¶</a></h3>
+<h2>Exam 1<a class="headerlink" href="#Exam-1" title="Permalink to this headline">¶</a></h2>
 <p><strong>Written regrade requests due to me Wednesday by 5 pm.</strong> You can visit
 me (not TAs) in office hours for clarification, but we need written
 record by email of all changes requested. Solutions (with rubric) are
@@ -576,19 +600,18 @@ it precisely.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>  <span class="mf">7.</span>  <span class="p">,</span>  <span class="mf">7.</span>  <span class="p">,</span>  <span class="mf">7.75</span><span class="p">,</span>  <span class="mf">8.5</span> <span class="p">,</span>  <span class="mf">9.</span>  <span class="p">,</span>  <span class="mf">9.</span>  <span class="p">,</span>  <span class="mf">9.13</span><span class="p">,</span>  <span class="mf">9.25</span><span class="p">,</span>  <span class="mf">9.75</span><span class="p">,</span>
-                <span class="mf">9.75</span><span class="p">,</span>  <span class="mf">9.75</span><span class="p">,</span>  <span class="mf">9.88</span><span class="p">,</span> <span class="mf">10.13</span><span class="p">,</span> <span class="mf">10.5</span> <span class="p">,</span> <span class="mf">11.</span>  <span class="p">,</span> <span class="mf">11.</span>  <span class="p">,</span> <span class="mf">11.</span>  <span class="p">,</span> <span class="mf">11.</span>  <span class="p">,</span>
-               <span class="mf">11.</span>  <span class="p">,</span> <span class="mf">11.25</span><span class="p">,</span> <span class="mf">11.63</span><span class="p">,</span> <span class="mf">11.75</span><span class="p">,</span> <span class="mf">11.75</span><span class="p">,</span> <span class="mf">12.13</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">,</span>
-               <span class="mf">12.5</span> <span class="p">,</span> <span class="mf">12.5</span> <span class="p">,</span> <span class="mf">12.5</span> <span class="p">,</span> <span class="mf">12.75</span><span class="p">,</span> <span class="mf">12.75</span><span class="p">,</span> <span class="mf">12.75</span><span class="p">,</span> <span class="mf">13.</span>  <span class="p">,</span> <span class="mf">13.</span>  <span class="p">,</span> <span class="mf">13.</span>  <span class="p">,</span>
-               <span class="mf">13.</span>  <span class="p">,</span> <span class="mf">13.</span>  <span class="p">,</span> <span class="mf">13.13</span><span class="p">,</span> <span class="mf">13.25</span><span class="p">,</span> <span class="mf">13.25</span><span class="p">,</span> <span class="mf">13.25</span><span class="p">,</span> <span class="mf">13.25</span><span class="p">,</span> <span class="mf">13.25</span><span class="p">,</span> <span class="mf">13.5</span> <span class="p">,</span>
-               <span class="mf">13.63</span><span class="p">,</span> <span class="mf">13.75</span><span class="p">,</span> <span class="mf">14.</span>  <span class="p">,</span> <span class="mf">14.25</span><span class="p">,</span> <span class="mf">14.25</span><span class="p">,</span> <span class="mf">14.5</span> <span class="p">,</span> <span class="mf">14.5</span> <span class="p">,</span> <span class="mf">14.75</span><span class="p">,</span> <span class="mf">14.75</span><span class="p">,</span>
-               <span class="mf">15.</span>  <span class="p">,</span> <span class="mf">15.</span>  <span class="p">,</span> <span class="mf">15.</span>  <span class="p">,</span> <span class="mf">15.</span>  <span class="p">,</span> <span class="mf">15.</span>  <span class="p">,</span> <span class="mf">15.</span>  <span class="p">,</span> <span class="mf">15.13</span><span class="p">,</span> <span class="mf">15.13</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span>
-               <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.5</span> <span class="p">,</span> <span class="mf">15.5</span> <span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span>
-               <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.98</span><span class="p">,</span> <span class="mf">16.</span>  <span class="p">,</span> <span class="mf">16.</span>  <span class="p">,</span> <span class="mf">16.</span>  <span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span>
-               <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.5</span> <span class="p">,</span> <span class="mf">16.5</span> <span class="p">,</span> <span class="mf">16.5</span> <span class="p">,</span> <span class="mf">16.5</span> <span class="p">,</span> <span class="mf">16.5</span> <span class="p">,</span> <span class="mf">16.75</span><span class="p">,</span> <span class="mf">16.75</span><span class="p">,</span>
-               <span class="mf">16.75</span><span class="p">,</span> <span class="mf">17.</span>  <span class="p">,</span> <span class="mf">17.</span>  <span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">17.5</span> <span class="p">,</span> <span class="mf">17.5</span> <span class="p">,</span> <span class="mf">17.5</span> <span class="p">,</span> <span class="mf">17.5</span> <span class="p">,</span> <span class="mf">17.75</span><span class="p">,</span>
-               <span class="mf">18.</span>  <span class="p">,</span> <span class="mf">18.25</span><span class="p">,</span> <span class="mf">18.25</span><span class="p">,</span> <span class="mf">18.5</span> <span class="p">,</span> <span class="mf">18.75</span><span class="p">,</span> <span class="mf">18.75</span><span class="p">,</span> <span class="mf">19.</span>  <span class="p">,</span> <span class="mf">19.</span>  <span class="p">,</span> <span class="mf">19.</span>  <span class="p">,</span>
-               <span class="mf">19.5</span> <span class="p">,</span> <span class="mf">19.5</span> <span class="p">,</span> <span class="mf">19.5</span> <span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">20.</span>  <span class="p">])</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.75</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.25</span><span class="p">,</span> <span class="mf">8.75</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">,</span> <span class="mf">10.75</span><span class="p">,</span> <span class="mf">10.75</span><span class="p">,</span> <span class="mf">11.0</span><span class="p">,</span>
+              <span class="mf">11.0</span><span class="p">,</span> <span class="mf">11.75</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">,</span> <span class="mf">12.75</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">,</span> <span class="mf">13.25</span><span class="p">,</span>
+              <span class="mf">13.25</span><span class="p">,</span> <span class="mf">13.5</span><span class="p">,</span> <span class="mf">13.75</span><span class="p">,</span> <span class="mf">14.5</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span>
+              <span class="mf">15.25</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">,</span> <span class="mf">15.5</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span>
+              <span class="mf">15.75</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">,</span>
+              <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span> <span class="mf">16.5</span><span class="p">,</span>
+              <span class="mf">16.75</span><span class="p">,</span> <span class="mf">16.75</span><span class="p">,</span> <span class="mf">16.75</span><span class="p">,</span> <span class="mf">16.75</span><span class="p">,</span> <span class="mf">17.0</span><span class="p">,</span> <span class="mf">17.0</span><span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span>
+              <span class="mf">17.25</span><span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">17.5</span><span class="p">,</span> <span class="mf">17.5</span><span class="p">,</span> <span class="mf">17.5</span><span class="p">,</span> <span class="mf">17.5</span><span class="p">,</span> <span class="mf">17.5</span><span class="p">,</span>
+              <span class="mf">17.5</span><span class="p">,</span> <span class="mf">17.75</span><span class="p">,</span> <span class="mf">17.75</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">18.25</span><span class="p">,</span>
+              <span class="mf">18.25</span><span class="p">,</span> <span class="mf">18.25</span><span class="p">,</span> <span class="mf">18.5</span><span class="p">,</span> <span class="mf">18.5</span><span class="p">,</span> <span class="mf">18.5</span><span class="p">,</span> <span class="mf">18.5</span><span class="p">,</span> <span class="mf">18.75</span><span class="p">,</span> <span class="mf">18.75</span><span class="p">,</span> <span class="mf">18.75</span><span class="p">,</span>
+              <span class="mf">18.75</span><span class="p">,</span> <span class="mf">19.0</span><span class="p">,</span> <span class="mf">19.0</span><span class="p">,</span> <span class="mf">19.25</span><span class="p">,</span> <span class="mf">19.25</span><span class="p">,</span> <span class="mf">19.25</span><span class="p">,</span> <span class="mf">19.25</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span>
+              <span class="mf">19.5</span><span class="p">,</span> <span class="mf">19.5</span><span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">19.75</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">])</span>
 <span class="n">g</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="n">g</span>
 </pre></div>
 </div>
@@ -612,11 +635,11 @@ it precisely.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-  mean =  72.23%
- stdev =  15.17%
-median =  75.00%
+  mean =  80.19%
+ stdev =  15.89%
+median =  83.75%
    max = 100.00%
-   min =  35.00%
+   min =  13.75%
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -638,8 +661,7 @@ median =  75.00%
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_10_Slides_50_0.png" src="../_images/lectures_ME400_Lecture_10_Slides_50_0.png" />
-</div>
+<img alt="../_images/lectures_ME400_Lecture_10_Slides_54_0.png" src="../_images/lectures_ME400_Lecture_10_Slides_54_0.png" />
 </div>
 </div>
 </div>
@@ -653,7 +675,7 @@ median =  75.00%
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 10 - Pythonic Containers</a><ul>
+<li><a class="reference internal" href="#">Lecture 10 - Pythonic Containers</a></li>
 <li><a class="reference internal" href="#Objectives">Objectives</a><ul>
 <li><a class="reference internal" href="#What-is-a-sequential-type?">What is a <em>sequential</em> type?</a></li>
 <li><a class="reference internal" href="#The-list-type">The <code class="docutils literal"><span class="pre">list</span></code> type</a></li>
@@ -661,8 +683,6 @@ median =  75.00%
 <li><a class="reference internal" href="#The-dict-Type">The <code class="docutils literal"><span class="pre">dict</span></code> Type</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 <li><a class="reference internal" href="#Exam-1">Exam 1</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

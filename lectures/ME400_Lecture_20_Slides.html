@@ -282,24 +282,69 @@ product</em>:</p>
 </pre></div>
 </div>
 </div>
-<p><strong>Exercise</strong>: What <em>order</em> is this matrix-vector algorithm? In other
-words, if we increase <span class="math">\(n\)</span> from <span class="math">\(10\)</span> to <span class="math">\(100\)</span>, by how
-much would the time to execute <code class="docutils literal"><span class="pre">matrix_vector</span></code> increase? Here, the
-unit of work is the product <code class="docutils literal"><span class="pre">A[i,</span> <span class="pre">j]*v[j]</span></code>, which is one
-<em>floating-point operation</em> or <em>FLOP</em>.</p>
-<div class="nbinput docutils container">
+<p><strong>Exercise</strong>. Let</p>
+<div class="math">
+\[\begin{split}\mathbf{A} = \begin{bmatrix}
+  -2  &amp;  1 &amp; 0 \\
+    1 &amp;  -2 &amp; 1 \\
+  0  &amp; 1 &amp; -2 \\
+\end{bmatrix}
+\qquad \text{and} \qquad
+\mathbf{v} = \begin{bmatrix}
+ 1 \\
+ 1 \\
+ 1 \\
+\end{bmatrix}   \, .\end{split}\]</div>
+<p>Compute the matrix-vector product <span class="math">\(\mathbf{w} = \mathbf{Av}\)</span> (1)
+&#8220;by hand&#8221;, (2) with <code class="docutils literal"><span class="pre">matrix_vector</span></code>, and (3) using <code class="docutils literal"><span class="pre">dot</span></code>, and (4)
+using <code class="docutils literal"><span class="pre">&#64;</span></code>.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span>  <span class="mi">1</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<p>In short, compute <span class="math">\(\mathbf{w} = \mathbf{Av}\)</span> using - Nested loops
+with the &#8220;cookie-cutter&#8221; work <code class="docutils literal"><span class="pre">w[i]</span> <span class="pre">+=</span> <span class="pre">A[i,</span> <span class="pre">j]</span> <span class="pre">*</span> <span class="pre">v[j]</span></code> -
+<code class="docutils literal"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">A.dot(v)</span></code> - <code class="docutils literal"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">A&#64;v</span></code></p>
+<p><strong>Exercise</strong>: Let <span class="math">\(\mathbf{A}\)</span> be an <span class="math">\(n \times n\)</span> array and
+<span class="math">\(\mathbf{v}\)</span> be an <span class="math">\(n\times 1\)</span> array. If we record how much
+time it takes to compute <span class="math">\(\mathbf{Av}\)</span> for
+<span class="math">\(n = 10^1, 10^2, \ldots, 10^6\)</span>, how do you think <span class="math">\(t\)</span> will
+depend on <span class="math">\(n\)</span>?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-<span class="n">n</span> <span class="o">=</span> <span class="mi">1750</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">A</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">w</span> <span class="o">=</span> <span class="n">matrix_vector</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="n">te</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="n">n_trials</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trials</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">matrix_vector</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">te</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">n_trials</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;elapsed time = {:.2e} seconds&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">te</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -309,7 +354,7 @@ unit of work is the product <code class="docutils literal"><span class="pre">A[i
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-elapsed time = 1.00e+00 seconds
+elapsed time = 4.79e-03 seconds
 </pre></div></div>
 </div>
 <p>An <em>alternative</em> view of <span class="math">\(\mathbf{Av} \to \mathbf{w}\)</span>:</p>
@@ -332,9 +377,9 @@ v_2 \left[ \begin{array}{c}
    \end{array} \right]
 =  v_0 \mathbf{a}_{:0} + v_1\mathbf{a}_{:1} + v_2\mathbf{a}_{:2} \, .\end{split}\]</div>
 <p>Hence, <span class="math">\(\mathbf{w}\)</span> is a <em>linear combination of the columns</em> of
-<span class="math">\(\mathbf{A}\)</span>, and all possible linear combinations of
-<span class="math">\(\mathbf{A}\)</span>&#8216;s represents the <em>column space</em> of
 <span class="math">\(\mathbf{A}\)</span>.</p>
+<p>All possible linear combinations of <span class="math">\(\mathbf{A}\)</span>&#8216;s represents the
+<em>column space</em> of <span class="math">\(\mathbf{A}\)</span>.</p>
 <p>The <em>connection</em>: left and right sides of <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span>
 equal if and only if <span class="math">\(\mathbf{b}\)</span> is a linear combination of the
 columns of <span class="math">\(\mathbf{A}\)</span>:</p>
@@ -363,7 +408,7 @@ columns of <span class="math">\(\mathbf{A}\)</span>:</p>
 <p>Consider the following (slightly modified from the reading:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -389,7 +434,7 @@ columns of <span class="math">\(\mathbf{A}\)</span>:</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -423,15 +468,16 @@ U =
  | 0.          0.          1.33333333 |
 </pre></div></div>
 </div>
-<p><strong>Exercise</strong>: Can you reason out <em>a priori</em> what the order of
-elimination is? Perform a numerical experiment to check your prediction.</p>
+<p><strong>Exercise</strong>: Can you reason out how the time <span class="math">\(t\)</span> to perform
+elimination of an <span class="math">\(n \times n\)</span> system depends on <span class="math">\(t\)</span>?
+Perform a numerical experiment to check your prediction.</p>
 <p>Elimination is the hard part, but we do not yet have the solution
 <span class="math">\(\mathbf{x}\)</span>.</p>
 <p>The <em>solution</em>: use <em>backsubstitution</em> by solving for <span class="math">\(x_{n-1}\)</span>
 first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -451,7 +497,7 @@ first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -461,7 +507,7 @@ first, then using it to find <span class="math">\(x_{n-2}\)</span>, etc.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
+<span></span>Out[7]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -509,11 +555,16 @@ O\\
 \end{array}\right)}^{\mathbf{b}}\end{split}\]</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+              <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">0.2</span><span class="o">*</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.1</span><span class="o">*</span><span class="mi">45</span><span class="p">,</span> <span class="mf">0.1</span><span class="o">*</span><span class="mi">30</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">24400</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3440</span><span class="p">])</span>
+<span class="c1"># YOUR SOLUTION HERE</span>
 </pre></div>
 </div>
 </div>

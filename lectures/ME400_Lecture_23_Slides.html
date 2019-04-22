@@ -241,7 +241,7 @@ data to models</li>
 <em>linear model</em> <span class="math">\(y(x) = ax + b\)</span> best matches the data.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -266,7 +266,7 @@ data to models</li>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -285,8 +285,8 @@ data to models</li>
 </div>
 </div>
 </div>
-<div class="section" id="What-&quot;Best&quot;-Means">
-<h1>What &#8220;Best&#8221; Means<a class="headerlink" href="#What-"Best"-Means" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="What-Best-Means">
+<h1>What <em>Best</em> Means<a class="headerlink" href="#What-Best-Means" title="Permalink to this headline">¶</a></h1>
 <p>The error is the difference between the model and data:</p>
 <div class="math">
 \[e_i = y(t_i) - y_i = a t_i + b - y_i \, \quad i = 0, 1, \ldots\]</div>
@@ -297,16 +297,17 @@ data to models</li>
 error metrics we&#8217;ve seen?</p>
 <p><strong>Exercise</strong>: Compute and plot the errors from example, and compute
 their L2-norms.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">e_1</span> <span class="o">=</span>
-<span class="n">e_2</span> <span class="o">=</span>
-<span class="n">norm_e_1</span> <span class="o">=</span>
-<span class="n">norm_e_2</span> <span class="o">=</span>
+<span></span><span class="c1"># Remember, the approximations are y_a1 and y_a2</span>
+<span class="n">e_1</span> <span class="o">=</span> <span class="n">y_a1</span> <span class="o">-</span> <span class="n">y</span>
+<span class="n">e_2</span> <span class="o">=</span> <span class="n">y_a2</span> <span class="o">-</span> <span class="n">y</span>
+<span class="n">norm_e_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_1</span><span class="p">)</span>
+<span class="n">norm_e_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e_1</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e_2</span><span class="p">,</span> <span class="s1">&#39;b-.&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;$||e_1||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_1</span><span class="p">),</span>
             <span class="sa">r</span><span class="s2">&quot;$||e_2||_2$ = {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_e_2</span><span class="p">)])</span>
@@ -315,25 +316,53 @@ their L2-norms.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_23_Slides_8_0.png" src="../_images/lectures_ME400_Lecture_23_Slides_8_0.png" />
+</div>
+</div>
 <p>Given a model
 <span class="math">\(\mathbf{y}_{appx} = \mathbf{Mc} \approx \mathbf{y}\)</span>, the
 parameters <span class="math">\(\mathbf{c}\)</span> the minimize the <span class="math">\(L_2\)</span> norm of error
-are found by solving the normal equations:</p>
+are found by solving the <em>normal equations</em>:</p>
 <div class="math">
 \[\mathbf{c} = (\mathbf{M}^T \mathbf{M})^{-1}  \mathbf{M}^T \mathbf{y} \, .\]</div>
-<p>For <span class="math">\(y(x) \approx at + b\)</span>,
-<span class="math">\(\mathbf{M} = [\mathbf{x}, \mathbf{1}]\)</span> and
-<span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
+<p>For <span class="math">\(y(x) \approx ax + b\)</span>, the <em>design matrix</em> is
+<span class="math">\(\mathbf{M} = [\mathbf{x}, \mathbf{1}]\)</span> and and the <em>regression
+coefficients</em> we want to find are <span class="math">\(\mathbf{c} = [a, b]^T\)</span>.</p>
 <p><strong>Exercise</strong>: Determine the best-fit parameters <span class="math">\(a\)</span> and <span class="math">\(b\)</span>
 for the example data above.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
+<span></span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="o">**</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">**</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="nd">@M</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="nd">@y</span><span class="p">)</span>
+<span class="n">y_a_best</span> <span class="o">=</span> <span class="n">M</span><span class="nd">@c</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span> <span class="n">y_a_best</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_a_best</span><span class="o">-</span><span class="n">y</span> <span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>25.032602513966886
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_23_Slides_11_1.png" src="../_images/lectures_ME400_Lecture_23_Slides_11_1.png" />
 </div>
 </div>
 </div>
@@ -356,17 +385,34 @@ can be used (just like for <span class="math">\(y(x) = ax+b\)</span>). For a qua
 <p><strong>Example</strong>: Use <code class="docutils literal"><span class="pre">np.polyfit</span></code> and <code class="docutils literal"><span class="pre">np.polyval</span></code> to approximate
 <span class="math">\(\sin^2(x)\)</span> as a linear, quadratic, and cubic polynomial for
 <span class="math">\(x\in [0, 2]\)</span>, and plot the approximations.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 <span class="c1"># compute the approximations here</span>
-
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>[&lt;matplotlib.lines.Line2D at 0x7f3472c55978&gt;,
+ &lt;matplotlib.lines.Line2D at 0x7f3472c55b00&gt;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_23_Slides_15_1.png" src="../_images/lectures_ME400_Lecture_23_Slides_15_1.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -479,7 +525,7 @@ data to models</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#Noisy-Data">Noisy Data</a></li>
-<li><a class="reference internal" href="#What-&quot;Best&quot;-Means">What &#8220;Best&#8221; Means</a></li>
+<li><a class="reference internal" href="#What-Best-Means">What <em>Best</em> Means</a></li>
 <li><a class="reference internal" href="#Beyond-Linear-Models">Beyond Linear Models</a></li>
 <li><a class="reference internal" href="#Beyond-Polynomial-Models">Beyond Polynomial Models</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>

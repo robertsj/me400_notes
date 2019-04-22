@@ -27,7 +27,6 @@
     "\n",
     "- Define a function that accepts (zero or more) input arguments and returns (zero or more) values.\n",
     "- Explain the meaning of a named and default argument.\n",
-    "- Use *unpacking* to define multiple variable in a single statement.\n",
     "- Document functions using appropriate \"docstrings.\"\n",
     "- Include functions in flowcharts."
    ]
@@ -63,7 +62,20 @@
    "source": [
     "## What is a Function?\n",
     "\n",
-    "A function is a block of code that can be independently executed (or \"called\") that is usually given input and usually produces output.   Basic structure:\n",
+    "A function is a block of code that can be independently executed (or \"called\") that is usually given input and usually produces output.   \n",
+    "\n",
+    "Functions are *subprograms*.  We simplify our programs by dividing into subprograms."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Basic function structure:\n",
     "\n",
     "```python\n",
     "def function_name(arg0, arg1, ...):  # 0 or more arguments\n",
@@ -100,6 +112,17 @@
    "source": []
   },
   {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
    "cell_type": "markdown",
    "metadata": {
     "slideshow": {
@@ -107,11 +130,24 @@
     }
    },
    "source": [
-    "**Example**: Write a function named `dropped` that accepts a sequence (e.g., a `list` or `ndarray`) of numbers `a` and an integer `n`.  The function should return a `list` having the same elements as `a` but with the `n` lowest elements removed.  The original order of the elements should be the same.  An example use would be \n",
+    "## Why we might care\n",
+    "\n",
+    "This \n",
+    "\n",
+    "```python\n",
+    "for i in range(5):\n",
+    "    f_n = f_n + (-1)**i * x**(2*i+1) / (factorial(2*i+1))\n",
     "```\n",
-    "In  [1]: dropped([5, 6, 4, 5, 3, 6], 2)\n",
-    "Out [1]: [5, 6, 5, 6]\n",
-    "```"
+    "\n",
+    "is easier to type, easier to read, and easier to debug than is this\n",
+    "\n",
+    "```python\n",
+    "for i in range(5):\n",
+    "    fact = 1\n",
+    "    for j in range(2*i+1):\n",
+    "        fact = f*j\n",
+    "    f_n = f_n + (-1)**i * x**(2*i+1) / fact\n",
+    "```\n"
    ]
   },
   {
@@ -127,7 +163,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -143,25 +179,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": null,
    "metadata": {
     "slideshow": {
      "slide_type": "subslide"
     }
    },
-   "outputs": [
-    {
-     "ename": "TypeError",
-     "evalue": "unsupported operand type(s) for +: 'NoneType' and 'NoneType'",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
-      "\u001b[0;32m<ipython-input-2-119d52d80d04>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mbuggy_sum_function\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m2\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0mbuggy_sum_function\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m4\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;31m# 10?\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[0;31mTypeError\u001b[0m: unsupported operand type(s) for +: 'NoneType' and 'NoneType'"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "buggy_sum_function([1, 2]) + buggy_sum_function([3, 4]) # 10?"
    ]
@@ -185,6 +209,34 @@
     "```\n",
     "\n",
     "This multiple assignment is called **unpacking**.  See the reading for examples."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def mean_and_median(a):\n",
+    "    pass"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "fragment"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "a = [3, 4, 5, 10]\n",
+    "print(mean_and_median(a))"
    ]
   },
   {
@@ -356,7 +408,6 @@
     "\n",
     "- Define a function that accepts (zero or more) input arguments and returns (zero or more) values.\n",
     "- Explain the meaning of a named and default argument.\n",
-    "- Use *unpacking* to define multiple variable in a single statement.\n",
     "- Document functions using appropriate \"docstrings.\"\n",
     "- Include functions in flowcharts."
    ]
@@ -379,7 +430,10 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.5.6"
+   "version": "3.6.8"
+  },
+  "livereveal": {
+   "scroll": true
   }
  },
  "nbformat": 4,

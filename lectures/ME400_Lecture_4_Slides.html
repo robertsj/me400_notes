@@ -208,13 +208,12 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-4---More-on-NumPy-Arrays">
 <h1>Lecture 4 - More on NumPy Arrays<a class="headerlink" href="#Lecture-4---More-on-NumPy-Arrays" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview,-Objectives,-and-Key-Terms">
-<h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>In this lesson, we&#8217;ll continue our investigation started in <a class="reference external" href="ME400_Lecture_3.ipynb">Lesson
-3</a> and look multidimensional arrays and how to
-access multiple elements via <em>slicing</em>.</p>
+<p>In this lesson, we&#8217;ll continue our investigation started in
+<a class="reference internal" href="Basic_Data_Processing_with_NumPy_and_Matplotlib.html"><span class="doc">Basic_Data_Processing_with_NumPy_and_Matplotlib</span></a>
+and look multidimensional arrays and how to access multiple elements via
+<em>slicing</em>.</p>
 <div class="section" id="Objectives">
-<h3>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h3>
+<h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
 <li><em>define and manipulate two-dimensional NumPy arrays</em></li>
@@ -223,7 +222,7 @@ access multiple elements via <em>slicing</em>.</p>
 </ul>
 </div>
 <div class="section" id="Key-Terms">
-<h3>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h3>
+<h2>Key Terms<a class="headerlink" href="#Key-Terms" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">np.ones</span></code> (for 2-D arrays)</li>
 <li><code class="docutils literal"><span class="pre">np.zeros</span></code> (for 2-D arrays)</li>
@@ -252,10 +251,8 @@ access multiple elements via <em>slicing</em>.</p>
 </pre></div>
 </div>
 </div>
-</div>
-</div>
 <div class="section" id="Making-and-Manipulating-Two-Dimensional-Arrays">
-<h2>Making and Manipulating Two-Dimensional Arrays<a class="headerlink" href="#Making-and-Manipulating-Two-Dimensional-Arrays" title="Permalink to this headline">¶</a></h2>
+<h3>Making and Manipulating Two-Dimensional Arrays<a class="headerlink" href="#Making-and-Manipulating-Two-Dimensional-Arrays" title="Permalink to this headline">¶</a></h3>
 <p>A lot of data lives in tabulated structures, e.g., the data from <a class="reference external" href="ME400_Lecture_3.ipynb">Lesson
 3</a> loaded in via <code class="docutils literal"><span class="pre">np.loadtxt</span></code>.</p>
 <p>We can make such two-dimensional arrays. Two easy ways are <code class="docutils literal"><span class="pre">np.ones</span></code>
@@ -366,7 +363,7 @@ then <code class="docutils literal"><span class="pre">j</span></code> for <code 
 </div>
 </div>
 <div class="section" id="Slicing">
-<h2>Slicing<a class="headerlink" href="#Slicing" title="Permalink to this headline">¶</a></h2>
+<h3>Slicing<a class="headerlink" href="#Slicing" title="Permalink to this headline">¶</a></h3>
 <p>Slicing lets one access multiple array elements at a time.</p>
 <p>For 1-D arrays, the syntax is <code class="docutils literal"><span class="pre">a[start:end:stride]</span></code>. <strong>Look
 familiar?</strong></p>
@@ -432,22 +429,36 @@ direction <em>independently</em>:</p>
 </div>
 </div>
 <div class="section" id="Visualizing-2-D-Arrays">
-<h2>Visualizing 2-D Arrays<a class="headerlink" href="#Visualizing-2-D-Arrays" title="Permalink to this headline">¶</a></h2>
+<h3>Visualizing 2-D Arrays<a class="headerlink" href="#Visualizing-2-D-Arrays" title="Permalink to this headline">¶</a></h3>
 <p>Brief recap of 1-D: <code class="docutils literal"><span class="pre">import</span> <span class="pre">matplotlib.pyplot</span> <span class="pre">as</span> <span class="pre">plt</span></code> and
 <code class="docutils literal"><span class="pre">plt.plot(x,</span> <span class="pre">y)</span></code>. Easy peasy.</p>
 </div>
+<div class="section" id="Example">
+<h3>Example<a class="headerlink" href="#Example" title="Permalink to this headline">¶</a></h3>
+<p>Consider tje heat-conduction equation</p>
+<div class="math">
+\[-k \left ( \frac{d^2}{dx^2} + \frac{d^2}{dy^2} \right ) T(x, y) = 0 \, ,\]</div>
+<p>subject to the boundary conditions
+<span class="math">\(T(x, 0) = T(0, y) = T(1, y) = 0\)</span> and <span class="math">\(T(x, 1) = 100\)</span> C.</p>
+<p>By some fancy math (i.e., separation of variables, solution of a
+transcendental equation, etc.), one finds</p>
+<div class="math">
+\[T(x, y) =
+   \frac{400}{\pi}  \sum^{\infty}_{n=1}
+        \frac{ \sin((2n-1) \pi x) \sinh((2n-1) \pi y) }
+             {(2n-1)\sinh((2n-1)\pi)}\]</div>
+<p>The goal is to <em>visualize</em> this solution as a function of <span class="math">\(x\)</span> and
+<span class="math">\(y\)</span>.</p>
+</div>
 <div class="section" id="Recap">
-<h2>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h2>
+<h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
 <li><em>define and manipulate two-dimensional NumPy arrays</em></li>
 <li><em>slicing and other indexing of one- and two-dimensional arrays</em></li>
 <li><em>visualize two-dimensional arrays</em></li>
 </ul>
-<p><strong>Please remember</strong> - Pre-lecture activities (or &#8220;quizzes&#8221;) are due at
-12:30 pm. I&#8217;m flexible for 1 or 2 minutes late, but later submissions
-(including during class!) are not accepted. - Homework questions
-answered in office hours and the discussion board.</p>
+</div>
 </div>
 </div>
 
@@ -460,15 +471,15 @@ answered in office hours and the discussion board.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Lecture 4 - More on NumPy Arrays</a><ul>
-<li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
-<li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#Key-Terms">Key Terms</a><ul>
 <li><a class="reference internal" href="#Making-and-Manipulating-Two-Dimensional-Arrays">Making and Manipulating Two-Dimensional Arrays</a></li>
 <li><a class="reference internal" href="#Slicing">Slicing</a></li>
 <li><a class="reference internal" href="#Visualizing-2-D-Arrays">Visualizing 2-D Arrays</a></li>
+<li><a class="reference internal" href="#Example">Example</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

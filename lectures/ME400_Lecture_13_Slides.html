@@ -221,10 +221,13 @@ functions and the use of functions that call themselves (i.e.,
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
 <ul class="simple">
-<li>Define a function using <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>.</li>
-<li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function (see the reading)</li>
+<li>Develop and trace a full program that uses functions.</li>
 <li>Define a recursive function.</li>
 </ul>
+<p>Other things from the reading you should be aware of (but that won&#8217;t be
+focused on in lecture): - <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> (e.g., do
+<code class="docutils literal"><span class="pre">help(plt.plot)</span></code>) - <code class="docutils literal"><span class="pre">lambda</span></code> functions (e.g., <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x**2</span></code>
+and <code class="docutils literal"><span class="pre">f(2)</span></code>)</p>
 <div class="section" id="Quick-Review---Flowcharts-and-Functions">
 <h3>Quick Review - Flowcharts and Functions<a class="headerlink" href="#Quick-Review---Flowcharts-and-Functions" title="Permalink to this headline">¶</a></h3>
 <p>Last time, we had the following problem: given a list of five numbers,
@@ -235,91 +238,6 @@ separate.</p>
 <p>A function <em>call</em> is an expression and, hence can be part of a single
 statement, e.g., <code class="docutils literal"><span class="pre">counts</span> <span class="pre">=</span> <span class="pre">count_em(L)</span></code>.</p>
 </div>
-<div class="section" id="*args-and-**kwargs">
-<h3><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code><a class="headerlink" href="#*args-and-**kwargs" title="Permalink to this headline">¶</a></h3>
-<p>What on earth are <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>? Before moving along, let&#8217;s
-look at a function introduced back in <a class="reference external" href="ME400_Lecture_3.ipynb">Lecture
-3</a>: <code class="docutils literal"><span class="pre">plt.plot</span></code>.</p>
-<p>Can we learn <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> by example?</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">demo_args</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">demo_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="Some-Conclusions:">
-<h2>Some Conclusions:<a class="headerlink" href="#Some-Conclusions:" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><code class="docutils literal"><span class="pre">*args</span></code> packages all <strong>positional unnamed) arguments</strong> into a
-<code class="docutils literal"><span class="pre">tuple</span></code></li>
-<li><code class="docutils literal"><span class="pre">**kwargs</span></code> packages all <strong>keyword (named) arguments</strong> into a
-<code class="docutils literal"><span class="pre">dict</span></code></li>
-<li>All positional arguments must come before keyword arguments</li>
-<li><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code> help make functions super flexible</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1">#               &lt;--positional--&gt;  &lt;-------keyword--------&gt;</span>
-<span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span><span class="p">,</span> <span class="n">pos3</span><span class="p">,</span> <span class="n">named1</span><span class="o">=</span><span class="n">val1</span><span class="p">,</span> <span class="n">named2</span><span class="o">=</span><span class="n">val2</span><span class="p">):</span>
-    <span class="o">...</span>
-</pre></div>
-</div>
-<p><strong>Exercise</strong>: Define a function <code class="docutils literal"><span class="pre">true_or_false(*args,</span> <span class="pre">**kwargs)</span></code> that
-returns a <code class="docutils literal"><span class="pre">list</span></code> whose length is equal to the number of positional
-arguments passed and a <code class="docutils literal"><span class="pre">dict</span></code> whose length is equal to the number of
-keyword arguments passed. The <code class="docutils literal"><span class="pre">i</span></code>th element of this <code class="docutils literal"><span class="pre">list</span></code> is
-<code class="docutils literal"><span class="pre">True</span></code> if the <code class="docutils literal"><span class="pre">i</span></code>th argument is (logically equal to) <code class="docutils literal"><span class="pre">True</span></code> and
-is otherwise <code class="docutils literal"><span class="pre">False</span></code>. The <code class="docutils literal"><span class="pre">dict</span></code> should have keys equal to the named
-arguments and similar <code class="docutils literal"><span class="pre">True</span></code>/<code class="docutils literal"><span class="pre">False</span></code> values.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">true_or_false</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">L</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">pass</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="Recursive-Functions">
 <h3>Recursive Functions<a class="headerlink" href="#Recursive-Functions" title="Permalink to this headline">¶</a></h3>
 <p>The topic of <strong>recursion</strong> is challenging, and recurssion can often (not
@@ -327,12 +245,51 @@ always) be replaced by loops.</p>
 <p>A <strong>recursive process</strong> gives output (say, a particular value) at one
 step using as input the output from one or more previous steps <strong>based
 on a fixed relationship</strong>.</p>
-<p><strong>Example</strong>: The Fibonacci sequence <span class="math">\(a_{n} = a_{n-1} + a_{n-2}\)</span>
-with <span class="math">\(a_0 = a_1 = 1\)</span></p>
+<p>A <strong>recursive function</strong> is a function that calls <em>itself</em>.</p>
+<p><strong>Example</strong>: Compute
+<span class="math">\(n! = n\times (n-1) \times \ldots \times 2 \times 1\)</span> using
+recurssion.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Computes n! = n*(n-1)*...*2*1 using recursion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s2">&quot;YOUR CODE HERE&quot;</span>
+    <span class="k">return</span> <span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">factorial</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&#39;YOUR CODE HERE&#39;
+</pre></div>
+</div>
+</div>
 <p>The basic recursive function in Python:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -364,7 +321,7 @@ recursion is ending!
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[4]:
+<span></span>Out[3]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -380,46 +337,49 @@ recursion is ending!
 </div>
 <p>How would this stop? From <span class="math">\(n = 5\)</span>, to <span class="math">\(n = -10\)</span>, to
 <span class="math">\(n = -\infty\)</span>.</p>
-<p><strong>Example</strong>: Trace the following code using the debugger:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-<span class="mf">2.</span>     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-<span class="mf">3.</span>         <span class="k">return</span> <span class="mi">1</span>
-<span class="mf">4.</span>     <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">foo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="mf">5.</span> <span class="n">foo</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Make sure you can do this by hand, too!</p>
-<p><strong>Exercise</strong>: Fibonacci (in Python and using recursion).</p>
+<p><strong>Example</strong>: Use recursion to compute the <span class="math">\(n\)</span>th value in the
+Fibonacci sequence. Recall, the Fibonacci sequence is defined by the
+recursion relationship <span class="math">\(f_n = f_{n-1} + f_{n-2}\)</span> with
+<span class="math">\(f_1 = 1\)</span> and <span class="math">\(f_2 = 1\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">fibo_recursive</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Determine nth term in Fibonacci sequence 1, 1, 2, 3, ...&quot;&quot;&quot;</span>
+<span></span><span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">pass</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">fibo_recursive</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 1 1 2 3 5 8 13 21</span>
+<span></span><span class="n">fibonacci</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<p><strong>Example</strong>: Trace the following code using the debugger:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="mf">2.</span>     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<span class="mf">3.</span>         <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="mf">4.</span>     <span class="k">else</span><span class="p">:</span>
+<span class="mf">5.</span>         <span class="n">f</span> <span class="o">=</span> <span class="n">foo</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">n</span>
+<span class="mf">6.</span>     <span class="k">return</span> <span class="n">f</span>
+<span class="mf">7.</span> <span class="n">foo</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Make sure you can do this by hand, too!</p>
 <p><strong>Exercise</strong>: Sum an array recursively.</p>
 </div>
 <div class="section" id="Recap">
 <h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>You should now be able to</p>
 <ul class="simple">
-<li>Define a function using <code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code>.</li>
-<li>Define a <code class="docutils literal"><span class="pre">lambda</span></code> function.</li>
+<li>Develop and trace a full program that uses functions.</li>
 <li>Define a recursive function.</li>
 </ul>
 </div>
@@ -437,10 +397,6 @@ recursion is ending!
 <li><a class="reference internal" href="#">Lecture 13 - More on Functions</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a><ul>
 <li><a class="reference internal" href="#Quick-Review---Flowcharts-and-Functions">Quick Review - Flowcharts and Functions</a></li>
-<li><a class="reference internal" href="#*args-and-**kwargs"><code class="docutils literal"><span class="pre">*args</span></code> and <code class="docutils literal"><span class="pre">**kwargs</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#Some-Conclusions:">Some Conclusions:</a><ul>
 <li><a class="reference internal" href="#Recursive-Functions">Recursive Functions</a></li>
 <li><a class="reference internal" href="#Recap">Recap</a></li>
 </ul>

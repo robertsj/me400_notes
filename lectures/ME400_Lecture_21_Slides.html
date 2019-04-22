@@ -278,6 +278,16 @@ Assume <span class="math">\(L = 5\)</span> and <span class="math">\(\text{Bi}=0.
 </pre></div>
 </div>
 </div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="Determining-Roots-Numerically">
 <h3>Determining Roots Numerically<a class="headerlink" href="#Determining-Roots-Numerically" title="Permalink to this headline">¶</a></h3>
 <p>The numerical solution of <span class="math">\(f(x) = 0\)</span> can be challenging since it
@@ -316,16 +326,58 @@ secant method.</p>
 <span class="n">Output</span><span class="p">:</span> <span class="n">C</span>
 </pre></div>
 </div>
+<p><strong>Exercise</strong>: How can you defined <code class="docutils literal"><span class="pre">sign(f(C))</span></code> in Python?</p>
 <p>Graphical display of bisection to find first positive root of
 <span class="math">\(\sin(x) - 2/5\)</span>:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">nonlinear_plots</span>
-<span class="n">nonlinear_plots</span><span class="o">.</span><span class="n">bisection_root</span><span class="p">()</span>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">bisection_root</span><span class="p">():</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">-</span><span class="mf">0.4</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Plot f(A), f(B)</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="s1">&#39;bs&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="s1">&#39;bs&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">),</span> <span class="s1">&#39;bs&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;initial&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">B</span><span class="p">)],</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">C</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">),</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;after first iteration&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">B</span><span class="p">)],</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="p">(</span><span class="n">C</span><span class="o">+</span><span class="n">B</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="s1">&#39;c&gt;&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="s1">&#39;c&gt;&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">C</span><span class="p">),</span> <span class="s1">&#39;c&gt;&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;after second iteration&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">([</span><span class="n">f</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">B</span><span class="p">)],</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$x$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$f(x)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">bisection_root</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -333,7 +385,7 @@ secant method.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/lectures_ME400_Lecture_21_Slides_12_0.png" src="../_images/lectures_ME400_Lecture_21_Slides_12_0.png" />
+<img alt="../_images/lectures_ME400_Lecture_21_Slides_15_0.png" src="../_images/lectures_ME400_Lecture_21_Slides_15_0.png" />
 </div>
 </div>
 </div>
@@ -346,7 +398,10 @@ method</a>.</p>
 <span class="math">\(x_r\)</span> (and it should be &#8220;close&#8221;).</p>
 <p>Quick motivation for Newton <em>from the math</em> by recalling</p>
 <div class="math">
-\[f(x) = f(x_0) + \Delta f'(x_0) + \mathcal{O}(\Delta^2) = 0 \, .\]</div>
+\[\begin{split}\begin{split}
+  f(x_{\text{true root}}) &amp;= f(x_0+\Delta) \\
+       &amp;= f(x_0) + \Delta f'(x_0) + \mathcal{O}(\Delta^2) = 0 \, .
+\end{split}\end{split}\]</div>
 <p>Take a leap of faith: <strong>ignore the</strong> <span class="math">\(\mathcal{O}(\Delta^2)\)</span>
 <strong>term</strong> and set</p>
 <div class="math">
@@ -367,30 +422,7 @@ terms of <span class="math">\(x_2\)</span>, etc. until <span class="math">\(f(x_
 <p>Quick motivation of Newton <em>from the geometry</em>...</p>
 <p><strong>Exercise</strong>: Solve <span class="math">\(f(x) = \sin(x)-2/5 = 0\)</span> starting with
 <span class="math">\(x_0 = 0.5\)</span> until <span class="math">\(|f(x)| &lt; 10^{-5}\)</span>.</p>
-</div>
-<div class="section" id="Approximate-Newton-Method">
-<h2>Approximate Newton Method<a class="headerlink" href="#Approximate-Newton-Method" title="Permalink to this headline">¶</a></h2>
-<p>Actually, just like Newton but without <span class="math">\(f'(x)\)</span>! Use a <em>finite
-difference</em> instead to yield the <em>secant method</em>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>&#39;&#39;&#39;Secant method for finding the root f given x_0&#39;&#39;&#39;
-Input: f, x_0, tau
-Set x = x_0
-Set x_0 = x - tau
-While |f(x)| &gt; tau do
-   # Approximate the derivative
-   Set fp = (f(x)-f(x_0))/(x-x_0)
-   # Compute the Newton &quot;step&quot;
-   Set Delta = -f(x)/fp
-   # Store old x, and compute next value
-   Set x_0 = x
-   Set x = x + Delta
-Output: x
-
-*Pro Tip*: Depending on :math:`f(x)` (and its cost), *may* be better
-to use :math:`x` and :math:`x+\delta` for finite difference where
-:math:`\delta &lt; (x-x_0)`.
-</pre></div>
-</div>
+<p>If you don&#8217;t have <span class="math">\(f'(x)\)</span>, use a finite-difference approximation.</p>
 <div class="section" id="Solving-Systems-of-Nonlinear-Equations-Numerically">
 <h3>Solving Systems of Nonlinear Equations Numerically<a class="headerlink" href="#Solving-Systems-of-Nonlinear-Equations-Numerically" title="Permalink to this headline">¶</a></h3>
 <p>From <span class="math">\(f(x) = 0\)</span> to <span class="math">\(\mathbf{f}(\mathbf{x}) = \mathbf{0}\)</span>...</p>
@@ -424,6 +456,24 @@ needed to define what <span class="math">\(\mathbf{f}(\mathbf{x})\)</span> does.
 guess is <code class="docutils literal"><span class="pre">x0</span></code>. If available, <code class="docutils literal"><span class="pre">fprime</span></code> should compute
 <span class="math">\(\mathbf{J}(\mathbf{x})\)</span>; if not provided, <code class="docutils literal"><span class="pre">fsolve</span></code> approximates
 the Jacobian using a forward-difference approximation.</p>
+<p><strong>Exercise</strong> Suppose a bridge trunnion (a pin) has a diameter of 12.363
+in but must fit into a slightly under-sized hole of diameter 12.358 in.
+One option is to cool it. The coefficient of expansion for the trunnion
+material (steel) is well approximated by</p>
+<div class="math">
+\[\alpha = -1.2 \cdot 10^{-11} T^2 + 6.2 \cdot 10^{-9} T + 6.0 \cdot 10^{-6}\]</div>
+<p>The change in the diameter if the trunnion is cooled to a temperature
+<span class="math">\(T_c\)</span> (from the sweltering 80 F) outside is</p>
+<div class="math">
+\[\Delta D = D_{80} \int^{T_c}_{80} \alpha(T)dT \, .\]</div>
+<p>Find what <span class="math">\(T_c\)</span> must be. Could it be ice water? What else?</p>
+<p><strong>Exercise</strong> Solve the nonlinear system of equations</p>
+<div class="math">
+\[\begin{split}\begin{split}
+x   - y &amp;= 4 \\
+   x^2 + y &amp;= -3
+\end{split}\end{split}\]</div>
+<p>with initial guesses of <span class="math">\(x=1/2\)</span> and <span class="math">\(y=-3\)</span>.</p>
 <div class="section" id="Recap">
 <h3>Recap<a class="headerlink" href="#Recap" title="Permalink to this headline">¶</a></h3>
 <p>By the end of this lesson, you should be able to</p>
@@ -457,8 +507,7 @@ Newton methods.</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#Bisection">Bisection</a></li>
-<li><a class="reference internal" href="#Newton's-Method">Newton&#8217;s Method</a></li>
-<li><a class="reference internal" href="#Approximate-Newton-Method">Approximate Newton Method</a><ul>
+<li><a class="reference internal" href="#Newton's-Method">Newton&#8217;s Method</a><ul>
 <li><a class="reference internal" href="#Solving-Systems-of-Nonlinear-Equations-Numerically">Solving Systems of Nonlinear Equations Numerically</a></li>
 </ul>
 </li>
