@@ -336,24 +336,21 @@ backward Euler. <strong>Do this by hand!</strong></p>
 <span class="math">\(\mathbf{s}\)</span> are defined for convenience.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>    <span class="c1"># initial condition</span>
-<span class="n">Delta</span> <span class="o">=</span> <span class="mf">0.001</span>               <span class="c1"># time step</span>
-<span class="n">num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">10.0</span><span class="o">/</span><span class="n">Delta</span><span class="p">)</span> <span class="c1"># number of steps</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="mf">0.001</span>                  <span class="c1"># time step</span>
+<span class="n">num_steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">10.0</span><span class="o">/</span><span class="n">Delta</span><span class="p">)</span>    <span class="c1"># number of steps</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span>  <span class="mf">0.00</span><span class="p">],</span>
               <span class="p">[</span> <span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">]])</span> <span class="c1"># system matrix</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span>
-              <span class="mf">0.0</span><span class="p">])</span>            <span class="c1"># forcing term</span>
-<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
-    <span class="c1"># copy the previous step&#39;s value</span>
-    <span class="n">z_old</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="c1"># compute the new time step</span>
-
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>       <span class="c1"># forcing term</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_steps</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># z[0, :] is initial condition</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_steps</span><span class="p">):</span>
+    <span class="c1"># compute z(t+Delta) = Delta*f(z(t), t) + z(t)</span>
+    <span class="k">pass</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;x={:.3f} and y={:.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -381,20 +378,83 @@ initial condition (either a single <code class="docutils literal"><span class="p
 system) - <code class="docutils literal"><span class="pre">t</span></code> array of times at which the solution is to be computed
 (the first value is the initial condition time) - <code class="docutils literal"><span class="pre">args</span></code> are options
 arguments passed to <code class="docutils literal"><span class="pre">func</span></code></p>
-<p><strong>Exercise</strong>: Solve <span class="math">\(y' = \sqrt{y(t)} + 2\)</span> with <span class="math">\(y(0) = 1\)</span>
-using <code class="docutils literal"><span class="pre">odeint</span></code> for <code class="docutils literal"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">10.0]</span></code>.</p>
-<div class="nbinput nblast docutils container">
+<p><strong>Exercise</strong>: Given <span class="math">\(y' = -2y(t) + 1\)</span> with <span class="math">\(y(0) = 0\)</span>, use
+forward Euler and <code class="docutils literal"><span class="pre">odeint</span></code> to estimate <span class="math">\(y(10)\)</span> for
+<span class="math">\(\Delta = 0.2\)</span>, <span class="math">\(0.1\)</span>, and <span class="math">\(0.05\)</span>. What happens to the
+error?</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
-<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">y_ref</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">))</span> <span class="c1"># true value</span>
+<span class="c1"># forward Euler</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span>
+<span class="n">Delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">y_fe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">y_fe</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Delta</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">y_fe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">y_fe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Delta={:.4e}, error={:2e}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Delta</span><span class="p">,</span> <span class="n">y_fe</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">y_ref</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Delta=2.0000e-01, error=1.026535e-09
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="c1"># odeint</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+<span class="k">def</span> <span class="nf">yprime</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">y_oi</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">yprime</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y_oi</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y_fe</span><span class="p">,</span>  <span class="n">t</span><span class="p">,</span> <span class="n">y_ref</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="s1">&#39;:&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;fe&#39;</span><span class="p">,</span> <span class="s1">&#39;odeint&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/lectures_ME400_Lecture_26_Slides_15_0.png" src="../_images/lectures_ME400_Lecture_26_Slides_15_0.png" />
+</div>
+</div>
+<p><strong>Exercise</strong>: Solve <span class="math">\(y' = \sqrt{y(t)} + 2\)</span> with <span class="math">\(y(0) = 1\)</span>
+using <code class="docutils literal"><span class="pre">odeint</span></code> for <code class="docutils literal"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">...,</span> <span class="pre">10.0]</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">yprime</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
     <span class="k">pass</span>
 <span class="n">y0</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">t</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">odeint</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="c1"># no args needed for this problem</span>
+<span class="n">odeint</span><span class="p">(</span><span class="n">yprime</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="c1"># no args needed for this problem</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[nan]])
 </pre></div>
 </div>
 </div>

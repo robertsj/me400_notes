@@ -208,7 +208,7 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-25---Solving-First-Order-IVPs-Numerically">
 <h1>Lecture 25 - Solving First-Order IVPs Numerically<a class="headerlink" href="#Lecture-25---Solving-First-Order-IVPs-Numerically" title="Permalink to this headline">¶</a></h1>
-<p><strong>Last Time</strong>: Interpolation (last topic on Exam 3!)</p>
+<p><strong>Last Time</strong>: Interpolation</p>
 <p><strong>Today</strong>: Initial Value Problems (IVPs)</p>
 <div class="section" id="Objectives">
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
@@ -225,8 +225,9 @@ backward Euler</li>
 <h2>Prerequisites<a class="headerlink" href="#Prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>You should already be able to</p>
 <ul class="simple">
-<li>Solve ODEs based on what you&#8217;ve learned in a course like MATH 340 and
-<a class="reference internal" href="ME400_Lecture_26.html"><span class="doc">Lecture 26</span></a></li>
+<li>Solve ODEs based on what you&#8217;ve learned in a course like MATH 340</li>
+<li>Name your favorite differential equation from physics (if you&#8217;re
+drawing a blank, remember <span class="math">\(F=m\frac{d^ 2 x}{dt^2}\)</span>)</li>
 <li>Compute a first-order, finite-difference approximation for
 <span class="math">\(\frac{df}{dx}\)</span></li>
 </ul>
@@ -263,13 +264,13 @@ backward Euler</li>
 <p>or</p>
 <div class="math">
 \[y(t+\Delta) = \Delta f(y(t), t) + y(t)  + \mathcal{O}(\Delta^2)\]</div>
-<p>Drop the error term to get the <strong>forward Euler approximation</strong></p>
+<p>Drop the error term to get the one-step <strong>forward Euler approximation</strong></p>
 <div class="math">
 \[\boxed{y(t+\Delta) \approx \Delta f(y(t), t) + y(t)}\]</div>
 <p>Do the same with the backward difference to get</p>
 <div class="math">
 \[\frac{y(\tau)-y(\tau-\Delta)}{\Delta} = f(y(\tau), \tau) + \mathcal{O}(\Delta)\]</div>
-<p>or (let <span class="math">\(\tau = t+\Delta\)</span>) to get the <strong>backward Euler
+<p>and let <span class="math">\(\tau = t+\Delta\)</span> to get the one-step <strong>backward Euler
 approximation</strong>:</p>
 <div class="math">
 \[\boxed{ y(t+\Delta) \approx \Delta f(y(t+\Delta), t+\Delta) + y(t+\Delta)}\]</div>
@@ -285,7 +286,8 @@ estimate <span class="math">\(y(0.1)\)</span>. Do this <em>by hand</em>.</p>
 <p>We&#8217;ll approximate <span class="math">\(y(t)\)</span> at discrete times
 <span class="math">\(t_0,\, t_1,\, t_2,\, \ldots\)</span>, or</p>
 <div class="math">
-\[t_n = t_0 + n\Delta \qquad n = 0, 1, \ldots \, .\]</div>
+\[y_n = y(t_n) \qquad  t_n = t_0 + n\Delta \qquad n = 0, 1, \ldots \, .\]</div>
+<p>Apply Euler&#8217;s method to go from <span class="math">\(y_n\)</span> to <span class="math">\(y_{n+1}\)</span>:</p>
 <div class="math">
 \[\text{forward Euler} \qquad  \boxed{y_{n+1} =  \Delta f(y_n, t_n) + y_n \, , \qquad n = 0, 1, 2, \ldots}\]</div>
 <div class="math">
@@ -356,7 +358,7 @@ with time.</p>
 <div class="section" id="Connecting-the-Dots">
 <h2>Connecting the Dots<a class="headerlink" href="#Connecting-the-Dots" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>What if this were not a cylinder by a cone (i.e., a tapered funnel)?
+<li>What if this were not a cylinder but a cone (i.e., a tapered funnel)?
 Or something more complicated? How would you modify the equation?</li>
 <li>Suppose you were to design a tank like the one we analyzed that has
 to fit in some finite volume. How would you optimize its geometry to

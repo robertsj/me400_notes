@@ -334,7 +334,7 @@
     "| 23 | Wednesday, April 17 | Modeling Data with Least-Squares Fits | HW 9| \n",
     "|  | Friday, April 19 | LAB 10 | | \n",
     "| 24 | Monday, April 22 | Modeling Data with Interpolation | | \n",
-    "25 | Wednesday, April 24 | Brief review of ODEs.  Numerical solution of IVPs using Euler's methods. | HW 10| \n",
+    "| 25 | Wednesday, April 24 | Brief review of ODEs.  Numerical solution of IVPs using Euler's methods. | HW 10| \n",
     "|  | Friday, April 26 | LAB 11 | | \n",
     "| 26 | Monday, April 29 | Systems of IVPs. | | \n",
     "| 27 | Wednesday, May 1 | Numerical solution of BVPs using finite differences. | HW 11| \n",
@@ -428,7 +428,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
   }
  },
  "nbformat": 4,

@@ -208,11 +208,12 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Lecture-27---Numerical-Solutions-of-Two-Point-BVPs">
 <h1>Lecture 27 - Numerical Solutions of Two-Point BVPs<a class="headerlink" href="#Lecture-27---Numerical-Solutions-of-Two-Point-BVPs" title="Permalink to this headline">¶</a></h1>
-<p><strong>Last Time</strong>: Systems of IVPs</p>
+<p><strong>Last Time</strong>: Systems of IVPs and <code class="docutils literal"><span class="pre">odeint</span></code></p>
 <p><strong>Today</strong>: One-dimensional, boundary-value problems (BVPs)</p>
 <p><strong>Remember</strong>: Exam 3 on Friday. Same rules: one 11&#8217;&#8217; by 8.5&#8217;&#8217; sheet,
-handwritten, but no other resources. Same format: roughly half written,
-half coded. Cumulative, with emphasis on material since Exam 2.</p>
+both sides, handwritten, but no other resources. Same format: roughly
+half written, half coded. Cumulative, with emphasis on material since
+Exam 2.</p>
 <div class="section" id="Objectives">
 <h2>Objectives<a class="headerlink" href="#Objectives" title="Permalink to this headline">¶</a></h2>
 <p>By the end of this lesson, you should be able to</p>
@@ -242,23 +243,37 @@ to a linear system.</p>
 <div class="section" id="Whence-Such-BVPs?">
 <h2>Whence Such BVPs?<a class="headerlink" href="#Whence-Such-BVPs?" title="Permalink to this headline">¶</a></h2>
 <div class="math">
-\[\text{heat conduction:} \qquad \boxed{-\frac{d}{dx}\left ( k(x)\frac{dT}{dx}\right ) = f(x)} \, \quad \text{s.t.} \quad T(x_a) = T_a \quad \text{and} \quad T(x_b) = T_b\]</div>
+\[\text{heat conduction:} \qquad \boxed{-\frac{d}{dx}\left ( k(x)\frac{dT}{dx}\right ) = h(x)} \, \quad \text{s.t.} \quad T(x_a) = T_a \quad \text{and} \quad T(x_b) = T_b\]</div>
 <div class="math">
-\[\text{neutron diffusion:} \qquad \boxed{-\frac{d}{dx}\left( D(x) \frac{d\phi}{dx} \right )+ \Sigma_a \phi(x) = f(x)} \, \quad \text{s.t.} \quad \phi(x_a) = \phi_a \quad \text{and} \quad \phi(x_b) = \phi_b\]</div>
+\[\text{neutron diffusion:} \qquad \boxed{-\frac{d}{dx}\left( D(x) \frac{d\phi}{dx} \right )+ \Sigma_a \phi(x) = s(x)} \, \quad \text{s.t.} \quad \phi(x_a) = \phi_a \quad \text{and} \quad \phi(x_b) = \phi_b\]</div>
 <p>Many other problems in physics and engineering take the same form.</p>
 <p><strong>Exercise</strong>: Put the heat conduction equation into the standard form
-<span class="math">\(y'' + py + q = f\)</span>.</p>
+<span class="math">\(y'' + py' + qy = f\)</span>.</p>
+<p>The product rule gives us</p>
+<div class="math">
+\[\begin{split}
+  -\frac{d}{dx}\left ( k(x)\frac{dT}{dx}\right )
+    &amp;= - k(x) \frac{d^2T}{dx^2} - \frac{dk}{dx}\frac{dT}{dx} = h(x) \, .
+\end{split}\]</div>
+<p>Then, divide both sides by <span class="math">\(-k(x)\)</span> to find</p>
+<div class="math">
+\[\begin{split}
+ \frac{d^2T}{dx^2} + \left( \frac{1}{k(x)}\frac{dk}{dx} \right ) \frac{dT}{dx} = -\frac{h(x)}{k(x)} \, ,
+\end{split}\]</div>
+<p>or <span class="math">\(\boxed{T'' + pT' + qT = f}\)</span>, where
+<span class="math">\(p(x) = \frac{1}{k(x)}\frac{dk}{dx}\)</span>, <span class="math">\(q(x) = 0\)</span>, and
+<span class="math">\(f(x) = -\frac{h(x)}{k(x)}\)</span>.</p>
 <div class="section" id="Chopping-up-">
 <h3>Chopping up <span class="math">\(x\)</span><a class="headerlink" href="#Chopping-up-" title="Permalink to this headline">¶</a></h3>
-<p>Back to the model problem <span class="math">\(y'' + py' + qy = f\)</span>. Chop up <span class="math">\(x\)</span>
-into the points</p>
+<p>Back to the model problem <span class="math">\(y'' + py' + qy = f\)</span>.</p>
+<p>&#8220;Discretize&#8221; <span class="math">\(x\)</span> into the points</p>
 <div class="math">
 \[\boxed{x = x_a, \, x_a + \Delta, x_a + 2\Delta, \ldots, x_b - \Delta, x_b}\]</div>
 <p>or <span class="math">\(\boxed{x_n = x_a + \Delta n}\)</span> for <span class="math">\(n = 0, 1, \ldots, N\)</span>.</p>
 <p>We want to find <span class="math">\(y(x_n) = y_n\)</span>.</p>
 </div>
-<div class="section" id="Replace--and--with-Finite-Differences-Approximations">
-<h3>Replace <span class="math">\(y'\)</span> and <span class="math">\(y''\)</span> with Finite Differences Approximations<a class="headerlink" href="#Replace--and--with-Finite-Differences-Approximations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Replace--and--with-Finite-Difference-Approximations">
+<h3>Replace <span class="math">\(y'\)</span> and <span class="math">\(y''\)</span> with Finite-Difference Approximations<a class="headerlink" href="#Replace--and--with-Finite-Difference-Approximations" title="Permalink to this headline">¶</a></h3>
 <div class="math">
 \[\boxed{\frac{dy}{dx}\Bigg |_{x = x_n} = \frac{y_{n+1} - y_{n-1}}{2\Delta}}
    \qquad \text{and} \qquad
@@ -269,7 +284,7 @@ into the points</p>
    + q_n y_n = f_n }\, ,\]</div>
 <p>where <span class="math">\(p_n = p(x_n)\)</span>, <span class="math">\(q_n = q(x_n)\)</span> and
 <span class="math">\(f_n = f(x_n)\)</span>.</p>
-<p>Key observation: the value <span class="math">\(y_n\)</span> depends on its neighbors,
+<p><em>Key observation</em>: the value <span class="math">\(y_n\)</span> depends on its neighbors,
 <span class="math">\(y_{n+1}\)</span> and <span class="math">\(y_{n-1}\)</span>.</p>
 <p><strong>What about at :math:`x_0` and :math:`x_N`</strong>? Apply boundary
 conditions!</p>
@@ -294,7 +309,6 @@ the system, and use Matplotlib to plot the result.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-
 </pre></div>
 </div>
 </div>
@@ -340,6 +354,21 @@ familiar in fluid mechanics.)</li>
 conditions and how to represent them using finite differences - Solve
 two-point BVPs characteristics of heat transfer and other applications
 using the finite-difference method</p>
+<p>Since the last exam, we&#8217;ve explored: - finite-difference approximations
+for <span class="math">\(df/dx\)</span> and <span class="math">\(d^2f/dx^2\)</span> - numerical approximations for
+<span class="math">\(\int^b_a f(x) dx\)</span> (including <code class="docutils literal"><span class="pre">scipy.integrate.quad</span></code>) - setting
+up and solving <span class="math">\(\mathbf{Ax}=\mathbf{b}\)</span> (including
+<code class="docutils literal"><span class="pre">np.linalg.solve</span></code>) - setting up and solving <span class="math">\(f(x) = 0\)</span> and
+<span class="math">\(\mathbf{f}(\mathbf{x}) = \mathbf{0}\)</span> (including
+<code class="docutils literal"><span class="pre">scipy.optimize.fsolve</span></code>) - minimizing <span class="math">\(f(x)\)</span> and
+<span class="math">\(f(\mathbf{x})\)</span> with and without constraints (including
+<code class="docutils literal"><span class="pre">scipy.optimize.minimize</span></code> and <code class="docutils literal"><span class="pre">linprogr</span></code>) - fitting data
+<span class="math">\((x_i, y_i)\)</span> to polynomials like <span class="math">\(ax^2 + bx + c\)</span> and
+arbitrary models <span class="math">\(f(x, a, b, c)\)</span> (including <code class="docutils literal"><span class="pre">np.polyval</span></code>,
+<code class="docutils literal"><span class="pre">np.polyfit</span></code>, and <code class="docutils literal"><span class="pre">scipy.optimize.curve_fit</span></code>) - interpolating data
+(including <code class="docutils literal"><span class="pre">scipy.interpolate.interp1d</span></code> and <code class="docutils literal"><span class="pre">interp2d</span></code>) - solving
+<code class="docutils literal"><span class="pre">dy/dt</span> <span class="pre">=</span> <span class="pre">f(y(t),</span> <span class="pre">t)</span></code> using Euler&#8217;s method (<code class="docutils literal"><span class="pre">odeint</span></code> <em>not</em> on the
+exam)</p>
 </div>
 </div>
 </div>
@@ -360,7 +389,7 @@ using the finite-difference method</p>
 </li>
 <li><a class="reference internal" href="#Whence-Such-BVPs?">Whence Such BVPs?</a><ul>
 <li><a class="reference internal" href="#Chopping-up-">Chopping up <span class="math">\(x\)</span></a></li>
-<li><a class="reference internal" href="#Replace--and--with-Finite-Differences-Approximations">Replace <span class="math">\(y'\)</span> and <span class="math">\(y''\)</span> with Finite Differences Approximations</a></li>
+<li><a class="reference internal" href="#Replace--and--with-Finite-Difference-Approximations">Replace <span class="math">\(y'\)</span> and <span class="math">\(y''\)</span> with Finite-Difference Approximations</a></li>
 </ul>
 </li>
 </ul>
