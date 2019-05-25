@@ -10,7 +10,6 @@
    :maxdepth: 2
 
    Prologue <overview>
-   Syllabus <administrivia/ME400_Syllabus>
    Lecture 1 - Getting Started <lectures/Getting_Started>
    Lecture 2 - Basic Operators and Built-In Functions <lectures/Basic_Operators_and_Built-In_Functions>
    Lecture 3 - Basic Data Processing with NumPy and Matplotlib <lectures/Basic_Data_Processing_with_NumPy_and_Matplotlib>
