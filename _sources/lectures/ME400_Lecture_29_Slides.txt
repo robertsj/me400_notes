@@ -101,7 +101,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 3,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -117,25 +117,61 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 8,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [],
-   "source": []
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABYAAAAqBAMAAABFIrbeAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAEHaJmUSrVGYizbvd7zLJaKAlAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA6klEQVQYGWNgEFJ2ZYABBwa2AiibvYGBcwGUzbyBgfEAlM36W4C5AcpmyP9hwcDA6ex0ESjA/H8hA0PsBK4PQHZZzN8AxhsMLBsYGDgSGPQvsnxk4FFgYOCdwMD3nXcDg/wDBgZ5oLIMeQOGeiANFGfYKV/AsIt9AgPrQgYOBS4FjmPMQIlnzq4MjEl201SBbBqD/whAsU2TjbfDzOB0YKhvgHKYvjPwH4CyWa8yyC+AsoEUXA0DA+NhuDCnjSOczcBgG4Dg8IJCHAQ4JzBwf4cwGfg/ItjAUOb5CRXnaGCoV4CyGUJctoKYAHiuO0NZdgxvAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$\\frac{8 a}{3}$$"
+      ],
+      "text/plain": [
+       "8⋅a\n",
+       "───\n",
+       " 3 "
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.integrate(f, (x, 0, 2))"
+   ]
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 6,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [],
-   "source": []
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAOBAMAAADd6iHDAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAIpm7MhCriUTv3c12VGZoascqAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAgUlEQVQIHWNgVDJ2YICAMAb2H1BmKgPDTChzFgNDvgOEvT8AzgQKrA9gECo6GQBkcXxn4JjIsB+kiCuBIfIBgzKIqcTAoB/AsAbI4lFgYJjMwPoFyLzEwCj6nYH3AwMDiwIDj+hfBuYNFxmkyouyGPYwvEooYNj///8vhrDjjjkNAMjNHzXk+S3KAAAAAElFTkSuQmCC\n",
+      "text/latex": [
+       "$$2 a$$"
+      ],
+      "text/plain": [
+       "2⋅a"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.diff(f, x, 2)"
+   ]
   },
   {
    "cell_type": "code",
@@ -191,7 +227,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 10,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
@@ -204,14 +240,33 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 14,
    "metadata": {
     "slideshow": {
      "slide_type": "fragment"
     }
    },
-   "outputs": [],
-   "source": []
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/latex": [
+       "$$\\frac{d}{d x} g{\\left (x \\right )} \\left. \\frac{d}{d \\xi_{1}} f{\\left (\\xi_{1} \\right )} \\right|_{\\substack{ \\xi_{1}=g{\\left (x \\right )} }}$$"
+      ],
+      "text/plain": [
+       "d        ⎛ d        ⎞│       \n",
+       "──(g(x))⋅⎜───(f(ξ₁))⎟│       \n",
+       "dx       ⎝dξ₁       ⎠│ξ₁=g(x)"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sy.diff(f(g(x)), x)"
+   ]
   },
   {
    "cell_type": "code",
@@ -297,7 +352,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
   },
   "livereveal": {
    "scroll": true

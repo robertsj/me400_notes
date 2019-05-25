@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Lecture 1 - Getting Started &mdash; ME 400 Course Notes Fall 2018 documentation</title>
+    <title>Getting Started &mdash; ME 400 Course Notes Fall 2018 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="ME 400 Course Notes Fall 2018 documentation" href="../index.html" />
     <link rel="next" title="Lecture 2 - Basic Operators and Built-In Functions" href="Basic_Operators_and_Built-In_Functions.html" />
-    <link rel="prev" title="ME 400 – Course Syllabus and Policies" href="../administrivia/ME400_Syllabus.html" />
+    <link rel="prev" title="Prologue" href="../overview.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -208,12 +208,10 @@ div.nboutput div.output_area.stderr {
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
 </style>
-<div class="section" id="Lecture-1---Getting-Started">
-<h1>Lecture 1 - Getting Started<a class="headerlink" href="#Lecture-1---Getting-Started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Getting-Started">
+<h1>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Overview,-Objectives,-and-Key-Terms">
 <h2>Overview, Objectives, and Key Terms<a class="headerlink" href="#Overview,-Objectives,-and-Key-Terms" title="Permalink to this headline">¶</a></h2>
-<p>First, and I can&#8217;t stress this enough, you need to read the
-<a class="reference internal" href="../administrivia/ME400_Syllabus.html"><span class="doc">Syllabus</span></a>!</p>
 <p>In this lesson, we&#8217;ll walk through the installation of, access to, and
 use of Python.</p>
 <div class="section" id="Objectives">
@@ -259,7 +257,7 @@ need to solve don&#8217;t really require the added computational performance
 that compiled languages provide.</p>
 <p>Several versions of Python are in current use, but the most popular
 versions are 2.7 and 3.7. Despite the numbering, both versions are
-current (but <a class="reference external" href="https://pythonclock.org/">not forever</a>. In this class,
+current (but <a class="reference external" href="https://pythonclock.org/">not forever</a>). In this class,
 we will work exclusively with Python 3.X (the X is currently 7 and may
 change over time).</p>
 </div>
@@ -274,16 +272,17 @@ manage Python and its packages on Windows, Mac OS/X, and Linux machines.
 Currently, a full version of Conda is installed on the departmental
 machines and represent everything you need for this course.</p>
 <p>For folks who want to install Python on their own machines, you may
-install the same <a class="reference external" href="https://www.anaconda.com/download/">Anaconda</a>
+install the same <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a>
 package on the MNE machines. Note, the file is pretty large. Be sure to
-select the latest version (3.7 as of 1/22/19) appropriate for your
+select the latest version (3.7 as of 5/25/19) appropriate for your
 operating system.</p>
 </div>
 <div class="section" id="Accessing-Python">
 <h2>Accessing Python<a class="headerlink" href="#Accessing-Python" title="Permalink to this headline">¶</a></h2>
 <p>For folks working on MNE machines, the following is a quick overview of
 getting access. You will need to make time to visit one of the labs (or
-to install Python on your own machine) prior to the second lecture.</p>
+to install Python on your own machine) to follow along with examples in
+this and all future readings.</p>
 <div class="section" id="Finding-CMD">
 <h3>Finding CMD<a class="headerlink" href="#Finding-CMD" title="Permalink to this headline">¶</a></h3>
 <p>Press <code class="docutils literal"><span class="pre">windows+r</span></code> (the Windows key and the <code class="docutils literal"><span class="pre">r</span></code> key at the same time)
@@ -479,12 +478,34 @@ is used throughout the variable&#8217;s
 Don&#8217;t worry: we&#8217;ll explore in more detail what scope means later on in
 the course.</p>
 </div>
+<div class="section" id="On-Naming-Variables">
+<h2>On Naming Variables<a class="headerlink" href="#On-Naming-Variables" title="Permalink to this headline">¶</a></h2>
+<p>Finally, variable names are subject to a few rules:</p>
+<ol class="arabic simple">
+<li>The first character must be a letter (<code class="docutils literal"><span class="pre">a-z</span></code> or <code class="docutils literal"><span class="pre">A-Z</span></code>) or an
+underscore (<code class="docutils literal"><span class="pre">_</span></code>), but letters are preferred.</li>
+<li>Variable names cannot have spaces.</li>
+<li>Variable names can include numbers (<code class="docutils literal"><span class="pre">0-9</span></code>) anywhere in the name
+except the first character (e.g., <code class="docutils literal"><span class="pre">abc123</span></code> is an acceptable name
+but <code class="docutils literal"><span class="pre">99redballoons</span></code> is not.)</li>
+<li>Variable names cannot be <em>keywords</em> from the Python language. These
+include the names <code class="docutils literal"><span class="pre">for</span></code>, <code class="docutils literal"><span class="pre">if</span></code>, and some others that you&#8217;ll see in
+the next reading.</li>
+</ol>
+<p>In general, one should use as descriptive a name as is possible for
+variables. For example, if a variable is to represent the mass of an
+object, it might be more illustrative to use the name <code class="docutils literal"><span class="pre">mass</span></code> than a
+single <code class="docutils literal"><span class="pre">m</span></code>. However, there are other techniques (e.g., comments) that
+can also be used to help a reader of code to understand what each
+variable represents. Examples of such techniques will be provided
+throughout the readings to follow.</p>
+</div>
 <div class="section" id="Further-Reading">
 <h2>Further Reading<a class="headerlink" href="#Further-Reading" title="Permalink to this headline">¶</a></h2>
 <p>In addition to the various links provided above, skim the
 <a class="reference external" href="http://python-textbok.readthedocs.io/en/latest/Introduction.html">Introduction</a>
-from <em>`Object-Oriented Programming in
-Python &lt;http://python-textbok.readthedocs.io/en/latest/index.html&gt;`__</em>.</p>
+from <a class="reference external" href="http://python-textbok.readthedocs.io/en/latest/index.html">Object-Oriented Programming in
+Python</a>.</p>
 </div>
 </div>
 
@@ -496,7 +517,7 @@ Python &lt;http://python-textbok.readthedocs.io/en/latest/index.html&gt;`__</em>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Lecture 1 - Getting Started</a><ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
 <li><a class="reference internal" href="#Overview,-Objectives,-and-Key-Terms">Overview, Objectives, and Key Terms</a><ul>
 <li><a class="reference internal" href="#Objectives">Objectives</a></li>
 <li><a class="reference internal" href="#Key-Terms">Key Terms</a></li>
@@ -512,6 +533,7 @@ Python &lt;http://python-textbok.readthedocs.io/en/latest/index.html&gt;`__</em>
 </ul>
 </li>
 <li><a class="reference internal" href="#Basic-Types">Basic Types</a></li>
+<li><a class="reference internal" href="#On-Naming-Variables">On Naming Variables</a></li>
 <li><a class="reference internal" href="#Further-Reading">Further Reading</a></li>
 </ul>
 </li>
@@ -520,7 +542,7 @@ Python &lt;http://python-textbok.readthedocs.io/en/latest/index.html&gt;`__</em>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../administrivia/ME400_Syllabus.html" title="previous chapter">ME 400 – Course Syllabus and Policies</a></li>
+      <li>Previous: <a href="../overview.html" title="previous chapter">Prologue</a></li>
       <li>Next: <a href="Basic_Operators_and_Built-In_Functions.html" title="next chapter">Lecture 2 - Basic Operators and Built-In Functions</a></li>
   </ul></li>
 </ul>

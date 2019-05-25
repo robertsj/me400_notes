@@ -4,12 +4,9 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Lecture 1 - Getting Started\n",
+    "# Getting Started\n",
     "\n",
     "## Overview, Objectives, and Key Terms\n",
-    "\n",
-    "First, and I can't stress this enough, you need to read \n",
-    "the [Syllabus](../administrivia/ME400_Syllabus.ipynb)!  \n",
     "\n",
     "In this lesson, we'll walk through the installation of, access to, and use \n",
     "of Python.\n",
@@ -54,7 +51,7 @@
     "\n",
     "Several versions of Python are in current use, but the most popular versions \n",
     "are 2.7 and 3.7.  Despite the numbering, both versions are current \n",
-    "(but [not forever](https://pythonclock.org/).  In this \n",
+    "(but [not forever](https://pythonclock.org/)).  In this \n",
     "class, we will work exclusively with Python 3.X (the X is currently 7 and may change over time).\n",
     "\n",
     "## Python Distributions\n",
@@ -69,8 +66,8 @@
     "on the departmental machines and represent everything you need for this course.\n",
     "\n",
     "For folks who want to install Python on their own machines, you may install\n",
-    "the same [Anaconda](https://www.anaconda.com/download/) package on the MNE machines.\n",
-    "Note, the file is pretty large.  Be sure to select the latest version (3.7 as of 1/22/19) appropriate\n",
+    "the same [Anaconda](https://www.anaconda.com/distribution/) package on the MNE machines.\n",
+    "Note, the file is pretty large.  Be sure to select the latest version (3.7 as of 5/25/19) appropriate\n",
     "for your operating system."
    ]
   },
@@ -82,7 +79,7 @@
    "source": [
     "## Accessing Python\n",
     "\n",
-    "For folks working on MNE machines, the following is a quick overview of getting access.  You will need to make time to visit one of the labs (or to install Python on your own machine) prior to the second lecture.\n",
+    "For folks working on MNE machines, the following is a quick overview of getting access.  You will need to make time to visit one of the labs (or to install Python on your own machine) to follow along with examples in this and all future readings.\n",
     "\n",
     "### Finding CMD\n",
     "\n",
@@ -164,9 +161,7 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "x = 1"
@@ -175,9 +170,7 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "y = 1.0"
@@ -186,9 +179,7 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "z = '1.0'"
@@ -197,9 +188,7 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "z = float(z)"
@@ -227,9 +216,7 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "metadata": {
-    "collapsed": true
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "b = True"
@@ -255,7 +242,19 @@
     "values of different types without restriction.  Contrarily, static-typed\n",
     "languages require that variables be assigned a single, fixed type that \n",
     "is used throughout the variable's \n",
-    "[scope](http://python-textbok.readthedocs.io/en/latest/Variables_and_Scope.html#variable-scope-and-lifetime).  Don't worry: we'll explore in more detail what scope means later on in the course."
+    "[scope](http://python-textbok.readthedocs.io/en/latest/Variables_and_Scope.html#variable-scope-and-lifetime).  Don't worry: we'll explore in more detail what scope means later on in the course.\n",
+    "\n",
+    "\n",
+    "## On Naming Variables\n",
+    "\n",
+    "Finally, variable names are subject to a few rules:\n",
+    "\n",
+    " 1. The first character must be a letter (`a-z` or `A-Z`) or an underscore (`_`), but letters are preferred.\n",
+    " 2. Variable names cannot have spaces.\n",
+    " 3. Variable names can include numbers (`0-9`) anywhere in the name except the first character (e.g., `abc123` is an acceptable name but `99redballoons` is not.)\n",
+    " 4. Variable names cannot be *keywords* from the Python language.  These include the names `for`, `if`, and some others that you'll see in the next reading.\n",
+    "\n",
+    "In general, one should use as descriptive a name as is possible for variables.  For example, if a variable is to represent the mass of an object, it might be more illustrative to use the name `mass` than a single `m`.  However, there are other techniques (e.g., comments) that can also be used to help a reader of code to understand what each variable represents.  Examples of such techniques will be provided throughout the readings to follow."
    ]
   },
   {
@@ -264,7 +263,7 @@
    "source": [
     "## Further Reading\n",
     "\n",
-    "In addition to the various links provided above, skim the [Introduction](http://python-textbok.readthedocs.io/en/latest/Introduction.html) from *[Object-Oriented Programming in Python](http://python-textbok.readthedocs.io/en/latest/index.html)*."
+    "In addition to the various links provided above, skim the [Introduction](http://python-textbok.readthedocs.io/en/latest/Introduction.html) from [Object-Oriented Programming in Python](http://python-textbok.readthedocs.io/en/latest/index.html)."
    ]
   }
  ],
@@ -284,7 +283,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
   }
  },
  "nbformat": 4,

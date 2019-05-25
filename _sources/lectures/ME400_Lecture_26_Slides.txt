@@ -284,7 +284,7 @@
     " - `func` represents $\\mathbf{f}(\\mathbf{y}(t), t)$ and should have the form `def func(y, t, arg1, arg2, ...)`\n",
     " - `y0` is the initial condition (either a single `float` or a NumPy array if a system)\n",
     " - `t` array of times at which the solution is to be computed (the first value is the initial condition time)\n",
-    " - `args` are options arguments passed to `func`\n"
+    " - `args` are options arguments passed to `func`"
    ]
   },
   {
