@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Lecture 4 - More on NumPy Arrays: Slicing and `np.linalg`\n",
+    "# More on NumPy Arrays: Slicing and `np.linalg`\n",
     "\n",
     "## Overview, Objectives, and Key Terms\n",
     " \n",
@@ -1338,7 +1338,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.5"
+   "version": "3.6.8"
   }
  },
  "nbformat": 4,
